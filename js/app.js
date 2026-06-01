@@ -7,6 +7,7 @@ let RAW = [];
 function renderResumen(){
   if(typeof renderKPIs === 'function') renderKPIs();
   if(typeof renderMonthly === 'function') renderMonthly();
+  if(typeof renderDonut === 'function') renderDonut();
 }
 
 function switchTab(tab){
