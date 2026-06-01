@@ -1,0 +1,37 @@
+name: Sync Finance Data
+
+on:
+  schedule:
+    - cron: '0 7 * * *'   # Cada día a las 7:00 UTC
+  workflow_dispatch:        # Ejecución manual desde GitHub
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install google-auth google-auth-httplib2 google-api-python-client
+
+      - name: Generate finance_data.json
+        env:
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          SHEET_ID: "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI"
+          SHEET_NAME: "finanzas"
+        run: python scripts/sync_finance_data.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add finance_data.json
+          git diff --cached --quiet || git commit -m "chore: sync finance data [$(date +'%Y-%m-%d')]"
+          git push
