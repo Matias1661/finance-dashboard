@@ -1,5 +1,509 @@
 [
   {
+    "fecha": "2026-05-31",
+    "concepto": "SANSE I",
+    "monto": -53.0,
+    "categoria": "Combustible"
+  },
+  {
+    "fecha": "2026-05-31",
+    "concepto": "TRANSFER INMEDIATA",
+    "monto": 50.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-30",
+    "concepto": "SKYSHOWTIME C42CD",
+    "monto": -4.49,
+    "categoria": "Suscripciones"
+  },
+  {
+    "fecha": "2026-05-30",
+    "concepto": "BIT2ME",
+    "monto": -50.0,
+    "categoria": "Inversion"
+  },
+  {
+    "fecha": "2026-05-30",
+    "concepto": "Gastos conjuntos",
+    "monto": -100.0,
+    "categoria": "Gastos en conjunto"
+  },
+  {
+    "fecha": "2026-05-29",
+    "concepto": "NOMINA (TRF)",
+    "monto": 1236.19,
+    "categoria": "Nomina"
+  },
+  {
+    "fecha": "2026-05-29",
+    "concepto": "Ad free for Prime",
+    "monto": -1.99,
+    "categoria": "Suscripciones"
+  },
+  {
+    "fecha": "2026-05-29",
+    "concepto": "UBER RIDES",
+    "monto": -9.97,
+    "categoria": "Viajes"
+  },
+  {
+    "fecha": "2026-05-29",
+    "concepto": "LA EMPERATRIZ",
+    "monto": -25.0,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-29",
+    "concepto": "PAPA JOHNS SANSE",
+    "monto": -30.01,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-29",
+    "concepto": "UBER * EATS PEN",
+    "monto": -54.75,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-29",
+    "concepto": "PAG NOMINAS",
+    "monto": -700.0,
+    "categoria": "Nomina"
+  },
+  {
+    "fecha": "2026-05-29",
+    "concepto": "TRANSFER INMEDIATA",
+    "monto": 45.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-29",
+    "concepto": "TRANSFER INMEDIATA",
+    "monto": 45.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-29",
+    "concepto": "TRANSFER INMEDIATA",
+    "monto": 50.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-28",
+    "concepto": "Oney Pago aplazad",
+    "monto": -56.12,
+    "categoria": "Tarjeta"
+  },
+  {
+    "fecha": "2026-05-28",
+    "concepto": "VIENA CORNERS REN",
+    "monto": -5.5,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-28",
+    "concepto": "SALUTARY FRESH FO",
+    "monto": -7.05,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-28",
+    "concepto": "SANSE I",
+    "monto": -22.4,
+    "categoria": "Combustible"
+  },
+  {
+    "fecha": "2026-05-28",
+    "concepto": "BIZUM RECIBIDO",
+    "monto": 10.0,
+    "categoria": "Club"
+  },
+  {
+    "fecha": "2026-05-28",
+    "concepto": "TRANSFER INMEDIATA",
+    "monto": 41.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-27",
+    "concepto": "TROFEOS BURGOS SL",
+    "monto": -50.39,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-27",
+    "concepto": "APPLE.COM/BILL",
+    "monto": -3.49,
+    "categoria": "Suscripciones"
+  },
+  {
+    "fecha": "2026-05-27",
+    "concepto": "VIENA CORNERS REN",
+    "monto": -5.5,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-27",
+    "concepto": "NORAUTO 00321 TEF",
+    "monto": -26.0,
+    "categoria": "Gastos coche"
+  },
+  {
+    "fecha": "2026-05-27",
+    "concepto": "TRANSFER INMEDIATA",
+    "monto": 50.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-27",
+    "concepto": "BIZUM ENVIADO",
+    "monto": -213.1,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-26",
+    "concepto": "NYX*AIRservSpain",
+    "monto": -1.5,
+    "categoria": "Club"
+  },
+  {
+    "fecha": "2026-05-25",
+    "concepto": "PARKING AENA MAD",
+    "monto": -4.9,
+    "categoria": "Club"
+  },
+  {
+    "fecha": "2026-05-25",
+    "concepto": "BKT-MAD-PARK-O-CA",
+    "monto": -2.65,
+    "categoria": "Club"
+  },
+  {
+    "fecha": "2026-05-25",
+    "concepto": "NYX*Selecta",
+    "monto": -2.9,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-25",
+    "concepto": "Gastos club",
+    "monto": -50.0,
+    "categoria": "Club"
+  },
+  {
+    "fecha": "2026-05-24",
+    "concepto": "VIENA CORNERS REN",
+    "monto": -4.15,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-24",
+    "concepto": "BIZUM ENVIADO",
+    "monto": -65.3,
+    "categoria": "Salidas"
+  },
+  {
+    "fecha": "2026-05-24",
+    "concepto": "BIZUM ENVIADO",
+    "monto": -45.0,
+    "categoria": "Salidas"
+  },
+  {
+    "fecha": "2026-05-24",
+    "concepto": "TRANSFER INMEDIATA",
+    "monto": 62.5,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-23",
+    "concepto": "WWW.AMAZON",
+    "monto": -25.64,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-23",
+    "concepto": "NYX*AIRservSpain",
+    "monto": -1.5,
+    "categoria": "Club"
+  },
+  {
+    "fecha": "2026-05-23",
+    "concepto": "CO HERON DIVERSIA",
+    "monto": -52.3,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-22",
+    "concepto": "WWW.AMAZON",
+    "monto": -8.28,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-22",
+    "concepto": "AMAZON.ES",
+    "monto": -9.99,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-22",
+    "concepto": "GlobalE /True Cla",
+    "monto": -52.92,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-22",
+    "concepto": "VIENA CORNERS REN",
+    "monto": -1.4,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-22",
+    "concepto": "VIENA CORNERS REN",
+    "monto": -3.0,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-21",
+    "concepto": "TRANSF. A SU FAVOR",
+    "monto": 45.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-21",
+    "concepto": "TRANSFER INMEDIATA",
+    "monto": 83.4,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-20",
+    "concepto": "NOMINA (TRF)",
+    "monto": 2012.6,
+    "categoria": "Nomina"
+  },
+  {
+    "fecha": "2026-05-20",
+    "concepto": "VG San Seb. los R",
+    "monto": -12.9,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-20",
+    "concepto": "VIENA CORNERS REN",
+    "monto": -6.15,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-20",
+    "concepto": "Gastos club",
+    "monto": -123.54,
+    "categoria": "Club"
+  },
+  {
+    "fecha": "2026-05-20",
+    "concepto": "TRANSFER INMEDIATA",
+    "monto": 50.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-19",
+    "concepto": "Amazon.es",
+    "monto": -8.25,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-19",
+    "concepto": "LEROY MERLIN SSRR",
+    "monto": -0.18,
+    "categoria": "Departamento"
+  },
+  {
+    "fecha": "2026-05-19",
+    "concepto": "0439 SAN SEBASTIA",
+    "monto": -41.98,
+    "categoria": "Supermercado"
+  },
+  {
+    "fecha": "2026-05-19",
+    "concepto": "LEROY MERLIN SSRR",
+    "monto": -52.8,
+    "categoria": "Departamento"
+  },
+  {
+    "fecha": "2026-05-19",
+    "concepto": "LA FIGAL DE PABLO",
+    "monto": -57.9,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-18",
+    "concepto": "CHATTER CAFE GETA",
+    "monto": -9.0,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-18",
+    "concepto": "KRUSS STUDIO",
+    "monto": -39.0,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-18",
+    "concepto": "MERKAL GETAFE NAS",
+    "monto": -50.13,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-18",
+    "concepto": "BOSTON GETAFE",
+    "monto": -52.18,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-18",
+    "concepto": "NU#EZ ARENAS CC T",
+    "monto": -75.33,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-18",
+    "concepto": "LEFTIES",
+    "monto": -98.97,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-18",
+    "concepto": "TRANSFER. EN DIV.",
+    "monto": 50.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-17",
+    "concepto": "MC DONALDS CC PLA",
+    "monto": -6.16,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-17",
+    "concepto": "MI ALCAMPO S S DE",
+    "monto": -40.43,
+    "categoria": "Supermercado"
+  },
+  {
+    "fecha": "2026-05-16",
+    "concepto": "WWW.AMAZON",
+    "monto": -22.99,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-16",
+    "concepto": "INDIGO AVALON",
+    "monto": -3.75,
+    "categoria": "Viajes"
+  },
+  {
+    "fecha": "2026-05-16",
+    "concepto": "APPLE.COM/BILL",
+    "monto": -22.0,
+    "categoria": "Suscripciones"
+  },
+  {
+    "fecha": "2026-05-15",
+    "concepto": "BIZUM ENVIADO",
+    "monto": -11.0,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-14",
+    "concepto": "SERVIMATIC",
+    "monto": -0.55,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-14",
+    "concepto": "SERVIMATIC",
+    "monto": -0.55,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-13",
+    "concepto": "SERVIMATIC",
+    "monto": -0.55,
+    "categoria": "Comer afuera"
+  },
+  {
+    "fecha": "2026-05-13",
+    "concepto": "ESTETICA ECOLOGIC",
+    "monto": -45.0,
+    "categoria": "Otros"
+  },
+  {
+    "fecha": "2026-05-13",
+    "concepto": "CAMPONACIONES SER",
+    "monto": -61.82,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-13",
+    "concepto": "REINT.CA JERO",
+    "monto": -120.0,
+    "categoria": "Compras"
+  },
+  {
+    "fecha": "2026-05-12",
+    "concepto": "YOIGO XFERA MOVIL",
+    "monto": -47.78,
+    "categoria": "Suscripciones"
+  },
+  {
+    "fecha": "2026-05-12",
+    "concepto": "TRANSFER INMEDIATA",
+    "monto": 41.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-12",
+    "concepto": "MOEVE TRUJILLO II",
+    "monto": -9.59,
+    "categoria": "Combustible"
+  },
+  {
+    "fecha": "2026-05-12",
+    "concepto": "BP CAIADA",
+    "monto": -15.0,
+    "categoria": "Combustible"
+  },
+  {
+    "fecha": "2026-05-12",
+    "concepto": "MOEVE TRUJILLO II",
+    "monto": -18.18,
+    "categoria": "Combustible"
+  },
+  {
+    "fecha": "2026-05-12",
+    "concepto": "MOEVE ESTREMOZ N",
+    "monto": -27.2,
+    "categoria": "Combustible"
+  },
+  {
+    "fecha": "2026-05-12",
+    "concepto": "TRANSFER. EN DIV.",
+    "monto": 50.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-12",
+    "concepto": "TRANSFER. EN DIV.",
+    "monto": 45.0,
+    "categoria": "Guille"
+  },
+  {
+    "fecha": "2026-05-12",
+    "concepto": "TRANSFER. EN DIV.",
+    "monto": 150.0,
+    "categoria": "Guille"
+  },
+  {
     "fecha": "2026-05-11",
     "concepto": "WWW.AMAZON",
     "monto": -15.99,
