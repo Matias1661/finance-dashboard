@@ -3,6 +3,30 @@
 ## 2026-06-02
 
 ### Decision
+Tab Categorías usa gráfico de barras horizontales (indexAxis: 'y') en lugar de donut o barras verticales.
+
+### Reason
+Con múltiples categorías, las barras horizontales permiten leer las etiquetas sin rotación y comparar magnitudes de un vistazo. El donut ya existe en el tab Resumen.
+
+---
+
+### Decision
+Tab Categorías tiene su propio selector de mes independiente del selector global de Resumen.
+
+### Reason
+Cada tab mantiene su propio estado de filtro para no interferir con la vista de otros tabs.
+
+---
+
+### Decision
+Fusionar el gráfico de barras y la línea de saldo acumulado del tab Guille en un único chart mixto con eje Y dual.
+
+### Reason
+Reduce el scroll vertical del tab y permite correlacionar visualmente el flujo mensual con el saldo acumulado en el mismo espacio.
+
+---
+
+### Decision
 Eliminar el bloque <script> inline de index.html y cargar app.js como script externo.
 
 ### Reason
