@@ -192,38 +192,7 @@
 <script src="js/state.js"></script>
 <script src="js/filters.js"></script>
 <script src="js/charts.js"></script>
-
-<script>
-const DATA_URL = 'finance_data.json';
-
-let charts = {};
-let RAW = [];
-
-function renderResumen(){
-  renderKPIs();
-  renderMonthly();
-  if(typeof renderDonut === 'function') renderDonut();
-}
-
-async function init(){
-  const res = await fetch(DATA_URL);
-  RAW = await res.json();
-
-  // inject into global state
-  window.FINANCE_STATE.raw = RAW;
-
-  if(typeof populateMonthSelector === 'function'){
-    populateMonthSelector(RAW);
-  }
-
-  document.getElementById('app').style.display='block';
-  document.getElementById('loading').style.display='none';
-
-  renderResumen();
-}
-
-init();
-</script>
+<script src="js/app.js"></script>
 
 </body>
 </html>
