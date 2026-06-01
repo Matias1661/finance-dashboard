@@ -83,6 +83,7 @@
   <button class="tab active" onclick="switchTab('resumen')">Resumen</button>
   <button class="tab" onclick="switchTab('categorias')">Categorías</button>
   <button class="tab" onclick="switchTab('transacciones')">Transacciones</button>
+  <button class="tab" onclick="switchTab('guille')">Guille</button>
 </div>
 
 <div id="tab-resumen" class="tab-panel active">
@@ -143,6 +144,46 @@
       <tbody id="tx-body"></tbody>
     </table>
   </div>
+</div>
+
+<div id="tab-guille" class="tab-panel">
+
+  <div class="kpis" id="guille-kpis"></div>
+
+  <div class="card">
+    <div class="card-title">Depositado vs Gastado mensual</div>
+    <div class="chart-wrap-tall">
+      <canvas id="chart-guille-bars"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Saldo acumulado</div>
+    <div class="chart-wrap">
+      <canvas id="chart-guille-line"></canvas>
+    </div>
+  </div>
+
+  <div class="filter-row">
+    <span class="filter-label">Mes</span>
+    <select id="guille-month-filter" onchange="renderGuille()">
+      <option value="">Todos los meses</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <table class="tx-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Concepto</th>
+          <th style="text-align:right">Importe</th>
+        </tr>
+      </thead>
+      <tbody id="guille-tx-body"></tbody>
+    </table>
+  </div>
+
 </div>
 
 </main>
