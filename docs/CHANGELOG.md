@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-06-02
+- fix: index.html no cargaba js/app.js — switchTab() no estaba definida al hacer click en los tabs desde Safari (o cualquier browser). Eliminado bloque <script> inline duplicado. Ahora index.html carga state.js → filters.js → charts.js → app.js en orden correcto.
+
 ## 2026-06-01
 - Created technical memory system.
 - Added PROJECT_MEMORY.md.
