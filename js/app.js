@@ -207,6 +207,27 @@ function renderCategorias(){
       }
     }
   });
+
+  // --- Tabla de transacciones ---
+  const expenses = data.filter(r => Number(r.monto) < 0)
+    .sort((a,b) => b.fecha.localeCompare(a.fecha));
+
+  const tbody = document.getElementById('cat-tx-body');
+  if(tbody){
+    if(expenses.length === 0){
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);padding:24px">Sin transacciones</td></tr>';
+    } else {
+      tbody.innerHTML = expenses.map(r => {
+        const v = Number(r.monto);
+        return `<tr>
+          <td style="font-family:'DM Mono';font-size:13px">${r.fecha}</td>
+          <td>${r.concepto}</td>
+          <td><span class="cat-badge">${r.categoria || '—'}</span></td>
+          <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:var(--red)">${new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(v)}</td>
+        </tr>`;
+      }).join('');
+    }
+  }
 }
 
 function switchTab(tab, el){
@@ -270,6 +291,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
