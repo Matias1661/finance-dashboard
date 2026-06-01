@@ -89,22 +89,19 @@ function renderGuille(){
   if(ctxGuille){
     if(window.guilleChart) window.guilleChart.destroy();
     window.guilleChart = new Chart(ctxGuille, {
-      type: 'bar',
       data: {
         labels,
         datasets: [
-          { label:'Depositado', data: depValues, backgroundColor:'rgba(13,138,82,0.75)', yAxisID: 'y' },
-          { label:'Gastado',    data: gasValues, backgroundColor:'rgba(201,74,48,0.75)', yAxisID: 'y' },
-          {
-            label: 'Saldo acumulado',
-            data: cumBalance,
-            type: 'line',
-            yAxisID: 'y2',
+          { type: 'bar',  label:'Depositado',      data: depValues,   backgroundColor:'rgba(13,138,82,0.75)', yAxisID: 'y',  order: 2 },
+          { type: 'bar',  label:'Gastado',          data: gasValues,   backgroundColor:'rgba(201,74,48,0.75)', yAxisID: 'y',  order: 2 },
+          { type: 'line', label:'Saldo acumulado',  data: cumBalance,
+            yAxisID: 'y2', order: 1,
             borderColor: '#2563be',
-            backgroundColor: 'rgba(37,99,190,0.08)',
+            backgroundColor: 'transparent',
             fill: false,
             tension: 0.3,
-            pointRadius: 3,
+            pointRadius: 4,
+            pointBackgroundColor: '#2563be',
             borderWidth: 2
           }
         ]
@@ -119,7 +116,6 @@ function renderGuille(){
             grid: { drawOnChartArea: true }
           },
           y2: {
-            beginAtZero: false,
             position: 'right',
             grid: { drawOnChartArea: false }
           }
