@@ -25,7 +25,7 @@ jobs:
         env:
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
           SHEET_ID: "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI"
-          SHEET_NAME: "finanzas"
+          SHEET_NAME: "Movimientos"
         run: python scripts/sync_finance_data.py
 
       - name: Commit and push if changed
