@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f8f6;
+      --surface: #ffffff;
+      --border: rgba(0,0,0,0.08);
+      --text: #1a1a18;
+      --text-secondary: #6b6b63;
+      --green: #0d8a52;
+      --red: #c94a30;
+      --amber: #9a6200;
+      --blue: #2563be;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .header-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 2px;
+      background: var(--border);
+      border-radius: 10px;
+      padding: 3px;
+      width: fit-content;
+      margin-bottom: 28px;
+    }
+
+    .tab {
+      padding: 7px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 7px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+    }
+
+    .tab.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* KPIs */
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .kpi-value.positive { color: var(--green); }
+    .kpi-value.negative { color: var(--red); }
+    .kpi-value.neutral { color: var(--text); }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Filter */
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    select {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* Tabla transacciones */
+    .tx-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .tx-table th {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      text-align: left;
+      padding: 0 12px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tx-table td {
+      padding: 10px 12px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tx-table tr:last-child td { border-bottom: none; }
+
+    .tx-table tr:hover td { background: var(--bg); }
+
+    .tx-concepto { font-weight: 500; }
+    .tx-fecha {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .tx-monto {
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .tx-monto.pos { color: var(--green); }
+    .tx-monto.neg { color: var(--red); }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      background: var(--bg);
+      color: var(--text-secondary);
+    }
+
+    /* Loading */
+    #loading {
+      text-align: center;
+      padding: 80px;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .chart-wrap { position: relative; height: 260px; }
+    .chart-wrap-tall { position: relative; height: 320px; }
+
+    /* periodo selector pill */
+    .period-pills {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+
+    .pill {
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 20px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+    }
+
+    .pill.active {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading">Cargando datos...</div>
+
+<div id="app" style="display:none">
+  <header class="header">
+    <span class="header-title">Finance Dashboard</span>
+    <span class="header-meta" id="last-updated"></span>
+  </header>
+
+  <main class="main">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('resumen')">Resumen</button>
+      <button class="tab" onclick="switchTab('categorias')">Categorías</button>
+      <button class="tab" onclick="switchTab('transacciones')">Transacciones</button>
+    </div>
+
+    <!-- TAB RESUMEN -->
+    <div id="tab-resumen" class="tab-panel active">
+      <div class="kpis" id="kpis"></div>
+
+      <div class="period-pills" id="period-pills">
+        <button class="pill active" data-months="6" onclick="setPeriod(6, this)">6m</button>
+        <button class="pill" data-months="12" onclick="setPeriod(12, this)">12m</button>
+        <button class="pill" data-months="24" onclick="setPeriod(24, this)">Todo</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Ingresos vs Gastos mensuales</div>
+        <div class="chart-wrap-tall">
+          <canvas id="chart-monthly"></canvas>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Ahorro mensual</div>
+          <div class="chart-wrap">
+            <canvas id="chart-savings"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Gastos por categoría (período)</div>
+          <div class="chart-wrap">
+            <canvas id="chart-donut"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CATEGORIAS -->
+    <div id="tab-categorias" class="tab-panel">
+      <div class="filter-row">
+        <span class="filter-label">Período</span>
+        <select id="cat-period" onchange="renderCategorias()">
+          <option value="6">Últimos 6 meses</option>
+          <option value="12">Últimos 12 meses</option>
+          <option value="999">Todo</option>
+        </select>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Distribución de gastos</div>
+          <div class="chart-wrap-tall">
+            <canvas id="chart-cat-donut"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Top categorías</div>
+          <div id="cat-list"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Evolución mensual por categoría</div>
+        <div class="chart-wrap-tall">
+          <canvas id="chart-cat-trend"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB TRANSACCIONES -->
+    <div id="tab-transacciones" class="tab-panel">
+      <div class="filter-row">
+        <span class="filter-label">Categoría</span>
+        <select id="tx-cat-filter" onchange="renderTransacciones()">
+          <option value="">Todas</option>
+        </select>
+        <select id="tx-month-filter" onchange="renderTransacciones()">
+          <option value="">Todos los meses</option>
+        </select>
+      </div>
+
+      <div class="card">
+        <table class="tx-table" id="tx-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Concepto</th>
+              <th>Categoría</th>
+              <th style="text-align:right">Monto</th>
+            </tr>
+          </thead>
+          <tbody id="tx-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+// ── Configuración ──────────────────────────────────────────
+const DATA_URL = 'finance_data.json';
+const EXCLUIDAS = ['Guille', 'Inversion'];
+
+const CAT_COLORS = {
+  'Nomina':          '#0d8a52',
+  'Supermercado':    '#2563be',
+  'Departamento':    '#6b48c8',
+  'Gastos coche':    '#9a6200',
+  'Combustible':     '#c95f00',
+  'Suscripciones':   '#5c8a00',
+  'Comer afuera':    '#c94a30',
+  'Salidas':         '#b5294a',
+  'Compras':         '#2890c8',
+  'Viajes':          '#00868a',
+  'Guille':          '#d97706',
+  'Inversion':       '#64748b',
+  'Gastos moto':     '#7c3aed',
+  'Gastos en conjunto': '#0369a1',
+  'Club':            '#be123c',
+  'Tarjeta':         '#0f766e',
+  'Otros':           '#9ca3af',
+  'A revisar':       '#f59e0b',
+};
+
+const CHART_DEFAULTS = {
+  plugins: {
+    legend: { labels: { font: { family: 'DM Sans', size: 12 }, boxWidth: 12 } },
+    tooltip: {
+      backgroundColor: '#fff',
+      titleColor: '#1a1a18',
+      bodyColor: '#6b6b63',
+      borderColor: 'rgba(0,0,0,0.12)',
+      borderWidth: 1,
+      padding: 12,
+      titleFont: { family: 'DM Sans', weight: '600' },
+      bodyFont: { family: 'DM Mono' },
+      callbacks: { label: ctx => ` ${fmtEur(ctx.raw)}` }
+    }
+  }
+};
+
+let RAW = [];
+let charts = {};
+let activePeriod = 6;
+
+// ── Utilidades ─────────────────────────────────────────────
+function fmtEur(n) {
+  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(n);
+}
+
+function monthKey(dateStr) {
+  return dateStr ? dateStr.slice(0, 7) : '';
+}
+
+function monthLabel(key) {
+  const [y, m] = key.split('-');
+  const names = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${names[parseInt(m)-1]} ${y.slice(2)}`;
+}
+
+function cutoffDate(months) {
+  const d = new Date();
+  d.setMonth(d.getMonth() - months);
+  return d.toISOString().slice(0, 10);
+}
+
+function filteredData(months, excluir = EXCLUIDAS) {
+  const cutoff = months >= 999 ? '2000-01-01' : cutoffDate(months);
+  return RAW.filter(r => r.fecha >= cutoff && !excluir.includes(r.categoria));
+}
+
+function groupByMonth(rows) {
+  const map = {};
+  for (const r of rows) {
+    const k = monthKey(r.fecha);
+    if (!map[k]) map[k] = { ingresos: 0, gastos: 0 };
+    if (r.monto > 0) map[k].ingresos += r.monto;
+    else map[k].gastos += Math.abs(r.monto);
+  }
+  return map;
+}
+
+function destroyChart(id) {
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+// ── Tabs ───────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+
+  if (name === 'categorias') renderCategorias();
+  if (name === 'transacciones') renderTransacciones();
+}
+
+// ── Período ────────────────────────────────────────────────
+function setPeriod(months, el) {
+  activePeriod = months;
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  renderResumen();
+}
+
+// ── KPIs ───────────────────────────────────────────────────
+function renderKPIs() {
+  const data = filteredData(activePeriod);
+  const byMonth = groupByMonth(data);
+  const months = Object.keys(byMonth).sort();
+  const last = months[months.length - 1];
+
+  const totalIngresos = months.reduce((s, k) => s + byMonth[k].ingresos, 0);
+  const totalGastos   = months.reduce((s, k) => s + byMonth[k].gastos, 0);
+  const ahorro        = totalIngresos - totalGastos;
+  const nMeses        = months.length || 1;
+  const pctAhorro     = totalIngresos > 0 ? ((ahorro / totalIngresos) * 100).toFixed(0) : 0;
+
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi">
+      <div class="kpi-label">Ingresos (período)</div>
+      <div class="kpi-value positive">${fmtEur(totalIngresos)}</div>
+      <div class="kpi-sub">${fmtEur(totalIngresos / nMeses)}/mes</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Gastos (período)</div>
+      <div class="kpi-value negative">${fmtEur(totalGastos)}</div>
+      <div class="kpi-sub">${fmtEur(totalGastos / nMeses)}/mes</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Ahorro neto</div>
+      <div class="kpi-value ${ahorro >= 0 ? 'positive' : 'negative'}">${fmtEur(ahorro)}</div>
+      <div class="kpi-sub">${pctAhorro}% tasa de ahorro</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Último mes</div>
+      <div class="kpi-value neutral">${last ? monthLabel(last) : '—'}</div>
+      <div class="kpi-sub">${last ? `${fmtEur(byMonth[last].ingresos)} ingresado` : '—'}</div>
+    </div>
+  `;
+}
+
+// ── Gráfico mensual ────────────────────────────────────────
+function renderMonthly() {
+  const data = filteredData(activePeriod);
+  const byMonth = groupByMonth(data);
+  const months = Object.keys(byMonth).sort();
+
+  destroyChart('monthly');
+  charts['monthly'] = new Chart(document.getElementById('chart-monthly'), {
+    type: 'bar',
+    data: {
+      labels: months.map(monthLabel),
+      datasets: [
+        {
+          label: 'Ingresos',
+          data: months.map(k => byMonth[k].ingresos),
+          backgroundColor: 'rgba(13,138,82,0.85)',
+          borderRadius: 4,
+          order: 1
+        },
+        {
+          label: 'Gastos',
+          data: months.map(k => -byMonth[k].gastos),
+          backgroundColor: 'rgba(201,74,48,0.85)',
+          borderRadius: 4,
+          order: 1
+        }
+      ]
+    },
+    options: {
+      ...CHART_DEFAULTS,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { family: 'DM Mono', size: 11 } } },
+        y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { family: 'DM Mono', size: 11 }, callback: v => fmtEur(v) } }
+      }
+    }
+  });
+}
+
+// ── Gráfico ahorro ────────────────────────────────────────
+function renderSavings() {
+  const data = filteredData(activePeriod);
+  const byMonth = groupByMonth(data);
+  const months = Object.keys(byMonth).sort();
+  const savings = months.map(k => byMonth[k].ingresos - byMonth[k].gastos);
+
+  destroyChart('savings');
+  charts['savings'] = new Chart(document.getElementById('chart-savings'), {
+    type: 'bar',
+    data: {
+      labels: months.map(monthLabel),
+      datasets: [{
+        label: 'Ahorro',
+        data: savings,
+        backgroundColor: savings.map(v => v >= 0 ? 'rgba(13,138,82,0.8)' : 'rgba(201,74,48,0.8)'),
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      ...CHART_DEFAULTS,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { ...CHART_DEFAULTS.plugins, legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { family: 'DM Mono', size: 10 } } },
+        y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { family: 'DM Mono', size: 10 }, callback: v => fmtEur(v) } }
+      }
+    }
+  });
+}
+
+// ── Donut resumen ──────────────────────────────────────────
+function renderDonutResumen() {
+  const data = filteredData(activePeriod).filter(r => r.monto < 0);
+  const byCat = {};
+  for (const r of data) {
+    byCat[r.categoria] = (byCat[r.categoria] || 0) + Math.abs(r.monto);
+  }
+  const cats = Object.entries(byCat).sort((a, b) => b[1] - a[1]).slice(0, 8);
+
+  destroyChart('donut');
+  charts['donut'] = new Chart(document.getElementById('chart-donut'), {
+    type: 'doughnut',
+    data: {
+      labels: cats.map(c => c[0]),
+      datasets: [{
+        data: cats.map(c => c[1]),
+        backgroundColor: cats.map(c => CAT_COLORS[c[0]] || '#9ca3af'),
+        borderWidth: 2,
+        borderColor: '#fff',
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '62%',
+      plugins: {
+        legend: { position: 'right', labels: { font: { family: 'DM Sans', size: 11 }, boxWidth: 10, padding: 8 } },
+        tooltip: { ...CHART_DEFAULTS.plugins.tooltip }
+      }
+    }
+  });
+}
+
+// ── RESUMEN ────────────────────────────────────────────────
+function renderResumen() {
+  renderKPIs();
+  renderMonthly();
+  renderSavings();
+  renderDonutResumen();
+}
+
+// ── CATEGORÍAS ─────────────────────────────────────────────
+function renderCategorias() {
+  const months = parseInt(document.getElementById('cat-period').value);
+  const data = filteredData(months).filter(r => r.monto < 0);
+
+  const byCat = {};
+  for (const r of data) {
+    byCat[r.categoria] = (byCat[r.categoria] || 0) + Math.abs(r.monto);
+  }
+  const cats = Object.entries(byCat).sort((a, b) => b[1] - a[1]);
+  const total = cats.reduce((s, c) => s + c[1], 0);
+
+  // Donut
+  destroyChart('cat-donut');
+  charts['cat-donut'] = new Chart(document.getElementById('chart-cat-donut'), {
+    type: 'doughnut',
+    data: {
+      labels: cats.map(c => c[0]),
+      datasets: [{
+        data: cats.map(c => c[1]),
+        backgroundColor: cats.map(c => CAT_COLORS[c[0]] || '#9ca3af'),
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '60%',
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'DM Sans', size: 11 }, boxWidth: 10 } },
+        tooltip: { ...CHART_DEFAULTS.plugins.tooltip }
+      }
+    }
+  });
+
+  // Lista
+  document.getElementById('cat-list').innerHTML = cats.slice(0, 10).map(([cat, val]) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="width:8px;height:8px;border-radius:50%;background:${CAT_COLORS[cat]||'#9ca3af'};display:inline-block"></span>
+        <span style="font-size:13px;font-weight:500">${cat}</span>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'DM Mono',monospace;font-size:13px;font-weight:500">${fmtEur(val)}</div>
+        <div style="font-size:11px;color:var(--text-secondary)">${((val/total)*100).toFixed(1)}%</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Trend línea por top 5 categorías
+  const top5 = cats.slice(0, 5).map(c => c[0]);
+  const allData = filteredData(months).filter(r => r.monto < 0 && top5.includes(r.categoria));
+  const allMonths = [...new Set(allData.map(r => monthKey(r.fecha)))].sort();
+
+  const datasets = top5.map(cat => {
+    return {
+      label: cat,
+      data: allMonths.map(m => {
+        const rows = allData.filter(r => monthKey(r.fecha) === m && r.categoria === cat);
+        return rows.reduce((s, r) => s + Math.abs(r.monto), 0);
+      }),
+      borderColor: CAT_COLORS[cat] || '#9ca3af',
+      backgroundColor: 'transparent',
+      tension: 0.3,
+      borderWidth: 2,
+      pointRadius: 3
+    };
+  });
+
+  destroyChart('cat-trend');
+  charts['cat-trend'] = new Chart(document.getElementById('chart-cat-trend'), {
+    type: 'line',
+    data: { labels: allMonths.map(monthLabel), datasets },
+    options: {
+      ...CHART_DEFAULTS,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { family: 'DM Mono', size: 11 } } },
+        y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { family: 'DM Mono', size: 11 }, callback: v => fmtEur(v) } }
+      }
+    }
+  });
+}
+
+// ── TRANSACCIONES ──────────────────────────────────────────
+function renderTransacciones() {
+  const catFilter   = document.getElementById('tx-cat-filter').value;
+  const monthFilter = document.getElementById('tx-month-filter').value;
+
+  let rows = [...RAW].sort((a, b) => b.fecha.localeCompare(a.fecha));
+  if (catFilter)   rows = rows.filter(r => r.categoria === catFilter);
+  if (monthFilter) rows = rows.filter(r => monthKey(r.fecha) === monthFilter);
+
+  document.getElementById('tx-body').innerHTML = rows.slice(0, 100).map(r => `
+    <tr>
+      <td class="tx-fecha">${r.fecha}</td>
+      <td class="tx-concepto">${r.concepto}</td>
+      <td><span class="badge">${r.categoria || '—'}</span></td>
+      <td class="tx-monto ${r.monto >= 0 ? 'pos' : 'neg'}">${fmtEur(r.monto)}</td>
+    </tr>
+  `).join('');
+}
+
+function populateTxFilters() {
+  const cats   = [...new Set(RAW.map(r => r.categoria).filter(Boolean))].sort();
+  const months = [...new Set(RAW.map(r => monthKey(r.fecha)).filter(Boolean))].sort().reverse();
+
+  const catSel = document.getElementById('tx-cat-filter');
+  cats.forEach(c => { const o = new Option(c, c); catSel.add(o); });
+
+  const mSel = document.getElementById('tx-month-filter');
+  months.forEach(m => { const o = new Option(monthLabel(m), m); mSel.add(o); });
+}
+
+// ── Init ───────────────────────────────────────────────────
+async function init() {
+  try {
+    const resp = await fetch(DATA_URL);
+    RAW = await resp.json();
+
+    const updated = RAW.length > 0
+      ? RAW.map(r => r.fecha).sort().reverse()[0]
+      : '—';
+    document.getElementById('last-updated').textContent = `Datos al ${updated} · ${RAW.length} movimientos`;
+
+    populateTxFilters();
+    renderResumen();
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+  } catch (e) {
+    document.getElementById('loading').textContent = 'Error cargando datos. Verifica que finance_data.json existe.';
+  }
+}
+
+init();
+</script>
+</body>
+</html>
