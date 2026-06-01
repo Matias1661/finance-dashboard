@@ -93,10 +93,10 @@ function renderGuille(){
       data: {
         labels,
         datasets: [
-          { type: 'bar',  label:'Depositado',      data: depValues,   backgroundColor:'rgba(13,138,82,0.75)', yAxisID: 'y',  order: 2 },
-          { type: 'bar',  label:'Gastado',          data: gasValues,   backgroundColor:'rgba(201,74,48,0.75)', yAxisID: 'y',  order: 2 },
-          { type: 'line', label:'Saldo acumulado',  data: cumBalance,
-            yAxisID: 'y2', order: 1,
+          { type: 'bar',  label:'Depositado',     data: depValues,  backgroundColor:'rgba(13,138,82,0.75)', yAxisID: 'y', order: 2 },
+          { type: 'bar',  label:'Gastado',         data: gasValues,  backgroundColor:'rgba(201,74,48,0.75)', yAxisID: 'y', order: 2 },
+          { type: 'line', label:'Saldo acumulado', data: cumBalance,
+            yAxisID: 'y', order: 1,
             borderColor: '#2563be',
             backgroundColor: 'transparent',
             fill: false,
@@ -111,15 +111,7 @@ function renderGuille(){
         responsive: true,
         plugins: { legend: { display: true } },
         scales: {
-          y: {
-            beginAtZero: true,
-            position: 'left',
-            grid: { drawOnChartArea: true }
-          },
-          y2: {
-            position: 'right',
-            grid: { drawOnChartArea: false }
-          }
+          y: { beginAtZero: true, grid: { drawOnChartArea: true } }
         }
       }
     });
@@ -278,6 +270,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
