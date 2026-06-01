@@ -1,200 +1,216 @@
-# Finance Dashboard - Project Memory
+# Finance Dashboard — Project Memory
 
-## Purpose
-Central technical memory for the Finance Dashboard project. This document is intended to allow any future AI agent or developer to quickly understand the project state, architecture, decisions, roadmap and pending work.
+## Propósito
+Memoria técnica central del proyecto. Cualquier agente de IA o desarrollador debe poder reconstruir el estado completo del proyecto leyendo solo este documento y los demás archivos en `docs/`.
 
----
-
-## Current State (2026-06-01)
-
-### Repository
-- Repository: Matias1661/finance-dashboard
-- Frontend: Static HTML/CSS/JavaScript (modularized)
-- Charts: Chart.js
-- Data source: finance_data.json
+Última actualización: 2026-06-01
 
 ---
 
-## 🏗️ Current Architecture (NEW - IMPORTANT)
+## Repositorio
 
-The system has been refactored from a monolithic dashboard into a modular frontend architecture:
-
-### 1. State Layer
-- `js/state.js`
-- Centralized global state (`window.FINANCE_STATE`)
-- Holds:
-  - raw transaction data
-  - active period (6m / 12m / all)
-  - active month filter
-  - excluded categories
-
-👉 Single source of truth for application state
+- Repo: `Matias1661/finance-dashboard`
+- GitHub Pages: `https://matias1661.github.io/finance-dashboard/`
+- Rama principal: `main`
+- Frontend: HTML/CSS/JavaScript estático modularizado
+- Librería de gráficos: Chart.js 4.4.1 (CDN)
 
 ---
 
-### 2. Filters Layer
-- `js/filters.js`
+## Pipeline de datos
 
-Responsible for:
-- time filtering (6m / 12m / all)
-- month-specific filtering
-- category exclusion logic
-- filter UI handlers
-- month selector population
+```
+Extracto bancario (banco)
+        ↓
+   Relay (categorización automática)
+        ↓
+   Google Sheets (fileId: 1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI)
+        ↓
+   GitHub Action diario → genera finance_data.json en el repo
+        ↓
+   GitHub Action de verificación:
+     cruza con Google Calendar + Gmail
+     llama Claude API
+     escribe resultado al Sheet + genera verification_data.json
+        ↓
+   Dashboard (index.html consume finance_data.json en runtime)
+```
 
-👉 Pure transformation layer over state
-
----
-
-### 3. Charts Layer
-- `js/charts.js`
-
-Responsible for:
-- KPI rendering (income, expenses, balance)
-- monthly income vs expense chart
-
-👉 Consumes filtered state only
+Una sola cuenta bancaria. Relay extrae: concepto, fecha (DD-MM-AAAA), importe (negativo=gasto, positivo=ingreso), categoría.
 
 ---
 
-### 4. Application Orchestrator
-- `js/app.js`
+## Schema de finance_data.json
 
-Responsible for:
-- application initialization
-- loading finance_data.json
-- injecting state
-- coordinating renders
-- tab switching
+Cada transacción tiene estos campos:
 
-👉 Replaces all inline initialization logic in index.html
+| Campo | Descripción |
+|---|---|
+| fecha | Fecha del movimiento (DD-MM-AAAA) |
+| concepto | Descripción del movimiento |
+| importe | Negativo=gasto, positivo=ingreso |
+| categoria | Categoría asignada por Relay (campo usado en el frontend) |
+| categoria_relay | Categoría original de Relay |
+| verificado_claude | true / false |
+| categoria_sugerida | Sugerencia de reclasificación por Claude |
+| confianza | alta / media / baja |
+| razon_verificacion | Explicación del criterio usado |
+| fecha_verificacion | Fecha en que Claude verificó |
 
----
+Claude solo escribe las últimas 5 columnas. Las primeras 4 las escribe el GitHub Action diario.
 
-### 5. UI Layer
-- `index.html`
-
-Now reduced to:
-- layout structure
-- containers
-- script imports
-
-👉 No business logic should live here
+**IMPORTANTE:** En el frontend (charts.js, filters.js) el campo de importe se llama `monto`, no `importe`. Esto refleja el nombre del campo en el JSON consumido por el dashboard.
 
 ---
 
-## Data Flow (CRITICAL)
+## Categorías
+
+### Reglas duras — Claude no verifica
+
+| Categoría | Criterio |
+|---|---|
+| Guille | PRES.323343588886 / TRANSF. A SU FAVOR / TRANSFER. EN DIV. / movimientos a pareja |
+| Gastos coche | PRES.80194189697 / RECIBO UNICO MYBOX |
+| Departamento | RECIBOS VARIOS |
+| Nomina | Ingresos de nómina |
+| Gastos en conjunto | Movimientos a cuenta conjunta con pareja |
+
+### Reglas semi-duras (keyword) — Claude puede confirmar
+
+| Categoría | Criterio |
+|---|---|
+| Combustible | REPSOL / SHELL / SANSE I |
+| Comer afuera | UBER EATS / SERVIMATIC S.A |
+
+### Categorías abiertas — Claude verifica activamente
+
+| Categoría | Lógica de verificación |
+|---|---|
+| A revisar | Intentar reclasificar con Calendar + Gmail |
+| Otros | Igual |
+| Combustible | Verificar importe anómalo vs viaje en Calendar |
+| Comer afuera vs Salidas | Mismo comercio puede ser ambos; Calendar ayuda (hora, día) |
+| Viajes | Confirmar con Gmail (vuelos, hoteles) |
+| Compras | Confirmar con Gmail (recibos Amazon, etc.) |
+
+### Lista completa de categorías válidas
+
+Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar
+
+### Categorías excluidas del análisis principal
+
+`Guille` e `Inversion` están excluidas de KPIs y gráficos principales. Ver `js/state.js` → `excludedCategories`.
+
+---
+
+## Arquitectura del frontend
+
+### Flujo de datos
 
 ```
 finance_data.json
         ↓
-   app.js (load)
+   app.js (carga y orquesta)
         ↓
- state.js (store)
+   state.js (almacena en window.FINANCE_STATE)
         ↓
-filters.js (transform)
+   filters.js (transforma según periodo y mes activo)
         ↓
-charts.js (render)
+   charts.js (renderiza KPIs, gráficos)
 ```
 
----
+### Módulos
 
-## Existing Features
+**js/state.js**
+- Estado global centralizado en `window.FINANCE_STATE`
+- Contiene: raw (datos brutos), excludedCategories, activePeriod, activeMonth
+- Fuente única de verdad para el estado de la aplicación
 
-- KPI summary cards
-- Monthly income vs expense chart
-- Monthly savings chart
-- Expense category analysis
-- Transaction explorer
-- Time-period filters
-- Month-specific filtering (NEW)
+**js/filters.js**
+- Filtrado por periodo (6m / 12m / todo)
+- Filtrado por mes específico (overrides al periodo)
+- Lógica de exclusión de categorías
+- Función `filteredData()` consumida por charts.js
+- Función `setMonthFilter()` → llama a `renderResumen()` al cambiar el selector de mes
+- Función `populateMonthSelector()` → puebla el select con meses disponibles
 
----
+**js/charts.js**
+- `renderKPIs()` — tarjetas de ingresos, gastos, balance
+- `renderMonthly()` — gráfico de barras ingresos vs gastos por mes
+- `renderDonut()` — donut de gastos por categoría (responsive al filtro de mes)
+- Todos consumen `filteredData()`
 
-## Data Model
+**js/app.js**
+- Carga `finance_data.json`
+- Inyecta datos en `window.FINANCE_STATE`
+- `renderResumen()` → llama a renderKPIs + renderMonthly + renderDonut
+- `switchTab()` — control de pestañas
 
-Transactions contain:
-- fecha
-- concepto
-- monto
-- categoria
-
----
-
-## Special Categories
-
-Excluded from core analytics:
-- Guille
-- Inversion
-
----
-
-## Key Design Decisions
-
-### 1. Centralized State
-All application state lives in `window.FINANCE_STATE`.
-
-### 2. Unidirectional Flow
-State → Filters → Charts → UI
-
-### 3. UI is Stateless
-UI only reflects computed state.
-
-### 4. Month filter overrides period filter
-If a month is selected, it takes priority over 6m/12m/all.
+**index.html**
+- Solo estructura, contenedores e imports de scripts
+- Contiene `renderResumen()` inline que sobreescribe a la de app.js (ambas deben mantenerse sincronizadas)
+- Sin lógica de negocio
 
 ---
 
-## Strengths
-- Modular architecture implemented
-- Clear separation of concerns
-- Easy to extend with new analytics layers
-- Compatible with future AI-driven features
+## Design system
+
+- Fondo: `#f8f8f6`
+- Superficie: `#ffffff`
+- Max-width: 1100px
+- Fuentes: DM Sans (texto) + DM Mono (valores numéricos) — Google Fonts
+- Verde: `#0d8a52`
+- Rojo: `#c94a30`
+- Ámbar: `#9a6200`
+- Azul: `#2563be`
+- Tooltips: fondo blanco, borde `rgba(0,0,0,0.12)`
+- Border: `rgba(0,0,0,0.08)`
+- Shadow: `0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04)`
+- Border radius: 12px
 
 ---
 
-## Improvement Candidates
+## Patrones de trabajo
 
-### Priority 1
-1. Real savings KPI including investments
-2. Shared-expense dashboard (Guille)
-3. Automatic financial insights
-
-### Priority 2
-4. Housing dashboard
-5. Mobility dashboard
-6. Subscription tracking
-7. Expense anomaly detection
-
-### Priority 3
-8. Net worth tracking
-9. Forecasting
-10. Unified personal + business view
+- Dashboards 100% dinámicos — HTML consume JSON en runtime, sin datos embebidos
+- Ediciones quirúrgicas (str_replace) sobre reescritura estructural
+- Ante cualquier duda, preguntar antes de asumir
+- Idioma de trabajo: español
+- Actualizar docs/ al cierre de cualquier cambio significativo
+- Excel: siempre con fórmulas
 
 ---
 
-## Current System Status
+## Estado actual del sistema
 
-The project is now a:
+> Frontend modular de analítica financiera (pre-capa de inteligencia)
 
-> Modular financial analytics frontend (pre-intelligence layer)
-
----
-
-## Next Evolution Phase
-
-The architecture is ready for:
-
-- AI-generated insights layer
-- month-over-month comparison engine
-- anomaly detection system
-- financial assistant behavior layer
+Funcionalidades activas:
+- KPIs (ingresos, gastos, balance)
+- Gráfico mensual ingresos vs gastos
+- Donut de gastos por categoría (responde al filtro de mes)
+- Explorador de transacciones
+- Filtros por periodo (6m / 12m / todo)
+- Filtro por mes específico
 
 ---
 
-## Working Rule
+## Próxima fase de evolución
 
-Before implementing significant changes:
-- update this document
-- preserve modular architecture
-- never reintroduce monolithic logic in index.html
+La arquitectura está preparada para:
+- Capa de insights automáticos vía Claude API
+- Motor de comparación mes a mes
+- Sistema de detección de anomalías
+- Capa de verificación de transacciones (verification_data.json ya existe en el pipeline)
+
+---
+
+## Regla de trabajo obligatoria
+
+Antes de implementar cambios significativos:
+1. Revisar todos los docs/
+2. Registrar decisiones en docs/DECISIONS.md
+3. Implementar el cambio
+4. Actualizar docs/CHANGELOG.md
+5. Actualizar docs/ROADMAP.md si aplica
+6. Actualizar este documento si el contexto general cambia
