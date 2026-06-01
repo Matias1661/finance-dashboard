@@ -129,7 +129,7 @@ finance_data.json
         ↓
    filters.js (transforma según periodo y mes activo)
         ↓
-   charts.js (renderiza KPIs, gráficos)
+   charts.js (renderiza KPIs, gráficos de Resumen)
 ```
 
 ### Módulos
@@ -145,7 +145,7 @@ finance_data.json
 - Lógica de exclusión de categorías
 - `filteredData()` consumida por charts.js
 - `setMonthFilter()` → llama a `renderResumen()` al cambiar el selector de mes
-- `populateMonthSelector()` → puebla el select con meses disponibles
+- `populateMonthSelector()` → puebla el select de Resumen con meses disponibles
 
 **js/charts.js**
 - `renderKPIs()` — tarjetas de ingresos, gastos, balance
@@ -154,30 +154,58 @@ finance_data.json
 - Todos consumen `filteredData()`
 
 **js/app.js**
-- Carga `finance_data.json`
-- Inyecta datos en `window.FINANCE_STATE`
+- Carga `finance_data.json` e inyecta en `window.FINANCE_STATE`
 - `init()` — punto de entrada, llamado en DOMContentLoaded
-- `renderResumen()` → llama a renderKPIs + renderMonthly + renderDonut
-- `switchTab(tab, el)` — control de pestañas; llama renderTransacciones() o renderGuille() según tab activo
-- `renderTransacciones()` — tabla de transacciones filtrable por mes (excluye Guille e Inversion)
-- `renderGuille()` — KPIs + barras + línea acumulada + tabla para movimientos Guille
-- `populateTxMonthSelector()` y `populateGuilleMonthSelector()` — pueblan los selectores de mes de cada tab
+- `renderResumen()` → llama renderKPIs + renderMonthly + renderDonut
+- `renderCategorias()` — barras horizontales de gasto por categoría, filtrable por mes; excluye Guille e Inversion
+- `renderTransacciones()` — tabla filtrable por mes; excluye Guille e Inversion
+- `renderGuille()` — KPIs + chart mixto (barras dep/gas + línea saldo acumulado, eje Y dual) + tabla filtrable
+- `switchTab(tab, el)` — control de pestañas; llama la función de render correspondiente
+- `populateMonthSelector()` — selector de Resumen
+- `populateTxMonthSelector()` — selector de Transacciones
+- `populateCatMonthSelector()` — selector de Categorías
+- `populateGuilleMonthSelector()` — selector de Guille
 
 **index.html**
 - Solo estructura HTML, contenedores y `<link>`/`<script>` imports
 - Sin lógica de negocio ni funciones inline
-- Tabs: Resumen, Categorías, Transacciones, Guille
 
 ---
 
-## Tabs activos
+## Tabs
 
-| Tab | ID panel | Función de render |
-|---|---|---|
-| Resumen | tab-resumen | renderResumen() |
-| Categorías | tab-categorias | (pendiente de implementar) |
-| Transacciones | tab-transacciones | renderTransacciones() |
-| Guille | tab-guille | renderGuille() |
+| Tab | ID panel | Función de render | Estado |
+|---|---|---|---|
+| Resumen | tab-resumen | renderResumen() | Activo |
+| Categorías | tab-categorias | renderCategorias() | Activo |
+| Transacciones | tab-transacciones | renderTransacciones() | Activo |
+| Guille | tab-guille | renderGuille() | Activo |
+
+---
+
+## Contenido por tab
+
+### Resumen
+- KPIs: ingresos, gastos, balance
+- Selector de periodo: 6m / 12m / Todo
+- Selector de mes
+- Gráfico de barras: ingresos vs gastos mensual
+- Donut: gastos por categoría
+
+### Categorías
+- Selector de mes (propio, independiente del de Resumen)
+- Gráfico de barras horizontales ordenado de mayor a menor gasto
+- Color distinto por categoría
+- Tooltip con importe en EUR
+
+### Transacciones
+- Selector de mes
+- Tabla: fecha, concepto, categoría, importe
+
+### Guille
+- KPIs: total depositado, total gastado, saldo actual
+- Chart mixto: barras (depositado/gastado por mes) + línea (saldo acumulado), eje Y dual
+- Selector de mes + tabla de movimientos
 
 ---
 
@@ -201,7 +229,7 @@ finance_data.json
 ## Patrones de trabajo
 
 - Dashboards 100% dinámicos — HTML consume JSON en runtime, sin datos embebidos
-- Ediciones quirúrgicas (str_replace) sobre reescritura estructural
+- Ediciones quirúrgicas sobre reescritura estructural
 - Ante cualquier duda, preguntar antes de asumir
 - Idioma de trabajo: español
 - Actualizar docs/ al cierre de cualquier cambio significativo
@@ -211,29 +239,13 @@ finance_data.json
 
 ## Estado actual del sistema
 
-> Frontend modular de analítica financiera (pre-capa de inteligencia)
+Todos los tabs están operativos. El dashboard cubre análisis de gastos personales, exploración de transacciones y seguimiento de movimientos Guille.
 
-Funcionalidades activas:
-- KPIs (ingresos, gastos, balance)
-- Gráfico mensual ingresos vs gastos
-- Donut de gastos por categoría (responde al filtro de mes)
-- Explorador de transacciones con filtro por mes
-- Filtros por periodo (6m / 12m / todo)
-- Filtro por mes específico
-- Tab Guille: KPIs, barras mensuales, línea acumulada, tabla filtrable
-
-Tab Categorías: estructura presente, contenido pendiente de implementar.
-
----
-
-## Próxima fase de evolución
-
-La arquitectura está preparada para:
+Próxima fase posible:
 - Capa de insights automáticos vía Claude API
 - Motor de comparación mes a mes
-- Sistema de detección de anomalías
-- Capa de verificación de transacciones (verification_data.json ya existe en el pipeline)
-- Contenido del tab Categorías (análisis detallado por categoría)
+- Detección de anomalías
+- Capa de verificación (verification_data.json ya existe en el pipeline)
 
 ---
 
