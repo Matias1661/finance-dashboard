@@ -1,17 +1,24 @@
 # Roadmap
 
-## High Priority
-- [ ] Real savings KPI including investments
-- [ ] Shared expenses dashboard (Guille)
-- [ ] Automatic financial insights
+## Completado
+- [x] KPIs (ingresos, gastos, balance)
+- [x] Gráfico mensual ingresos vs gastos
+- [x] Donut de gastos por categoría
+- [x] Explorador de transacciones con filtro por mes
+- [x] Tab Guille: KPIs, chart mixto barras+línea, tabla
+- [x] Tab Categorías: barras horizontales con selector de mes
 
-## Medium Priority
-- [ ] Housing dashboard
-- [ ] Mobility dashboard
-- [ ] Subscription tracker
-- [ ] Expense anomaly detection
+## Alta prioridad
+- [ ] KPI de ahorro real incluyendo inversiones
+- [ ] Insights automáticos (comparación vs mes anterior, alertas de gasto)
 
-## Future
-- [ ] Net worth tracking
-- [ ] Forecasting
-- [ ] Personal + Business consolidated view
+## Prioridad media
+- [ ] Dashboard de vivienda
+- [ ] Dashboard de movilidad
+- [ ] Seguimiento de suscripciones
+- [ ] Detección de anomalías
+
+## Futuro
+- [ ] Seguimiento de patrimonio neto
+- [ ] Forecast financiero
+- [ ] Vista consolidada personal + negocio
