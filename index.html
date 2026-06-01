@@ -110,10 +110,7 @@
 
 <div id="tab-transacciones" class="tab-panel">
   <div class="filter-row">
-    <span class="filter-label">Categoría</span>
-    <select id="tx-cat-filter" onchange="renderTransacciones()">
-      <option value="">Todas</option>
-    </select>
+    <span class="filter-label">Mes</span>
     <select id="tx-month-filter" onchange="renderTransacciones()">
       <option value="">Todos los meses</option>
     </select>
@@ -126,7 +123,7 @@
           <th>Fecha</th>
           <th>Concepto</th>
           <th>Categoría</th>
-          <th style="text-align:right">Monto</th>
+          <th style="text-align:right">Importe</th>
         </tr>
       </thead>
       <tbody id="tx-body"></tbody>
