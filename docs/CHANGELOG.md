@@ -5,3 +5,6 @@
 - Added PROJECT_MEMORY.md.
 - Performed architecture review.
 - Performed finance_data.json review.
+- fix: added renderDonut() to charts.js — aggregates expenses by category using filteredData().
+- fix: renderResumen() in index.html and app.js now calls renderDonut(), so the category donut chart updates when the month selector changes.
+
