@@ -75,8 +75,8 @@ function renderMonthly(){
     data: {
       labels,
       datasets: [
-        { label:'Ingresos', data: income },
-        { label:'Gastos', data: expense }
+        { label:'Ingresos', data: income, backgroundColor: 'rgba(13,138,82,0.75)' },
+        { label:'Gastos', data: expense, backgroundColor: 'rgba(201,74,48,0.75)' }
       ]
     },
     options: {
