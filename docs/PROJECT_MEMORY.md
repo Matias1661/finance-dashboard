@@ -3,7 +3,7 @@
 ## Propósito
 Memoria técnica central del proyecto. Cualquier agente de IA o desarrollador debe poder reconstruir el estado completo del proyecto leyendo solo este documento y los demás archivos en `docs/`.
 
-Última actualización: 2026-06-01
+Última actualización: 2026-06-02
 
 ---
 
@@ -105,6 +105,19 @@ Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, 
 
 ## Arquitectura del frontend
 
+### Regla crítica de carga de scripts
+
+index.html debe cargar los scripts en este orden exacto:
+
+```html
+<script src="js/state.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
+```
+
+No debe haber bloques `<script>` inline con lógica de negocio. Todo debe vivir en los módulos JS.
+
 ### Flujo de datos
 
 ```
@@ -130,26 +143,41 @@ finance_data.json
 - Filtrado por periodo (6m / 12m / todo)
 - Filtrado por mes específico (overrides al periodo)
 - Lógica de exclusión de categorías
-- Función `filteredData()` consumida por charts.js
-- Función `setMonthFilter()` → llama a `renderResumen()` al cambiar el selector de mes
-- Función `populateMonthSelector()` → puebla el select con meses disponibles
+- `filteredData()` consumida por charts.js
+- `setMonthFilter()` → llama a `renderResumen()` al cambiar el selector de mes
+- `populateMonthSelector()` → puebla el select con meses disponibles
 
 **js/charts.js**
 - `renderKPIs()` — tarjetas de ingresos, gastos, balance
 - `renderMonthly()` — gráfico de barras ingresos vs gastos por mes
-- `renderDonut()` — donut de gastos por categoría (responsive al filtro de mes)
+- `renderDonut()` — donut de gastos por categoría (responde al filtro de mes)
 - Todos consumen `filteredData()`
 
 **js/app.js**
 - Carga `finance_data.json`
 - Inyecta datos en `window.FINANCE_STATE`
+- `init()` — punto de entrada, llamado en DOMContentLoaded
 - `renderResumen()` → llama a renderKPIs + renderMonthly + renderDonut
-- `switchTab()` — control de pestañas
+- `switchTab(tab, el)` — control de pestañas; llama renderTransacciones() o renderGuille() según tab activo
+- `renderTransacciones()` — tabla de transacciones filtrable por mes (excluye Guille e Inversion)
+- `renderGuille()` — KPIs + barras + línea acumulada + tabla para movimientos Guille
+- `populateTxMonthSelector()` y `populateGuilleMonthSelector()` — pueblan los selectores de mes de cada tab
 
 **index.html**
-- Solo estructura, contenedores e imports de scripts
-- Contiene `renderResumen()` inline que sobreescribe a la de app.js (ambas deben mantenerse sincronizadas)
-- Sin lógica de negocio
+- Solo estructura HTML, contenedores y `<link>`/`<script>` imports
+- Sin lógica de negocio ni funciones inline
+- Tabs: Resumen, Categorías, Transacciones, Guille
+
+---
+
+## Tabs activos
+
+| Tab | ID panel | Función de render |
+|---|---|---|
+| Resumen | tab-resumen | renderResumen() |
+| Categorías | tab-categorias | (pendiente de implementar) |
+| Transacciones | tab-transacciones | renderTransacciones() |
+| Guille | tab-guille | renderGuille() |
 
 ---
 
@@ -189,9 +217,12 @@ Funcionalidades activas:
 - KPIs (ingresos, gastos, balance)
 - Gráfico mensual ingresos vs gastos
 - Donut de gastos por categoría (responde al filtro de mes)
-- Explorador de transacciones
+- Explorador de transacciones con filtro por mes
 - Filtros por periodo (6m / 12m / todo)
 - Filtro por mes específico
+- Tab Guille: KPIs, barras mensuales, línea acumulada, tabla filtrable
+
+Tab Categorías: estructura presente, contenido pendiente de implementar.
 
 ---
 
@@ -202,6 +233,7 @@ La arquitectura está preparada para:
 - Motor de comparación mes a mes
 - Sistema de detección de anomalías
 - Capa de verificación de transacciones (verification_data.json ya existe en el pipeline)
+- Contenido del tab Categorías (análisis detallado por categoría)
 
 ---
 
