@@ -154,14 +154,14 @@ function renderGuille(){
   }
 }
 
-function switchTab(tab){
+function switchTab(tab, el){
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
 
   const panel = document.getElementById('tab-' + tab);
   if(panel) panel.classList.add('active');
 
-  if(event?.target) event.target.classList.add('active');
+  if(el) el.classList.add('active');
 
   if(tab === 'transacciones') renderTransacciones();
   if(tab === 'guille') renderGuille();
