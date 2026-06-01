@@ -10,6 +10,19 @@ function getData(){
   return (window.FINANCE_STATE?.raw || []);
 }
 
+// Datos fijos para renderMonthly: siempre últimos 12 meses del RAW, sin filtros
+function getLast12MonthsData(){
+  const raw = window.FINANCE_STATE?.raw || [];
+  const excluded = window.FINANCE_STATE?.excludedCategories || [];
+  const data = raw.filter(r => !excluded.includes(r.categoria));
+
+  const cutoff = new Date();
+  cutoff.setMonth(cutoff.getMonth() - 12);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+
+  return data.filter(r => r.fecha >= cutoffStr);
+}
+
 function renderKPIs(){
   const data = getData();
 
@@ -35,7 +48,7 @@ function renderKPIs(){
 }
 
 function renderMonthly(){
-  const data = getData();
+  const data = getLast12MonthsData();
 
   const map = {};
 
@@ -76,7 +89,6 @@ function renderMonthly(){
 function renderDonut(){
   const data = getData();
 
-  // Solo gastos (negativos), excluir Guille e Inversion ya filtrados por filteredData()
   const map = {};
   data.forEach(r => {
     const v = Number(r.monto);
@@ -119,4 +131,3 @@ function renderDonut(){
     }
   });
 }
-
