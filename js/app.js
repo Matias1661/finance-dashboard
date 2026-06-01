@@ -79,54 +79,51 @@ function renderGuille(){
   const depValues = labels.map(k => monthMap[k].dep);
   const gasValues = labels.map(k => monthMap[k].gas);
 
-  const ctxBars = document.getElementById('chart-guille-bars');
-  if(ctxBars){
-    if(window.guilleBarsChart) window.guilleBarsChart.destroy();
-    window.guilleBarsChart = new Chart(ctxBars, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [
-          { label:'Depositado', data: depValues, backgroundColor:'rgba(13,138,82,0.75)' },
-          { label:'Gastado',    data: gasValues, backgroundColor:'rgba(201,74,48,0.75)' }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: true } },
-        scales: { y: { beginAtZero: true } }
-      }
-    });
-  }
-
-  // --- Gráfico línea: saldo acumulado mes a mes ---
   let running = 0;
   const cumBalance = labels.map(k => {
     running += monthMap[k].dep - monthMap[k].gas;
     return running;
   });
 
-  const ctxLine = document.getElementById('chart-guille-line');
-  if(ctxLine){
-    if(window.guilleLineChart) window.guilleLineChart.destroy();
-    window.guilleLineChart = new Chart(ctxLine, {
-      type: 'line',
+  const ctxGuille = document.getElementById('chart-guille-bars');
+  if(ctxGuille){
+    if(window.guilleChart) window.guilleChart.destroy();
+    window.guilleChart = new Chart(ctxGuille, {
+      type: 'bar',
       data: {
         labels,
-        datasets: [{
-          label: 'Saldo acumulado',
-          data: cumBalance,
-          borderColor: '#2563be',
-          backgroundColor: 'rgba(37,99,190,0.08)',
-          fill: true,
-          tension: 0.3,
-          pointRadius: 3
-        }]
+        datasets: [
+          { label:'Depositado', data: depValues, backgroundColor:'rgba(13,138,82,0.75)', yAxisID: 'y' },
+          { label:'Gastado',    data: gasValues, backgroundColor:'rgba(201,74,48,0.75)', yAxisID: 'y' },
+          {
+            label: 'Saldo acumulado',
+            data: cumBalance,
+            type: 'line',
+            yAxisID: 'y2',
+            borderColor: '#2563be',
+            backgroundColor: 'rgba(37,99,190,0.08)',
+            fill: false,
+            tension: 0.3,
+            pointRadius: 3,
+            borderWidth: 2
+          }
+        ]
       },
       options: {
         responsive: true,
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: false } }
+        plugins: { legend: { display: true } },
+        scales: {
+          y: {
+            beginAtZero: true,
+            position: 'left',
+            grid: { drawOnChartArea: true }
+          },
+          y2: {
+            beginAtZero: false,
+            position: 'right',
+            grid: { drawOnChartArea: false }
+          }
+        }
       }
     });
   }
@@ -203,3 +200,4 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
