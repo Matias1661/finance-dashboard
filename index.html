@@ -71,7 +71,6 @@
   <button class="tab" onclick="switchTab('transacciones')">Transacciones</button>
 </div>
 
-<!-- TAB RESUMEN -->
 <div id="tab-resumen" class="tab-panel active">
 
 <div class="kpis" id="kpis"></div>
@@ -82,7 +81,6 @@
   <button class="pill" onclick="setPeriod(24,this)">Todo</button>
 </div>
 
-<!-- NUEVO SELECTOR DE MES -->
 <div class="filter-row">
   <span class="filter-label">Mes</span>
   <select id="month-selector" onchange="setMonthFilter(this.value)">
@@ -114,12 +112,10 @@
 
 </div>
 
-<!-- CATEGORIAS -->
 <div id="tab-categorias" class="tab-panel">
   <div class="card-title">Categorías</div>
 </div>
 
-<!-- TRANSACCIONES -->
 <div id="tab-transacciones" class="tab-panel">
   <div class="filter-row">
     <span class="filter-label">Categoría</span>
@@ -149,15 +145,14 @@
 </main>
 </div>
 
-<!-- MODULE -->
+<script src="js/state.js"></script>
 <script src="js/filters.js"></script>
 
 <script>
 const DATA_URL = 'finance_data.json';
-const EXCLUIDAS = ['Guille','Inversion'];
 
-let RAW = [];
 let charts = {};
+let RAW = [];
 
 function renderResumen(){
   renderKPIs();
@@ -167,6 +162,9 @@ function renderResumen(){
 async function init(){
   const res = await fetch(DATA_URL);
   RAW = await res.json();
+
+  // inject into global state
+  window.FINANCE_STATE.raw = RAW;
 
   if(typeof populateMonthSelector === 'function'){
     populateMonthSelector(RAW);
