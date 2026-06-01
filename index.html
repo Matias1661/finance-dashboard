@@ -157,6 +157,7 @@ let RAW = [];
 function renderResumen(){
   renderKPIs();
   renderMonthly();
+  if(typeof renderDonut === 'function') renderDonut();
 }
 
 async function init(){
