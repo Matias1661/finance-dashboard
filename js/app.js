@@ -147,6 +147,75 @@ function renderGuille(){
   }
 }
 
+function renderCategorias(){
+  const month = document.getElementById('cat-month-filter')?.value || '';
+  const excluded = window.FINANCE_STATE?.excludedCategories || [];
+  let data = (window.FINANCE_STATE?.raw || []).filter(r => !excluded.includes(r.categoria));
+
+  if(month) data = data.filter(r => r.fecha.slice(0,7) === month);
+
+  // Only expenses
+  const map = {};
+  data.forEach(r => {
+    const v = Number(r.monto);
+    if(v >= 0) return;
+    const cat = r.categoria || 'Sin categoría';
+    map[cat] = (map[cat] || 0) + Math.abs(v);
+  });
+
+  const sorted = Object.entries(map).sort((a,b) => b[1] - a[1]);
+  const labels = sorted.map(e => e[0]);
+  const values = sorted.map(e => e[1]);
+
+  const colors = [
+    'rgba(37,99,190,0.75)','rgba(13,138,82,0.75)','rgba(201,74,48,0.75)',
+    'rgba(154,98,0,0.75)','rgba(107,107,99,0.75)','rgba(79,70,229,0.75)',
+    'rgba(6,148,162,0.75)','rgba(180,83,9,0.75)','rgba(5,122,85,0.75)',
+    'rgba(157,23,77,0.75)','rgba(17,94,89,0.75)','rgba(67,56,202,0.75)',
+    'rgba(146,64,14,0.75)','rgba(3,105,161,0.75)','rgba(88,28,135,0.75)',
+    'rgba(21,128,61,0.75)','rgba(185,28,28,0.75)','rgba(30,64,175,0.75)'
+  ];
+
+  const ctx = document.getElementById('chart-categorias');
+  if(!ctx) return;
+
+  if(window.categoriasChart) window.categoriasChart.destroy();
+
+  window.categoriasChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: labels.map((_,i) => colors[i % colors.length]),
+        borderWidth: 0,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ' ' + new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(ctx.parsed.x)
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          ticks: {
+            callback: v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v)
+          }
+        },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+}
+
 function switchTab(tab, el){
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -156,6 +225,7 @@ function switchTab(tab, el){
 
   if(el) el.classList.add('active');
 
+  if(tab === 'categorias') renderCategorias();
   if(tab === 'transacciones') renderTransacciones();
   if(tab === 'guille') renderGuille();
 }
@@ -164,6 +234,16 @@ function populateTxMonthSelector(){
   const sel = document.getElementById('tx-month-filter');
   if(!sel) return;
   const months = [...new Set(RAW.map(r => r.fecha.slice(0,7)))].sort().reverse();
+  sel.innerHTML = `<option value="">Todos los meses</option>` +
+    months.map(m => `<option value="${m}">${m}</option>`).join('');
+}
+
+function populateCatMonthSelector(){
+  const sel = document.getElementById('cat-month-filter');
+  if(!sel) return;
+  const excluded = window.FINANCE_STATE?.excludedCategories || [];
+  const data = (window.FINANCE_STATE?.raw || []).filter(r => !excluded.includes(r.categoria));
+  const months = [...new Set(data.map(r => r.fecha.slice(0,7)))].sort().reverse();
   sel.innerHTML = `<option value="">Todos los meses</option>` +
     months.map(m => `<option value="${m}">${m}</option>`).join('');
 }
@@ -188,6 +268,7 @@ async function init(){
   if(typeof populateMonthSelector === 'function') populateMonthSelector(RAW);
   populateTxMonthSelector();
   populateGuilleMonthSelector();
+  populateCatMonthSelector();
 
   document.getElementById('app').style.display='block';
   document.getElementById('loading').style.display='none';
@@ -196,4 +277,5 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
