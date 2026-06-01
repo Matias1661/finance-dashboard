@@ -89,6 +89,7 @@ function renderGuille(){
   if(ctxGuille){
     if(window.guilleChart) window.guilleChart.destroy();
     window.guilleChart = new Chart(ctxGuille, {
+      type: 'bar',
       data: {
         labels,
         datasets: [
@@ -225,7 +226,7 @@ function switchTab(tab, el){
 
   if(el) el.classList.add('active');
 
-  if(tab === 'categorias') renderCategorias();
+  if(tab === 'categorias') { populateCatMonthSelector(); renderCategorias(); }
   if(tab === 'transacciones') renderTransacciones();
   if(tab === 'guille') renderGuille();
 }
@@ -277,5 +278,6 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
