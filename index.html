@@ -120,7 +120,21 @@
 </div>
 
 <div id="tab-categorias" class="tab-panel">
-  <div class="card-title">Categorías</div>
+
+  <div class="filter-row">
+    <span class="filter-label">Mes</span>
+    <select id="cat-month-filter" onchange="renderCategorias()">
+      <option value="">Todos los meses</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Gasto por categoría</div>
+    <div class="chart-wrap-tall">
+      <canvas id="chart-categorias"></canvas>
+    </div>
+  </div>
+
 </div>
 
 <div id="tab-transacciones" class="tab-panel">
@@ -189,4 +203,5 @@
 
 </body>
 </html>
+
 
