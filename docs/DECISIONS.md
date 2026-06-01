@@ -1,5 +1,15 @@
 # Decisions Log
 
+## 2026-06-02
+
+### Decision
+Eliminar el bloque <script> inline de index.html y cargar app.js como script externo.
+
+### Reason
+El bloque inline duplicaba init() y no cargaba switchTab(). La función de navegación por tabs debe vivir en app.js junto con el resto de la orquestación. index.html debe ser solo estructura e imports.
+
+---
+
 ## 2026-06-01
 
 ### Decision
@@ -39,4 +49,3 @@ renderResumen() calls renderDonut() on every render cycle.
 
 ### Reason
 Month selector calls renderResumen() on change; all three chart components must update together.
-
