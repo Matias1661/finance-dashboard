@@ -2,6 +2,8 @@
 
 ## 2026-06-02
 - fix: index.html no cargaba js/app.js — switchTab() no estaba definida al hacer click en los tabs desde Safari (o cualquier browser). Eliminado bloque <script> inline duplicado. Ahora index.html carga state.js → filters.js → charts.js → app.js en orden correcto.
+- feat: tab Categorías — selector de mes + gráfico de barras horizontales (indexAxis: y) ordenado de mayor a menor gasto. Excluye Guille e Inversion. Tooltip con importe en EUR.
+- feat: tab Guille — gráfico de barras (Depositado/Gastado) y línea de saldo acumulado fusionados en un único chart mixto con eje Y dual.
 
 ## 2026-06-01
 - Created technical memory system.
