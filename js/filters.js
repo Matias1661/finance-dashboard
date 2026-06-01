@@ -1,7 +1,4 @@
-// Finance Dashboard - Filters Module
-
-let activePeriod = 6;
-let activeMonth = null;
+// Finance Dashboard - Filters Module (Refactored with State)
 
 function monthKey(d) {
   return d.slice(0, 7);
@@ -13,22 +10,29 @@ function cutoffDate(months) {
   return d.toISOString().slice(0, 10);
 }
 
-function filteredData(RAW, EXCLUIDAS) {
-  let data = RAW.filter(r => !EXCLUIDAS.includes(r.categoria));
+function getState() {
+  return window.FINANCE_STATE;
+}
 
-  const cutoff = activePeriod >= 999 ? '2000-01-01' : cutoffDate(activePeriod);
+function filteredData() {
+  const state = getState();
+
+  let data = state.raw.filter(r => !state.excludedCategories.includes(r.categoria));
+
+  const cutoff = state.activePeriod >= 999 ? '2000-01-01' : cutoffDate(state.activePeriod);
   data = data.filter(r => r.fecha >= cutoff);
 
-  if (activeMonth) {
-    data = data.filter(r => monthKey(r.fecha) === activeMonth);
+  if (state.activeMonth) {
+    data = data.filter(r => monthKey(r.fecha) === state.activeMonth);
   }
 
   return data;
 }
 
 function setPeriod(m, el) {
-  activePeriod = m;
-  activeMonth = null;
+  const state = getState();
+  state.activePeriod = m;
+  state.activeMonth = null;
 
   document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
   if (el) el.classList.add('active');
@@ -40,7 +44,9 @@ function setPeriod(m, el) {
 }
 
 function setMonthFilter(m) {
-  activeMonth = m || null;
+  const state = getState();
+  state.activeMonth = m || null;
+
   if (typeof renderResumen === 'function') renderResumen();
 }
 
