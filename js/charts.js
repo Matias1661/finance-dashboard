@@ -72,3 +72,51 @@ function renderMonthly(){
     }
   });
 }
+
+function renderDonut(){
+  const data = getData();
+
+  // Solo gastos (negativos), excluir Guille e Inversion ya filtrados por filteredData()
+  const map = {};
+  data.forEach(r => {
+    const v = Number(r.monto);
+    if(v >= 0) return;
+    const cat = r.categoria || 'Sin categoría';
+    map[cat] = (map[cat] || 0) + Math.abs(v);
+  });
+
+  const labels = Object.keys(map).sort((a,b) => map[b] - map[a]);
+  const values = labels.map(k => map[k]);
+
+  const ctx = document.getElementById('chart-donut');
+  if(!ctx) return;
+
+  if(window.donutChart) window.donutChart.destroy();
+
+  window.donutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'right', labels: { font: { size: 12 } } },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+              const pct = total ? ((ctx.parsed / total) * 100).toFixed(1) : 0;
+              return ` ${formatEUR(ctx.parsed)} (${pct}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
