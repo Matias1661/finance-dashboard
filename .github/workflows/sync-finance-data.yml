@@ -2,8 +2,11 @@ name: Sync Finance Data
 
 on:
   schedule:
-    - cron: '0 7 * * *'   # Cada día a las 7:00 UTC
-  workflow_dispatch:        # Ejecución manual desde GitHub
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   sync:
