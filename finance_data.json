@@ -4,7 +4,7 @@
       "fecha": "2026-06-01",
       "concepto": "T. VISA CLASSIC",
       "monto": -100.0,
-      "categoria": "Tarjeta"
+      "categoria": "A revisar"
     },
     {
       "fecha": "2026-06-01",
@@ -16,7 +16,67 @@
       "fecha": "2026-06-01",
       "concepto": "PRES.32664031137",
       "monto": -193.49,
-      "categoria": "Talho Argentino"
+      "categoria": "A revisar"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "PRES.80194189697",
+      "monto": -246.83,
+      "categoria": "Gastos coche"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "CAIXABANK PAYMENT",
+      "monto": -12.9,
+      "categoria": "A revisar"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "SABADELL CONSUMER",
+      "monto": -218.12,
+      "categoria": "A revisar"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "A revisar"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "Gastos conjuntos",
+      "monto": -100.0,
+      "categoria": "A revisar"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "RECIBO UNICO MYBOX",
+      "monto": -114.38,
+      "categoria": "Gastos coche"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50.0,
+      "categoria": "Guille"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "T. VISA CLASSIC",
+      "monto": -100.0,
+      "categoria": "Tarjeta"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "PRES.32334358886",
+      "monto": -277.96,
+      "categoria": "A revisar"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "PRES.32664031137",
+      "monto": -193.49,
+      "categoria": "A revisar"
     },
     {
       "fecha": "2026-06-01",
@@ -34,13 +94,13 @@
       "fecha": "2026-06-01",
       "concepto": "SABADELL CONSUMER",
       "monto": -218.12,
-      "categoria": "Gastos coche"
+      "categoria": "A revisar"
     },
     {
       "fecha": "2026-06-01",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 50.0,
-      "categoria": "Guille"
+      "categoria": "A revisar"
     },
     {
       "fecha": "2026-06-01",
@@ -3406,7 +3466,7 @@
       "fecha": "2026-01-15",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 50.0,
-      "categoria": "Guille"
+      "categoria": "Inversion"
     },
     {
       "fecha": "2026-01-15",
@@ -14200,7 +14260,7 @@
       "fecha": "2024-12-02",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 50.0,
-      "categoria": "Guille"
+      "categoria": "Nomina"
     },
     {
       "fecha": "2024-12-02",
