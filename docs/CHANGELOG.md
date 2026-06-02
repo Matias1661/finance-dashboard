@@ -1,3 +1,15 @@
+## 2026-06-02 — Click-to-filter en gráfico de categorías
+
+### feat
+- Tab Categorías: click en una barra filtra la tabla de transacciones inferior a esa categoría
+- Toggle: click en la misma barra (o en área vacía) limpia el filtro
+- Barras no seleccionadas se atenúan (opacidad 0.25) para indicar el filtro activo
+- Header del card de transacciones actualizado dinámicamente: muestra categoría activa, nº de movimientos y botón "Ver todas"
+- Click en fila de la tabla de resumen por categoría también activa el filtro
+- `activeCatBarFilter` se resetea al cambiar de mes o al salir del tab
+
+---
+
 ## 2026-06-02
 
 ### fix
