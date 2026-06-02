@@ -374,7 +374,20 @@ function renderInversiones(){
     return MESES_LARGO[parseInt(m,10)-1] + '-' + y;
   }
 
-  const capital13 = capital.slice(-13);
+  // Rellenar meses sin datos con el ultimo valor conocido de cada plataforma
+  // (ej: MyInvestor actualiza ~dia 10, Peerberry puede no tener entrada ese mes aun)
+  function fillForward(capitalArr) {
+    const filled = [];
+    let lastPB = 0, lastMI = 0;
+    for (const d of capitalArr) {
+      lastPB = d.peerberry  > 0 ? d.peerberry  : lastPB;
+      lastMI = d.myinvestor > 0 ? d.myinvestor : lastMI;
+      filled.push({ mes: d.mes, peerberry: lastPB, myinvestor: lastMI });
+    }
+    return filled;
+  }
+
+  const capital13 = fillForward(capital).slice(-13);
   const capLabels = capital13.map(d => formatMesLabel(d.mes));
   const capPB     = capital13.map(d => d.peerberry);
   const capMI     = capital13.map(d => d.myinvestor);
