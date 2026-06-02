@@ -1,0 +1,54 @@
+name: Update Sheet Cells
+
+# Disparador manual con inputs declarados.
+# Para usar desde Claude o cualquier herramienta externa:
+#   POST /repos/Matias1661/finance-dashboard/actions/workflows/update-sheet-cells.yml/dispatches
+#   body: { "ref": "main", "inputs": { "range": "Movimientos!D13", "value": "Departamento" } }
+#
+# Para actualizaciones múltiples usar el input "batch" con JSON:
+#   { "ref": "main", "inputs": { "batch": "[{\"range\":\"Movimientos!D13\",\"value\":\"Departamento\"}]" } }
+
+on:
+  workflow_dispatch:
+    inputs:
+      range:
+        description: "Rango A1 (ej: Movimientos!D13)"
+        required: false
+        default: ""
+      value:
+        description: "Valor a escribir"
+        required: false
+        default: ""
+      batch:
+        description: "JSON array de actualizaciones [{range, value}, ...]"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install google-auth google-auth-httplib2 google-api-python-client
+
+      - name: Update sheet cells
+        env:
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          SHEET_ID: "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI"
+          SHEET_NAME: "Movimientos"
+          UPDATE_RANGE: ${{ github.event.inputs.range }}
+          UPDATE_VALUE: ${{ github.event.inputs.value }}
+          UPDATE_BATCH: ${{ github.event.inputs.batch }}
+        run: python scripts/update_sheet_cells.py
