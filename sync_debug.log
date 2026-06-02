@@ -1,7 +1,0 @@
-Pestanas disponibles: ['Movimientos', 'Dashboard', 'Movimientos mensuales 2025', 'Datos Sueltos', 'Gastos del mes x categoria', 'Gastos del mes (Otros)', 'Inversiones', 'Movimientos de Guille', 'Movimientos mensuales x categoria', 'Revision Combustible']
-Leyendo Movimientos...
-  2375 filas
-  2374 registros validos
-Leyendo finanzas (inversiones)...
-  AVISO: no se pudo leer hoja finanzas: <HttpError 400 when requesting https://sheets.googleapis.com/v4/spreadsheets/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/values/finanzas%21A%3AZ?alt=json returned "Unable to parse range: finanzas!A:Z". Details: "Unable to parse range: finanzas!A:Z">
-finance_data.json actualizado.
