@@ -45,6 +45,11 @@ def get_service():
     return build("sheets", "v4", credentials=creds)
 
 
+def list_sheet_names(service):
+    meta = service.spreadsheets().get(spreadsheetId=SHEET_ID).execute()
+    return [s["properties"]["title"] for s in meta.get("sheets", [])]
+
+
 def read_range(service, sheet_name, cell_range="A:Z"):
     result = service.spreadsheets().values().get(
         spreadsheetId=SHEET_ID,
@@ -233,6 +238,7 @@ if __name__ == "__main__":
     import traceback
     try:
         service = get_service()
+        print("Pestanas disponibles:", list_sheet_names(service))
 
         print("Leyendo Movimientos...")
         mov_rows = read_range(service, MOVIMIENTOS_SHEET)
