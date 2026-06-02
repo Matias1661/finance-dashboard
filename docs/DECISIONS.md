@@ -1,3 +1,26 @@
+## 2026-06-02 — Gráfico Guille: ventana de 12 meses
+
+**Decisión:** Limitar el gráfico de barras del tab Guille a los últimos 12 meses disponibles en los datos.
+
+**Motivo:** Con más de 12 meses de datos, el gráfico se comprimía demasiado en mobile y resultaba ilegible. 12 meses es el horizonte relevante para el seguimiento mensual.
+
+**Detalle técnico:** El saldo acumulado (línea, eje Y derecho) se calcula sobre todos los meses históricos y luego se recorta al slice de los últimos 12. Así el valor mostrado es correcto (no reinicia a 0) pero el gráfico solo muestra 12 puntos.
+
+---
+
+## 2026-06-02 — Mobile responsive audit
+
+**Decisión:** Aplicar mejoras de responsive al CSS sin cambiar la arquitectura ni los módulos JS.
+
+**Motivo:** En pantallas de 375–390px (iPhone estándar) el dashboard presentaba tabs cortadas, selects desbordando el ancho, tablas con texto apretado y gráficos demasiado altos.
+
+**Cambios clave:**
+- Tabs `width:100%` con `flex:1`: es la solución más sencilla para que funcionen en cualquier ancho sin necesidad de scroll horizontal
+- `select` con `flex:1; min-width:0`: patrón estándar para evitar que un flex child desborde su contenedor
+- Chart heights reducidas en mobile: las alturas desktop (340/320/260px) son excesivas en una pantalla de 390px; se reducen a 260/240/200px
+
+---
+
 # Decisions Log
 
 ## 2026-06-02 (mejora visual Guille)
