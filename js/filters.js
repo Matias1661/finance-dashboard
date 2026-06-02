@@ -19,9 +19,6 @@ function filteredData() {
 
   let data = state.raw.filter(r => !state.excludedCategories.includes(r.categoria));
 
-  const cutoff = state.activePeriod >= 999 ? '2000-01-01' : cutoffDate(state.activePeriod);
-  data = data.filter(r => r.fecha >= cutoff);
-
   if (state.activeMonth) {
     data = data.filter(r => monthKey(r.fecha) === state.activeMonth);
   }
@@ -30,6 +27,7 @@ function filteredData() {
 }
 
 function setPeriod(m, el) {
+  // Kept for compatibility but no longer used in Resumen tab
   const state = getState();
   state.activePeriod = m;
   state.activeMonth = null;
@@ -54,7 +52,7 @@ function populateMonthSelector(RAW) {
   const sel = document.getElementById('month-selector');
   if (!sel || !RAW) return;
 
-  const months = [...new Set(RAW.map(r => monthKey(r.fecha)))].sort();
+  const months = [...new Set(RAW.map(r => monthKey(r.fecha)))].sort().reverse();
 
   sel.innerHTML = `
     <option value="">Todos los meses</option>
