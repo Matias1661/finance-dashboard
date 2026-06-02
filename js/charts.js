@@ -24,7 +24,7 @@ function getLast12MonthsData(){
 }
 
 function renderKPIs(){
-  const data = getData();
+  const data = getLast12MonthsData();
 
   let income = 0;
   let expense = 0;
@@ -50,7 +50,7 @@ function renderKPIs(){
 }
 
 function renderMonthly(){
-  const data = filteredData();
+  const data = getLast12MonthsData();
 
   const map = {};
 
