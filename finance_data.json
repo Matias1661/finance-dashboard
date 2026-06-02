@@ -61,6 +61,66 @@
       "categoria": "Guille"
     },
     {
+      "fecha": "2026-06-01",
+      "concepto": "T. VISA CLASSIC",
+      "monto": -100.0,
+      "categoria": "Tarjeta"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "PRES.32334358886",
+      "monto": -277.96,
+      "categoria": "Guille"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "PRES.32664031137",
+      "monto": -193.49,
+      "categoria": "Talho Argentino"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "PRES.80194189697",
+      "monto": -246.83,
+      "categoria": "Gastos coche"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "CAIXABANK PAYMENT",
+      "monto": -12.9,
+      "categoria": "Tarjeta"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "SABADELL CONSUMER",
+      "monto": -218.12,
+      "categoria": "Gastos coche"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "Gastos conjuntos",
+      "monto": -100.0,
+      "categoria": "Gastos en conjunto"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "RECIBO UNICO MYBOX",
+      "monto": -114.38,
+      "categoria": "Gastos coche"
+    },
+    {
+      "fecha": "2026-06-01",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50.0,
+      "categoria": "Guille"
+    },
+    {
       "fecha": "2026-05-31",
       "concepto": "SANSE I",
       "monto": -53.0,
