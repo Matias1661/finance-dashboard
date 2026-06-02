@@ -43,6 +43,7 @@
     .tab-panel.active{display:block;}
 
     .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+    @media(max-width:640px){ .kpis{grid-template-columns:repeat(2,1fr);} }
 
     .period-pills{display:flex;gap:4px;margin-bottom:10px;}
     .pill{padding:5px 14px;border-radius:20px;border:1px solid var(--border);cursor:pointer;font-size:12px;}
@@ -93,7 +94,7 @@
 <div class="period-pills">
   <button class="pill active" onclick="setPeriod(6,this)">6m</button>
   <button class="pill" onclick="setPeriod(12,this)">12m</button>
-  <button class="pill" onclick="setPeriod(24,this)">Todo</button>
+  <button class="pill" onclick="setPeriod(999,this)">Todo</button>
 </div>
 
 <div class="filter-row">
@@ -136,6 +137,22 @@
   </div>
 
   <div class="card">
+    <div class="card-title">Resumen por categoría</div>
+    <table class="tx-table">
+      <thead>
+        <tr>
+          <th>Categoría</th>
+          <th style="text-align:right">Movimientos</th>
+          <th style="text-align:right">Total</th>
+          <th style="text-align:right">% del gasto</th>
+        </tr>
+      </thead>
+      <tbody id="cat-summary-body"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Transacciones</div>
     <table class="tx-table" id="cat-tx-table">
       <thead>
         <tr>
@@ -156,6 +173,10 @@
     <span class="filter-label">Mes</span>
     <select id="tx-month-filter" onchange="renderTransacciones()">
       <option value="">Todos los meses</option>
+    </select>
+    <span class="filter-label">Categoría</span>
+    <select id="tx-cat-filter" onchange="renderTransacciones()">
+      <option value="">Todas las categorías</option>
     </select>
   </div>
 
@@ -217,6 +238,7 @@
 
 </body>
 </html>
+
 
 
 
