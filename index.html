@@ -201,6 +201,7 @@
   <button class="tab" onclick="switchTab('categorias', this)">Categorías</button>
   <button class="tab" onclick="switchTab('transacciones', this)">Transacciones</button>
   <button class="tab" onclick="switchTab('guille', this)">Guille</button>
+  <button class="tab" onclick="switchTab('inversiones', this)">Inversiones</button>
 </div>
 
 <div id="tab-resumen" class="tab-panel active">
@@ -340,6 +341,27 @@
       </thead>
       <tbody id="guille-tx-body"></tbody>
     </table>
+  </div>
+
+</div>
+
+
+<div id="tab-inversiones" class="tab-panel">
+
+  <div class="kpis" id="inv-kpis"></div>
+
+  <div class="card">
+    <div class="card-title">Capital invertido por plataforma</div>
+    <div class="chart-wrap-tall">
+      <canvas id="chart-inv-capital"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Rendimiento mensual por plataforma</div>
+    <div class="chart-wrap">
+      <canvas id="chart-inv-pct"></canvas>
+    </div>
   </div>
 
 </div>
