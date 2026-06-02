@@ -216,3 +216,30 @@ Patrones CSS establecidos:
 - **Ejes:** Y izquierdo = barras (dep/gas), Y derecho = línea saldo acumulado
 - **Tipo raíz Chart.js:** `type:'bar'` obligatorio
 
+
+---
+
+## Tab Inversiones — especificación actual
+
+**Fuente de datos:** Arrays embebidos en `renderInversiones()` en `js/app.js`. Actualizar manualmente cuando se agreguen nuevos meses.
+
+**KPIs (4):**
+- Capital total = Peerberry + MyInvestor último mes
+- MyInvestor capital (último mes)
+- Peerberry capital (último mes, muestra '—' si es 0)
+- Rendimiento acumulado MyInvestor: producto de (1 + r/100) para todos los meses con % disponible
+
+**Gráfico 1 — Capital apilado:**
+- Tipo: `bar` apilado (`stack: 'capital'`)
+- Datasets: Peerberry (ámbar), MyInvestor (verde)
+- Tooltip muestra total apilado en footer
+- Peerberry = 0 desde diciembre 2025 (plataforma liquidada)
+
+**Gráfico 2 — Rendimiento %:**
+- Tipo: `bar` agrupado
+- MyInvestor negativo → rojo; MyInvestor positivo → verde
+- Peerberry negativo → ámbar tenue; positivo → ámbar sólido
+- Eje Y formateado con signo (+/-)
+
+**Ventana temporal:** jul-25 → jun-26 (12 meses, actualizar con cada nuevo mes)
+
