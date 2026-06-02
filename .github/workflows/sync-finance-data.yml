@@ -29,12 +29,12 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
           SHEET_ID: "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI"
           SHEET_NAME: "Movimientos"
-        run: python scripts/sync_finance_data.py
+        run: python scripts/sync_finance_data.py 2>&1 | tee sync_debug.log
 
       - name: Commit and push if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add finance_data.json
+          git add finance_data.json sync_debug.log
           git diff --cached --quiet || git commit -m "chore: sync finance data [$(date +'%Y-%m-%d')]"
           git push
