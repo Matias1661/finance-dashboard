@@ -47,7 +47,7 @@ function setMonthFilter(m) {
   const state = getState();
   state.activeMonth = m || null;
 
-  if (typeof renderResumen === 'function') renderResumen();
+  if (typeof renderDonut === 'function') renderDonut();
 }
 
 function populateMonthSelector(RAW) {
