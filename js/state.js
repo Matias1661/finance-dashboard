@@ -1,14 +1,13 @@
 // Finance Dashboard - Global State
 
-// Centralized application state
 window.FINANCE_STATE = {
   raw: [],
+  inversiones: { capital: [], rendimiento: [] },
   excludedCategories: ['Guille', 'Inversion'],
   activePeriod: 6,
   activeMonth: null
 };
 
-// Helpers to access state safely
 function getState() {
   return window.FINANCE_STATE;
 }
