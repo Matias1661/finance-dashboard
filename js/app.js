@@ -442,9 +442,10 @@ function renderInversiones(){
   }
 
   // ── Gráfico 2: rendimiento % ──
-  const pctLabels = rendimento.map(d => d.mes.slice(0,7));
-  const pctPB     = rendimento.map(d => d.peerberry);
-  const pctMI     = rendimento.map(d => d.myinvestor);
+  const rend13    = rendimento.slice(-13);
+  const pctLabels = rend13.map(d => formatMesLabel(d.mes));
+  const pctPB     = rend13.map(d => d.peerberry);
+  const pctMI     = rend13.map(d => d.myinvestor);
 
   const ctxPct = document.getElementById('chart-inv-pct');
   if(ctxPct){
