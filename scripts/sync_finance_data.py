@@ -28,7 +28,7 @@ from googleapiclient.discovery import build
 
 SHEET_ID          = os.environ["SHEET_ID"]
 MOVIMIENTOS_SHEET = os.environ.get("SHEET_NAME", "Movimientos")
-FINANZAS_SHEET    = "finanzas"
+FINANZAS_SHEET    = "Inversiones"
 SA_JSON           = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
@@ -44,10 +44,6 @@ def get_service():
     creds = service_account.Credentials.from_service_account_info(SA_JSON, scopes=SCOPES)
     return build("sheets", "v4", credentials=creds)
 
-
-def list_sheet_names(service):
-    meta = service.spreadsheets().get(spreadsheetId=SHEET_ID).execute()
-    return [s["properties"]["title"] for s in meta.get("sheets", [])]
 
 
 def read_range(service, sheet_name, cell_range="A:Z"):
@@ -235,10 +231,8 @@ def build_inversiones(rows):
 
 
 if __name__ == "__main__":
-    import traceback
     try:
         service = get_service()
-        print("Pestanas disponibles:", list_sheet_names(service))
 
         print("Leyendo Movimientos...")
         mov_rows = read_range(service, MOVIMIENTOS_SHEET)
@@ -267,5 +261,5 @@ if __name__ == "__main__":
 
         print("finance_data.json actualizado.")
     except Exception as e:
-        traceback.print_exc()
+        print(f'Error: {e}')
         raise
