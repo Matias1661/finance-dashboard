@@ -325,6 +325,201 @@ function renderCategorias(){
   }
 }
 
+
+function renderInversiones(){
+  // ── Datos embebidos desde la hoja finanzas (última lectura: 01/06/2026) ──
+  // Col D = Peerberry capital, Col E = MyInvestor capital (último registro del mes)
+  // Tabla de rendimiento % desde el sheet
+
+  const capitalData = [
+    { mes: 'jul-25',  pb: 13011, mi: 4926  },
+    { mes: 'ago-25',  pb: 13272, mi: 4444  },
+    { mes: 'sep-25',  pb: 13537, mi: 5487  },
+    { mes: 'oct-25',  pb: 13808, mi: 5513  },
+    { mes: 'nov-25',  pb: 14084, mi: 5449  },
+    { mes: 'dic-25',  pb: 0,     mi: 5495  },
+    { mes: 'ene-26',  pb: 0,     mi: 5520  },
+    { mes: 'feb-26',  pb: 0,     mi: 5064  },
+    { mes: 'mar-26',  pb: 0,     mi: 5105  },
+    { mes: 'abr-26',  pb: 0,     mi: 5138  },
+    { mes: 'may-26',  pb: 0,     mi: 5169  },
+    { mes: 'jun-26',  pb: 0,     mi: 5177  },
+  ];
+
+  const pctData = [
+    { mes: 'ago-25',  pb: -9.80,  mi:  0.76 },
+    { mes: 'sep-25',  pb: 23.49,  mi:  4.45 },
+    { mes: 'oct-25',  pb:  0.47,  mi: -9.65 },
+    { mes: 'nov-25',  pb: -1.16,  mi:  6.42 },
+    { mes: 'dic-25',  pb:  0.84,  mi:  2.32 },
+    { mes: 'ene-26',  pb:  0.46,  mi:-59.49 },
+    { mes: 'feb-26',  pb: -8.27,  mi:  2.52 },
+    { mes: 'mar-26',  pb:  0.81,  mi:  0.08 },
+    { mes: 'abr-26',  pb:  0.64,  mi: 14.99 },
+    { mes: 'may-26',  pb:  0.61,  mi:  0.00 },
+    { mes: 'jun-26',  pb:  0.16,  mi:  0.00 },
+  ];
+
+  const fmt = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
+  const fmtPct = v => (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+
+  // ── KPIs ──
+  const latest = capitalData[capitalData.length - 1];
+  const totalCapital = latest.pb + latest.mi;
+  const miKpi = latest.mi;
+  const pbKpi = latest.pb;
+
+  // Rendimiento acumulado MyInvestor: producto de (1 + r/100)
+  let miAcum = 1;
+  pctData.forEach(r => { miAcum *= (1 + r.mi / 100); });
+  const miRendimiento = ((miAcum - 1) * 100).toFixed(1);
+
+  const kpisEl = document.getElementById('inv-kpis');
+  if(kpisEl){
+    kpisEl.innerHTML = `
+      <div class="card">
+        <div class="card-title">Capital total</div>
+        <div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:var(--blue)">${fmt(totalCapital)}</div>
+      </div>
+      <div class="card">
+        <div class="card-title">MyInvestor</div>
+        <div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:var(--green)">${fmt(miKpi)}</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Peerberry</div>
+        <div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:var(--amber)">${pbKpi > 0 ? fmt(pbKpi) : '—'}</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Rend. acum. MyInvestor</div>
+        <div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:${miAcum >= 1 ? 'var(--green)' : 'var(--red)'}">${miRendimiento}%</div>
+      </div>
+    `;
+  }
+
+  // ── Gráfico 1: capital apilado ──
+  const capLabels = capitalData.map(d => d.mes);
+  const capPB     = capitalData.map(d => d.pb);
+  const capMI     = capitalData.map(d => d.mi);
+
+  const ctxCap = document.getElementById('chart-inv-capital');
+  if(ctxCap){
+    if(window.invCapChart) window.invCapChart.destroy();
+    window.invCapChart = new Chart(ctxCap, {
+      type: 'bar',
+      data: {
+        labels: capLabels,
+        datasets: [
+          {
+            label: 'Peerberry',
+            data: capPB,
+            backgroundColor: 'rgba(154,98,0,0.75)',
+            borderRadius: 3,
+            stack: 'capital'
+          },
+          {
+            label: 'MyInvestor',
+            data: capMI,
+            backgroundColor: 'rgba(13,138,82,0.75)',
+            borderRadius: 3,
+            stack: 'capital'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 }
+          },
+          tooltip: {
+            backgroundColor: '#ffffff',
+            borderColor: 'rgba(0,0,0,0.12)',
+            borderWidth: 1,
+            titleColor: '#1a1a18',
+            bodyColor: '#6b6b63',
+            callbacks: {
+              label: ctx => ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`,
+              footer: items => ` Total: ${fmt(items.reduce((s,i) => s + i.parsed.y, 0))}`
+            }
+          }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            ticks: {
+              font: { size: 11 },
+              callback: v => fmt(v)
+            },
+            grid: { color: 'rgba(0,0,0,0.05)' }
+          }
+        }
+      }
+    });
+  }
+
+  // ── Gráfico 2: rendimiento % ──
+  const pctLabels = pctData.map(d => d.mes);
+  const pctPB     = pctData.map(d => d.pb);
+  const pctMI     = pctData.map(d => d.mi);
+
+  const ctxPct = document.getElementById('chart-inv-pct');
+  if(ctxPct){
+    if(window.invPctChart) window.invPctChart.destroy();
+    window.invPctChart = new Chart(ctxPct, {
+      type: 'bar',
+      data: {
+        labels: pctLabels,
+        datasets: [
+          {
+            label: 'Peerberry %',
+            data: pctPB,
+            backgroundColor: pctPB.map(v => v >= 0 ? 'rgba(154,98,0,0.75)' : 'rgba(154,98,0,0.35)'),
+            borderRadius: 3
+          },
+          {
+            label: 'MyInvestor %',
+            data: pctMI,
+            backgroundColor: pctMI.map(v => v >= 0 ? 'rgba(13,138,82,0.75)' : 'rgba(201,74,48,0.75)'),
+            borderRadius: 3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 }
+          },
+          tooltip: {
+            backgroundColor: '#ffffff',
+            borderColor: 'rgba(0,0,0,0.12)',
+            borderWidth: 1,
+            titleColor: '#1a1a18',
+            bodyColor: '#6b6b63',
+            callbacks: {
+              label: ctx => ` ${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}`
+            }
+          }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+          y: {
+            ticks: {
+              font: { size: 11 },
+              callback: v => fmtPct(v)
+            },
+            grid: { color: 'rgba(0,0,0,0.05)' }
+          }
+        }
+      }
+    });
+  }
+}
+
 function switchTab(tab, el){
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -337,6 +532,7 @@ function switchTab(tab, el){
   if(tab === 'categorias')   { populateCatMonthSelector(); renderCategorias(); }
   if(tab === 'transacciones') renderTransacciones();
   if(tab === 'guille')        renderGuille();
+  if(tab === 'inversiones')   renderInversiones();
 }
 
 function populateTxMonthSelector(){
