@@ -1,6 +1,14 @@
 ## 2026-06-02
 
 ### fix
+- `sync_finance_data.py`: corregido bug en `build_inversiones` donde Peerberry y MyInvestor se sobreescribían mutuamente al estar en filas separadas del mismo mes. Ahora se acumula el último valor no-nulo de cada columna (D=Peerberry, E=MyInvestor) de forma independiente por mes.
+- Corregido nombre de hoja: `finanzas` → `Inversiones`.
+
+---
+
+## 2026-06-02
+
+### fix
 - Corregido nombre de hoja en sync_finance_data.py: `FINANZAS_SHEET = "Inversiones"` → `"finanzas"`. El script intentaba leer una hoja inexistente, causando que inversiones (Peerberry y MyInvestor) no se cargaran en finance_data.json.
 ## [2026-06-02] — Inversiones: datos dinámicos desde el sheet
 
