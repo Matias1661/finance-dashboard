@@ -1,3 +1,19 @@
+## [2026-06-02] — Inversiones: datos dinámicos desde el sheet
+
+### Cambio arquitectónico
+- Los datos de inversión ya **no están hardcodeados** en `renderInversiones()`
+- El workflow diario `sync-finance-data.yml` ahora lee también la hoja `Inversiones` del Finance Tracker
+- `finance_data.json` pasa a tener estructura `{ movimientos: [...], inversiones: { capital: [...], rendimiento: [...] } }`
+- El frontend detecta automáticamente el formato nuevo vs. el legado (array plano)
+- `renderInversiones()` lee de `window.FINANCE_STATE.inversiones`
+
+### Detalles técnicos
+- Hoja `Inversiones`: col A = fecha, D = Peerberry capital, E = MyInvestor capital
+- Script toma el último registro de cada mes (datos semanales)
+- Tabla de rendimiento % detectada por cabecera con "peerberry" + "%"
+- Lectura de hoja `finanzas` con fallback graceful si falla
+- Resultado verificado: 26 meses de capital, 11 meses de rendimiento %
+
 ## [2026-06-02] — Tab Inversiones
 
 ### Nuevas funcionalidades
