@@ -1,3 +1,19 @@
+## 2026-06-02 — Inversiones: migración a datos dinámicos
+
+**Decisión revertida:** Los datos de inversión ya no están embebidos en el JS. Se leen del sheet diariamente.
+
+**Motivo del cambio:** El modelo de datos hardcodeados requería intervención manual con cada nuevo mes. El workflow ya tenía credenciales de servicio con acceso al sheet, por lo que la automatización no tenía costo adicional.
+
+**Detalles de implementación:**
+- El script `sync_finance_data.py` lee la hoja `Inversiones` (nombre exacto de la pestaña en el Google Sheet) además de `Movimientos`
+- `finance_data.json` ahora es un objeto `{ movimientos, inversiones }` en lugar de un array plano
+- El frontend tiene retrocompatibilidad: si detecta un array, asume formato legado
+- La hoja de inversiones tiene datos semanales; el script toma el último registro de cada mes
+
+**Nombre de la pestaña:** `Inversiones` (con mayúscula). El nombre `finanzas` era incorrecto — causó el fallo inicial.
+
+---
+
 ## 2026-06-02 — Tab Inversiones: datos embebidos vs. lectura dinámica del sheet
 
 **Decisión:** Los datos de la hoja `finanzas` se embeben directamente en `renderInversiones()` como arrays JS, en lugar de leerlos dinámicamente desde `finance_data.json`.
