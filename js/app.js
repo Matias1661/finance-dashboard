@@ -327,51 +327,21 @@ function renderCategorias(){
 
 
 function renderInversiones(){
-  // ── Datos embebidos desde la hoja finanzas (última lectura: 01/06/2026) ──
-  // Col D = Peerberry capital, Col E = MyInvestor capital (último registro del mes)
-  // Tabla de rendimiento % desde el sheet
+  const inv   = window.FINANCE_STATE?.inversiones || { capital: [], rendimiento: [] };
+  const capital    = inv.capital    || [];
+  const rendimento = inv.rendimiento || [];
 
-  const capitalData = [
-    { mes: 'jul-25',  pb: 13011, mi: 4926  },
-    { mes: 'ago-25',  pb: 13272, mi: 4444  },
-    { mes: 'sep-25',  pb: 13537, mi: 5487  },
-    { mes: 'oct-25',  pb: 13808, mi: 5513  },
-    { mes: 'nov-25',  pb: 14084, mi: 5449  },
-    { mes: 'dic-25',  pb: 0,     mi: 5495  },
-    { mes: 'ene-26',  pb: 0,     mi: 5520  },
-    { mes: 'feb-26',  pb: 0,     mi: 5064  },
-    { mes: 'mar-26',  pb: 0,     mi: 5105  },
-    { mes: 'abr-26',  pb: 0,     mi: 5138  },
-    { mes: 'may-26',  pb: 0,     mi: 5169  },
-    { mes: 'jun-26',  pb: 0,     mi: 5177  },
-  ];
-
-  const pctData = [
-    { mes: 'ago-25',  pb: -9.80,  mi:  0.76 },
-    { mes: 'sep-25',  pb: 23.49,  mi:  4.45 },
-    { mes: 'oct-25',  pb:  0.47,  mi: -9.65 },
-    { mes: 'nov-25',  pb: -1.16,  mi:  6.42 },
-    { mes: 'dic-25',  pb:  0.84,  mi:  2.32 },
-    { mes: 'ene-26',  pb:  0.46,  mi:-59.49 },
-    { mes: 'feb-26',  pb: -8.27,  mi:  2.52 },
-    { mes: 'mar-26',  pb:  0.81,  mi:  0.08 },
-    { mes: 'abr-26',  pb:  0.64,  mi: 14.99 },
-    { mes: 'may-26',  pb:  0.61,  mi:  0.00 },
-    { mes: 'jun-26',  pb:  0.16,  mi:  0.00 },
-  ];
-
-  const fmt = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
+  const fmt    = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
   const fmtPct = v => (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
 
   // ── KPIs ──
-  const latest = capitalData[capitalData.length - 1];
-  const totalCapital = latest.pb + latest.mi;
-  const miKpi = latest.mi;
-  const pbKpi = latest.pb;
+  const latest      = capital[capital.length - 1] || {};
+  const totalCapital = (latest.peerberry || 0) + (latest.myinvestor || 0);
+  const miKpi        = latest.myinvestor || 0;
+  const pbKpi        = latest.peerberry  || 0;
 
-  // Rendimiento acumulado MyInvestor: producto de (1 + r/100)
   let miAcum = 1;
-  pctData.forEach(r => { miAcum *= (1 + r.mi / 100); });
+  rendimento.forEach(r => { miAcum *= (1 + r.myinvestor / 100); });
   const miRendimiento = ((miAcum - 1) * 100).toFixed(1);
 
   const kpisEl = document.getElementById('inv-kpis');
@@ -397,9 +367,9 @@ function renderInversiones(){
   }
 
   // ── Gráfico 1: capital apilado ──
-  const capLabels = capitalData.map(d => d.mes);
-  const capPB     = capitalData.map(d => d.pb);
-  const capMI     = capitalData.map(d => d.mi);
+  const capLabels = capital.map(d => d.mes.slice(0,7));
+  const capPB     = capital.map(d => d.peerberry);
+  const capMI     = capital.map(d => d.myinvestor);
 
   const ctxCap = document.getElementById('chart-inv-capital');
   if(ctxCap){
@@ -428,16 +398,10 @@ function renderInversiones(){
       options: {
         responsive: true,
         plugins: {
-          legend: {
-            display: true,
-            labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 }
-          },
+          legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 } },
           tooltip: {
-            backgroundColor: '#ffffff',
-            borderColor: 'rgba(0,0,0,0.12)',
-            borderWidth: 1,
-            titleColor: '#1a1a18',
-            bodyColor: '#6b6b63',
+            backgroundColor: '#ffffff', borderColor: 'rgba(0,0,0,0.12)', borderWidth: 1,
+            titleColor: '#1a1a18', bodyColor: '#6b6b63',
             callbacks: {
               label: ctx => ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`,
               footer: items => ` Total: ${fmt(items.reduce((s,i) => s + i.parsed.y, 0))}`
@@ -447,13 +411,9 @@ function renderInversiones(){
         scales: {
           x: { grid: { display: false }, ticks: { font: { size: 11 } } },
           y: {
-            stacked: true,
-            beginAtZero: true,
-            ticks: {
-              font: { size: 11 },
-              callback: v => fmt(v)
-            },
-            grid: { color: 'rgba(0,0,0,0.05)' }
+            stacked: true, beginAtZero: true,
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            ticks: { font: { size: 11 }, callback: v => fmt(v) }
           }
         }
       }
@@ -461,9 +421,9 @@ function renderInversiones(){
   }
 
   // ── Gráfico 2: rendimiento % ──
-  const pctLabels = pctData.map(d => d.mes);
-  const pctPB     = pctData.map(d => d.pb);
-  const pctMI     = pctData.map(d => d.mi);
+  const pctLabels = rendimento.map(d => d.mes.slice(0,7));
+  const pctPB     = rendimento.map(d => d.peerberry);
+  const pctMI     = rendimento.map(d => d.myinvestor);
 
   const ctxPct = document.getElementById('chart-inv-pct');
   if(ctxPct){
@@ -490,29 +450,18 @@ function renderInversiones(){
       options: {
         responsive: true,
         plugins: {
-          legend: {
-            display: true,
-            labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 }
-          },
+          legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 } },
           tooltip: {
-            backgroundColor: '#ffffff',
-            borderColor: 'rgba(0,0,0,0.12)',
-            borderWidth: 1,
-            titleColor: '#1a1a18',
-            bodyColor: '#6b6b63',
-            callbacks: {
-              label: ctx => ` ${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}`
-            }
+            backgroundColor: '#ffffff', borderColor: 'rgba(0,0,0,0.12)', borderWidth: 1,
+            titleColor: '#1a1a18', bodyColor: '#6b6b63',
+            callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}` }
           }
         },
         scales: {
           x: { grid: { display: false }, ticks: { font: { size: 11 } } },
           y: {
-            ticks: {
-              font: { size: 11 },
-              callback: v => fmtPct(v)
-            },
-            grid: { color: 'rgba(0,0,0,0.05)' }
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            ticks: { font: { size: 11 }, callback: v => fmtPct(v) }
           }
         }
       }
@@ -575,6 +524,17 @@ async function init(){
   const res = await fetch(DATA_URL);
   RAW = await res.json();
 
+  // finance_data.json puede ser array plano (legado) o { movimientos, inversiones }
+  const rawData = RAW;
+  if(Array.isArray(rawData)){
+    // formato legado
+    RAW = rawData;
+  } else {
+    RAW = rawData.movimientos || [];
+    if(window.FINANCE_STATE){
+      window.FINANCE_STATE.inversiones = rawData.inversiones || { capital: [], rendimiento: [] };
+    }
+  }
   if(window.FINANCE_STATE){
     window.FINANCE_STATE.raw = RAW;
   }
