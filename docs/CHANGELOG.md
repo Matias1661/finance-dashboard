@@ -1,3 +1,17 @@
+## [2026-06-02] — Tab Inversiones
+
+### Nuevas funcionalidades
+- Nuevo tab **Inversiones** con tres secciones:
+  - **4 KPIs**: Capital total, MyInvestor capital, Peerberry capital, Rendimiento acumulado MyInvestor
+  - **Gráfico de barras apiladas**: evolución mensual del capital por plataforma (Peerberry + MyInvestor), jul-25 → jun-26
+  - **Gráfico de rendimiento %**: barras mensuales de % por plataforma; barras negativas en rojo para MyInvestor, en ámbar tenue para Peerberry
+
+### Fuente de datos
+- Datos embebidos en `renderInversiones()` desde la hoja `finanzas` del Finance Tracker (lectura 01/06/2026)
+- Col D = Peerberry capital (último registro del mes), Col E = MyInvestor capital
+- Peerberry liquidó en diciembre 2025 (capital = 0 desde dic-25)
+- El rendimiento acumulado se calcula como producto de (1 + r/100) sobre todos los meses con datos de %
+
 ## [2026-06-02]
 
 ### Gráfico Guille
