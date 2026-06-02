@@ -4,10 +4,6 @@ const DATA_URL = 'finance_data.json';
 
 let RAW = [];
 
-function formatEUR(v){
-  return new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(v);
-}
-
 function renderResumen(){
   if(typeof renderKPIs === 'function') renderKPIs();
   if(typeof renderMonthly === 'function') renderMonthly();
@@ -16,6 +12,7 @@ function renderResumen(){
 
 function renderTransacciones(){
   const month = document.getElementById('tx-month-filter')?.value || '';
+  const cat   = document.getElementById('tx-cat-filter')?.value || '';
   const tbody = document.getElementById('tx-body');
   if(!tbody) return;
 
@@ -23,6 +20,7 @@ function renderTransacciones(){
   let data = (window.FINANCE_STATE?.raw || []).filter(r => !excluded.includes(r.categoria));
 
   if(month) data = data.filter(r => r.fecha.slice(0,7) === month);
+  if(cat)   data = data.filter(r => r.categoria === cat);
 
   data = data.sort((a,b) => b.fecha.localeCompare(a.fecha));
 
@@ -208,6 +206,22 @@ function renderCategorias(){
     }
   });
 
+  // --- Tabla resumen por categoría ---
+  const summaryEl = document.getElementById('cat-summary-body');
+  if(summaryEl){
+    const total = values.reduce((a,b) => a+b, 0);
+    summaryEl.innerHTML = sorted.map(([cat, amt]) => {
+      const pct = total > 0 ? ((amt/total)*100).toFixed(1) : '0.0';
+      const count = data.filter(r => r.categoria === cat && Number(r.monto) < 0).length;
+      return `<tr>
+        <td>${cat}</td>
+        <td style="text-align:right;font-family:'DM Mono';font-size:13px">${count}</td>
+        <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:var(--red)">${formatEUR(-amt)}</td>
+        <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:var(--text-secondary)">${pct}%</td>
+      </tr>`;
+    }).join('');
+  }
+
   // --- Tabla de transacciones ---
   const expenses = data.filter(r => Number(r.monto) < 0)
     .sort((a,b) => b.fecha.localeCompare(a.fecha));
@@ -252,6 +266,15 @@ function populateTxMonthSelector(){
     months.map(m => `<option value="${m}">${m}</option>`).join('');
 }
 
+function populateTxCatSelector(){
+  const sel = document.getElementById('tx-cat-filter');
+  if(!sel) return;
+  const excluded = window.FINANCE_STATE?.excludedCategories || [];
+  const cats = [...new Set(RAW.filter(r => !excluded.includes(r.categoria)).map(r => r.categoria))].sort();
+  sel.innerHTML = `<option value="">Todas las categorías</option>` +
+    cats.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
 function populateCatMonthSelector(){
   const sel = document.getElementById('cat-month-filter');
   if(!sel) return;
@@ -279,8 +302,16 @@ async function init(){
     window.FINANCE_STATE.raw = RAW;
   }
 
+  // Fill last-updated header
+  const lastEl = document.getElementById('last-updated');
+  if(lastEl && RAW.length > 0){
+    const latest = RAW.map(r => r.fecha).sort().reverse()[0];
+    lastEl.textContent = 'Actualizado: ' + latest;
+  }
+
   if(typeof populateMonthSelector === 'function') populateMonthSelector(RAW);
   populateTxMonthSelector();
+  populateTxCatSelector();
   populateGuilleMonthSelector();
   populateCatMonthSelector();
 
@@ -291,6 +322,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
