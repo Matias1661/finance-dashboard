@@ -241,11 +241,15 @@ if __name__ == "__main__":
         print(f"  {len(movimientos)} registros validos")
 
         print("Leyendo finanzas (inversiones)...")
-        fin_rows = read_range(service, FINANZAS_SHEET)
-        print(f"  {len(fin_rows)} filas")
-        inversiones = build_inversiones(fin_rows)
-        print(f"  {len(inversiones['capital'])} meses de capital")
-        print(f"  {len(inversiones['rendimiento'])} meses de rendimiento")
+        try:
+            fin_rows = read_range(service, FINANZAS_SHEET)
+            print(f"  {len(fin_rows)} filas")
+            inversiones = build_inversiones(fin_rows)
+            print(f"  {len(inversiones['capital'])} meses de capital")
+            print(f"  {len(inversiones['rendimiento'])} meses de rendimiento")
+        except Exception as fin_err:
+            print(f"  AVISO: no se pudo leer hoja finanzas: {fin_err}")
+            inversiones = {"capital": [], "rendimiento": []}
 
         output = {
             "movimientos": movimientos,
