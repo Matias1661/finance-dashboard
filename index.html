@@ -209,21 +209,8 @@
 
 <div class="kpis" id="kpis"></div>
 
-<div class="period-pills">
-  <button class="pill active" onclick="setPeriod(6,this)">6m</button>
-  <button class="pill" onclick="setPeriod(12,this)">12m</button>
-  <button class="pill" onclick="setPeriod(999,this)">Todo</button>
-</div>
-
-<div class="filter-row">
-  <span class="filter-label">Mes</span>
-  <select id="month-selector" onchange="setMonthFilter(this.value)">
-    <option value="">Todos los meses</option>
-  </select>
-</div>
-
 <div class="card">
-  <div class="card-title">Ingresos vs Gastos mensuales</div>
+  <div class="card-title">Ingresos vs Gastos mensuales · últimos 12 meses</div>
   <div class="chart-wrap-tall">
     <canvas id="chart-monthly"></canvas>
   </div>
@@ -231,6 +218,12 @@
 
 <div class="card">
   <div class="card-title">Gastos por categoría</div>
+  <div class="filter-row" style="margin-bottom:14px">
+    <span class="filter-label">Mes</span>
+    <select id="month-selector" onchange="setMonthFilter(this.value)">
+      <option value="">Todos los meses</option>
+    </select>
+  </div>
   <div class="chart-wrap">
     <canvas id="chart-donut"></canvas>
   </div>
@@ -384,4 +377,5 @@
 
 </body>
 </html>
+
 
