@@ -230,27 +230,32 @@ def build_inversiones(rows):
 
 
 if __name__ == "__main__":
-    service = get_service()
+    import traceback
+    try:
+        service = get_service()
 
-    print("Leyendo Movimientos...")
-    mov_rows = read_range(service, MOVIMIENTOS_SHEET)
-    print(f"  {len(mov_rows)} filas")
-    movimientos = build_movimientos(mov_rows)
-    print(f"  {len(movimientos)} registros validos")
+        print("Leyendo Movimientos...")
+        mov_rows = read_range(service, MOVIMIENTOS_SHEET)
+        print(f"  {len(mov_rows)} filas")
+        movimientos = build_movimientos(mov_rows)
+        print(f"  {len(movimientos)} registros validos")
 
-    print("Leyendo finanzas (inversiones)...")
-    fin_rows = read_range(service, FINANZAS_SHEET)
-    print(f"  {len(fin_rows)} filas")
-    inversiones = build_inversiones(fin_rows)
-    print(f"  {len(inversiones['capital'])} meses de capital")
-    print(f"  {len(inversiones['rendimiento'])} meses de rendimiento")
+        print("Leyendo finanzas (inversiones)...")
+        fin_rows = read_range(service, FINANZAS_SHEET)
+        print(f"  {len(fin_rows)} filas")
+        inversiones = build_inversiones(fin_rows)
+        print(f"  {len(inversiones['capital'])} meses de capital")
+        print(f"  {len(inversiones['rendimiento'])} meses de rendimiento")
 
-    output = {
-        "movimientos": movimientos,
-        "inversiones": inversiones
-    }
+        output = {
+            "movimientos": movimientos,
+            "inversiones": inversiones
+        }
 
-    with open("finance_data.json", "w", encoding="utf-8") as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)
+        with open("finance_data.json", "w", encoding="utf-8") as f:
+            json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print("finance_data.json actualizado.")
+        print("finance_data.json actualizado.")
+    except Exception as e:
+        traceback.print_exc()
+        raise
