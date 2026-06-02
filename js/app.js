@@ -101,6 +101,17 @@ function renderGuille(){
   const gasValues = labels.map(k => (monthMap[k]||{gas:0}).gas);
   const cumBalance = labels.map(k => balanceByMonth[k] || 0);
 
+  const fmtEurK = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
+  const tooltipDefaults = {
+    backgroundColor: '#ffffff', borderColor: 'rgba(0,0,0,0.12)', borderWidth: 1,
+    titleColor: '#1a1a18', bodyColor: '#6b6b63'
+  };
+  const xAxisDefaults = {
+    grid: { display: false },
+    ticks: { font: { size: 11 } }
+  };
+
+  // Gráfico 1: barras depositado / gastado
   const ctxGuille = document.getElementById('chart-guille-bars');
   if(ctxGuille){
     if(window.guilleChart) window.guilleChart.destroy();
@@ -110,39 +121,16 @@ function renderGuille(){
         labels,
         datasets: [
           {
-            type: 'bar',
             label: 'Depositado',
             data: depValues,
             backgroundColor: 'rgba(13,138,82,0.75)',
-            borderRadius: 3,
-            yAxisID: 'y',
-            order: 2
+            borderRadius: 3
           },
           {
-            type: 'bar',
             label: 'Gastado',
             data: gasValues,
             backgroundColor: 'rgba(201,74,48,0.75)',
-            borderRadius: 3,
-            yAxisID: 'y',
-            order: 2
-          },
-          {
-            type: 'line',
-            label: 'Saldo acumulado',
-            data: cumBalance,
-            yAxisID: 'y2',
-            order: 1,
-            borderColor: '#2563be',
-            backgroundColor: 'rgba(37,99,190,0.08)',
-            fill: true,
-            tension: 0.4,
-            pointRadius: 3,
-            pointHoverRadius: 5,
-            pointBackgroundColor: '#ffffff',
-            pointBorderColor: '#2563be',
-            pointBorderWidth: 2,
-            borderWidth: 2
+            borderRadius: 3
           }
         ]
       },
@@ -150,47 +138,50 @@ function renderGuille(){
         responsive: true,
         interaction: { mode: 'index', intersect: false },
         plugins: {
-          legend: {
-            display: true,
-            labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 }
-          },
-          tooltip: {
-            backgroundColor: '#ffffff',
-            borderColor: 'rgba(0,0,0,0.12)',
-            borderWidth: 1,
-            titleColor: '#1a1a18',
-            bodyColor: '#6b6b63',
-            callbacks: {
-              label: ctx => {
-                const v = ctx.parsed.y;
-                const fmt = new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(Math.abs(v));
-                return ` ${ctx.dataset.label}: ${fmt}`;
-              }
-            }
-          }
+          legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 } },
+          tooltip: { ...tooltipDefaults, callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtEurK(ctx.parsed.y)}` } }
         },
         scales: {
-          x: {
-            grid: { display: false },
-            ticks: { font: { size: 11 } }
-          },
-          y: {
-            position: 'left',
-            beginAtZero: true,
-            grid: { color: 'rgba(0,0,0,0.05)' },
-            ticks: {
-              font: { size: 11 },
-              callback: v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v)
-            }
-          },
-          y2: {
-            position: 'right',
-            grid: { drawOnChartArea: false },
-            ticks: {
-              font: { size: 11 },
-              callback: v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v)
-            }
-          }
+          x: xAxisDefaults,
+          y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { font: { size: 11 }, callback: fmtEurK } }
+        }
+      }
+    });
+  }
+
+  // Gráfico 2: saldo acumulado
+  const ctxBal = document.getElementById('chart-guille-balance');
+  if(ctxBal){
+    if(window.guilleBalChart) window.guilleBalChart.destroy();
+    window.guilleBalChart = new Chart(ctxBal, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Saldo acumulado',
+          data: cumBalance,
+          borderColor: '#2563be',
+          backgroundColor: 'rgba(37,99,190,0.08)',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          pointBackgroundColor: '#ffffff',
+          pointBorderColor: '#2563be',
+          pointBorderWidth: 2,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 } },
+          tooltip: { ...tooltipDefaults, callbacks: { label: ctx => ` Saldo acumulado: ${fmtEurK(ctx.parsed.y)}` } }
+        },
+        scales: {
+          x: xAxisDefaults,
+          y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { font: { size: 11 }, callback: fmtEurK } }
         }
       }
     });
