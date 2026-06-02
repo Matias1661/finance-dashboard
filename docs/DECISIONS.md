@@ -1,3 +1,21 @@
+## 2026-06-02 — Tab Inversiones: datos embebidos vs. lectura dinámica del sheet
+
+**Decisión:** Los datos de la hoja `finanzas` se embeben directamente en `renderInversiones()` como arrays JS, en lugar de leerlos dinámicamente desde `finance_data.json`.
+
+**Motivo:** La hoja `finanzas` tiene una estructura diferente a la hoja `Movimientos` (registros semanales, no transacciones). El script `sync_finance_data.py` solo exporta `Movimientos`. Agregar una segunda exportación requeriría cambiar el workflow y el schema del JSON. Para el volumen de datos actual (12 puntos mensuales), el embebido es más simple y sin riesgo de regresión.
+
+**Implicación:** Cuando se agreguen nuevos meses a la hoja `finanzas`, hay que actualizar manualmente los arrays en `renderInversiones()`. Considerar automatizar si el volumen crece.
+
+---
+
+## 2026-06-02 — Tab Inversiones: estructura de gráficos
+
+**Decisión:** Dos gráficos separados en lugar de uno combinado.
+
+**Motivo:** El capital (escala 0–20k€) y el rendimiento % (escala -60% a +25%) son incompatibles en un doble eje Y sin perder claridad, especialmente en mobile. Dos cards separadas son más legibles.
+
+---
+
 ## 2026-06-02 — Gráfico Guille: ventana de 12 meses
 
 **Decisión:** Limitar el gráfico de barras del tab Guille a los últimos 12 meses disponibles en los datos.
