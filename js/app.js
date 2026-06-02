@@ -331,9 +331,10 @@ function renderInversiones(){
   const miKpi        = latest.myinvestor || 0;
   const pbKpi        = latest.peerberry  || 0;
 
-  let miAcum = 1;
-  rendimento.forEach(r => { miAcum *= (1 + r.myinvestor / 100); });
-  const miRendimiento = ((miAcum - 1) * 100).toFixed(1);
+  const last2 = capital.slice(-2);
+  const capitalActual   = last2.length >= 1 ? (last2[last2.length-1].peerberry + last2[last2.length-1].myinvestor) : 0;
+  const capitalAnterior = last2.length >= 2 ? (last2[last2.length-2].peerberry + last2[last2.length-2].myinvestor) : 0;
+  const incrementoMes   = capitalActual - capitalAnterior;
 
   const kpisEl = document.getElementById('inv-kpis');
   if(kpisEl){
@@ -351,8 +352,8 @@ function renderInversiones(){
         <div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:var(--amber)">${pbKpi > 0 ? fmt(pbKpi) : '—'}</div>
       </div>
       <div class="card">
-        <div class="card-title">Rend. acum. MyInvestor</div>
-        <div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:${miAcum >= 1 ? 'var(--green)' : 'var(--red)'}">${miRendimiento}%</div>
+        <div class="card-title">Incremento último mes</div>
+        <div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:${incrementoMes >= 0 ? 'var(--green)' : 'var(--red)'}">${incrementoMes >= 0 ? '+' : ''}${fmt(incrementoMes)}</div>
       </div>
     `;
   }
