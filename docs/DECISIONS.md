@@ -1,52 +1,70 @@
 # Decisions Log
 
+## 2026-06-02 (mejora visual Guille)
+
+### Decision
+Reimplementar el gráfico de Guille con eje Y dual: barras en eje izquierdo, línea de saldo en eje derecho.
+
+### Reason
+Los datos lo requieren. Las barras mensuales están en el rango 300–2000€ mientras el saldo acumulado oscila entre -2.700€ y +11.000€. En un eje compartido las barras quedan aplastadas en la parte inferior y pierden toda legibilidad. El eje dual fue el diseño correcto desde el principio; los intentos anteriores fallaron por bugs de implementación de Chart.js, no por el concepto.
+
+---
+
+### Decision
+Tooltip unificado con `mode: 'index'` en el gráfico de Guille.
+
+### Reason
+Con tres datasets en el mismo gráfico, el tooltip por hover individual obliga a pasar el cursor por cada serie. Con mode: index se muestran los tres valores (Depositado, Gastado, Saldo) al posicionarse en cualquier punto del mes, que es la unidad de análisis natural.
+
+---
+
+### Decision
+Área rellena bajo la línea de saldo acumulado (fill: true).
+
+### Reason
+La línea sola sobre barras es difícil de seguir visualmente. El área rellena en azul suave da presencia a la serie sin competir con las barras.
+
+---
+
+### Decision
+Altura del gráfico de Guille aumentada a 420px (.chart-wrap-xtall).
+
+### Reason
+Con 18 meses en el eje X, a 320px las etiquetas y barras quedan comprimidas. 420px da el espacio mínimo para que el gráfico sea legible sin scroll horizontal.
+
+---
+
 ## 2026-06-02 (auditoría)
 
 ### Decision
 `renderMonthly` consume `filteredData()` en lugar de `getLast12MonthsData()`.
-
 ### Reason
-Los filtros de periodo y mes del tab Resumen deben afectar a todos los componentes del tab, incluido el gráfico mensual. `getLast12MonthsData()` se eliminó por no tener uso.
-
----
+Los filtros de periodo y mes deben afectar a todos los componentes del tab Resumen.
 
 ### Decision
-`formatEUR` vive únicamente en `charts.js`. Eliminada la copia de `app.js`.
-
+`formatEUR` vive únicamente en `charts.js`.
 ### Reason
-Una sola definición evita divergencias futuras. `charts.js` se carga antes que `app.js`, por lo que está disponible en todo el runtime.
-
----
+Una sola definición evita divergencias. charts.js se carga antes que app.js.
 
 ### Decision
-Los gastos en los KPIs se muestran como valor positivo con color rojo, no como negativo.
-
+Los gastos en KPIs se muestran como valor positivo con color rojo.
 ### Reason
-Más legible. El color rojo ya comunica la naturaleza del valor; mostrar el signo negativo añade ruido visual.
-
----
+Más legible. El color ya comunica el signo.
 
 ### Decision
-Añadir "Tasa de ahorro" como cuarto KPI en lugar de dejarlo fuera.
-
+Añadir "Tasa de ahorro" como cuarto KPI.
 ### Reason
-Es el indicador más accionable del tab Resumen. Relaciona ingresos y balance en un solo número.
-
----
+Es el indicador más accionable del tab Resumen.
 
 ### Decision
-Tabla resumen por categoría en el tab Categorías va encima de la lista de transacciones.
-
+Tabla resumen por categoría va encima de la lista de transacciones en tab Categorías.
 ### Reason
-La tabla resumen (categoría, total, %) tiene más densidad informativa y se consulta primero. La lista de transacciones es el detalle, va después.
-
----
+Mayor densidad informativa primero; el detalle después.
 
 ### Decision
-El filtro de categoría en Transacciones es un selector independiente, no integrado en el de mes.
-
+El filtro de categoría en Transacciones es un selector independiente del de mes.
 ### Reason
-Permite combinar ambos filtros (mes + categoría) sin complejidad adicional de UI.
+Permite combinar ambos filtros sin complejidad adicional de UI.
 
 ---
 
@@ -54,33 +72,18 @@ Permite combinar ambos filtros (mes + categoría) sin complejidad adicional de U
 
 ### Decision
 Tab Categorías usa gráfico de barras horizontales (indexAxis: 'y').
-
 ### Reason
-Con múltiples categorías, las barras horizontales permiten leer las etiquetas sin rotación.
-
----
+Con múltiples categorías permite leer etiquetas sin rotación.
 
 ### Decision
-Tab Categorías tiene su propio selector de mes independiente del selector global de Resumen.
-
+Cada tab tiene su propio selector de mes independiente.
 ### Reason
-Cada tab mantiene su propio estado de filtro para no interferir con la vista de otros tabs.
-
----
+Evita que el cambio de filtro en un tab afecte a los demás.
 
 ### Decision
-Fusionar gráfico de barras y línea de saldo acumulado del tab Guille en un único chart mixto.
-
+Eliminar bloque <script> inline de index.html.
 ### Reason
-Reduce scroll y permite correlacionar visualmente flujo mensual con saldo acumulado.
-
----
-
-### Decision
-Eliminar el bloque <script> inline de index.html y cargar app.js como script externo.
-
-### Reason
-El bloque inline duplicaba init() y no cargaba switchTab().
+Duplicaba init() y no cargaba switchTab().
 
 ---
 
