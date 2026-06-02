@@ -1,3 +1,23 @@
+## [2026-06-02]
+
+### Gráfico Guille
+- El gráfico de barras/línea del tab Guille ahora muestra solo los últimos 12 meses disponibles en los datos
+- El saldo acumulado (línea) sigue calculándose desde el origen completo para que el valor sea correcto, pero solo se visualizan los últimos 12 puntos
+- El título del card se actualizó para reflejar el filtro
+
+### Mobile responsive
+- Header: padding lateral reducido a 24px (desktop) / 14px (mobile); altura 52px
+- Tabs: `width:100%` con `flex:1` en cada tab — ocupan todo el ancho en cualquier pantalla
+- `.filter-row`: `flex-wrap:wrap` para evitar overflow en pantallas estrechas
+- `select`: `flex:1; min-width:0; max-width:220px` — se adapta al espacio disponible
+- `.card`: padding reducido a `14px 12px` en mobile
+- `.chart-wrap-xtall`: reducido de 420px a 340px (desktop) y 260px (mobile)
+- `.chart-wrap-tall`: 240px en mobile; `.chart-wrap`: 200px en mobile
+- Tablas: font-size 12px, padding celdas `8px 8px` en mobile
+- KPIs Guille: `font-size: clamp(16px, 4vw, 22px)`
+- `.cat-badge`: `font-size:11px; white-space:nowrap`
+- Media query `@media(max-width:380px)`: oculta header-meta, reduce font de tabs a 11px
+
 # Changelog
 
 ## 2026-06-02 (mejora visual gráfico Guille)
