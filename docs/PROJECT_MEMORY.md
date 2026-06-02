@@ -29,8 +29,7 @@ Extracto bancario (banco)
    GitHub Action diario → genera finance_data.json en el repo
         ↓
    GitHub Action de verificación:
-     cruza con Google Calendar + Gmail
-     llama Claude API
+     cruza con Google Calendar + Gmail → llama Claude API
      escribe resultado al Sheet + genera verification_data.json
         ↓
    Dashboard (index.html consume finance_data.json en runtime)
@@ -46,7 +45,7 @@ Una sola cuenta bancaria. Relay extrae: concepto, fecha (YYYY-MM-DD), importe (n
 |---|---|
 | fecha | Fecha del movimiento (YYYY-MM-DD) |
 | concepto | Descripción del movimiento |
-| monto | Negativo=gasto, positivo=ingreso (nombre en el JSON consumido por el frontend) |
+| monto | Negativo=gasto, positivo=ingreso |
 | categoria | Categoría asignada por Relay |
 | categoria_relay | Categoría original de Relay |
 | verificado_claude | true / false |
@@ -66,11 +65,6 @@ Claude solo escribe las últimas 5 columnas.
 
 ### Lista completa de categorías válidas
 Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar
-
-### Reglas de categorización (ver docs completos en PROJECT_MEMORY si se necesitan detalles)
-- Duras (Guille, Gastos coche, Departamento, Nomina, Gastos en conjunto): Claude no verifica
-- Semi-duras (Combustible, Comer afuera): keyword matching
-- Abiertas (A revisar, Otros, Viajes, Compras): Claude verifica con Calendar + Gmail
 
 ---
 
@@ -94,30 +88,44 @@ Sin bloques `<script>` inline con lógica de negocio.
 
 **js/filters.js**
 - `filteredData()` — filtra por periodo, mes y categorías excluidas. Consumida por charts.js y app.js.
-- `setPeriod(m, el)` — actualiza activePeriod. "Todo" usa valor 999.
+- `setPeriod(m, el)` — actualiza activePeriod. "Todo" usa valor `999`.
 - `setMonthFilter(m)` — actualiza activeMonth
 - `populateMonthSelector(RAW)` — selector del tab Resumen
 
 **js/charts.js**
-- `formatEUR(v)` — formateador EUR. Fuente única, no duplicar en otros módulos.
-- `renderKPIs()` — 4 tarjetas: Ingresos, Gastos, Balance, Tasa de ahorro. Consume `filteredData()`.
+- `formatEUR(v)` — fuente única del formateador EUR. No duplicar en otros módulos.
+- `renderKPIs()` — 4 tarjetas: Ingresos, Gastos (positivo con rojo), Balance, Tasa de ahorro. Consume `filteredData()`.
 - `renderMonthly()` — barras ingresos/gastos por mes. Consume `filteredData()`. Eje Y en EUR.
 - `renderDonut()` — donut de gastos por categoría. Consume `filteredData()`.
 
 **js/app.js**
-- `init()` — carga finance_data.json, inyecta en FINANCE_STATE, puebla selectores, llama renderResumen()
+- `init()` — carga finance_data.json, inyecta en FINANCE_STATE, puebla selectores, rellena #last-updated, llama renderResumen()
 - `renderResumen()` → renderKPIs + renderMonthly + renderDonut
-- `renderCategorias()` — barras horizontales + tabla resumen (cat/total/%) + lista transacciones
-- `renderTransacciones()` — tabla filtrable por mes y categoría (incluye ingresos y gastos)
-- `renderGuille()` — KPIs + chart mixto bar+line (eje Y compartido) + tabla filtrable
+- `renderCategorias()` — barras horizontales + tabla resumen (cat/movimientos/total/%) + lista transacciones
+- `renderTransacciones()` — tabla filtrable por mes y categoría (ingresos y gastos)
+- `renderGuille()` — KPIs (3) + chart mixto + tabla filtrable por mes
 - `switchTab(tab, el)` — activa panel, llama render correspondiente
-- `populateTxMonthSelector()`, `populateTxCatSelector()` — selectores de Transacciones
-- `populateCatMonthSelector()` — selector de Categorías (se puebla también en switchTab)
-- `populateGuilleMonthSelector()` — selector de Guille
-- Header `#last-updated` se rellena en init() con la fecha del movimiento más reciente
+- Selectores: `populateTxMonthSelector`, `populateTxCatSelector`, `populateCatMonthSelector`, `populateGuilleMonthSelector`
+- `populateCatMonthSelector` se llama también en `switchTab('categorias')` por compatibilidad con Safari
 
 **index.html**
 - Solo estructura HTML e imports. Sin lógica inline.
+- Clases de altura de chart: `.chart-wrap` (260px), `.chart-wrap-tall` (320px), `.chart-wrap-xtall` (420px)
+
+---
+
+## Gráfico de Guille — especificación técnica
+
+El gráfico mixto de Guille requiere configuración específica por la diferencia de escala entre datasets:
+
+- Barras (Depositado, Gastado): rango típico 300–2000€/mes → eje Y izquierdo (`y`)
+- Línea (Saldo acumulado): rango típico -2700 a +11000€ → eje Y derecho (`y2`)
+- Ambos ejes formateados en EUR con `maximumFractionDigits: 0`
+- `type: 'bar'` obligatorio a nivel raíz del chart (Chart.js 4 lo requiere aunque los datasets lo declaren individualmente)
+- `interaction: { mode: 'index', intersect: false }` para tooltip unificado por mes
+- Línea con `fill: true` y `backgroundColor: rgba(37,99,190,0.08)` para área bajo la curva
+- Puntos con borde azul y fondo blanco para visibilidad sobre las barras
+- Canvas en `.chart-wrap-xtall` (420px) para acomodar 18 meses sin compresión
 
 ---
 
@@ -125,10 +133,10 @@ Sin bloques `<script>` inline con lógica de negocio.
 
 | Tab | Función de render | Contenido |
 |---|---|---|
-| Resumen | renderResumen() | KPIs (4), periodo pills, selector mes, gráfico mensual, donut categorías |
+| Resumen | renderResumen() | KPIs (4), periodo pills, selector mes, gráfico mensual EUR, donut categorías |
 | Categorías | renderCategorias() | Selector mes, barras horizontales, tabla resumen por cat, lista transacciones |
-| Transacciones | renderTransacciones() | Selector mes + categoría, tabla completa (ingresos y gastos) |
-| Guille | renderGuille() | KPIs (3), chart mixto bar+line, selector mes, tabla movimientos |
+| Transacciones | renderTransacciones() | Selector mes + categoría, tabla completa |
+| Guille | renderGuille() | KPIs (3), chart mixto dual-Y, selector mes, tabla movimientos |
 
 ---
 
@@ -140,29 +148,32 @@ Sin bloques `<script>` inline con lógica de negocio.
 - Border: `rgba(0,0,0,0.08)` / Shadow: `0 1px 3px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04)`
 - Border radius: 12px
 - KPI values: `font-size:22px; font-weight:600` con color semántico
-- Gastos se muestran en positivo con color rojo (el color ya comunica la naturaleza)
-- Mobile: KPI grid pasa de 4 a 2 columnas en ≤640px
+- Gastos siempre en positivo con color rojo
+- Tooltips: `backgroundColor: #ffffff`, `borderColor: rgba(0,0,0,0.12)`, `borderWidth: 1`
+- Mobile: KPI grid 2 columnas en ≤640px
 
 ---
 
 ## Convenciones importantes
 
 - `formatEUR` vive solo en `charts.js`. No duplicar.
-- `filteredData()` es la función canónica para obtener datos filtrados. Todos los renders del tab Resumen la usan.
+- `filteredData()` es la función canónica para obtener datos filtrados en el tab Resumen.
 - El periodo "Todo" usa valor numérico `999` en `setPeriod`.
 - Los gastos en KPIs se muestran como positivos — el color rojo comunica el signo.
-- `populateCatMonthSelector()` se llama tanto en `init()` como en `switchTab('categorias')` para garantizar que el DOM esté visible.
+- `populateCatMonthSelector()` se llama en `init()` Y en `switchTab('categorias')`.
+- El gráfico de Guille necesita `type: 'bar'` a nivel raíz aunque use datasets mixtos.
 
 ---
 
 ## Estado actual del sistema
 
-Todos los tabs operativos. Dashboard sin bugs conocidos tras auditoría del 2026-06-02.
+Dashboard sin bugs conocidos. Todos los tabs operativos.
 
 Próxima fase posible:
 - Insights automáticos vía Claude API (comparación vs mes anterior, alertas)
 - Detección de anomalías
 - Capa de verificación (verification_data.json ya existe en el pipeline)
+- Tab Inversiones
 
 ---
 
