@@ -185,3 +185,34 @@ Próxima fase posible:
 4. Actualizar CHANGELOG.md
 5. Actualizar ROADMAP.md si aplica
 6. Actualizar este documento si el contexto general cambia
+
+---
+
+## Mobile responsive (estado actual)
+
+Breakpoints activos:
+- `@media(max-width:640px)` — layout principal mobile
+- `@media(max-width:380px)` — pantallas muy pequeñas (oculta header-meta)
+
+Alturas de charts:
+| Clase | Desktop | Mobile (≤640px) |
+|---|---|---|
+| `.chart-wrap` | 260px | 200px |
+| `.chart-wrap-tall` | 320px | 240px |
+| `.chart-wrap-xtall` | 340px | 260px |
+
+Patrones CSS establecidos:
+- Tabs: `width:100%`, cada `.tab` con `flex:1`
+- Filtros: `flex-wrap:wrap` en `.filter-row`
+- Selects: `flex:1; min-width:0; max-width:220px`
+- KPIs con valores monetarios: `font-size: clamp(16px, 4vw, 22px)`
+
+---
+
+## Gráfico Guille — especificación actual
+
+- **Ventana temporal:** últimos 12 meses disponibles en los datos
+- **Saldo acumulado:** calculado desde el origen histórico completo, recortado a los últimos 12 para visualización
+- **Ejes:** Y izquierdo = barras (dep/gas), Y derecho = línea saldo acumulado
+- **Tipo raíz Chart.js:** `type:'bar'` obligatorio
+
