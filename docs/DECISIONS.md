@@ -1,3 +1,19 @@
+## 2026-06-02 — Tab Categorías: click en barra filtra tabla de transacciones
+
+**Decisión:** Al hacer click en una barra del gráfico horizontal de categorías, la tabla de transacciones inferior se filtra a los movimientos de esa categoría. Click en la misma barra (o en área vacía) limpia el filtro.
+
+**Motivo:** El gráfico ya mostraba el total por categoría; el siguiente nivel de detalle natural son las transacciones individuales. Hacerlo interactivo elimina la necesidad de ir al tab Transacciones y aplicar filtros manualmente.
+
+**Implementación:**
+- Variable `activeCatBarFilter` (módulo-level) en `app.js` almacena la categoría activa o `null`
+- `onClick` handler en Chart.js: toggle — si se hace click en la barra ya activa, limpia el filtro
+- Barras no seleccionadas se atenúan (opacidad 0.25) para reforzar visualmente la selección
+- Header del card de transacciones muestra la categoría activa + contador + botón "Ver todas"
+- La tabla de resumen por categoría también actúa como selector (click en fila)
+- Al cambiar el mes o al cambiar de tab, `activeCatBarFilter` se resetea a `null`
+
+---
+
 ## 2026-06-02 — Inversiones: migración a datos dinámicos
 
 **Decisión revertida:** Los datos de inversión ya no están embebidos en el JS. Se leen del sheet diariamente.
@@ -155,3 +171,4 @@ Allow future AI agents and developers to reconstruct project state without relyi
 renderDonut() consumes filteredData() directly.
 ### Reason
 Ensures the donut chart always reflects the active period and month filter.
+
