@@ -367,9 +367,17 @@ function renderInversiones(){
   }
 
   // ── Gráfico 1: capital apilado ──
-  const capLabels = capital.map(d => d.mes.slice(0,7));
-  const capPB     = capital.map(d => d.peerberry);
-  const capMI     = capital.map(d => d.myinvestor);
+  const MESES_ES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const MESES_LARGO = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  function formatMesLabel(isoMes) {
+    const [y, m] = isoMes.split('-');
+    return MESES_LARGO[parseInt(m,10)-1] + '-' + y;
+  }
+
+  const capital13 = capital.slice(-13);
+  const capLabels = capital13.map(d => formatMesLabel(d.mes));
+  const capPB     = capital13.map(d => d.peerberry);
+  const capMI     = capital13.map(d => d.myinvestor);
 
   const ctxCap = document.getElementById('chart-inv-capital');
   if(ctxCap){
@@ -559,3 +567,4 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
