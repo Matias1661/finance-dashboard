@@ -40,15 +40,17 @@ function renderKPIs(){
   const el = document.getElementById('kpis');
   if(!el) return;
 
+  const netColor = net >= 0 ? 'var(--green)' : 'var(--red)';
   el.innerHTML = `
-    <div class="card"><div class="card-title">Ingresos</div><div>${formatEUR(income)}</div></div>
-    <div class="card"><div class="card-title">Gastos</div><div>${formatEUR(expense)}</div></div>
-    <div class="card"><div class="card-title">Balance</div><div>${formatEUR(net)}</div></div>
+    <div class="card"><div class="card-title">Ingresos</div><div style="font-size:22px;font-weight:600;color:var(--green)">${formatEUR(income)}</div></div>
+    <div class="card"><div class="card-title">Gastos</div><div style="font-size:22px;font-weight:600;color:var(--red)">${formatEUR(Math.abs(expense))}</div></div>
+    <div class="card"><div class="card-title">Balance</div><div style="font-size:22px;font-weight:600;color:${netColor}">${formatEUR(net)}</div></div>
+    <div class="card"><div class="card-title">Tasa de ahorro</div><div style="font-size:22px;font-weight:600;color:${netColor}">${income > 0 ? ((net/income)*100).toFixed(1) : '0.0'}%</div></div>
   `;
 }
 
 function renderMonthly(){
-  const data = getLast12MonthsData();
+  const data = filteredData();
 
   const map = {};
 
@@ -80,8 +82,16 @@ function renderMonthly(){
       ]
     },
     options: {
-      responsive:true,
-      plugins:{legend:{display:true}}
+      responsive: true,
+      plugins: { legend: { display: true } },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v)
+          }
+        }
+      }
     }
   });
 }
@@ -131,3 +141,4 @@ function renderDonut(){
     }
   });
 }
+
