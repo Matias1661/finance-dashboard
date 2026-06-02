@@ -10,13 +10,13 @@
       "fecha": "2026-06-01",
       "concepto": "PRES.32334358886",
       "monto": -277.96,
-      "categoria": "A revisar"
+      "categoria": "Guille"
     },
     {
       "fecha": "2026-06-01",
       "concepto": "PRES.32664031137",
       "monto": -193.49,
-      "categoria": "A revisar"
+      "categoria": "Talho Argentino"
     },
     {
       "fecha": "2026-06-01",
@@ -34,13 +34,13 @@
       "fecha": "2026-06-01",
       "concepto": "SABADELL CONSUMER",
       "monto": -218.12,
-      "categoria": "A revisar"
+      "categoria": "Gastos coche"
     },
     {
       "fecha": "2026-06-01",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 50.0,
-      "categoria": "A revisar"
+      "categoria": "Guille"
     },
     {
       "fecha": "2026-06-01",
@@ -3406,7 +3406,7 @@
       "fecha": "2026-01-15",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 50.0,
-      "categoria": "Inversion"
+      "categoria": "Guille"
     },
     {
       "fecha": "2026-01-15",
@@ -14200,7 +14200,7 @@
       "fecha": "2024-12-02",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 50.0,
-      "categoria": "Nomina"
+      "categoria": "Guille"
     },
     {
       "fecha": "2024-12-02",
