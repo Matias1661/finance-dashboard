@@ -221,7 +221,7 @@ Patrones CSS establecidos:
 
 ## Tab Inversiones — especificación actual
 
-**Fuente de datos:** Arrays embebidos en `renderInversiones()` en `js/app.js`. Actualizar manualmente cuando se agreguen nuevos meses.
+**Fuente de datos:** `window.FINANCE_STATE.inversiones`, populado en `init()` desde `finance_data.json`. Se actualiza automáticamente con el sync diario — no requiere intervención manual.
 
 **KPIs (4):**
 - Capital total = Peerberry + MyInvestor último mes
@@ -241,5 +241,5 @@ Patrones CSS establecidos:
 - Peerberry negativo → ámbar tenue; positivo → ámbar sólido
 - Eje Y formateado con signo (+/-)
 
-**Ventana temporal:** jul-25 → jun-26 (12 meses, actualizar con cada nuevo mes)
+**Ventana temporal:** dinámica — todos los meses disponibles en la hoja `Inversiones` del sheet. Se extiende automáticamente con cada sync.
 
