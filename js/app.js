@@ -4,6 +4,9 @@ const DATA_URL = 'finance_data.json';
 
 let RAW = [];
 
+// Categoría activa en el tab Categorías (null = todas)
+let activeCatBarFilter = null;
+
 function renderResumen(){
   if(typeof renderKPIs === 'function') renderKPIs();
   if(typeof renderMonthly === 'function') renderMonthly();
@@ -210,6 +213,57 @@ function renderGuille(){
   }
 }
 
+function renderCatTxTable(data, selectedCat, month){
+  // Render transaction table for categorias tab
+  // data: all expenses (already filtered by month and excluded categories)
+  // selectedCat: category to filter on, or null for all
+  const expenses = data.filter(r => Number(r.monto) < 0);
+  const filtered = selectedCat ? expenses.filter(r => r.categoria === selectedCat) : expenses;
+  const sorted   = filtered.sort((a,b) => b.fecha.localeCompare(a.fecha));
+
+  // Header label
+  const headerEl = document.getElementById('cat-tx-header');
+  if(headerEl){
+    if(selectedCat){
+      headerEl.innerHTML = `
+        <span style="font-weight:600">${selectedCat}</span>
+        <span style="color:var(--text-secondary);font-size:13px;margin-left:8px">${sorted.length} movimiento${sorted.length !== 1 ? 's' : ''}</span>
+        <button onclick="clearCatBarFilter()" style="margin-left:12px;font-size:12px;padding:2px 10px;border:1px solid rgba(0,0,0,0.15);border-radius:6px;background:#fff;cursor:pointer;color:var(--text-secondary)">Ver todas</button>
+      `;
+    } else {
+      headerEl.innerHTML = `Transacciones <span style="color:var(--text-secondary);font-size:13px;margin-left:6px">${sorted.length} movimientos</span>`;
+    }
+  }
+
+  const tbody = document.getElementById('cat-tx-body');
+  if(!tbody) return;
+
+  if(sorted.length === 0){
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);padding:24px">Sin transacciones</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = sorted.map(r => {
+    const v = Number(r.monto);
+    return `<tr>
+      <td style="font-family:'DM Mono';font-size:13px">${r.fecha}</td>
+      <td>${r.concepto}</td>
+      <td><span class="cat-badge">${r.categoria || '—'}</span></td>
+      <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:var(--red)">${new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(v)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function clearCatBarFilter(){
+  activeCatBarFilter = null;
+  // Re-use existing month filter
+  const month = document.getElementById('cat-month-filter')?.value || '';
+  const excluded = window.FINANCE_STATE?.excludedCategories || [];
+  let data = (window.FINANCE_STATE?.raw || []).filter(r => !excluded.includes(r.categoria));
+  if(month) data = data.filter(r => r.fecha.slice(0,7) === month);
+  renderCatTxTable(data, null, month);
+}
+
 function renderCategorias(){
   const month = document.getElementById('cat-month-filter')?.value || '';
   const excluded = window.FINANCE_STATE?.excludedCategories || [];
@@ -239,6 +293,9 @@ function renderCategorias(){
     'rgba(21,128,61,0.75)','rgba(185,28,28,0.75)','rgba(30,64,175,0.75)'
   ];
 
+  // Active index for highlight
+  const activeIdx = activeCatBarFilter ? labels.indexOf(activeCatBarFilter) : -1;
+
   const ctx = document.getElementById('chart-categorias');
   if(!ctx) return;
 
@@ -250,8 +307,16 @@ function renderCategorias(){
       labels,
       datasets: [{
         data: values,
-        backgroundColor: labels.map((_,i) => colors[i % colors.length]),
-        borderWidth: 0,
+        backgroundColor: labels.map((_, i) => {
+          const base = colors[i % colors.length];
+          // Dim non-selected bars when a filter is active
+          if(activeIdx >= 0 && i !== activeIdx){
+            return base.replace(/[\d.]+\)$/, '0.25)');
+          }
+          return base;
+        }),
+        borderWidth: labels.map((_, i) => (i === activeIdx ? 2 : 0)),
+        borderColor: labels.map((_, i) => (i === activeIdx ? colors[i % colors.length].replace(/[\d.]+\)$/, '1)') : 'transparent')),
         borderRadius: 4
       }]
     },
@@ -274,6 +339,23 @@ function renderCategorias(){
           }
         },
         y: { grid: { display: false } }
+      },
+      onClick: (event, elements) => {
+        if(!elements || elements.length === 0){
+          // Click on empty area — clear filter
+          activeCatBarFilter = null;
+          renderCategorias();
+          return;
+        }
+        const idx = elements[0].index;
+        const clickedCat = labels[idx];
+        // Toggle: clicking the same bar again clears the filter
+        if(activeCatBarFilter === clickedCat){
+          activeCatBarFilter = null;
+        } else {
+          activeCatBarFilter = clickedCat;
+        }
+        renderCategorias();
       }
     }
   });
@@ -285,8 +367,9 @@ function renderCategorias(){
     summaryEl.innerHTML = sorted.map(([cat, amt]) => {
       const pct   = total > 0 ? ((amt/total)*100).toFixed(1) : '0.0';
       const count = data.filter(r => r.categoria === cat && Number(r.monto) < 0).length;
-      return `<tr>
-        <td>${cat}</td>
+      const isActive = activeCatBarFilter === cat;
+      return `<tr style="${isActive ? 'background:rgba(37,99,190,0.06);' : ''}" onclick="activeCatBarFilter='${cat}';renderCategorias();" style="cursor:pointer">
+        <td style="cursor:pointer">${cat}${isActive ? ' <span style=\'color:var(--blue);font-size:11px\'>▶</span>' : ''}</td>
         <td style="text-align:right;font-family:'DM Mono';font-size:13px">${count}</td>
         <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:var(--red)">${formatEUR(-amt)}</td>
         <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:var(--text-secondary)">${pct}%</td>
@@ -295,25 +378,7 @@ function renderCategorias(){
   }
 
   // --- Tabla de transacciones ---
-  const expenses = data.filter(r => Number(r.monto) < 0)
-    .sort((a,b) => b.fecha.localeCompare(a.fecha));
-
-  const tbody = document.getElementById('cat-tx-body');
-  if(tbody){
-    if(expenses.length === 0){
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);padding:24px">Sin transacciones</td></tr>';
-    } else {
-      tbody.innerHTML = expenses.map(r => {
-        const v = Number(r.monto);
-        return `<tr>
-          <td style="font-family:'DM Mono';font-size:13px">${r.fecha}</td>
-          <td>${r.concepto}</td>
-          <td><span class="cat-badge">${r.categoria || '—'}</span></td>
-          <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:var(--red)">${new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(v)}</td>
-        </tr>`;
-      }).join('');
-    }
-  }
+  renderCatTxTable(data, activeCatBarFilter, month);
 }
 
 
@@ -365,21 +430,20 @@ function renderInversiones(){
       </div>
       <div class="card">
         <div class="card-title">Incremento último mes</div>
-        <div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:${incrementoMes >= 0 ? 'var(--green)' : 'var(--red)'}">${incrementoMes >= 0 ? '+' : ''}${fmt(incrementoMes)}</div>
+        <div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:${incrementoMes >= 0 ? 'var(--green)' : 'var(--red)'}">
+          ${incrementoMes >= 0 ? '+' : ''}${fmt(incrementoMes)}
+        </div>
       </div>
     `;
   }
 
   // ── Gráfico 1: capital apilado ──
-  const MESES_ES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const MESES_LARGO = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   function formatMesLabel(isoMes) {
     const [y, m] = isoMes.split('-');
     return MESES_LARGO[parseInt(m,10)-1] + '-' + y;
   }
 
-  // Rellenar meses sin datos con el ultimo valor conocido de cada plataforma
-  // (ej: MyInvestor actualiza ~dia 10, Peerberry puede no tener entrada ese mes aun)
   function fillForward(capitalArr) {
     const filled = [];
     let lastPB = 0, lastMI = 0;
@@ -504,7 +568,7 @@ function switchTab(tab, el){
 
   if(el) el.classList.add('active');
 
-  if(tab === 'categorias')   { populateCatMonthSelector(); renderCategorias(); }
+  if(tab === 'categorias')    { activeCatBarFilter = null; populateCatMonthSelector(); renderCategorias(); }
   if(tab === 'transacciones') renderTransacciones();
   if(tab === 'guille')        renderGuille();
   if(tab === 'inversiones')   renderInversiones();
@@ -585,5 +649,3 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
-
-
