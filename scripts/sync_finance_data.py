@@ -3,8 +3,9 @@ Sync finance data from Google Sheets to finance_data.json
 
 Reads two sheets:
   - Movimientos: transacciones diarias
-  - finanzas: tabla de inversiones (col A=fecha, D=Peerberry, E=MyInvestor)
-    Toma el ultimo registro de cada mes (serie semanal).
+  - Inversiones: tabla de inversiones (col A=fecha, D=Peerberry, E=MyInvestor, F=CaixaBank)
+    Cada fuente puede estar en filas separadas del mismo mes.
+    Toma el ultimo valor no-nulo de cada columna por mes.
 
 Output finance_data.json:
   {
@@ -28,7 +29,7 @@ from googleapiclient.discovery import build
 
 SHEET_ID          = os.environ["SHEET_ID"]
 MOVIMIENTOS_SHEET = os.environ.get("SHEET_NAME", "Movimientos")
-FINANZAS_SHEET    = "finanzas"
+FINANZAS_SHEET    = "Inversiones"
 SA_JSON           = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
@@ -43,7 +44,6 @@ MESES_ES = {
 def get_service():
     creds = service_account.Credentials.from_service_account_info(SA_JSON, scopes=SCOPES)
     return build("sheets", "v4", credentials=creds)
-
 
 
 def read_range(service, sheet_name, cell_range="A:Z"):
@@ -152,8 +152,9 @@ def build_movimientos(rows):
 
 def build_inversiones(rows):
     """
-    Capital: col A=fecha, D=Peerberry, E=MyInvestor.
-    Toma el ultimo registro de cada mes.
+    Capital: col A=fecha, D=Peerberry (idx 3), E=MyInvestor (idx 4).
+    Cada fuente puede estar en filas separadas dentro del mismo mes.
+    Se acumula el ultimo valor no-nulo de cada columna por mes.
 
     Rendimiento %: busca fila cabecera con 'peerberry' y '%',
     lee columnas Mes / Peerberry% / MyInvestor%.
@@ -161,32 +162,45 @@ def build_inversiones(rows):
     if not rows:
         return {"capital": [], "rendimiento": []}
 
-    # Capital
-    month_last = {}
+    # Capital: acumular el ultimo valor no-nulo de cada columna por mes
+    # estructura: { "2025-07": {"pb_fecha": "2025-07-31", "pb": 13011, "mi_fecha": "2025-07-31", "mi": 4926} }
+    month_data = {}
+
     for row in rows:
-        if len(row) < 5:
-            continue
-        fecha = parse_date(row[0])
+        fecha = parse_date(row[0]) if len(row) > 0 else None
         if not fecha:
             continue
-        pb = parse_amount(row[3] if len(row) > 3 else None)
-        mi = parse_amount(row[4] if len(row) > 4 else None)
+        mk = fecha[:7]
+
+        pb = parse_amount(row[3]) if len(row) > 3 else None
+        mi = parse_amount(row[4]) if len(row) > 4 else None
+
         if pb is None and mi is None:
             continue
-        mk = fecha[:7]
-        if mk not in month_last or fecha > month_last[mk]["fecha"]:
-            month_last[mk] = {
-                "fecha":      fecha,
-                "peerberry":  pb if pb is not None else 0,
-                "myinvestor": mi if mi is not None else 0
-            }
+
+        if mk not in month_data:
+            month_data[mk] = {"pb": None, "pb_fecha": None, "mi": None, "mi_fecha": None}
+
+        # Actualizar Peerberry si esta fila tiene valor y es mas reciente
+        if pb is not None:
+            if month_data[mk]["pb_fecha"] is None or fecha >= month_data[mk]["pb_fecha"]:
+                month_data[mk]["pb"] = pb
+                month_data[mk]["pb_fecha"] = fecha
+
+        # Actualizar MyInvestor si esta fila tiene valor y es mas reciente
+        if mi is not None:
+            if month_data[mk]["mi_fecha"] is None or fecha >= month_data[mk]["mi_fecha"]:
+                month_data[mk]["mi"] = mi
+                month_data[mk]["mi_fecha"] = fecha
 
     capital = []
-    for mk in sorted(month_last.keys()):
-        e = month_last[mk]
-        if e["peerberry"] == 0 and e["myinvestor"] == 0:
+    for mk in sorted(month_data.keys()):
+        e = month_data[mk]
+        pb_val = e["pb"] if e["pb"] is not None else 0
+        mi_val = e["mi"] if e["mi"] is not None else 0
+        if pb_val == 0 and mi_val == 0:
             continue
-        capital.append({"mes": mk, "peerberry": e["peerberry"], "myinvestor": e["myinvestor"]})
+        capital.append({"mes": mk, "peerberry": pb_val, "myinvestor": mi_val})
 
     # Rendimiento %: detectar fila cabecera
     pct_header_idx = None
@@ -240,7 +254,7 @@ if __name__ == "__main__":
         movimientos = build_movimientos(mov_rows)
         print(f"  {len(movimientos)} registros validos")
 
-        print("Leyendo finanzas (inversiones)...")
+        print("Leyendo Inversiones...")
         try:
             fin_rows = read_range(service, FINANZAS_SHEET)
             print(f"  {len(fin_rows)} filas")
@@ -248,7 +262,7 @@ if __name__ == "__main__":
             print(f"  {len(inversiones['capital'])} meses de capital")
             print(f"  {len(inversiones['rendimiento'])} meses de rendimiento")
         except Exception as fin_err:
-            print(f"  AVISO: no se pudo leer hoja finanzas: {fin_err}")
+            print(f"  AVISO: no se pudo leer hoja Inversiones: {fin_err}")
             inversiones = {"capital": [], "rendimiento": []}
 
         output = {
