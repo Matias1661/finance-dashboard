@@ -1,6 +1,16 @@
 ## 2026-06-02
 
 ### fix
+- Gráfico mensual (Ingresos vs Gastos) fijado a los últimos 12 meses del dataset, sin depender de ningún filtro.
+- Eliminadas las pills de periodo (6m / 12m / Todo) del tab Resumen — eran redundantes dado el comportamiento fijo.
+- Selector de mes en tab Resumen movido al interior del card «Gastos por categoría» y desconectado del gráfico mensual; solo afecta al donut.
+- `filteredData()` en `filters.js` simplificado: ya no aplica `activePeriod` (el gráfico mensual usa directamente `getLast12MonthsData()`).
+
+---
+
+## 2026-06-02
+
+### fix
 - `sync_finance_data.py`: corregido bug en `build_inversiones` donde Peerberry y MyInvestor se sobreescribían mutuamente al estar en filas separadas del mismo mes. Ahora se acumula el último valor no-nulo de cada columna (D=Peerberry, E=MyInvestor) de forma independiente por mes.
 - Corregido nombre de hoja: `finanzas` → `Inversiones`.
 
