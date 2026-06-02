@@ -91,25 +91,88 @@ function renderGuille(){
       data: {
         labels,
         datasets: [
-          { type: 'bar',  label:'Depositado',     data: depValues,  backgroundColor:'rgba(13,138,82,0.75)', yAxisID: 'y', order: 2 },
-          { type: 'bar',  label:'Gastado',         data: gasValues,  backgroundColor:'rgba(201,74,48,0.75)', yAxisID: 'y', order: 2 },
-          { type: 'line', label:'Saldo acumulado', data: cumBalance,
-            yAxisID: 'y', order: 1,
+          {
+            type: 'bar',
+            label: 'Depositado',
+            data: depValues,
+            backgroundColor: 'rgba(13,138,82,0.75)',
+            borderRadius: 3,
+            yAxisID: 'y',
+            order: 2
+          },
+          {
+            type: 'bar',
+            label: 'Gastado',
+            data: gasValues,
+            backgroundColor: 'rgba(201,74,48,0.75)',
+            borderRadius: 3,
+            yAxisID: 'y',
+            order: 2
+          },
+          {
+            type: 'line',
+            label: 'Saldo acumulado',
+            data: cumBalance,
+            yAxisID: 'y2',
+            order: 1,
             borderColor: '#2563be',
-            backgroundColor: 'transparent',
-            fill: false,
-            tension: 0.3,
-            pointRadius: 4,
-            pointBackgroundColor: '#2563be',
+            backgroundColor: 'rgba(37,99,190,0.08)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            pointBackgroundColor: '#ffffff',
+            pointBorderColor: '#2563be',
+            pointBorderWidth: 2,
             borderWidth: 2
           }
         ]
       },
       options: {
         responsive: true,
-        plugins: { legend: { display: true } },
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: {
+            display: true,
+            labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 }
+          },
+          tooltip: {
+            backgroundColor: '#ffffff',
+            borderColor: 'rgba(0,0,0,0.12)',
+            borderWidth: 1,
+            titleColor: '#1a1a18',
+            bodyColor: '#6b6b63',
+            callbacks: {
+              label: ctx => {
+                const v = ctx.parsed.y;
+                const fmt = new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(Math.abs(v));
+                return ` ${ctx.dataset.label}: ${fmt}`;
+              }
+            }
+          }
+        },
         scales: {
-          y: { beginAtZero: true, grid: { drawOnChartArea: true } }
+          x: {
+            grid: { display: false },
+            ticks: { font: { size: 11 } }
+          },
+          y: {
+            position: 'left',
+            beginAtZero: true,
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            ticks: {
+              font: { size: 11 },
+              callback: v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v)
+            }
+          },
+          y2: {
+            position: 'right',
+            grid: { drawOnChartArea: false },
+            ticks: {
+              font: { size: 11 },
+              callback: v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v)
+            }
+          }
         }
       }
     });
@@ -322,6 +385,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
