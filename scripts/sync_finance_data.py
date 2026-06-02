@@ -28,7 +28,7 @@ from googleapiclient.discovery import build
 
 SHEET_ID          = os.environ["SHEET_ID"]
 MOVIMIENTOS_SHEET = os.environ.get("SHEET_NAME", "Movimientos")
-FINANZAS_SHEET    = "Inversiones"
+FINANZAS_SHEET    = "finanzas"
 SA_JSON           = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
