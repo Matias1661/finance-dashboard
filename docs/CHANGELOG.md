@@ -1,3 +1,7 @@
+## 2026-06-02
+
+### fix
+- Corregido nombre de hoja en sync_finance_data.py: `FINANZAS_SHEET = "Inversiones"` → `"finanzas"`. El script intentaba leer una hoja inexistente, causando que inversiones (Peerberry y MyInvestor) no se cargaran en finance_data.json.
 ## [2026-06-02] — Inversiones: datos dinámicos desde el sheet
 
 ### Cambio arquitectónico
