@@ -50,38 +50,56 @@ function renderGuille(){
 
   // --- KPIs (siempre sobre todos los datos, sin filtro de mes) ---
   const totalDeposited = data.filter(r => Number(r.monto) > 0).reduce((s,r) => s + Number(r.monto), 0);
-  const totalSpent    = data.filter(r => Number(r.monto) < 0).reduce((s,r) => s + Math.abs(Number(r.monto)), 0);
-  const balance       = totalDeposited - totalSpent;
+  const totalSpent     = data.filter(r => Number(r.monto) < 0).reduce((s,r) => s + Math.abs(Number(r.monto)), 0);
+  const balance        = totalDeposited - totalSpent;
 
   const kpisEl = document.getElementById('guille-kpis');
   if(kpisEl){
     const balColor = balance >= 0 ? 'var(--green)' : 'var(--red)';
     kpisEl.innerHTML = `
-      <div class="card"><div class="card-title">Total depositado</div><div style="font-size:22px;font-weight:600;color:var(--green)">${formatEUR(totalDeposited)}</div></div>
-      <div class="card"><div class="card-title">Total gastado</div><div style="font-size:22px;font-weight:600;color:var(--red)">${formatEUR(totalSpent)}</div></div>
-      <div class="card"><div class="card-title">Saldo actual</div><div style="font-size:22px;font-weight:600;color:${balColor}">${formatEUR(balance)}</div></div>
+      <div class="card"><div class="card-title">Total depositado</div><div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:var(--green)">${formatEUR(totalDeposited)}</div></div>
+      <div class="card"><div class="card-title">Total gastado</div><div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:var(--red)">${formatEUR(totalSpent)}</div></div>
+      <div class="card"><div class="card-title">Saldo actual</div><div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:${balColor}">${formatEUR(balance)}</div></div>
     `;
   }
 
-  // --- Gráfico barras: depositado vs gastado por mes (todos los datos) ---
+  // --- Gráfico: últimos 12 meses ---
+  const allMonths = [...new Set(data.map(r => r.fecha.slice(0,7)))].sort();
+  const last12    = allMonths.slice(-12);
+
   const monthMap = {};
   data.forEach(r => {
     const k = r.fecha.slice(0,7);
+    if(!last12.includes(k)) return;
     if(!monthMap[k]) monthMap[k] = {dep:0, gas:0};
     const v = Number(r.monto);
     if(v > 0) monthMap[k].dep += v;
     else monthMap[k].gas += Math.abs(v);
   });
 
-  const labels = Object.keys(monthMap).sort();
-  const depValues = labels.map(k => monthMap[k].dep);
-  const gasValues = labels.map(k => monthMap[k].gas);
+  // Saldo acumulado desde el inicio (todos los datos, no solo últimos 12)
+  const allSorted = allMonths;
+  const fullMap   = {};
+  data.forEach(r => {
+    const k = r.fecha.slice(0,7);
+    if(!fullMap[k]) fullMap[k] = {dep:0, gas:0};
+    const v = Number(r.monto);
+    if(v > 0) fullMap[k].dep += v;
+    else fullMap[k].gas += Math.abs(v);
+  });
 
   let running = 0;
-  const cumBalance = labels.map(k => {
-    running += monthMap[k].dep - monthMap[k].gas;
-    return running;
+  const balanceByMonth = {};
+  allSorted.forEach(k => {
+    const m = fullMap[k] || {dep:0, gas:0};
+    running += m.dep - m.gas;
+    balanceByMonth[k] = running;
   });
+
+  const labels    = last12;
+  const depValues = labels.map(k => (monthMap[k]||{dep:0}).dep);
+  const gasValues = labels.map(k => (monthMap[k]||{gas:0}).gas);
+  const cumBalance = labels.map(k => balanceByMonth[k] || 0);
 
   const ctxGuille = document.getElementById('chart-guille-bars');
   if(ctxGuille){
@@ -274,7 +292,7 @@ function renderCategorias(){
   if(summaryEl){
     const total = values.reduce((a,b) => a+b, 0);
     summaryEl.innerHTML = sorted.map(([cat, amt]) => {
-      const pct = total > 0 ? ((amt/total)*100).toFixed(1) : '0.0';
+      const pct   = total > 0 ? ((amt/total)*100).toFixed(1) : '0.0';
       const count = data.filter(r => r.categoria === cat && Number(r.monto) < 0).length;
       return `<tr>
         <td>${cat}</td>
@@ -316,9 +334,9 @@ function switchTab(tab, el){
 
   if(el) el.classList.add('active');
 
-  if(tab === 'categorias') { populateCatMonthSelector(); renderCategorias(); }
+  if(tab === 'categorias')   { populateCatMonthSelector(); renderCategorias(); }
   if(tab === 'transacciones') renderTransacciones();
-  if(tab === 'guille') renderGuille();
+  if(tab === 'guille')        renderGuille();
 }
 
 function populateTxMonthSelector(){
@@ -385,10 +403,3 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
-
-
-
-
-
-
-
