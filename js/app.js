@@ -326,12 +326,24 @@ function renderInversiones(){
   const fmtPct = v => (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
 
   // ── KPIs ──
-  const latest      = capital[capital.length - 1] || {};
+  // Aplicar fill-forward antes de calcular KPIs para evitar que meses sin dato
+  // (valor 0) distorsionen el incremento respecto al mes anterior
+  function fillForwardKPI(arr) {
+    let lastPB = 0, lastMI = 0;
+    return arr.map(d => {
+      lastPB = d.peerberry  > 0 ? d.peerberry  : lastPB;
+      lastMI = d.myinvestor > 0 ? d.myinvestor : lastMI;
+      return { mes: d.mes, peerberry: lastPB, myinvestor: lastMI };
+    });
+  }
+  const capitalFilled = fillForwardKPI(capital);
+
+  const latest      = capitalFilled[capitalFilled.length - 1] || {};
   const totalCapital = (latest.peerberry || 0) + (latest.myinvestor || 0);
   const miKpi        = latest.myinvestor || 0;
   const pbKpi        = latest.peerberry  || 0;
 
-  const last2 = capital.slice(-2);
+  const last2 = capitalFilled.slice(-2);
   const capitalActual   = last2.length >= 1 ? (last2[last2.length-1].peerberry + last2[last2.length-1].myinvestor) : 0;
   const capitalAnterior = last2.length >= 2 ? (last2[last2.length-2].peerberry + last2[last2.length-2].myinvestor) : 0;
   const incrementoMes   = capitalActual - capitalAnterior;
@@ -573,4 +585,5 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
