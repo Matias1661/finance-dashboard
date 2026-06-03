@@ -154,6 +154,48 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 
 ---
 
+## Vista ampliada de Viajes — especificación pendiente de implementar
+
+**Trigger para iniciar:** "Implementa la vista ampliada de Viajes en el tab Categorías"
+
+**Contexto:** Al filtrar por categoría "Viajes" en el tab Categorías, debe aparecer una sección adicional debajo del gráfico que agrupa los movimientos por viaje y muestra el desglose por subcategoría.
+
+**Fuente de datos de viajes:** Los viajes se definen por eventos del Google Calendar. Para el dashboard (sin acceso al calendar en runtime), los viajes se hardcodean como constante `TRIP_WINDOWS` en `app.js` — lista de objetos `{ name, start, end }`. Se actualiza manualmente cuando se añaden viajes nuevos. Viajes confirmados a incluir (con movimientos reales en el dataset):
+
+```js
+const TRIP_WINDOWS = [
+  { name: 'Gijón',         start: '2025-07-06', end: '2025-07-11' },
+  { name: 'Spain Run',     start: '2025-09-12', end: '2025-09-14' },
+  { name: 'Hotel Natursun (oct)', start: '2025-10-25', end: '2025-10-26' },
+  { name: 'Bagger Racing', start: '2025-11-07', end: '2025-11-09' },
+  { name: 'Toledo',        start: '2025-12-08', end: '2025-12-14' },
+  { name: 'Alojamiento en Francia', start: '2026-03-25', end: '2026-03-29' },
+  { name: '45 Aniversario París',   start: '2026-04-18', end: '2026-04-18' },
+  { name: 'Málaga',        start: '2026-05-01', end: '2026-05-03' },
+  { name: 'Viaje a Portugal', start: '2026-05-08', end: '2026-05-10' },
+];
+```
+
+**Subcategorías** (inferidas del concepto, función `tripSubcategory(concepto)`):
+- Combustible: repsol, shell, esso, moeve, sanse, ballenoil, p.serv, certif, galp
+- Peajes: autopista, bidegi, cofiroute, atlandes, autoroutes, ap-
+- Alojamiento: hotel, airbnb, hostal, apartamento, booking
+- Transporte: iberia, vueling, ryanair, renfe, ouigo, blabla, uber, parking
+- Comida: (resto de gastos negativos)
+- Otros: lo que no encaje
+
+**Comportamiento UI:**
+- Solo visible cuando `activeCatBarFilter === 'Viajes'` en `renderCategorias()`
+- Selector de mes existente aplica también a esta sección
+- Por cada viaje dentro del período filtrado: card con nombre, fechas, total y tabla de subcategorías (nombre + importe)
+- Debajo de cada card: lista colapsable de transacciones individuales del viaje
+- Viajes sin movimientos en el período filtrado no se muestran
+- Estilo: mismas cards del design system, sin librerías nuevas
+
+**Archivos a modificar:** solo `js/app.js` (añadir `TRIP_WINDOWS`, `tripSubcategory()`, y sección en `renderCategorias()`) e `index.html` si hace falta un contenedor HTML nuevo.
+
+---
+
 ## Categorías reembolsables
 
 Las categorías listadas en `reimbursableCategories` (state.js) aplican netting: los ingresos de esa categoría restan al gasto bruto para calcular el gasto neto. Estas categorías son: Viajes, Club, Combustible, Comer afuera, Salidas, Gastos en conjunto.
