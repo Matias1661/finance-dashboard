@@ -23,17 +23,52 @@ function getLast12MonthsData(){
   return data.filter(r => r.fecha >= cutoffStr);
 }
 
+// Calcula gasto neto por categoría:
+// - categorías reembolsables: gastos - ingresos (mínimo 0)
+// - resto: solo gastos
+function netExpenseByCategory(data) {
+  const reimbursable = window.FINANCE_STATE?.reimbursableCategories || [];
+  const gross = {};
+  const refunds = {};
+
+  data.forEach(r => {
+    const v = Number(r.monto);
+    const cat = r.categoria || 'Sin categoría';
+    if (v < 0) {
+      gross[cat] = (gross[cat] || 0) + Math.abs(v);
+    } else if (reimbursable.includes(cat)) {
+      refunds[cat] = (refunds[cat] || 0) + v;
+    }
+  });
+
+  const net = {};
+  Object.keys(gross).forEach(cat => {
+    const refund = refunds[cat] || 0;
+    const val = gross[cat] - refund;
+    if (val > 0) net[cat] = val;
+  });
+  return net;
+}
+
 function renderKPIs(){
   const data = getLast12MonthsData();
+  const reimbursable = window.FINANCE_STATE?.reimbursableCategories || [];
 
   let income = 0;
   let expense = 0;
 
   data.forEach(r => {
-    const val = Number(r.monto);
-    if(val >= 0) income += val;
-    else expense += val;
+    const v = Number(r.monto);
+    // Ingresos de categorías reembolsables no cuentan como ingreso real
+    if(v >= 0 && !reimbursable.includes(r.categoria)) income += v;
+    else if(v < 0) expense += v;
   });
+
+  // Restar reembolsos de los gastos
+  const reimbursed = data
+    .filter(r => Number(r.monto) > 0 && reimbursable.includes(r.categoria))
+    .reduce((s, r) => s + Number(r.monto), 0);
+  expense += reimbursed; // expense is negative, so adding positive reduces it
 
   const net = income + expense;
 
@@ -73,21 +108,23 @@ function renderKPIs(){
 
 function renderMonthly(){
   const data = getLast12MonthsData();
+  const reimbursable = window.FINANCE_STATE?.reimbursableCategories || [];
 
   const map = {};
 
   data.forEach(r => {
     const key = r.fecha.slice(0,7);
-    if(!map[key]) map[key] = {income:0, expense:0};
+    if(!map[key]) map[key] = {income:0, expense:0, refund:0};
 
     const v = Number(r.monto);
-    if(v >= 0) map[key].income += v;
+    if(v >= 0 && !reimbursable.includes(r.categoria)) map[key].income += v;
+    else if(v >= 0 && reimbursable.includes(r.categoria)) map[key].refund += v;
     else map[key].expense += v;
   });
 
   const labels = Object.keys(map).sort();
-  const income = labels.map(k => map[k].income);
-  const expense = labels.map(k => Math.abs(map[k].expense));
+  const income  = labels.map(k => map[k].income);
+  const expense = labels.map(k => Math.max(0, Math.abs(map[k].expense) - map[k].refund));
 
   const ctx = document.getElementById('chart-monthly');
   if(!ctx) return;
@@ -100,7 +137,7 @@ function renderMonthly(){
       labels,
       datasets: [
         { label:'Ingresos', data: income, backgroundColor: 'rgba(13,138,82,0.75)' },
-        { label:'Gastos', data: expense, backgroundColor: 'rgba(201,74,48,0.75)' }
+        { label:'Gastos netos', data: expense, backgroundColor: 'rgba(201,74,48,0.75)' }
       ]
     },
     options: {
@@ -120,14 +157,7 @@ function renderMonthly(){
 
 function renderDonut(){
   const data = getData();
-
-  const map = {};
-  data.forEach(r => {
-    const v = Number(r.monto);
-    if(v >= 0) return;
-    const cat = r.categoria || 'Sin categoría';
-    map[cat] = (map[cat] || 0) + Math.abs(v);
-  });
+  const map = netExpenseByCategory(data);
 
   const labels = Object.keys(map).sort((a,b) => map[b] - map[a]);
   const values = labels.map(k => map[k]);
@@ -163,5 +193,3 @@ function renderDonut(){
     }
   });
 }
-
-
