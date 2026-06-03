@@ -252,7 +252,7 @@ function renderCatTxTable(data, selectedCat, month){
       <td style="font-family:'DM Mono';font-size:13px">${r.fecha}</td>
       <td>${r.concepto}</td>
       <td><span class="cat-badge">${r.categoria || '—'}</span></td>
-      <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:var(--red)">${new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(v)}</td>
+      <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:${v >= 0 ? 'var(--green)' : 'var(--red)'}">${new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(v)}</td>
     </tr>`;
   }).join('');
 }
