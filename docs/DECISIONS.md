@@ -1,3 +1,22 @@
+## 2026-06-03 — Análisis de viajes: flujo manual via chat + workflow
+
+**Decisión:** El análisis de reclasificación de movimientos a categoría Viajes se ejecuta manualmente desde el chat de Claude, no como GitHub Action autónomo.
+
+**Motivo:** El cruce con Google Calendar requiere OAuth del usuario, que no está disponible en el service account del repo. Claude tiene acceso al calendar via MCP y puede hacer el análisis directamente. Los cambios aprobados se escriben al sheet via el workflow `update-sheet-cells.yml` existente.
+
+**Flujo establecido:**
+1. Claude lee `finance_data.json` del repo y el calendar via MCP
+2. Genera propuestas agrupadas por viaje
+3. Usuario aprueba/rechaza viaje a viaje en el chat
+4. Claude dispara `update-sheet-cells.yml` en batch con los aprobados
+5. Usuario pulsa Actualizar en el dashboard para sincronizar el JSON
+
+**Resultado sesión 2026-06-03:** 11 movimientos reclasificados a Viajes en 5 viajes (Gijón, Spain Run, Hotel Natursun oct-25, Bagger Racing, Toledo).
+
+**Observación:** El algoritmo genera ruido con SERVIMATIC (~0.50€), Amazon y gastos cotidianos que coinciden en fechas de viaje. El buffer ±1 día amplifica el ruido en viajes de 1 día. Para próximas ejecuciones conviene filtrar conceptos con importe < 2€ y Amazon salvo que sea claramente equipaje/viaje.
+
+---
+
 ## 2026-06-03 — Gasto neto en categorías reembolsables
 
 **Decisión:** Los ingresos categorizados en categorías reembolsables restan al gasto de esa categoría. El dashboard muestra siempre gasto neto (no bruto).
