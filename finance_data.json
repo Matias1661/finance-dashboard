@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-03 11:00",
+  "generated_at": "2026-06-03 11:28",
   "movimientos": [
     {
       "fecha": "2026-06-02",
@@ -942,6 +942,12 @@
       "concepto": "TRANSFER INMEDIATA",
       "monto": 45.0,
       "categoria": "Guille"
+    },
+    {
+      "fecha": "2026-04-29",
+      "concepto": "Nomina (Trf)",
+      "monto": 2307.43,
+      "categoria": "Nomina"
     },
     {
       "fecha": "2026-04-28",
