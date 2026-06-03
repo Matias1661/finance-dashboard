@@ -1,3 +1,13 @@
+## 2026-06-03 — Botón Actualizar
+
+### feat
+- Botón "↻ Actualizar" en el header: dispara el workflow `Sync Finance Data` via GitHub Actions API
+- Muestra countdown de 90s y recarga la página automáticamente al completarse
+- Mensaje de estado inline ("Sincronizando · recargando en Xs") durante la espera
+- En caso de error muestra mensaje y resetea el botón a los 6s
+
+---
+
 ## 2026-06-02 — Click-to-filter en gráfico de categorías
 
 ### feat
