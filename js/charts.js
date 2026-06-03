@@ -41,8 +41,18 @@ function renderKPIs(){
   if(!el) return;
 
   const netColor = net >= 0 ? 'var(--green)' : 'var(--red)';
+
+  const raw        = window.FINANCE_STATE?.raw || [];
+  const lastTx     = raw.length > 0 ? raw.map(r => r.fecha).sort().reverse()[0] : '—';
+  const generatedAt = window.FINANCE_STATE?.generatedAt || '—';
+
   el.innerHTML = `
-    <div class="card"><div class="card-title">Ingresos</div><div style="font-size:22px;font-weight:600;color:var(--green)">${formatEUR(income)}</div></div>
+    <div class="card">
+      <div class="card-title">Última transacción</div>
+      <div style="font-size:16px;font-weight:600;font-family:'DM Mono'">${lastTx}</div>
+      <div class="card-title" style="margin-top:14px">Última sincronización</div>
+      <div style="font-size:13px;font-weight:500;font-family:'DM Mono';color:var(--text-secondary)">${generatedAt}</div>
+    </div>
     <div class="card"><div class="card-title">Gastos</div><div style="font-size:22px;font-weight:600;color:var(--red)">${formatEUR(Math.abs(expense))}</div></div>
     <div class="card"><div class="card-title">Balance</div><div style="font-size:22px;font-weight:600;color:${netColor}">${formatEUR(net)}</div></div>
     <div class="card"><div class="card-title">Tasa de ahorro</div><div style="font-size:22px;font-weight:600;color:${netColor}">${income > 0 ? ((net/income)*100).toFixed(1) : '0.0'}%</div></div>
@@ -141,4 +151,5 @@ function renderDonut(){
     }
   });
 }
+
 
