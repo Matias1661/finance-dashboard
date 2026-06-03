@@ -14434,7 +14434,7 @@
       {
         "mes": "2026-05",
         "peerberry": 5168.78,
-        "myinvestor": 0
+        "myinvestor": 8269.0
       },
       {
         "mes": "2026-06",
@@ -14491,12 +14491,12 @@
       {
         "mes": "2026-05",
         "peerberry": 0.61,
-        "myinvestor": 0.0
+        "myinvestor": 11.68
       },
       {
         "mes": "2026-06",
         "peerberry": 0.16,
-        "myinvestor": 12.16
+        "myinvestor": 0.42
       }
     ]
   }
