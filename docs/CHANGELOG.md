@@ -1,3 +1,14 @@
+## 2026-06-03 — Gasto neto en categorías reembolsables
+
+### feat
+- Los ingresos categorizados en Viajes, Club, Combustible, Comer afuera, Salidas o Gastos en conjunto restan al gasto de esa categoría
+- El gráfico mensual, el donut, la tabla de categorías y los KPIs muestran gasto neto
+- Los ingresos de estas categorías no cuentan como ingreso real en los totales
+- `netExpenseByCategory()` centraliza el cálculo en `charts.js`
+- `reimbursableCategories` declarado en `state.js` — editable sin tocar lógica
+
+---
+
 ## 2026-06-03 — Botón Actualizar
 
 ### feat
