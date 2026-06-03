@@ -1,3 +1,21 @@
+## 2026-06-03 — Gasto neto en categorías reembolsables
+
+**Decisión:** Los ingresos categorizados en categorías reembolsables restan al gasto de esa categoría. El dashboard muestra siempre gasto neto (no bruto).
+
+**Categorías reembolsables:** Viajes, Club, Combustible, Comer afuera, Salidas, Gastos en conjunto.
+
+**Motivo:** Es habitual pagar por el grupo en estas categorías y recibir reembolsos posteriores (bizum, transferencia). Sin netting, el gasto aparece inflado y el ingreso distorsiona el total de ingresos reales.
+
+**Implementación:**
+- `reimbursableCategories` añadido a `window.FINANCE_STATE` en `state.js`
+- `netExpenseByCategory(data)` en `charts.js`: función centralizada que calcula gasto neto por categoría
+- `renderMonthly`, `renderDonut` y `renderKPIs` en `charts.js` usan la lógica de netting
+- `renderCategorias` en `app.js` delega en `netExpenseByCategory` en lugar del map manual
+- Los ingresos de categorías reembolsables NO se suman a los ingresos totales en KPIs ni en el gráfico mensual
+- La tabla de transacciones (`renderCatTxTable`) muestra los movimientos individuales sin modificar — el netting es solo visual en los agregados
+
+---
+
 ## 2026-06-02 — Tab Categorías: click en barra filtra tabla de transacciones
 
 **Decisión:** Al hacer click en una barra del gráfico horizontal de categorías, la tabla de transacciones inferior se filtra a los movimientos de esa categoría. Click en la misma barra (o en área vacía) limpia el filtro.
