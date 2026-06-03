@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-03 10:15",
+  "generated_at": "2026-06-03 10:39",
   "movimientos": [
     {
       "fecha": "2026-06-01",
@@ -2760,6 +2760,18 @@
       "concepto": "FOURVENUES",
       "monto": -36.3,
       "categoria": "Salidas"
+    },
+    {
+      "fecha": "2026-02-06",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille"
+    },
+    {
+      "fecha": "2026-02-06",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille"
     },
     {
       "fecha": "2026-02-06",
