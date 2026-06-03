@@ -504,6 +504,27 @@ function renderInversiones(){
           }
         ]
       },
+      plugins: [{
+        id: 'stackedTotalLabels',
+        afterDatasetsDraw(chart) {
+          const { ctx, data } = chart;
+          const datasetCount = chart.data.datasets.length;
+          const meta0 = chart.getDatasetMeta(datasetCount - 1);
+          meta0.data.forEach((bar, i) => {
+            let total = 0;
+            for (let d = 0; d < datasetCount; d++) {
+              total += chart.data.datasets[d].data[i] || 0;
+            }
+            ctx.save();
+            ctx.font = '600 11px DM Sans, sans-serif';
+            ctx.fillStyle = '#1a1a18';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(fmt(total), bar.x, bar.y - 3);
+            ctx.restore();
+          });
+        }
+      }],
       options: {
         responsive: true,
         plugins: {
@@ -520,7 +541,7 @@ function renderInversiones(){
         scales: {
           x: { grid: { display: false }, ticks: { font: { size: 11 } } },
           y: {
-            stacked: true, beginAtZero: true,
+            stacked: true, beginAtZero: false,
             grid: { color: 'rgba(0,0,0,0.05)' },
             ticks: { font: { size: 11 }, callback: v => fmt(v) }
           }
