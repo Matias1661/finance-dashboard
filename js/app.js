@@ -611,7 +611,7 @@ function populateGuilleMonthSelector(){
 }
 
 async function init(){
-  const res = await fetch(DATA_URL);
+  const res = await fetch(DATA_URL + '?v=' + Date.now());
   RAW = await res.json();
 
   // finance_data.json puede ser array plano (legado) o { movimientos, inversiones }
@@ -649,3 +649,4 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
