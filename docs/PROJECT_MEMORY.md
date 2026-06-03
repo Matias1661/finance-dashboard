@@ -154,6 +154,18 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 
 ---
 
+## Categorías reembolsables
+
+Las categorías listadas en `reimbursableCategories` (state.js) aplican netting: los ingresos de esa categoría restan al gasto bruto para calcular el gasto neto. Estas categorías son: Viajes, Club, Combustible, Comer afuera, Salidas, Gastos en conjunto.
+
+La función canónica es `netExpenseByCategory(data)` en `charts.js`. No duplicar esta lógica en otros módulos.
+
+Los ingresos de categorías reembolsables **no** se suman a los ingresos totales en KPIs ni en el gráfico mensual.
+
+La tabla de transacciones individuales siempre muestra los movimientos sin modificar — el netting es solo en los agregados.
+
+---
+
 ## Convenciones importantes
 
 - `formatEUR` vive solo en `charts.js`. No duplicar.
