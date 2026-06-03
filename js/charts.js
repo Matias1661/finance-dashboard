@@ -37,6 +37,11 @@ function renderKPIs(){
 
   const net = income + expense;
 
+  const capital = window.FINANCE_STATE?.inversiones?.capital || [];
+  const lastCapital = capital.length > 0 ? capital[capital.length - 1] : {};
+  const invPeerberry = lastCapital.peerberry || 0;
+  const invMyinvestor = lastCapital.myinvestor || 0;
+
   const el = document.getElementById('kpis');
   if(!el) return;
 
@@ -53,7 +58,14 @@ function renderKPIs(){
       <div class="card-title" style="margin-top:14px">Última sincronización</div>
       <div style="font-size:13px;font-weight:500;font-family:'DM Mono';color:var(--text-secondary)">${generatedAt}</div>
     </div>
-    <div class="card"><div class="card-title">Gastos</div><div style="font-size:22px;font-weight:600;color:var(--red)">${formatEUR(Math.abs(expense))}</div></div>
+    <div class="card">
+      <div class="card-title">Patrimonio invertido</div>
+      <div style="font-size:22px;font-weight:600;color:var(--blue)">${formatEUR(invPeerberry + invMyinvestor)}</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">
+        <div style="display:flex;justify-content:space-between"><span>Peerberry</span><span style="font-family:'DM Mono'">${formatEUR(invPeerberry)}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px"><span>MyInvestor</span><span style="font-family:'DM Mono'">${formatEUR(invMyinvestor)}</span></div>
+      </div>
+    </div>
     <div class="card"><div class="card-title">Balance</div><div style="font-size:22px;font-weight:600;color:${netColor}">${formatEUR(net)}</div></div>
     <div class="card"><div class="card-title">Tasa de ahorro</div><div style="font-size:22px;font-weight:600;color:${netColor}">${income > 0 ? ((net/income)*100).toFixed(1) : '0.0'}%</div></div>
   `;
