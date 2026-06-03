@@ -427,7 +427,7 @@ async function triggerRefresh(){
       msg.textContent = `Sincronizando · recargando en ${secs}s`;
       if(secs <= 0) clearInterval(cd);
     }, 1000);
-    setTimeout(() => { location.reload(); }, 90000);
+    setTimeout(() => { location.href = location.pathname + '?v=' + Date.now(); }, 90000);
     setTimeout(() => { btn.textContent = '↻ Actualizar'; btn.classList.remove('loading'); }, 5000);
   } else {
     btn.textContent = '↻ Error';
@@ -444,6 +444,7 @@ async function triggerRefresh(){
 
 </body>
 </html>
+
 
 
 
