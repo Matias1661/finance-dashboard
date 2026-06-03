@@ -271,14 +271,8 @@ function renderCategorias(){
 
   if(month) data = data.filter(r => r.fecha.slice(0,7) === month);
 
-  // Only expenses
-  const map = {};
-  data.forEach(r => {
-    const v = Number(r.monto);
-    if(v >= 0) return;
-    const cat = r.categoria || 'Sin categoría';
-    map[cat] = (map[cat] || 0) + Math.abs(v);
-  });
+  // Gasto neto por categoría (reembolsos restan en categorías reembolsables)
+  const map = netExpenseByCategory(data);
 
   const sorted = Object.entries(map).sort((a,b) => b[1] - a[1]);
   const labels = sorted.map(e => e[0]);
