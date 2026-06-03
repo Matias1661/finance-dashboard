@@ -217,7 +217,10 @@ function renderCatTxTable(data, selectedCat, month){
   // Render transaction table for categorias tab
   // data: all expenses (already filtered by month and excluded categories)
   // selectedCat: category to filter on, or null for all
-  const expenses = data.filter(r => Number(r.monto) < 0);
+  const reimbursable = window.FINANCE_STATE?.reimbursableCategories || [];
+  // Si la categoría seleccionada es reembolsable, mostrar también los ingresos (reembolsos)
+  const isReimbursableCat = selectedCat && reimbursable.includes(selectedCat);
+  const expenses = data.filter(r => Number(r.monto) < 0 || (isReimbursableCat && Number(r.monto) > 0));
   const filtered = selectedCat ? expenses.filter(r => r.categoria === selectedCat) : expenses;
   const sorted   = filtered.sort((a,b) => b.fecha.localeCompare(a.fecha));
 
