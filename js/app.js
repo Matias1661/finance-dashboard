@@ -622,19 +622,15 @@ async function init(){
   } else {
     RAW = rawData.movimientos || [];
     if(window.FINANCE_STATE){
-      window.FINANCE_STATE.inversiones = rawData.inversiones || { capital: [], rendimiento: [] };
+      window.FINANCE_STATE.inversiones  = rawData.inversiones  || { capital: [], rendimiento: [] };
+      window.FINANCE_STATE.generatedAt  = rawData.generated_at || '—';
     }
   }
   if(window.FINANCE_STATE){
     window.FINANCE_STATE.raw = RAW;
   }
 
-  // Fill last-updated header
-  const lastEl = document.getElementById('last-updated');
-  if(lastEl && RAW.length > 0){
-    const latest = RAW.map(r => r.fecha).sort().reverse()[0];
-    lastEl.textContent = 'Actualizado: ' + latest;
-  }
+  // last-updated moved to KPI card
 
   if(typeof populateMonthSelector === 'function') populateMonthSelector(RAW);
   populateTxMonthSelector();
@@ -649,4 +645,5 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
