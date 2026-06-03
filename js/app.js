@@ -408,10 +408,23 @@ function renderInversiones(){
   const miKpi        = latest.myinvestor || 0;
   const pbKpi        = latest.peerberry  || 0;
 
-  const last2 = capitalFilled.slice(-2);
-  const capitalActual   = last2.length >= 1 ? (last2[last2.length-1].peerberry + last2[last2.length-1].myinvestor) : 0;
-  const capitalAnterior = last2.length >= 2 ? (last2[last2.length-2].peerberry + last2[last2.length-2].myinvestor) : 0;
-  const incrementoMes   = capitalActual - capitalAnterior;
+  const last3 = capitalFilled.slice(-3);
+  const MESES_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  function labelMes(isoMes) {
+    if(!isoMes) return '—';
+    const [,m] = isoMes.split('-');
+    return MESES_ES[parseInt(m,10)-1];
+  }
+  // Incremento mes-2 → mes-1
+  const inc1From  = last3.length >= 3 ? ((last3[0].peerberry||0) + (last3[0].myinvestor||0)) : null;
+  const inc1To    = last3.length >= 3 ? ((last3[1].peerberry||0) + (last3[1].myinvestor||0)) : null;
+  const inc1Label = last3.length >= 3 ? `${labelMes(last3[0].mes)} → ${labelMes(last3[1].mes)}` : '—';
+  const inc1Val   = (inc1From !== null && inc1To !== null) ? (inc1To - inc1From) : null;
+  // Incremento mes-1 → mes actual
+  const inc2From  = last3.length >= 2 ? ((last3[last3.length-2].peerberry||0) + (last3[last3.length-2].myinvestor||0)) : null;
+  const inc2To    = last3.length >= 2 ? ((last3[last3.length-1].peerberry||0) + (last3[last3.length-1].myinvestor||0)) : null;
+  const inc2Label = last3.length >= 2 ? `${labelMes(last3[last3.length-2].mes)} → ${labelMes(last3[last3.length-1].mes)}` : '—';
+  const inc2Val   = (inc2From !== null && inc2To !== null) ? (inc2To - inc2From) : null;
 
   const kpisEl = document.getElementById('inv-kpis');
   if(kpisEl){
@@ -429,9 +442,16 @@ function renderInversiones(){
         <div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:var(--amber)">${pbKpi > 0 ? fmt(pbKpi) : '—'}</div>
       </div>
       <div class="card">
-        <div class="card-title">Incremento último mes</div>
-        <div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:${incrementoMes >= 0 ? 'var(--green)' : 'var(--red)'}">
-          ${incrementoMes >= 0 ? '+' : ''}${fmt(incrementoMes)}
+        <div class="card-title">Incrementos</div>
+        <div style="margin-top:6px;font-size:13px;color:var(--text-secondary)">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span>${inc1Label}</span>
+            <span style="font-family:'DM Mono';font-weight:600;color:${inc1Val !== null ? (inc1Val >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--text-secondary)'}">${inc1Val !== null ? (inc1Val >= 0 ? '+' : '') + fmt(inc1Val) : '—'}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <span>${inc2Label}</span>
+            <span style="font-family:'DM Mono';font-weight:600;color:${inc2Val !== null ? (inc2Val >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--text-secondary)'}">${inc2Val !== null ? (inc2Val >= 0 ? '+' : '') + fmt(inc2Val) : '—'}</span>
+          </div>
         </div>
       </div>
     `;
