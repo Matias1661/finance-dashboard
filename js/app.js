@@ -480,6 +480,8 @@ function renderInversiones(){
   const capPB     = capital13.map(d => d.peerberry);
   const capMI     = capital13.map(d => d.myinvestor);
 
+  const capTotal = capital13.map((_, i) => (capPB[i] || 0) + (capMI[i] || 0));
+
   const ctxCap = document.getElementById('chart-inv-capital');
   if(ctxCap){
     if(window.invCapChart) window.invCapChart.destroy();
@@ -493,38 +495,33 @@ function renderInversiones(){
             data: capPB,
             backgroundColor: 'rgba(154,98,0,0.75)',
             borderRadius: 3,
-            stack: 'capital'
+            stack: 'capital',
+            order: 2
           },
           {
             label: 'MyInvestor',
             data: capMI,
             backgroundColor: 'rgba(13,138,82,0.75)',
             borderRadius: 3,
-            stack: 'capital'
+            stack: 'capital',
+            order: 2
+          },
+          {
+            label: 'Total',
+            data: capTotal,
+            type: 'line',
+            borderColor: 'rgba(37,99,190,0.85)',
+            backgroundColor: 'rgba(37,99,190,0.1)',
+            borderWidth: 2,
+            pointRadius: 3,
+            pointBackgroundColor: 'rgba(37,99,190,0.9)',
+            fill: false,
+            tension: 0.3,
+            yAxisID: 'y',
+            order: 1
           }
         ]
       },
-      plugins: [{
-        id: 'stackedTotalLabels',
-        afterDatasetsDraw(chart) {
-          const { ctx, data } = chart;
-          const datasetCount = chart.data.datasets.length;
-          const meta0 = chart.getDatasetMeta(datasetCount - 1);
-          meta0.data.forEach((bar, i) => {
-            let total = 0;
-            for (let d = 0; d < datasetCount; d++) {
-              total += chart.data.datasets[d].data[i] || 0;
-            }
-            ctx.save();
-            ctx.font = '600 11px DM Sans, sans-serif';
-            ctx.fillStyle = '#1a1a18';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'bottom';
-            ctx.fillText(fmt(total), bar.x, bar.y - 3);
-            ctx.restore();
-          });
-        }
-      }],
       options: {
         responsive: true,
         plugins: {
@@ -534,7 +531,6 @@ function renderInversiones(){
             titleColor: '#1a1a18', bodyColor: '#6b6b63',
             callbacks: {
               label: ctx => ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`,
-              footer: items => ` Total: ${fmt(items.reduce((s,i) => s + i.parsed.y, 0))}`
             }
           }
         },
