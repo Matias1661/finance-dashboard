@@ -14,6 +14,7 @@
 - [x] Eje Y del gráfico mensual en EUR
 
 ## Alta prioridad
+- [ ] Panel de revisión de transacciones: vista filtrable de movimientos con categoría "A revisar" o baja confianza, con acción de reclasificación directa desde el dashboard que dispara el workflow `update-sheet-cells.yml`
 - [ ] Insights automáticos: comparación vs mes anterior, alertas de gasto por categoría
 - [ ] KPI de ahorro real incluyendo inversiones (tab Inversiones)
 
