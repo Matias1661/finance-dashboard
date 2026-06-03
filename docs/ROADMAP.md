@@ -8,6 +8,7 @@
 - [x] Tab Categorías: barras horizontales, tabla resumen, lista transacciones, selector mes
 - [x] Tab Transacciones: filtro por mes y categoría
 - [x] Tab Guille: KPIs, chart mixto bar+line, tabla filtrable
+- [x] Gasto neto en categorías reembolsables (Viajes, Club, Combustible, Comer afuera, Salidas, Gastos en conjunto)
 - [x] Header con fecha de última actualización
 - [x] KPI grid responsive (mobile 2 columnas)
 - [x] Eje Y del gráfico mensual en EUR
