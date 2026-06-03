@@ -24,6 +24,7 @@ Output finance_data.json:
 """
 
 import os, json, re
+from datetime import datetime, timezone
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
@@ -266,6 +267,7 @@ if __name__ == "__main__":
             inversiones = {"capital": [], "rendimiento": []}
 
         output = {
+            "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
             "movimientos": movimientos,
             "inversiones": inversiones
         }
@@ -277,3 +279,4 @@ if __name__ == "__main__":
     except Exception as e:
         print(f'Error: {e}')
         raise
+
