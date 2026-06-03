@@ -4,6 +4,8 @@ window.FINANCE_STATE = {
   raw: [],
   inversiones: { capital: [], rendimiento: [] },
   excludedCategories: ['Guille', 'Inversion'],
+  // Categorías donde un ingreso puede ser reembolso de un gasto
+  reimbursableCategories: ['Viajes', 'Club', 'Combustible', 'Comer afuera', 'Salidas', 'Gastos en conjunto'],
   activePeriod: 6,
   activeMonth: null
 };
