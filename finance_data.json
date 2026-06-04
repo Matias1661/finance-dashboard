@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-04 12:18",
+  "generated_at": "2026-06-04 12:29",
   "movimientos": [
     {
       "fecha": "2026-06-03",
@@ -1553,7 +1553,7 @@
       "fecha": "2026-04-06",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 50.0,
-      "categoria": "Guille"
+      "categoria": "Compras"
     },
     {
       "fecha": "2026-04-05",
@@ -4205,7 +4205,7 @@
       "fecha": "2025-12-06",
       "concepto": "WAYLET",
       "monto": -28.32,
-      "categoria": "Combustible"
+      "categoria": "Gastos moto"
     },
     {
       "fecha": "2025-12-06",
@@ -5111,7 +5111,7 @@
       "fecha": "2025-11-06",
       "concepto": "Compra de Prime V",
       "monto": -4.99,
-      "categoria": "Suscripciones"
+      "categoria": "Gastos moto"
     },
     {
       "fecha": "2025-11-06",
@@ -5963,7 +5963,7 @@
       "fecha": "2025-10-07",
       "concepto": "TRANSF. A SU FAVOR",
       "monto": 50.0,
-      "categoria": "Guille"
+      "categoria": "Gastos moto"
     },
     {
       "fecha": "2025-10-07",
@@ -7043,7 +7043,7 @@
       "fecha": "2025-08-26",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 87.5,
-      "categoria": "Guille"
+      "categoria": "Gastos moto"
     },
     {
       "fecha": "2025-08-24",
@@ -7979,7 +7979,7 @@
       "fecha": "2025-07-26",
       "concepto": "HIPER S S REYES H",
       "monto": -10.85,
-      "categoria": "Supermercado"
+      "categoria": "Gastos moto"
     },
     {
       "fecha": "2025-07-25",
@@ -8813,7 +8813,7 @@
       "fecha": "2025-06-27",
       "concepto": "FARMACIA B.CASTEL",
       "monto": -15.94,
-      "categoria": "Compras"
+      "categoria": "Gastos moto"
     },
     {
       "fecha": "2025-06-27",
@@ -9959,7 +9959,7 @@
       "fecha": "2025-05-16",
       "concepto": "BlaBlaCar",
       "monto": -29.59,
-      "categoria": "Guille"
+      "categoria": "Departamento"
     },
     {
       "fecha": "2025-05-16",
@@ -10841,7 +10841,7 @@
       "fecha": "2025-04-18",
       "concepto": "TRANSF. A SU FAVOR",
       "monto": 45.0,
-      "categoria": "Guille"
+      "categoria": "Departamento"
     },
     {
       "fecha": "2025-04-17",
@@ -12185,7 +12185,7 @@
       "fecha": "2025-02-14",
       "concepto": "TRANSFER. EN DIV.",
       "monto": 50.0,
-      "categoria": "Guille"
+      "categoria": "Departamento"
     },
     {
       "fecha": "2025-02-13",
@@ -13991,7 +13991,7 @@
       "fecha": "2024-12-07",
       "concepto": "PARKINGLIBRE SIST",
       "monto": -0.3,
-      "categoria": "Gastos coche"
+      "categoria": "Gastos moto"
     },
     {
       "fecha": "2024-12-06",
