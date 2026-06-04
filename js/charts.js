@@ -86,6 +86,25 @@ function renderKPIs(){
   const lastTx     = raw.length > 0 ? raw.map(r => r.fecha).sort().reverse()[0] : '—';
   const generatedAt = window.FINANCE_STATE?.generatedAt || '—';
 
+  // Count movements pending Claude review
+  const allMovs = window.FINANCE_STATE?.raw || [];
+  const excluded = window.FINANCE_STATE?.excludedCategories || [];
+  const reviewed = window.FINANCE_STATE?.reviewedMovements || [];
+  const reviewedKeys = new Set(reviewed);
+
+  const REVIEW_CATS = ['A revisar', 'Otros', 'Compras'];
+  const REVIEW_CONCEPTS = ['PAYPAL', 'UBR*', 'UBER *', 'AMAZON', 'AMZN', 'WWW.AMAZON'];
+
+  const pendingReview = allMovs.filter(r => {
+    if (excluded.includes(r.categoria)) return false;
+    const key = `${r.fecha}|${r.concepto}|${r.monto}`;
+    if (reviewedKeys.has(key)) return false;
+    const cat = r.categoria || '';
+    const concepto = (r.concepto || '').toUpperCase();
+    return REVIEW_CATS.includes(cat) ||
+           REVIEW_CONCEPTS.some(k => concepto.includes(k));
+  }).length;
+
   el.innerHTML = `
     <div class="card">
       <div class="card-title">Última transacción</div>
@@ -103,6 +122,11 @@ function renderKPIs(){
     </div>
     <div class="card"><div class="card-title">Balance</div><div style="font-size:22px;font-weight:600;color:${netColor}">${formatEUR(net)}</div></div>
     <div class="card"><div class="card-title">Tasa de ahorro</div><div style="font-size:22px;font-weight:600;color:${netColor}">${income > 0 ? ((net/income)*100).toFixed(1) : '0.0'}%</div></div>
+    <div class="card" style="${pendingReview > 0 ? 'border:1.5px solid var(--amber)' : ''}">
+      <div class="card-title">Sin analizar por Claude</div>
+      <div style="font-size:22px;font-weight:600;color:${pendingReview > 0 ? 'var(--amber)' : 'var(--green)'}">${pendingReview}</div>
+      ${pendingReview > 0 ? '<div style="font-size:11px;color:var(--text-secondary);margin-top:6px">Usa el trigger <strong>"Organizar Movimientos"</strong> en el chat de Claude</div>' : '<div style="font-size:11px;color:var(--text-secondary);margin-top:6px">Todo al día</div>'}
+    </div>
   `;
 }
 
