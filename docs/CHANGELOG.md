@@ -76,6 +76,10 @@
 
 ### fix
 - Corregido nombre de hoja en sync_finance_data.py: `FINANZAS_SHEET = "Inversiones"` → `"finanzas"`. El script intentaba leer una hoja inexistente, causando que inversiones (Peerberry y MyInvestor) no se cargaran en finance_data.json.
+## [2026-06-04]
+### Eliminado
+- Gráfico "Rendimiento mensual por plataforma" (chart-inv-pct) eliminado del tab Inversiones. No aportaba valor práctico; se sustituirá en sesión futura por una visualización más útil.
+
 ## [2026-06-02] — Inversiones: datos dinámicos desde el sheet
 
 ### Cambio arquitectónico
