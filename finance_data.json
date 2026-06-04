@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-04 12:07",
+  "generated_at": "2026-06-04 12:18",
   "movimientos": [
     {
       "fecha": "2026-06-03",
@@ -11,7 +11,7 @@
       "fecha": "2026-06-03",
       "concepto": "PAYPAL EUROPE S.",
       "monto": -10.0,
-      "categoria": "A revisar"
+      "categoria": "Suscripciones"
     },
     {
       "fecha": "2026-06-03",
@@ -755,7 +755,7 @@
       "fecha": "2026-05-06",
       "concepto": "PAYPAL EUROPE S.",
       "monto": -10.0,
-      "categoria": "Compras"
+      "categoria": "Suscripciones"
     },
     {
       "fecha": "2026-05-06",
@@ -1649,7 +1649,7 @@
       "fecha": "2026-04-02",
       "concepto": "SERVIMATIC",
       "monto": -0.55,
-      "categoria": "Comer afuera"
+      "categoria": "Suscripciones"
     },
     {
       "fecha": "2026-04-02",
