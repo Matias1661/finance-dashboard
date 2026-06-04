@@ -101,7 +101,7 @@ function renderKPIs(){
     if (excluded.includes(r.categoria)) return false;
     // Suscripciones ya correctas — no revisar
     if (r.categoria === 'Suscripciones') return false;
-    const key = `${r.fecha}|${r.concepto}|${r.monto}`;
+    const key = `${r.fecha}|${r.concepto}|${Number.isInteger(r.monto) ? r.monto + '.0' : r.monto}`;
     if (reviewedKeys.has(key)) return false;
     const cat = r.categoria || '';
     const concepto = (r.concepto || '').toUpperCase();
