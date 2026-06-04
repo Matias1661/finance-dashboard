@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-04 10:14",
+  "generated_at": "2026-06-04 10:26",
   "movimientos": [
     {
       "fecha": "2026-06-02",
@@ -587,7 +587,7 @@
       "fecha": "2026-05-11",
       "concepto": "Cerveceria Jaleo",
       "monto": -8.0,
-      "categoria": "Comer afuera"
+      "categoria": "Viajes"
     },
     {
       "fecha": "2026-05-11",
