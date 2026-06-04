@@ -1,3 +1,25 @@
+## 2026-06-04 — Flujo "Organizar Movimientos"
+
+**Trigger:** escribir "Organizar Movimientos" en el chat de Claude.
+
+**Fases en orden:**
+1. **PayPal** — cruza cada movimiento PayPal no revisado con `from:servicio@paypal.es` en Gmail por fecha; extrae nombre del comercio real; propone categoría
+2. **Uber** — distingue Uber Rides (`from:noreply@uber.com subject:viaje`) de Uber Eats (`subject:Eats`); propone Salidas vs Comer afuera
+3. **Amazon** — cruza `AMAZON*/AMZN/WWW.AMAZON` con `from:auto-confirm@amazon.es`; extrae producto; propone categoría
+4. **Viajes** — cruza movimientos en categorías evaluables con TRIP_WINDOWS (±buffer); propone reclasificación a Viajes agrupada por viaje
+
+**Registro de revisados:** `reviewed_movements.json` en el repo. Clave = `fecha|concepto|monto`. Todo movimiento presentado al usuario (aprobado o rechazado) se marca como revisado.
+
+**KPI en dashboard:** card "Sin analizar por Claude" en el tab Resumen. Muestra en ámbar con borde si hay pendientes, verde si está al día. Incluye el trigger como recordatorio.
+
+**Categorías candidatas por fase:**
+- PayPal: cualquier `PAYPAL*` no en Suscripciones/Viajes/Guille
+- Uber: cualquier `UBR*` o `UBER *` en Comer afuera, Otros, Compras, Salidas
+- Amazon: cualquier `AMAZON*/AMZN/WWW.AMAZON` en Compras, Otros, A revisar
+- Viajes: Otros, A revisar, Combustible, Comer afuera, Salidas, Compras, Tarjeta
+
+---
+
 ## 2026-06-04 — Buffer de 3 días en ventanas de viaje
 
 **Decisión:** `getTripForDate()` extiende el `end` de cada viaje 3 días hacia adelante al evaluar si un movimiento pertenece al viaje.
