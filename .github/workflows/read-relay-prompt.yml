@@ -1,0 +1,40 @@
+name: Read Relay Prompt
+on:
+  workflow_dispatch:
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Read prompt from sheet
+        run: |
+          pip install google-auth google-api-python-client -q
+          python3 << 'PYEOF'
+import json, os
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+
+SA_JSON = json.loads(os.environ['GOOGLE_SERVICE_ACCOUNT'])
+creds = service_account.Credentials.from_service_account_info(SA_JSON, scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"])
+service = build("sheets", "v4", credentials=creds)
+
+result = service.spreadsheets().values().get(
+    spreadsheetId='1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI',
+    range="'prompt relay'!A1:A3"
+).execute()
+
+values = result.get('values', [])
+prompt = values[1][0] if len(values) > 1 and values[1] else ''
+with open('prompt_relay_current.txt', 'w', encoding='utf-8') as f:
+    f.write(prompt)
+print("Prompt length:", len(prompt))
+PYEOF
+        env:
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+      - name: Commit prompt
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+          git add prompt_relay_current.txt
+          git diff --staged --quiet || git commit -m "temp: export relay prompt for review"
+          git push
