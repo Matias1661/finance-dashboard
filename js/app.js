@@ -775,6 +775,17 @@ function populateGuilleMonthSelector(){
 }
 
 async function init(){
+  // Load reviewed movements registry
+  try {
+    const rr = await fetch('reviewed_movements.json?v=' + Date.now());
+    const rrData = await rr.json();
+    if (window.FINANCE_STATE) {
+      window.FINANCE_STATE.reviewedMovements = rrData.reviewed || [];
+    }
+  } catch(e) {
+    if (window.FINANCE_STATE) window.FINANCE_STATE.reviewedMovements = [];
+  }
+
   const res = await fetch(DATA_URL + '?v=' + Date.now());
   RAW = await res.json();
 
