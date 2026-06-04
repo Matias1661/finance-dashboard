@@ -225,7 +225,7 @@ const TRIP_WINDOWS = [
   { name: 'Alojamiento en Francia',   start: '2026-03-25', end: '2026-03-29' },
   { name: '45 Aniversario París',     start: '2026-04-18', end: '2026-04-18' },
   { name: 'Málaga',                   start: '2026-05-01', end: '2026-05-03' },
-  { name: 'Viaje a Portugal',         start: '2026-05-08', end: '2026-05-10' },
+  { name: 'Viaje a Portugal',         start: '2026-05-08', end: '2026-05-11' },
 ];
 
 function tripSubcategory(concepto) {
@@ -238,7 +238,15 @@ function tripSubcategory(concepto) {
 }
 
 function getTripForDate(fecha) {
-  return TRIP_WINDOWS.find(t => fecha >= t.start && fecha <= t.end) || null;
+  const CARD_BUFFER_DAYS = 3;
+  return TRIP_WINDOWS.find(t => {
+    if (fecha < t.start) return false;
+    // Extend end by CARD_BUFFER_DAYS to catch delayed card charges
+    const endDt = new Date(t.end);
+    endDt.setDate(endDt.getDate() + CARD_BUFFER_DAYS);
+    const endBuffered = endDt.toISOString().slice(0, 10);
+    return fecha <= endBuffered;
+  }) || null;
 }
 
 function renderTripBreakdown(data) {
