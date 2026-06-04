@@ -154,6 +154,23 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 
 ---
 
+## Flujo "Organizar Movimientos" — implementado 2026-06-04
+
+**Trigger:** escribir "Organizar Movimientos" en el chat de Claude.
+
+**Qué hace Claude al recibir el trigger:**
+1. Lee `finance_data.json` del repo (GitHub API)
+2. Lee `reviewed_movements.json` del repo — lista de claves `fecha|concepto|monto` ya revisadas
+3. Filtra candidatos no revisados por fase (PayPal, Uber, Amazon, Viajes)
+4. Para PayPal/Uber/Amazon: busca en Gmail el recibo por fecha y remitente
+5. Presenta propuestas al usuario fase a fase, una por una en el chat
+6. Aplica aprobados en batch via `update-sheet-cells.yml`
+7. Actualiza `reviewed_movements.json` con todos los presentados (aprobados y rechazados)
+
+**Registro:** `reviewed_movements.json` — `{ "reviewed": ["fecha|concepto|monto", ...] }`
+
+**KPI:** card "Sin analizar por Claude" en tab Resumen — cuenta movimientos candidatos no en `reviewed_movements.json`
+
 ## Vista ampliada de Viajes — implementado 2026-06-04
 
 **Trigger para iniciar:** "Implementa la vista ampliada de Viajes en el tab Categorías"
