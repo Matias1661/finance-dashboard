@@ -1,3 +1,14 @@
+## 2026-06-04 — Flujo "Organizar Movimientos" + KPI pendientes
+
+### feat
+- Trigger "Organizar Movimientos" en el chat de Claude ejecuta flujo de 4 fases: PayPal+Gmail, Uber, Amazon, Viajes
+- `reviewed_movements.json` registra qué movimientos ya fueron presentados al usuario — persiste entre sesiones
+- KPI "Sin analizar por Claude" en tab Resumen: muestra en ámbar con borde si hay pendientes, verde si está al día
+- Al iniciar el dashboard se carga `reviewed_movements.json` para el cálculo del KPI
+- El KPI incluye el trigger como recordatorio inline
+
+---
+
 ## 2026-06-04 — Vista ampliada de Viajes en tab Categorías
 
 ### feat
