@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-03 16:42",
+  "generated_at": "2026-06-04 09:42",
   "movimientos": [
     {
       "fecha": "2026-06-02",
@@ -3995,7 +3995,7 @@
       "fecha": "2025-12-13",
       "concepto": "PARKIMETER",
       "monto": -12.06,
-      "categoria": "Gastos coche"
+      "categoria": "Viajes"
     },
     {
       "fecha": "2025-12-13",
@@ -4055,7 +4055,7 @@
       "fecha": "2025-12-10",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 45.0,
-      "categoria": "Guille"
+      "categoria": "Viajes"
     },
     {
       "fecha": "2025-12-10",
@@ -4103,7 +4103,7 @@
       "fecha": "2025-12-09",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 50.0,
-      "categoria": "Guille"
+      "categoria": "Viajes"
     },
     {
       "fecha": "2025-12-09",
@@ -5081,7 +5081,7 @@
       "fecha": "2025-11-06",
       "concepto": "AYUNTAMIENTO JAEN",
       "monto": -414.65,
-      "categoria": "Guille"
+      "categoria": "Viajes"
     },
     {
       "fecha": "2025-11-06",
@@ -5417,7 +5417,7 @@
       "fecha": "2025-10-27",
       "concepto": "SANSE I",
       "monto": -38.77,
-      "categoria": "Combustible"
+      "categoria": "Viajes"
     },
     {
       "fecha": "2025-10-27",
@@ -5435,7 +5435,7 @@
       "fecha": "2025-10-27",
       "concepto": "SERVIMATIC S.A",
       "monto": -0.9,
-      "categoria": "Comer afuera"
+      "categoria": "Viajes"
     },
     {
       "fecha": "2025-10-27",
@@ -5549,7 +5549,7 @@
       "fecha": "2025-10-24",
       "concepto": "SERVIMATIC S.A",
       "monto": -0.5,
-      "categoria": "Comer afuera"
+      "categoria": "Viajes"
     },
     {
       "fecha": "2025-10-24",
@@ -6551,7 +6551,7 @@
       "fecha": "2025-09-13",
       "concepto": "SERVIMATIC S.A",
       "monto": -0.5,
-      "categoria": "Comer afuera"
+      "categoria": "Viajes"
     },
     {
       "fecha": "2025-09-13",
@@ -8297,7 +8297,7 @@
       "fecha": "2025-07-12",
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
-      "categoria": "Suscripciones"
+      "categoria": "Viajes"
     },
     {
       "fecha": "2025-07-11",
