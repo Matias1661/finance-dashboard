@@ -124,8 +124,6 @@ function renderKPIs(){
         <div style="display:flex;justify-content:space-between;margin-top:4px"><span>MyInvestor</span><span style="font-family:'DM Mono'">${formatEUR(invMyinvestor)}</span></div>
       </div>
     </div>
-    <div class="card"><div class="card-title">Balance</div><div style="font-size:22px;font-weight:600;color:${netColor}">${formatEUR(net)}</div></div>
-    <div class="card"><div class="card-title">Tasa de ahorro</div><div style="font-size:22px;font-weight:600;color:${netColor}">${income > 0 ? ((net/income)*100).toFixed(1) : '0.0'}%</div></div>
     <div class="card" style="${pendingReview > 0 ? 'border:1.5px solid var(--amber)' : ''}">
       <div class="card-title">Sin analizar por Claude</div>
       <div style="font-size:22px;font-weight:600;color:${pendingReview > 0 ? 'var(--amber)' : 'var(--green)'}">${pendingReview}</div>
