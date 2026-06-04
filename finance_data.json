@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-04 12:50",
+  "generated_at": "2026-06-04 12:58",
   "movimientos": [
     {
       "fecha": "2026-06-03",
@@ -2243,7 +2243,7 @@
       "fecha": "2026-03-03",
       "concepto": "TRANSF. A SU FAVOR",
       "monto": 50.0,
-      "categoria": "Guille"
+      "categoria": "Tarjeta"
     },
     {
       "fecha": "2026-03-03",
@@ -3269,13 +3269,13 @@
       "fecha": "2026-01-26",
       "concepto": "ARBITRADE CENTRO",
       "monto": -1.25,
-      "categoria": "Otros"
+      "categoria": "Combustible"
     },
     {
       "fecha": "2026-01-26",
       "concepto": "BIZUM RECIBIDO",
       "monto": 40.0,
-      "categoria": "Guille"
+      "categoria": "Comer afuera"
     },
     {
       "fecha": "2026-01-25",
@@ -3317,7 +3317,7 @@
       "fecha": "2026-01-24",
       "concepto": "SERVIMATIC S.A",
       "monto": -0.55,
-      "categoria": "Comer afuera"
+      "categoria": "Otros"
     },
     {
       "fecha": "2026-01-23",
@@ -3737,7 +3737,7 @@
       "fecha": "2026-01-02",
       "concepto": "NORAUTO 00321 TEF",
       "monto": -126.43,
-      "categoria": "Gastos coche"
+      "categoria": "Comer afuera"
     },
     {
       "fecha": "2026-01-02",
