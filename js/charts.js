@@ -92,8 +92,10 @@ function renderKPIs(){
   const reviewed = window.FINANCE_STATE?.reviewedMovements || [];
   const reviewedKeys = new Set(reviewed);
 
-  const REVIEW_CATS = ['A revisar', 'Otros', 'Compras'];
-  const REVIEW_CONCEPTS = ['PAYPAL', 'UBR*', 'UBER *', 'AMAZON', 'AMZN', 'WWW.AMAZON'];
+  // Categorías siempre candidatas a revisión
+  const ALWAYS_REVIEW = ['A revisar', 'Otros'];
+  // Candidatas solo si el concepto es de un comercio con cruce Gmail posible
+  const CONCEPT_REVIEW = ['PAYPAL', 'UBR*', 'UBER *', 'UBER   *', 'AMAZON', 'AMZN', 'WWW.AMAZON'];
 
   const pendingReview = allMovs.filter(r => {
     if (excluded.includes(r.categoria)) return false;
@@ -101,8 +103,8 @@ function renderKPIs(){
     if (reviewedKeys.has(key)) return false;
     const cat = r.categoria || '';
     const concepto = (r.concepto || '').toUpperCase();
-    return REVIEW_CATS.includes(cat) ||
-           REVIEW_CONCEPTS.some(k => concepto.includes(k));
+    return ALWAYS_REVIEW.includes(cat) ||
+           CONCEPT_REVIEW.some(k => concepto.includes(k));
   }).length;
 
   el.innerHTML = `
