@@ -673,54 +673,6 @@ function renderInversiones(){
     });
   }
 
-  // ── Gráfico 2: rendimiento % ──
-  const rend13    = rendimento.slice(-13);
-  const pctLabels = rend13.map(d => formatMesLabel(d.mes));
-  const pctPB     = rend13.map(d => d.peerberry);
-  const pctMI     = rend13.map(d => d.myinvestor);
-
-  const ctxPct = document.getElementById('chart-inv-pct');
-  if(ctxPct){
-    if(window.invPctChart) window.invPctChart.destroy();
-    window.invPctChart = new Chart(ctxPct, {
-      type: 'bar',
-      data: {
-        labels: pctLabels,
-        datasets: [
-          {
-            label: 'Peerberry %',
-            data: pctPB,
-            backgroundColor: pctPB.map(v => v >= 0 ? 'rgba(154,98,0,0.75)' : 'rgba(154,98,0,0.35)'),
-            borderRadius: 3
-          },
-          {
-            label: 'MyInvestor %',
-            data: pctMI,
-            backgroundColor: pctMI.map(v => v >= 0 ? 'rgba(13,138,82,0.75)' : 'rgba(201,74,48,0.75)'),
-            borderRadius: 3
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 } },
-          tooltip: {
-            backgroundColor: '#ffffff', borderColor: 'rgba(0,0,0,0.12)', borderWidth: 1,
-            titleColor: '#1a1a18', bodyColor: '#6b6b63',
-            callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}` }
-          }
-        },
-        scales: {
-          x: { grid: { display: false }, ticks: { font: { size: 11 } } },
-          y: {
-            grid: { color: 'rgba(0,0,0,0.05)' },
-            ticks: { font: { size: 11 }, callback: v => fmtPct(v) }
-          }
-        }
-      }
-    });
-  }
 }
 
 function switchTab(tab, el){
