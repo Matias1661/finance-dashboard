@@ -154,7 +154,7 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 
 ---
 
-## Vista ampliada de Viajes — especificación pendiente de implementar
+## Vista ampliada de Viajes — implementado 2026-06-04
 
 **Trigger para iniciar:** "Implementa la vista ampliada de Viajes en el tab Categorías"
 
