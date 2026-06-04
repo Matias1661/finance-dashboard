@@ -99,6 +99,8 @@ function renderKPIs(){
 
   const pendingReview = allMovs.filter(r => {
     if (excluded.includes(r.categoria)) return false;
+    // Suscripciones ya correctas — no revisar
+    if (r.categoria === 'Suscripciones') return false;
     const key = `${r.fecha}|${r.concepto}|${r.monto}`;
     if (reviewedKeys.has(key)) return false;
     const cat = r.categoria || '';
