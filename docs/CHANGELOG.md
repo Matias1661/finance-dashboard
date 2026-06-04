@@ -1,3 +1,15 @@
+## 2026-06-04 — Vista ampliada de Viajes en tab Categorías
+
+### feat
+- Al filtrar por "Viajes" en el tab Categorías aparece una sección con desglose por viaje
+- Cada viaje muestra: nombre, fechas, total gastado, desglose por subcategoría (Combustible, Peajes, Alojamiento, Transporte, Comida y otros) y lista colapsable de transacciones individuales
+- `TRIP_WINDOWS` en `app.js` define los viajes conocidos — actualizar manualmente al añadir nuevos
+- `tripSubcategory(concepto)` infiere la subcategoría a partir del concepto del movimiento
+- `renderTripBreakdown(data)` renderiza las cards, respeta el filtro de mes activo
+- Contenedor `#trip-breakdown` añadido en `index.html`, oculto por defecto
+
+---
+
 ## 2026-06-03 — Gasto neto en categorías reembolsables
 
 ### feat
