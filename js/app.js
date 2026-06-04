@@ -213,6 +213,116 @@ function renderGuille(){
   }
 }
 
+
+// ── Viajes ────────────────────────────────────────────────────────────────────
+
+const TRIP_WINDOWS = [
+  { name: 'Gijón',                    start: '2025-07-06', end: '2025-07-11' },
+  { name: 'Spain Run',                start: '2025-09-12', end: '2025-09-14' },
+  { name: 'Hotel Natursun',           start: '2025-10-25', end: '2025-10-26' },
+  { name: 'Bagger Racing',            start: '2025-11-07', end: '2025-11-09' },
+  { name: 'Toledo',                   start: '2025-12-08', end: '2025-12-14' },
+  { name: 'Alojamiento en Francia',   start: '2026-03-25', end: '2026-03-29' },
+  { name: '45 Aniversario París',     start: '2026-04-18', end: '2026-04-18' },
+  { name: 'Málaga',                   start: '2026-05-01', end: '2026-05-03' },
+  { name: 'Viaje a Portugal',         start: '2026-05-08', end: '2026-05-10' },
+];
+
+function tripSubcategory(concepto) {
+  const c = (concepto || '').toLowerCase();
+  if (/repsol|shell|esso|moeve|sanse|ballenoil|p\.serv|certif|galp/.test(c)) return 'Combustible';
+  if (/autopista|bidegi|cofiroute|atlandes|autoroutes|ap-/.test(c))           return 'Peajes';
+  if (/hotel|airbnb|hostal|apartamento|booking/.test(c))                      return 'Alojamiento';
+  if (/iberia|vueling|ryanair|renfe|ouigo|blabla|uber|parking/.test(c))       return 'Transporte';
+  return 'Comida y otros';
+}
+
+function getTripForDate(fecha) {
+  return TRIP_WINDOWS.find(t => fecha >= t.start && fecha <= t.end) || null;
+}
+
+function renderTripBreakdown(data) {
+  const container = document.getElementById('trip-breakdown');
+  if (!container) return;
+
+  // Solo movimientos de Viajes con monto negativo
+  const viajes = data.filter(r => r.categoria === 'Viajes' && Number(r.monto) < 0);
+
+  // Agrupar por viaje
+  const byTrip = {};
+  TRIP_WINDOWS.forEach(t => { byTrip[t.name] = { trip: t, movs: [] }; });
+
+  viajes.forEach(r => {
+    const trip = getTripForDate(r.fecha);
+    if (trip) byTrip[trip.name].movs.push(r);
+  });
+
+  // Filtrar viajes sin movimientos en el período
+  const activeTrips = TRIP_WINDOWS.filter(t => byTrip[t.name].movs.length > 0);
+
+  if (activeTrips.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const fmtEUR = v => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(v);
+
+  container.innerHTML = activeTrips.map(t => {
+    const movs = byTrip[t.name].movs.sort((a, b) => a.fecha.localeCompare(b.fecha));
+    const total = movs.reduce((s, r) => s + Math.abs(Number(r.monto)), 0);
+
+    // Subcategorías
+    const subcats = {};
+    movs.forEach(r => {
+      const sub = tripSubcategory(r.concepto);
+      subcats[sub] = (subcats[sub] || 0) + Math.abs(Number(r.monto));
+    });
+    const subcatRows = Object.entries(subcats)
+      .sort((a, b) => b[1] - a[1])
+      .map(([sub, amt]) => `
+        <tr>
+          <td style="color:var(--text-secondary);font-size:13px">${sub}</td>
+          <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:var(--red)">${fmtEUR(-amt)}</td>
+        </tr>`).join('');
+
+    // Transacciones individuales (colapsables)
+    const txRows = movs.map(r => {
+      const v = Number(r.monto);
+      return `<tr>
+        <td style="font-family:'DM Mono';font-size:12px;color:var(--text-secondary)">${r.fecha}</td>
+        <td style="font-size:12px">${r.concepto}</td>
+        <td style="text-align:right;font-family:'DM Mono';font-size:12px;color:${v >= 0 ? 'var(--green)' : 'var(--red)'}">${fmtEUR(v)}</td>
+      </tr>`;
+    }).join('');
+
+    const tripId = t.name.replace(/[^a-z0-9]/gi, '_');
+
+    return `
+      <div class="card" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <div>
+            <div style="font-weight:600;font-size:15px">${t.name}</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:2px;font-family:'DM Mono'">${t.start} → ${t.end}</div>
+          </div>
+          <div style="font-size:18px;font-weight:600;color:var(--red)">${fmtEUR(-total)}</div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:10px">
+          <tbody>${subcatRows}</tbody>
+        </table>
+        <button
+          onclick="document.getElementById('trip-tx-${tripId}').style.display = document.getElementById('trip-tx-${tripId}').style.display === 'none' ? '' : 'none'"
+          style="font-size:12px;padding:3px 12px;border:1px solid rgba(0,0,0,0.15);border-radius:6px;background:#fff;cursor:pointer;color:var(--text-secondary)">
+          Ver ${movs.length} transacciones
+        </button>
+        <div id="trip-tx-${tripId}" style="display:none;margin-top:10px">
+          <table style="width:100%;border-collapse:collapse">
+            <tbody>${txRows}</tbody>
+          </table>
+        </div>
+      </div>`;
+  }).join('');
+}
+
 function renderCatTxTable(data, selectedCat, month){
   // Render transaction table for categorias tab
   // data: all expenses (already filtered by month and excluded categories)
@@ -376,6 +486,18 @@ function renderCategorias(){
 
   // --- Tabla de transacciones ---
   renderCatTxTable(data, activeCatBarFilter, month);
+
+  // --- Vista ampliada de Viajes ---
+  const tripSection = document.getElementById('trip-breakdown');
+  if (tripSection) {
+    if (activeCatBarFilter === 'Viajes') {
+      tripSection.style.display = '';
+      renderTripBreakdown(data);
+    } else {
+      tripSection.style.display = 'none';
+      tripSection.innerHTML = '';
+    }
+  }
 }
 
 
