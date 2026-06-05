@@ -1,3 +1,11 @@
+## 2026-06-05 — Enriquecimiento de Nota dentro del flujo "Organizar Movimientos"
+
+El paso de generar la **Nota (col K)** pasa a ser parte del flujo "Organizar Movimientos" (paso 7), no solo un backfill puntual. Para cada movimiento procesado (prioridad *Compras*): Amazon→producto en Gmail; si no, recibo del comercio en Gmail; si no, búsqueda web de la tienda; si nada, dejar en blanco. Se escribe en `Movimientos!K{row}` con RAW.
+
+**Corrección puntual:** el movimiento `PAYPAL EUROPE` -10,00 (Microsoft 365 Personal, fila 279) se recategorizó de *Compras* a **Suscripciones**.
+
+---
+
 ## 2026-06-05 — Campo Nota en movimientos
 
 **Qué:** nueva columna **K = "Nota"** en la hoja Movimientos, texto libre y editable a mano. Se muestra en las tablas de transacciones (tab Categorías y explorador), pensada sobre todo para identificar qué fue cada compra al filtrar por *Compras*.
