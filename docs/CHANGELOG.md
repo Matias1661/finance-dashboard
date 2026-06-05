@@ -1,3 +1,15 @@
+## 2026-06-05 — Campo Nota en movimientos
+
+### feat
+- Columna **K "Nota"** en hoja Movimientos: texto libre por movimiento, visible en tablas de transacciones (tab Categorías y explorador principal)
+- `sync_finance_data.py` mapea la cabecera "nota" e incluye `nota` en cada movimiento de `finance_data.json`
+- Backfill de notas en *Compras* de los últimos 3 meses, enriquecidas cruzando con Gmail (productos Amazon, recibos) y búsqueda web de tiendas
+
+### fix
+- Restaurada la columna E (filtro de positivos para gráficos) tras sobrescritura accidental: valores recompuestos como importe>0 ? importe : 0. Documentado que E–J están en uso y K es la primera columna libre
+
+---
+
 ## 2026-06-04 — Flujo "Organizar Movimientos" + KPI pendientes
 
 ### feat
