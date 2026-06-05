@@ -1,6 +1,30 @@
 {
-  "generated_at": "2026-06-05 12:52",
+  "generated_at": "2026-06-05 14:08",
   "movimientos": [
+    {
+      "fecha": "2026-06-04",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50.0,
+      "categoria": "Guille"
+    },
+    {
+      "fecha": "2026-06-04",
+      "concepto": "RECIBO VIVAGYM",
+      "monto": -34.9,
+      "categoria": "Suscripciones"
+    },
+    {
+      "fecha": "2026-06-04",
+      "concepto": "AMAZON.ES",
+      "monto": -6.49,
+      "categoria": "Compras"
+    },
+    {
+      "fecha": "2026-06-04",
+      "concepto": "Wellhub Matias Or",
+      "monto": -22.99,
+      "categoria": "Suscripciones"
+    },
     {
       "fecha": "2026-06-03",
       "concepto": "TRANSF. A SU FAVOR",
