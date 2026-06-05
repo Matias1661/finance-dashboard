@@ -1,3 +1,20 @@
+## 2026-06-05 — Mejoras prompt de categorización Relay
+
+Basado en análisis de 2393 movimientos reales. Cambios aplicados a `prompt_relay_current.txt` y despachados vía `update-relay-prompt.yml` → `'prompt relay'!A2` del Sheet.
+
+| # | Tipo | Cambio |
+|---|---|---|
+| 1 | Defecto | SANSE I quitado de Supermercado; añadido como Caso especial con regla de desambiguación por contexto |
+| 2 | Defecto | MOVILIDAD ACM movido de Suscripciones → Gastos coche |
+| 3 | Faltante | SANITAS añadido a Suscripciones |
+| 4 | Faltante | DIGI SPAIN añadido a Suscripciones |
+| 5 | Faltante | CUSTODIA.FONDOS añadido a Inversion |
+| 6 | Faltante | PAYPAL EUROPE: Caso especial — ≤15€ recurrente → Suscripciones; variable → Compras |
+
+Pendiente (requiere decisión sobre nueva categoría): Salud (FARMACIA, ADENTIS, ESTETICA).
+
+---
+
 ## 2026-06-05 — Enriquecimiento de Nota dentro del flujo "Organizar Movimientos"
 
 El paso de generar la **Nota (col K)** pasa a ser parte del flujo "Organizar Movimientos" (paso 7), no solo un backfill puntual. Para cada movimiento procesado (prioridad *Compras*): Amazon→producto en Gmail; si no, recibo del comercio en Gmail; si no, búsqueda web de la tienda; si nada, dejar en blanco. Se escribe en `Movimientos!K{row}` con RAW.
