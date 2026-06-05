@@ -28,7 +28,7 @@ function renderTransacciones(){
   data = data.sort((a,b) => b.fecha.localeCompare(a.fecha));
 
   if(data.length === 0){
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);padding:24px">Sin transacciones</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);padding:24px">Sin transacciones</td></tr>';
     return;
   }
 
@@ -38,6 +38,7 @@ function renderTransacciones(){
     return `<tr>
       <td style="font-family:'DM Mono';font-size:13px">${r.fecha}</td>
       <td>${r.concepto}</td>
+      <td style="color:var(--text-secondary);font-size:13px">${r.nota || ''}</td>
       <td><span class="cat-badge">${r.categoria || '—'}</span></td>
       <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:${color}">${formatEUR(v)}</td>
     </tr>`;
@@ -360,7 +361,7 @@ function renderCatTxTable(data, selectedCat, month){
   if(!tbody) return;
 
   if(sorted.length === 0){
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);padding:24px">Sin transacciones</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);padding:24px">Sin transacciones</td></tr>';
     return;
   }
 
@@ -369,6 +370,7 @@ function renderCatTxTable(data, selectedCat, month){
     return `<tr>
       <td style="font-family:'DM Mono';font-size:13px">${r.fecha}</td>
       <td>${r.concepto}</td>
+      <td style="color:var(--text-secondary);font-size:13px">${r.nota || ''}</td>
       <td><span class="cat-badge">${r.categoria || '—'}</span></td>
       <td style="text-align:right;font-family:'DM Mono';font-size:13px;color:${v >= 0 ? 'var(--green)' : 'var(--red)'}">${new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(v)}</td>
     </tr>`;
