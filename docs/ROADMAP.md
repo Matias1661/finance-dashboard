@@ -17,7 +17,9 @@
 - [x] Flujo "Organizar Movimientos": PayPal+Gmail, Uber, Amazon, Viajes — trigger en chat, registro en reviewed_movements.json, KPI en dashboard
 - [ ] Panel de revisión de transacciones: vista filtrable de movimientos con categoría "A revisar" o baja confianza, con acción de reclasificación directa desde el dashboard que dispara el workflow `update-sheet-cells.yml`
 - [x] Vista ampliada de Viajes en tab Categorías (desglose por viaje, subcategorías, transacciones colapsables)
+- [x] Campo Nota (col K) por movimiento + enriquecimiento automático de Compras (Amazon/Gmail/web); backfill últimos 3 meses
 - [ ] Insights automáticos: comparación vs mes anterior, alertas de gasto por categoría
+- [ ] Enriquecimiento de Nota como fase del flujo "Organizar Movimientos" (de aquí en adelante, no solo backfill)
 - [ ] KPI de ahorro real incluyendo inversiones (tab Inversiones)
 
 ## Prioridad media
