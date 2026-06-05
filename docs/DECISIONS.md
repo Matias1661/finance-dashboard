@@ -1,3 +1,21 @@
+## 2026-06-05 — Campo Nota en movimientos
+
+**Qué:** nueva columna **K = "Nota"** en la hoja Movimientos, texto libre y editable a mano. Se muestra en las tablas de transacciones (tab Categorías y explorador), pensada sobre todo para identificar qué fue cada compra al filtrar por *Compras*.
+
+**Alcance:** el campo aplica a todas las categorías. El enriquecimiento automático (lo rellena Claude) aplica solo a *Compras*.
+
+**Lógica de enriquecimiento (Compras):**
+1. Si el cargo es Amazon → buscar el producto en Gmail (`from:auto-confirm@amazon.es` / `confirmar-envio@amazon.es` / `digital-no-reply@amazon.es`) por fecha y casar por importe.
+2. Si no es Amazon → buscar recibo del comercio en Gmail por ventana de fecha.
+3. Si no hay nada en Gmail → búsqueda web de la tienda para identificarla.
+4. Si nada concluyente → dejar la nota en blanco (no inventar).
+
+**Columna E (importante):** E NO es libre. Es un filtro de valores positivos (= importe si es positivo, si no 0) usado para gráficos dentro de la hoja; no se usa en el dashboard. En esta sesión se sobrescribió E por error y se restauró por cálculo (importe>0 ? importe : 0). **La primera columna libre es K.** Cualquier campo nuevo va de K en adelante, nunca E–J.
+
+**Sync:** `build_movimientos` mapea la cabecera "nota"/"notas"/"note"/"detalle" a `nota` en cada registro del JSON. El mapeo es por nombre de cabecera, no por letra de columna.
+
+---
+
 ## 2026-06-04 — Flujo "Organizar Movimientos"
 
 **Trigger:** escribir "Organizar Movimientos" en el chat de Claude.
