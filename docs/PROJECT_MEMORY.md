@@ -172,7 +172,15 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 4. Para PayPal/Uber/Amazon: busca en Gmail el recibo por fecha y remitente
 5. Presenta propuestas al usuario fase a fase, una por una en el chat
 6. Aplica aprobados en batch via `update-sheet-cells.yml`
-7. Actualiza `reviewed_movements.json` con todos los presentados (aprobados y rechazados)
+7. **Enriquecimiento de Nota (col K)** — para los movimientos procesados (prioridad *Compras*), genera la nota descriptiva y la escribe en la columna K:
+   a. Si es Amazon → buscar el producto en Gmail (`auto-confirm@amazon.es`, `confirmar-envio@amazon.es`, `order-update@amazon.es`, `digital-no-reply@amazon.es` para Kindle) y casar por fecha/importe.
+   b. Si no es Amazon → buscar recibo del comercio en Gmail por ventana de fecha (±pocos días).
+   c. Si no hay nada en Gmail → búsqueda web para identificar la tienda/marca.
+   d. Si nada concluyente → dejar la nota en blanco (no inventar).
+   Escritura: `update-sheet-cells.yml`, rango `Movimientos!K{row}`, texto plano (RAW). `row = json_idx + 2`.
+8. Actualiza `reviewed_movements.json` con todos los presentados (aprobados y rechazados)
+
+**Nota sobre columnas:** la categoría se escribe en `D{row}`, la nota en `K{row}`. Nunca usar E–J (en uso; E = filtro de positivos "Ingreso").
 
 **Registro:** `reviewed_movements.json` — `{ "reviewed": ["fecha|concepto|monto", ...] }`
 
