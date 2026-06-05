@@ -33,6 +33,12 @@ El paso de generar la **Nota (col K)** pasa a ser parte del flujo "Organizar Mov
 2. **Uber** — distingue Uber Rides (`from:noreply@uber.com subject:viaje`) de Uber Eats (`subject:Eats`); propone Salidas vs Comer afuera
 3. **Amazon** — cruza `AMAZON*/AMZN/WWW.AMAZON` con `from:auto-confirm@amazon.es`; extrae producto; propone categoría
 4. **Viajes** — cruza movimientos en categorías evaluables con TRIP_WINDOWS (±buffer); propone reclasificación a Viajes agrupada por viaje
+5. **Notas (col K)** — enriquece la nota descriptiva de cada movimiento procesado, con prioridad en *Compras*. Lógica en cascada:
+   a. **Amazon** → buscar el producto en Gmail (`auto-confirm@amazon.es`, `confirmar-envio@amazon.es`, `order-update@amazon.es`, `digital-no-reply@amazon.es` para Kindle); casar por fecha/importe; nota = nombre del producto.
+   b. **No-Amazon** → buscar recibo del comercio en Gmail por ventana de fecha (±pocos días); nota = descripción del recibo.
+   c. **Sin recibo** → búsqueda web del comercio para identificar qué es; nota = identificación de la tienda/marca.
+   d. **Nada concluyente** → nota en blanco (no inventar).
+   Escritura: `update-sheet-cells.yml`, rango `Movimientos!K{row}`, texto plano (RAW). Movimientos no-compra (transferencias, reintegros, Bizum P2P) reciben nota descriptiva breve cuando aporta ("Reintegro en cajero", "Transferencia recibida").
 
 **Registro de revisados:** `reviewed_movements.json` en el repo. Clave = `fecha|concepto|monto`. Todo movimiento presentado al usuario (aprobado o rechazado) se marca como revisado.
 
