@@ -1,3 +1,15 @@
+## 2026-06-05 — Mejoras prompt de categorización Relay
+
+### change
+- `Suscripciones`: añadidos SANITAS (seguro médico) y DIGI SPAIN (telco)
+- `Suscripciones`: eliminado MOVILIDAD ACM (era incorrecto)
+- `Gastos coche`: añadido MOVILIDAD ACM (parking/movilidad)
+- `Inversion`: añadido CUSTODIA.FONDOS (comisión custodia de fondos)
+- `Supermercado`: eliminado SANSE I (era ambiguo con Combustible)
+- `Casos especiales`: SANSE I → Combustible por defecto, Supermercado si contexto de alimentación; PAYPAL EUROPE ≤15€ recurrente → Suscripciones
+
+---
+
 ## 2026-06-05 — Notas en el flujo + correcciones
 
 ### change
