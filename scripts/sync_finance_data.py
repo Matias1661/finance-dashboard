@@ -124,6 +124,7 @@ def build_movimientos(rows):
         elif h in ("concepto", "descripcion", "description"): col_map["concepto"] = i
         elif h in ("importe", "monto", "amount", "valor"):    col_map["monto"] = i
         elif h in ("categoria", "categoría", "category"):     col_map["categoria"] = i
+        elif h in ("nota", "notas", "note", "detalle"):        col_map["nota"] = i
 
     records = []
     for row in rows[1:]:
@@ -137,6 +138,7 @@ def build_movimientos(rows):
         concepto  = (get("concepto") or "").strip()
         monto     = parse_amount(get("monto"))
         categoria = (get("categoria") or "").strip()
+        nota      = (get("nota") or "").strip()
 
         if not fecha or monto is None:
             continue
@@ -145,7 +147,8 @@ def build_movimientos(rows):
             "fecha":     fecha,
             "concepto":  concepto,
             "monto":     monto,
-            "categoria": categoria or None
+            "categoria": categoria or None,
+            "nota":      nota or None
         })
 
     records.sort(key=lambda r: r["fecha"], reverse=True)
