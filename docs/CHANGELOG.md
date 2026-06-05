@@ -1,3 +1,11 @@
+## 2026-06-05 — Notas en el flujo + correcciones
+
+### change
+- Fase 5 "Notas (col K)" añadida formalmente al flujo "Organizar Movimientos": enriquecimiento en cascada Amazon→Gmail / recibo→Gmail / tienda→web / blanco
+- Movimiento Microsoft 365 (PAYPAL EUROPE, fila 279) reclasificado de Compras a Suscripciones
+
+---
+
 ## 2026-06-05 — Nota en el flujo + recategorización Microsoft
 
 ### feat
