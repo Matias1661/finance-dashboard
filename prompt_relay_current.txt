@@ -30,11 +30,11 @@ Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, 
 |---|---|
 | Combustible | REPSOL, SHELL, SANSE I, BALLENOIL, CEPSA, BP, MOEVE, GALP, BONIF., CEDIPSA, BALLENO IL, E.S., EESS |
 | Comer afuera | UBER EATS, SERVIMATIC, UBR* PENDING.UBER (importes pequeños) |
-| Suscripciones | APPLE.COM/BILL, YOIGO, SKYSHOWTIME, PADDLE.NET* RELAY, Wellhub, BIT2ME, OPENAI, NOTION LABS, MOVILIDAD ACM, UBER*ONE MEMBE |
-| Supermercado | MERCADONA, LIDL, HIPER S S REYES, MI ALCAMPO, CARREF, SANSE I (compras de super) |
-| Gastos coche | VOLKSWAGEN RENTIN, NORAUTO, PARKING, ITV, DGT SANCIONES, AUTOPISTA, ARBITRADE CENTRO, SOBRIAUTO, NYX*BP, TELPARK, OPERATIVA DE AUTO, SEGURCAIXA |
+| Suscripciones | APPLE.COM/BILL, YOIGO, SKYSHOWTIME, PADDLE.NET* RELAY, Wellhub, BIT2ME, OPENAI, NOTION LABS, UBER*ONE MEMBE, SANITAS, DIGI SPAIN |
+| Supermercado | MERCADONA, LIDL, HIPER S S REYES, MI ALCAMPO, CARREF |
+| Gastos coche | VOLKSWAGEN RENTIN, NORAUTO, PARKING, ITV, DGT SANCIONES, AUTOPISTA, ARBITRADE CENTRO, SOBRIAUTO, NYX*BP, TELPARK, OPERATIVA DE AUTO, SEGURCAIXA, MOVILIDAD ACM |
 | Tarjeta | T. VISA CLASSIC, CAIXABANK PAYMENT, MYCARD, Oney Pago aplazad, FINDIRECT (SEQURA), SEQURA |
-| Inversion | MyInvestor, Peerberry, BingX, DEPOSITO A LA CUE, CONSTIT. PRESTAMO, Inversiones, Aportacion Carter, TRASPASO DONATIVO, PAG NOMINAS (cuando es inversión) |
+| Inversion | MyInvestor, Peerberry, BingX, DEPOSITO A LA CUE, CONSTIT. PRESTAMO, Inversiones, Aportacion Carter, TRASPASO DONATIVO, PAG NOMINAS (cuando es inversión), CUSTODIA.FONDOS |
 
 ---
 
@@ -74,6 +74,8 @@ Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, 
 ## CASOS ESPECIALES
 
 - **TRANSFER INMEDIATA / TRASPASO con importe negativo** → Guille (pago a pareja)
+- **SANSE I** → Combustible por defecto (es una gasolinera); Supermercado solo si el importe y contexto indican compra de alimentación sin indicios de repostaje
+- **PAYPAL EUROPE** → si el importe es ≤15 € y el mismo importe ya apareció en meses anteriores (recurrente) → Suscripciones; si el importe es variable o pago único → Compras
 - **TRANSFER INMEDIATA / TRASPASO con importe positivo** → Guille (ingreso de pareja) o Inversion si el concepto lo indica
 - **BIZUM ENVIADO** → según contexto: Compras, Salidas, Club, Guille, Departamento
 - **BIZUM RECIBIDO** → según contexto: Guille (pequeños), Nomina (altos), Club, Gastos en conjunto
