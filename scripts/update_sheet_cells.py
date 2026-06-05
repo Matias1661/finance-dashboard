@@ -43,29 +43,33 @@ def get_service():
 def write_cells(updates: list[dict]):
     """
     updates: lista de {"range": "Sheet!A1", "value": "texto"}
+    Los valores que empiezan con "=" se escriben como fórmula (USER_ENTERED);
+    el resto como texto literal (RAW).
     """
     service = get_service()
-    data = [
-        {
-            "range": u["range"],
-            "values": [[u["value"]]]
-        }
-        for u in updates
-    ]
-    body = {
-        "valueInputOption": "RAW",
-        "data": data
-    }
-    result = service.spreadsheets().values().batchUpdate(
-        spreadsheetId=SHEET_ID,
-        body=body
-    ).execute()
 
-    updated = result.get("totalUpdatedCells", 0)
-    print(f"Celdas actualizadas: {updated}")
-    for entry in result.get("responses", []):
+    def is_formula(v):
+        return isinstance(v, str) and v.startswith("=")
+
+    raw_data  = [{"range": u["range"], "values": [[u["value"]]]} for u in updates if not is_formula(u["value"])]
+    form_data = [{"range": u["range"], "values": [[u["value"]]]} for u in updates if is_formula(u["value"])]
+
+    total = 0
+    responses = []
+    for option, data in (("RAW", raw_data), ("USER_ENTERED", form_data)):
+        if not data:
+            continue
+        result = service.spreadsheets().values().batchUpdate(
+            spreadsheetId=SHEET_ID,
+            body={"valueInputOption": option, "data": data}
+        ).execute()
+        total += result.get("totalUpdatedCells", 0)
+        responses.extend(result.get("responses", []))
+
+    print(f"Celdas actualizadas: {total}")
+    for entry in responses:
         print(f"  {entry.get('updatedRange')} -> OK")
-    return result
+    return {"totalUpdatedCells": total, "responses": responses}
 
 
 def main():
