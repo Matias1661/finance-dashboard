@@ -47,6 +47,7 @@ Una sola cuenta bancaria. Relay extrae: concepto, fecha (YYYY-MM-DD), importe (n
 | concepto | Descripción del movimiento |
 | monto | Negativo=gasto, positivo=ingreso |
 | categoria | Categoría asignada por Relay |
+| nota | Texto libre por movimiento (col K de la hoja). Identifica qué fue la compra. Editable a mano; enriquecido por Claude solo en Compras |
 | categoria_relay | Categoría original de Relay |
 | verificado_claude | true / false |
 | categoria_sugerida | Sugerencia de reclasificación por Claude |
@@ -55,6 +56,12 @@ Una sola cuenta bancaria. Relay extrae: concepto, fecha (YYYY-MM-DD), importe (n
 | fecha_verificacion | Fecha en que Claude verificó |
 
 Claude solo escribe las últimas 5 columnas.
+
+### Layout de columnas en la hoja Movimientos (importante)
+
+- **A** fecha · **B** concepto · **C** importe · **D** categoría · **E** filtro de positivos (= importe si >0, si no 0; uso interno para gráficos de la hoja, NO se usa en el dashboard).
+- **F–J** en uso (otros auxiliares). **La primera columna libre es K**, donde vive **Nota**.
+- Regla: nunca escribir en E–J asumiendo que están libres. Cualquier campo nuevo va de K en adelante. El sync mapea por nombre de cabecera, no por letra.
 
 ---
 
