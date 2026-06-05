@@ -1,3 +1,13 @@
+## 2026-06-05 — Nota en el flujo + recategorización Microsoft
+
+### feat
+- El enriquecimiento de Nota (col K) se incorpora como paso 7 del flujo "Organizar Movimientos" (Amazon/Gmail → recibo Gmail → web → blanco)
+
+### fix
+- `PAYPAL EUROPE -10,00` (Microsoft 365 Personal) recategorizado de Compras a Suscripciones
+
+---
+
 ## 2026-06-05 — Campo Nota en movimientos
 
 ### feat
