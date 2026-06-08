@@ -1,6 +1,69 @@
 {
-  "generated_at": "2026-06-08 09:01",
+  "generated_at": "2026-06-08 09:20",
   "movimientos": [
+    {
+      "fecha": "2026-06-06",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 619.54,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-06",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-05",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-05",
+      "concepto": "CAIXABANK PAYMENT",
+      "monto": -15.18,
+      "categoria": "Tarjeta",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-05",
+      "concepto": "Amazon Prime",
+      "monto": -4.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-05",
+      "concepto": "PAG NOMINAS",
+      "monto": -450.0,
+      "categoria": "Departamento",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-05",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 30.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-05",
+      "concepto": "GUILLERMO",
+      "monto": -700.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-05",
+      "concepto": "PAGO ACCESORIOS T",
+      "monto": -21.0,
+      "categoria": "Compras",
+      "nota": null
+    },
     {
       "fecha": "2026-06-04",
       "concepto": "TRANSF. A SU FAVOR",
