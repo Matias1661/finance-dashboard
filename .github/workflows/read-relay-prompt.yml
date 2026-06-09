@@ -1,19 +1,25 @@
 name: Read Relay Prompt
 on:
   workflow_dispatch:
+
+concurrency:
+  group: read-relay-prompt
+  cancel-in-progress: false
+
 permissions:
   contents: write
+
 jobs:
   read:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - name: Install deps
         run: pip install google-auth google-api-python-client
       - name: Read prompt
