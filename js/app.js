@@ -666,7 +666,7 @@ function renderInversiones(){
         scales: {
           x: { grid: { display: false }, ticks: { font: { size: 11 } } },
           y: {
-            stacked: true, beginAtZero: false,
+            stacked: true, beginAtZero: true,
             grid: { color: 'rgba(0,0,0,0.05)' },
             ticks: { font: { size: 11 }, callback: v => fmt(v) }
           }
