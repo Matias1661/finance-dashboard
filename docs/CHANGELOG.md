@@ -1,3 +1,16 @@
+## 2026-06-09 — Fix workflows: control de concurrencia y versiones de actions
+
+### fix
+- `sync-finance-data.yml`: añadido bloque `concurrency` (group: sync-finance-data, cancel-in-progress: false) para evitar colisiones en git push cuando se lanzan varias ejecuciones simultáneas. Las ejecuciones concurrentes fallaban con exit code 128 (git push rechazado por no-fast-forward).
+- `read-relay-prompt.yml`: ídem concurrencia + actualización de actions obsoletos: `checkout@v3` → `@v4`, `setup-python@v4` → `@v5`, `python-version: '3.11'` → `'3.12'`. Los actions v3/v4 corren sobre Node 20, que GitHub Actions depreca el 16 jun 2026.
+
+### root cause
+Los fallos del 4 jun 2026 tuvieron dos causas distintas:
+1. **Sync Finance Data**: múltiples ejecuciones manuales simultáneas durante una sesión de desarrollo. La primera en completar el push bloqueaba a las demás (non-fast-forward), provocando exit code 128 en el step "Commit and push".
+2. **Read Relay Prompt**: workflow en desarrollo iterativo (3 ejecuciones con errores en 2 minutos) antes de estabilizarse. Mismo patrón de conflicto en push. Adicionalmente, usaba actions Node 20 ya advertidos como deprecados.
+
+---
+
 ## 2026-06-05 — Mejoras prompt de categorización Relay
 
 ### change
