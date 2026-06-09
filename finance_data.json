@@ -1,6 +1,34 @@
 {
-  "generated_at": "2026-06-08 14:03",
+  "generated_at": "2026-06-09 12:35",
   "movimientos": [
+    {
+      "fecha": "2026-06-08",
+      "concepto": "YOIGO XFERA MOVIL",
+      "monto": -47.55,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-08",
+      "concepto": "SALUTARY FRESH FO",
+      "monto": -16.9,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-08",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-08",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.55,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-06-06",
       "concepto": "TRANSF. A SU FAVOR",
