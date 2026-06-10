@@ -1,3 +1,10 @@
+## 2026-06-10
+
+### fix: KPI "Sin analizar por Claude" siempre incorrecto
+- `js/app.js`: `reviewed_movements.json` es un array plano; el código leía `rrData.reviewed` (undefined) → `reviewedMovements` siempre vacío → KPI nunca marcaba nada como revisado. Corregido a `Array.isArray(rrData) ? rrData : (rrData.reviewed || [])`.
+
+### fix: Update Sheet Cells workflow fallaba por secret incorrecto
+- `.github/workflows/update-sheet-cells.yml`: referenciaba `secrets.GOOGLE_SERVICE_ACCOUNT` en lugar de `secrets.GOOGLE_SERVICE_ACCOUNT_JSON`. Causa directa de todos los errores de email de GitHub Actions.
 ## 2026-06-09 — Fix workflows: control de concurrencia y versiones de actions
 
 ### fix
