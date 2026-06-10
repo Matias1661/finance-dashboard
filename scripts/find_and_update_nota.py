@@ -11,28 +11,16 @@ service  = build("sheets", "v4", credentials=creds)
 result = service.spreadsheets().values().get(
     spreadsheetId=SHEET_ID, range="Movimientos!A:K").execute()
 rows = result.get("values", [])
-print(f"Total rows in sheet: {len(rows)}")
 
-updates = []
-for i, row in enumerate(rows):
-    fecha    = row[0] if len(row) > 0 else ""
-    concepto = row[1] if len(row) > 1 else ""
-    importe  = row[2] if len(row) > 2 else ""
-    # Match: WWW.AMAZON in concepto AND fecha contains 09, 06, 2026
-    if "WWW.AMAZON" in concepto.upper() and "09" in fecha and "06" in fecha and "2026" in fecha:
-        nota = row[10] if len(row) > 10 else ""
-        print(f"FOUND row {i+1}: fecha={fecha!r} concepto={concepto!r} importe={importe!r} nota={nota!r}")
-        updates.append({"range": f"Movimientos!K{i+1}", "values": [["Proyector Portatil 1920x1080P"]]})
+summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "/dev/stdout")
+with open(summary_path, "a") as f:
+    f.write(f"## Sheet rows: {len(rows)}\n\n")
+    f.write("### Last 20 rows\n\n")
+    for i, row in enumerate(rows[-20:]):
+        idx = len(rows) - 20 + i
+        f.write(f"Row {idx+1}: `{row[:4] if len(row)>=4 else row}`\n\n")
 
-print(f"Updates to apply: {len(updates)}")
-if updates:
-    r = service.spreadsheets().values().batchUpdate(
-        spreadsheetId=SHEET_ID,
-        body={"valueInputOption": "RAW", "data": updates}
-    ).execute()
-    print(f"Done: {r.get('totalUpdatedCells')} cells updated")
-else:
-    print("Nothing to update - no matching row found")
-    # Print a few rows around row 2415 for reference
-    for i in range(max(0, 2410), min(len(rows), 2420)):
-        print(f"  row {i+1}: {rows[i][:3] if len(rows[i])>=3 else rows[i]}")
+print(f"Total rows: {len(rows)}")
+for i, row in enumerate(rows[-20:]):
+    idx = len(rows) - 20 + i
+    print(f"Row {idx+1}: {row[:4] if len(row)>=4 else row}")
