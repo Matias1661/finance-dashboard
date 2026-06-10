@@ -734,7 +734,7 @@ async function init(){
     const rr = await fetch('reviewed_movements.json?v=' + Date.now());
     const rrData = await rr.json();
     if (window.FINANCE_STATE) {
-      window.FINANCE_STATE.reviewedMovements = rrData.reviewed || [];
+      window.FINANCE_STATE.reviewedMovements = Array.isArray(rrData) ? rrData : (rrData.reviewed || []);
     }
   } catch(e) {
     if (window.FINANCE_STATE) window.FINANCE_STATE.reviewedMovements = [];
