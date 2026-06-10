@@ -1,6 +1,69 @@
 {
-  "generated_at": "2026-06-09 15:37",
+  "generated_at": "2026-06-10 11:39",
   "movimientos": [
+    {
+      "fecha": "2026-06-09",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-09",
+      "concepto": "WWW.AMAZON",
+      "monto": -63.99,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-09",
+      "concepto": "CHATTER CAFE SANS",
+      "monto": -10.85,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-09",
+      "concepto": "Under Armour",
+      "monto": -20.99,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-09",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-09",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 45.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-09",
+      "concepto": "DEPOSITO A LA CUE",
+      "monto": -1500.0,
+      "categoria": "Inversion",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-09",
+      "concepto": "TRASPASO",
+      "monto": 40.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-09",
+      "concepto": "Cuota club",
+      "monto": -150.0,
+      "categoria": "Club",
+      "nota": null
+    },
     {
       "fecha": "2026-06-08",
       "concepto": "YOIGO XFERA MOVIL",
