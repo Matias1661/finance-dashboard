@@ -1,4 +1,4 @@
-import os, json
+import os, json, subprocess
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
@@ -12,15 +12,19 @@ result = service.spreadsheets().values().get(
     spreadsheetId=SHEET_ID, range="Movimientos!A:K").execute()
 rows = result.get("values", [])
 
-summary_path = os.environ.get("GITHUB_STEP_SUMMARY", "/dev/stdout")
-with open(summary_path, "a") as f:
-    f.write(f"## Sheet rows: {len(rows)}\n\n")
-    f.write("### Last 20 rows\n\n")
-    for i, row in enumerate(rows[-20:]):
-        idx = len(rows) - 20 + i
-        f.write(f"Row {idx+1}: `{row[:4] if len(row)>=4 else row}`\n\n")
-
-print(f"Total rows: {len(rows)}")
+output_lines = [f"Total rows: {len(rows)}"]
+output_lines.append("Last 20 rows:")
 for i, row in enumerate(rows[-20:]):
     idx = len(rows) - 20 + i
-    print(f"Row {idx+1}: {row[:4] if len(row)>=4 else row}")
+    output_lines.append(f"  [{idx+1}] {row[:4] if len(row)>=4 else row}")
+
+with open("tmp_sheet_debug.txt", "w") as f:
+    f.write("\n".join(output_lines))
+
+# Commit the file
+subprocess.run(["git", "config", "user.email", "action@github.com"])
+subprocess.run(["git", "config", "user.name", "GitHub Action"])
+subprocess.run(["git", "add", "tmp_sheet_debug.txt"])
+subprocess.run(["git", "commit", "-m", "temp: sheet debug output"])
+subprocess.run(["git", "push"])
+print("Done")
