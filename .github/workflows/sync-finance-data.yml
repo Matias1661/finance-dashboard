@@ -7,7 +7,7 @@ on:
 
 concurrency:
   group: sync-finance-data
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -39,5 +39,9 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
           git add finance_data.json
-          git diff --cached --quiet || (git pull --rebase origin main && git commit -m "chore: sync finance data [$(date +'%Y-%m-%d')]" && git push)
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: sync finance data [$(date +'%Y-%m-%d')]"
+            git push
+          fi
