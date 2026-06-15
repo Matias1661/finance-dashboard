@@ -244,11 +244,11 @@ function renderCategoryTrend(){
   });
   const values = months.map(m => monthTotals[m]);
 
-  // Promedio por año: excluir mes actual (incompleto) y meses con 0
+  // Promedio por año: excluir mes actual (incompleto) y años con menos de 3 meses de datos
   const currentMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
   const yearGroups = {};
   months.forEach(m => {
-    if(m === currentMonth) return; // mes en curso, datos incompletos
+    if(m === currentMonth) return;
     const y = m.slice(0,4);
     if(!yearGroups[y]) yearGroups[y] = { sum: 0, count: 0 };
     if(monthTotals[m] > 0){
@@ -259,7 +259,8 @@ function renderCategoryTrend(){
   const avgValues = months.map(m => {
     const y = m.slice(0,4);
     const g = yearGroups[y];
-    return g && g.count > 0 ? parseFloat((g.sum / g.count).toFixed(2)) : null;
+    if(!g || g.count < 3) return null; // menos de 3 meses con datos: no mostrar promedio
+    return parseFloat((g.sum / g.count).toFixed(2));
   });
 
   const ctx = document.getElementById('chart-cat-trend');
@@ -328,6 +329,7 @@ function renderCategoryTrend(){
     }
   });
 }
+
 
 
 
