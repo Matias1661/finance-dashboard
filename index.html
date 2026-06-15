@@ -241,15 +241,21 @@
   </div>
 </div>
 
-<div class="card">
-  <div class="card-title">Gastos por categoría</div>
-  <div class="filter-row" style="margin-bottom:14px">
-    <span class="filter-label">Categoría</span>
-    <select id="cat-trend-selector" onchange="renderCategoryTrend()">
-    </select>
+<div class="grid-2" style="align-items:start">
+  <div class="card">
+    <div class="card-title">Evolución por categoría</div>
+    <div class="filter-row" style="margin-bottom:14px">
+      <span class="filter-label">Categoría</span>
+      <select id="cat-trend-selector" onchange="renderCategoryTrend()">
+      </select>
+    </div>
+    <div class="chart-wrap-tall">
+      <canvas id="chart-cat-trend"></canvas>
+    </div>
   </div>
-  <div class="chart-wrap-tall">
-    <canvas id="chart-cat-trend"></canvas>
+  <div class="card">
+    <div class="card-title">Resumen de promedios por categoría</div>
+    <div id="cat-avg-table"></div>
   </div>
 </div>
 
@@ -441,6 +447,7 @@ async function triggerRefresh(){
 
 </body>
 </html>
+
 
 
 
