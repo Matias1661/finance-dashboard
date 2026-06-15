@@ -14,5 +14,5 @@ jobs:
       - run: pip install google-auth google-auth-httplib2 google-api-python-client
       - name: Run script
         env:
-          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
-        run: python scripts/tmp_add_notes.py
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+        run: python scripts/find_and_update_nota.py
