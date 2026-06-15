@@ -218,10 +218,12 @@ function renderCategoryTrend(){
   const allDates = allData.map(r => r.fecha).filter(Boolean).sort();
   const firstMonth = allDates.length ? allDates[0].slice(0,7) : `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
   const months = [];
+  const endMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
   let cur = new Date(firstMonth + '-01');
-  const end = new Date(now.getFullYear(), now.getMonth(), 1);
-  while(cur <= end){
-    months.push(`${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}`);
+  while(true){
+    const m = `${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}`;
+    months.push(m);
+    if(m >= endMonth) break;
     cur.setMonth(cur.getMonth()+1);
   }
 
@@ -283,5 +285,6 @@ function renderCategoryTrend(){
     }
   });
 }
+
 
 
