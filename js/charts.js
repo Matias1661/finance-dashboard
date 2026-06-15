@@ -328,10 +328,95 @@ function renderCategoryTrend(){
       }
     }
   });
+
+  renderCategoryAvgTable();
 }
 
+function renderCategoryAvgTable(){
+  const raw = window.FINANCE_STATE?.raw || [];
+  const excluded = window.FINANCE_STATE?.excludedCategories || [];
+  const allData = raw.filter(r => !excluded.includes(r.categoria));
 
+  const now = new Date();
+  const currentMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
 
+  // Mes anterior
+  const prevDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const prevMonth = `${prevDate.getFullYear()}-${String(prevDate.getMonth()+1).padStart(2,'0')}`;
 
+  // Categorías con gasto
+  const cats = new Set();
+  allData.forEach(r => { if(Number(r.monto) < 0) cats.add(r.categoria || 'Sin categoría'); });
 
+  // Para cada categoría: promedio 2024, promedio 2025, gasto mes anterior
+  const rows = [];
+  cats.forEach(cat => {
+    const movs = allData.filter(r => (r.categoria || 'Sin categoría') === cat && Number(r.monto) < 0);
 
+    const byMonth = {};
+    movs.forEach(r => {
+      const k = r.fecha ? r.fecha.slice(0,7) : '';
+      if(k) byMonth[k] = (byMonth[k] || 0) + Math.abs(Number(r.monto));
+    });
+
+    const avg = (year, minMonths = 3) => {
+      const months = Object.keys(byMonth).filter(m => m.startsWith(year) && m !== currentMonth);
+      const withData = months.filter(m => byMonth[m] > 0);
+      if(withData.length < minMonths) return null;
+      return withData.reduce((s, m) => s + byMonth[m], 0) / withData.length;
+    };
+
+    const avg2024 = avg('2024', 1); // 2024 solo tenemos dic, lo mostramos si hay dato
+    const avg2025 = avg('2025', 3);
+    const lastMonth = byMonth[prevMonth] || 0;
+
+    if(avg2025 === null && lastMonth === 0) return; // sin datos relevantes
+
+    rows.push({ cat, avg2024, avg2025, lastMonth });
+  });
+
+  // Ordenar por gasto mes anterior desc, luego por avg2025 desc
+  rows.sort((a, b) => (b.lastMonth || 0) - (a.lastMonth || 0) || (b.avg2025 || 0) - (a.avg2025 || 0));
+
+  const fmt = v => v != null ? new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v) : '—';
+
+  const prevLabel = prevDate.toLocaleDateString('es-ES', {month:'long', year:'numeric'});
+
+  let html = `<div style="overflow-x:auto">
+<table class="tx-table" style="font-size:13px">
+  <thead>
+    <tr>
+      <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-weight:500">Categoría</th>
+      <th style="text-align:right;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-weight:500">Ø 2024</th>
+      <th style="text-align:right;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-weight:500">Ø 2025</th>
+      <th style="text-align:right;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-weight:500">${prevLabel}</th>
+    </tr>
+  </thead>
+  <tbody>`;
+
+  rows.forEach(({cat, avg2024, avg2025, lastMonth}) => {
+    // Color columna Ø 2025 vs Ø 2024
+    let avg2025Color = '';
+    if(avg2024 != null && avg2025 != null){
+      avg2025Color = avg2025 > avg2024 ? 'color:var(--red)' : 'color:var(--green)';
+    }
+
+    // Color mes pasado vs Ø 2025
+    let lastMonthColor = '';
+    if(avg2025 != null && lastMonth > 0){
+      lastMonthColor = lastMonth > avg2025 ? 'color:var(--red)' : 'color:var(--green)';
+    }
+
+    html += `<tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:6px 8px">${cat}</td>
+      <td style="text-align:right;padding:6px 8px;color:var(--text-secondary)">${fmt(avg2024)}</td>
+      <td style="text-align:right;padding:6px 8px;${avg2025Color}">${fmt(avg2025)}</td>
+      <td style="text-align:right;padding:6px 8px;${lastMonthColor}">${lastMonth > 0 ? fmt(lastMonth) : '—'}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table></div>';
+
+  const el = document.getElementById('cat-avg-table');
+  if(el) el.innerHTML = html;
+}
