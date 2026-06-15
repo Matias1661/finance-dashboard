@@ -213,12 +213,16 @@ function renderCategoryTrend(){
 
   const selectedCat = sel ? sel.value : (allCats[0] || '');
 
-  // Últimos 24 meses
+  // Rango dinámico: desde el primer mes con datos hasta el mes actual
   const now = new Date();
+  const allDates = allData.map(r => r.fecha).filter(Boolean).sort();
+  const firstMonth = allDates.length ? allDates[0].slice(0,7) : `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
   const months = [];
-  for(let i = 23; i >= 0; i--){
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    months.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+  let cur = new Date(firstMonth + '-01');
+  const end = new Date(now.getFullYear(), now.getMonth(), 1);
+  while(cur <= end){
+    months.push(`${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}`);
+    cur.setMonth(cur.getMonth()+1);
   }
 
   const monthTotals = {};
@@ -279,4 +283,5 @@ function renderCategoryTrend(){
     }
   });
 }
+
 
