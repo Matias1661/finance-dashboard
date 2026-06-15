@@ -244,6 +244,22 @@ function renderCategoryTrend(){
   });
   const values = months.map(m => monthTotals[m]);
 
+  // Promedio por año: solo meses con datos (valor > 0) para no distorsionar con meses sin gasto
+  const yearGroups = {};
+  months.forEach(m => {
+    const y = m.slice(0,4);
+    if(!yearGroups[y]) yearGroups[y] = { sum: 0, count: 0 };
+    if(monthTotals[m] > 0){
+      yearGroups[y].sum += monthTotals[m];
+      yearGroups[y].count++;
+    }
+  });
+  const avgValues = months.map(m => {
+    const y = m.slice(0,4);
+    const g = yearGroups[y];
+    return g && g.count > 0 ? g.sum / g.count : null;
+  });
+
   const ctx = document.getElementById('chart-cat-trend');
   if(!ctx) return;
   if(window.catTrendChart) window.catTrendChart.destroy();
@@ -252,25 +268,48 @@ function renderCategoryTrend(){
     type: 'line',
     data: {
       labels,
-      datasets: [{
-        label: selectedCat,
-        data: values,
-        borderColor: '#2563be',
-        backgroundColor: 'rgba(37,99,190,0.08)',
-        borderWidth: 2,
-        pointRadius: 3,
-        pointHoverRadius: 5,
-        fill: true,
-        tension: 0.3
-      }]
+      datasets: [
+        {
+          label: selectedCat,
+          data: values,
+          borderColor: '#2563be',
+          backgroundColor: 'rgba(37,99,190,0.08)',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          fill: true,
+          tension: 0.3,
+          order: 1
+        },
+        {
+          label: 'Promedio anual',
+          data: avgValues,
+          borderColor: '#9a6200',
+          backgroundColor: 'transparent',
+          borderWidth: 1.5,
+          borderDash: [5, 4],
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          fill: false,
+          tension: 0,
+          spanGaps: false,
+          order: 0
+        }
+      ]
     },
     options: {
       responsive: true,
       plugins: {
-        legend: { display: false },
+        legend: {
+          display: true,
+          labels: { boxWidth: 20, font: { size: 12 } }
+        },
         tooltip: {
           callbacks: {
-            label: ctx => ` ${formatEUR(ctx.parsed.y)}`
+            label: ctx => {
+              if(ctx.parsed.y === null) return null;
+              return ` ${ctx.dataset.label}: ${formatEUR(ctx.parsed.y)}`;
+            }
           }
         }
       },
@@ -285,6 +324,7 @@ function renderCategoryTrend(){
     }
   });
 }
+
 
 
 
