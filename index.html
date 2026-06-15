@@ -248,9 +248,12 @@
     <select id="month-selector" onchange="setMonthFilter(this.value)">
       <option value="">Todos los meses</option>
     </select>
+    <span class="filter-label" style="margin-left:16px">Categoría</span>
+    <select id="cat-trend-selector" onchange="renderCategoryTrend()">
+    </select>
   </div>
-  <div class="chart-wrap">
-    <canvas id="chart-donut"></canvas>
+  <div class="chart-wrap-tall">
+    <canvas id="chart-cat-trend"></canvas>
   </div>
 </div>
 
@@ -442,6 +445,7 @@ async function triggerRefresh(){
 
 </body>
 </html>
+
 
 
 
