@@ -286,13 +286,13 @@ function renderCategoryTrend(){
           data: avgValues,
           borderColor: '#9a6200',
           backgroundColor: 'transparent',
-          borderWidth: 1.5,
-          borderDash: [5, 4],
+          borderWidth: 2,
+          borderDash: [6, 4],
           pointRadius: 0,
-          pointHoverRadius: 0,
+          pointHoverRadius: 4,
           fill: false,
           tension: 0,
-          spanGaps: false,
+          spanGaps: true,
           order: 0
         }
       ]
@@ -324,6 +324,7 @@ function renderCategoryTrend(){
     }
   });
 }
+
 
 
 
