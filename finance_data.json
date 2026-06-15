@@ -1,6 +1,132 @@
 {
-  "generated_at": "2026-06-14 12:28",
+  "generated_at": "2026-06-15 13:43",
   "movimientos": [
+    {
+      "fecha": "2026-06-14",
+      "concepto": "REPSOL WAYLET",
+      "monto": -0.92,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-13",
+      "concepto": "MERCADONA",
+      "monto": -1.2,
+      "categoria": "Supermercado",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-13",
+      "concepto": "REINT.CA JERO",
+      "monto": -100.0,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-13",
+      "concepto": "Gastos conjuntos",
+      "monto": -50.0,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-12",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 41.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-12",
+      "concepto": "PAYPAL EUROPE S.",
+      "monto": -197.37,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-12",
+      "concepto": "WWW.AMAZON",
+      "monto": -15.99,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-12",
+      "concepto": "MYPOSTER GMBH",
+      "monto": -89.94,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-12",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-12",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-12",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 120.0,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-12",
+      "concepto": "BIZUM ENVIADO",
+      "monto": -28.0,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-11",
+      "concepto": "REPSOL WAYLET",
+      "monto": -2.0,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-11",
+      "concepto": "REPSOL WAYLET",
+      "monto": -2.0,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-11",
+      "concepto": "ANTHROPIC",
+      "monto": -5.47,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-11",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -2.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-11",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-10",
+      "concepto": "Prime Video canal",
+      "monto": -6.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
     {
       "fecha": "2026-06-09",
       "concepto": "TRANSF. A SU FAVOR",
@@ -17046,7 +17172,7 @@
       },
       {
         "mes": "2026-06",
-        "peerberry": 6689.0,
+        "peerberry": 6695.7,
         "myinvestor": 8713.0
       }
     ],
@@ -17103,7 +17229,7 @@
       },
       {
         "mes": "2026-06",
-        "peerberry": 29.4,
+        "peerberry": 29.54,
         "myinvestor": 5.37
       }
     ]
