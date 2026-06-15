@@ -10,7 +10,7 @@ let activeCatBarFilter = null;
 function renderResumen(){
   if(typeof renderKPIs === 'function') renderKPIs();
   if(typeof renderMonthly === 'function') renderMonthly();
-  if(typeof renderDonut === 'function') renderDonut();
+  if(typeof renderCategoryTrend === 'function') renderCategoryTrend();
 }
 
 function renderTransacciones(){
@@ -774,5 +774,6 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
