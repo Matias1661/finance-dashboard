@@ -338,17 +338,18 @@ function renderCategoryAvgTable(){
   const allData = raw.filter(r => !excluded.includes(r.categoria));
 
   const now = new Date();
-  const currentMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const thisYear  = String(now.getFullYear());
+  const lastYear  = String(now.getFullYear() - 1);
+  const currentMonth = `${thisYear}-${String(now.getMonth()+1).padStart(2,'0')}`;
 
   // Mes anterior
-  const prevDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const prevDate  = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const prevMonth = `${prevDate.getFullYear()}-${String(prevDate.getMonth()+1).padStart(2,'0')}`;
 
   // Categorías con gasto
   const cats = new Set();
   allData.forEach(r => { if(Number(r.monto) < 0) cats.add(r.categoria || 'Sin categoría'); });
 
-  // Para cada categoría: promedio 2024, promedio 2025, gasto mes anterior
   const rows = [];
   cats.forEach(cat => {
     const movs = allData.filter(r => (r.categoria || 'Sin categoría') === cat && Number(r.monto) < 0);
@@ -366,52 +367,65 @@ function renderCategoryAvgTable(){
       return withData.reduce((s, m) => s + byMonth[m], 0) / withData.length;
     };
 
-    const avg2024 = avg('2024', 1); // 2024 solo tenemos dic, lo mostramos si hay dato
-    const avg2025 = avg('2025', 3);
-    const lastMonth = byMonth[prevMonth] || 0;
+    const avgPrevYear = avg(lastYear, 3);
+    const avgThisYear = avg(thisYear, 1); // año actual: mínimo 1 mes
+    const lastMonthVal = byMonth[prevMonth] || 0;
 
-    if(avg2025 === null && lastMonth === 0) return; // sin datos relevantes
+    // Mostrar solo si hay algo útil
+    if(avgPrevYear === null && avgThisYear === null && lastMonthVal === 0) return;
 
-    rows.push({ cat, avg2024, avg2025, lastMonth });
+    rows.push({ cat, avgPrevYear, avgThisYear, lastMonthVal });
   });
 
-  // Ordenar por gasto mes anterior desc, luego por avg2025 desc
-  rows.sort((a, b) => (b.lastMonth || 0) - (a.lastMonth || 0) || (b.avg2025 || 0) - (a.avg2025 || 0));
+  // Ordenar por gasto mes anterior desc, luego avg año actual desc
+  rows.sort((a, b) => (b.lastMonthVal || 0) - (a.lastMonthVal || 0) || (b.avgThisYear || 0) - (a.avgThisYear || 0));
 
-  const fmt = v => v != null ? new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v) : '—';
+  const fmt = v => v != null
+    ? new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v)
+    : '—';
 
-  const prevLabel = prevDate.toLocaleDateString('es-ES', {month:'long', year:'numeric'});
+  const prevLabel = prevDate.toLocaleDateString('es-ES', {month:'long'});
+  const thStyle = 'text-align:right;padding:6px 10px;border-bottom:2px solid var(--border);color:var(--text-secondary);font-weight:500;white-space:nowrap';
+  const thStyleL = 'text-align:left;padding:6px 10px;border-bottom:2px solid var(--border);color:var(--text-secondary);font-weight:500';
 
-  let html = `<div style="overflow-x:auto">
-<table class="tx-table" style="font-size:13px">
+  let html = `<div style="overflow-x:auto;margin-top:4px">
+<table style="width:100%;border-collapse:collapse;font-size:13px">
   <thead>
     <tr>
-      <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-weight:500">Categoría</th>
-      <th style="text-align:right;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-weight:500">Ø 2024</th>
-      <th style="text-align:right;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-weight:500">Ø 2025</th>
-      <th style="text-align:right;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-weight:500">${prevLabel}</th>
+      <th style="${thStyleL}">Categoría</th>
+      <th style="${thStyle}">Ø ${lastYear}</th>
+      <th style="${thStyle}">Ø ${thisYear}</th>
+      <th style="${thStyle}">${prevLabel}</th>
     </tr>
   </thead>
   <tbody>`;
 
-  rows.forEach(({cat, avg2024, avg2025, lastMonth}) => {
-    // Color columna Ø 2025 vs Ø 2024
-    let avg2025Color = '';
-    if(avg2024 != null && avg2025 != null){
-      avg2025Color = avg2025 > avg2024 ? 'color:var(--red)' : 'color:var(--green)';
+  const GREEN = 'color:var(--green);font-weight:500';
+  const RED   = 'color:var(--red);font-weight:500';
+  const MUTED = 'color:var(--text-secondary)';
+
+  rows.forEach(({cat, avgPrevYear, avgThisYear, lastMonthVal}) => {
+    // Ø año actual vs Ø año anterior
+    let avgColor = MUTED;
+    if(avgPrevYear != null && avgThisYear != null){
+      avgColor = avgThisYear > avgPrevYear ? RED : GREEN;
     }
 
-    // Color mes pasado vs Ø 2025
-    let lastMonthColor = '';
-    if(avg2025 != null && lastMonth > 0){
-      lastMonthColor = lastMonth > avg2025 ? 'color:var(--red)' : 'color:var(--green)';
+    // Mes anterior vs Ø año actual (o año anterior si no hay actual)
+    const ref = avgThisYear ?? avgPrevYear;
+    let lastColor = MUTED;
+    if(ref != null && lastMonthVal > 0){
+      lastColor = lastMonthVal > ref ? RED : GREEN;
     }
 
-    html += `<tr style="border-bottom:1px solid var(--border)">
-      <td style="padding:6px 8px">${cat}</td>
-      <td style="text-align:right;padding:6px 8px;color:var(--text-secondary)">${fmt(avg2024)}</td>
-      <td style="text-align:right;padding:6px 8px;${avg2025Color}">${fmt(avg2025)}</td>
-      <td style="text-align:right;padding:6px 8px;${lastMonthColor}">${lastMonth > 0 ? fmt(lastMonth) : '—'}</td>
+    const tdR = 'text-align:right;padding:7px 10px;border-bottom:1px solid var(--border)';
+    const tdL = 'text-align:left;padding:7px 10px;border-bottom:1px solid var(--border)';
+
+    html += `<tr>
+      <td style="${tdL}">${cat}</td>
+      <td style="${tdR};${MUTED}">${fmt(avgPrevYear)}</td>
+      <td style="${tdR};${avgColor}">${fmt(avgThisYear)}</td>
+      <td style="${tdR};${lastColor}">${lastMonthVal > 0 ? fmt(lastMonthVal) : '—'}</td>
     </tr>`;
   });
 
@@ -420,3 +434,5 @@ function renderCategoryAvgTable(){
   const el = document.getElementById('cat-avg-table');
   if(el) el.innerHTML = html;
 }
+
+
