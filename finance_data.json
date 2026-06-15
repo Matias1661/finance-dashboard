@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-15 13:43",
+  "generated_at": "2026-06-15 13:44",
   "movimientos": [
     {
       "fecha": "2026-06-14",
       "concepto": "REPSOL WAYLET",
       "monto": -0.92,
-      "categoria": "Combustible",
+      "categoria": "Guille",
       "nota": null
     },
     {
@@ -40,7 +40,7 @@
       "fecha": "2026-06-12",
       "concepto": "PAYPAL EUROPE S.",
       "monto": -197.37,
-      "categoria": "Compras",
+      "categoria": "Suscripciones",
       "nota": null
     },
     {
@@ -54,7 +54,7 @@
       "fecha": "2026-06-12",
       "concepto": "MYPOSTER GMBH",
       "monto": -89.94,
-      "categoria": "Compras",
+      "categoria": "Club",
       "nota": null
     },
     {
@@ -75,28 +75,28 @@
       "fecha": "2026-06-12",
       "concepto": "BIZUM RECIBIDO",
       "monto": 120.0,
-      "categoria": "A revisar",
+      "categoria": "Club",
       "nota": null
     },
     {
       "fecha": "2026-06-12",
       "concepto": "BIZUM ENVIADO",
       "monto": -28.0,
-      "categoria": "A revisar",
+      "categoria": "Salidas",
       "nota": null
     },
     {
       "fecha": "2026-06-11",
       "concepto": "REPSOL WAYLET",
       "monto": -2.0,
-      "categoria": "Combustible",
+      "categoria": "Gastos moto",
       "nota": null
     },
     {
       "fecha": "2026-06-11",
       "concepto": "REPSOL WAYLET",
       "monto": -2.0,
-      "categoria": "Combustible",
+      "categoria": "Gastos moto",
       "nota": null
     },
     {
