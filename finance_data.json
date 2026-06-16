@@ -1,6 +1,34 @@
 {
-  "generated_at": "2026-06-16 14:14",
+  "generated_at": "2026-06-16 16:08",
   "movimientos": [
+    {
+      "fecha": "2026-06-15",
+      "concepto": "TRASPASO",
+      "monto": 40.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-15",
+      "concepto": "SEB 22",
+      "monto": -22.7,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-15",
+      "concepto": "LIDL SAN SEBASTI",
+      "monto": -26.43,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-15",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-06-14",
       "concepto": "REPSOL WAYLET",
