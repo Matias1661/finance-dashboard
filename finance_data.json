@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-16 16:09",
+  "generated_at": "2026-06-16 16:10",
   "movimientos": [
     {
       "fecha": "2026-06-15",
@@ -12,7 +12,7 @@
       "fecha": "2026-06-15",
       "concepto": "SEB 22",
       "monto": -22.7,
-      "categoria": "A revisar",
+      "categoria": "Salidas",
       "nota": null
     },
     {
