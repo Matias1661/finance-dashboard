@@ -1,3 +1,12 @@
+## 2026-06-18 — Organizar Movimientos
+
+### change
+- Ejecutadas las 4 fases del flujo: PayPal y Uber sin pendientes (al día). Amazon: 1 movimiento procesado. Viajes: 4 movimientos reclasificados.
+- `WWW.AMAZON -6,84` (16/06, Compras): nota añadida en col K tras confirmar en Gmail el pedido (BEAST RAGE Guantes de Fitness, 14/06, importe exacto).
+- 4 movimientos de Combustible (12/05: MOEVE TRUJILLO II x2, BP CAIADA, MOEVE ESTREMOZ N) reclasificados a Viajes — corresponden al viaje a Portugal (08-10/05) dentro del buffer de 3 días.
+- Verificado Google Calendar hasta 18/06: no hay viajes nuevos pendientes de añadir a `TRIP_WINDOWS`.
+- `reviewed_movements.json`: +5 entradas.
+
 ## 2026-06-10
 
 ### fix: KPI "Sin analizar por Claude" siempre incorrecto
