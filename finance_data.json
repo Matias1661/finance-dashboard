@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18 12:48",
+  "generated_at": "2026-06-18 13:08",
   "movimientos": [
     {
       "fecha": "2026-06-17",
@@ -20,7 +20,7 @@
       "concepto": "TRANSFER. EN DIV.",
       "monto": 150.0,
       "categoria": "Guille",
-      "nota": null
+      "nota": "Guantes de fitness BEAST RAGE"
     },
     {
       "fecha": "2026-06-16",
@@ -1006,28 +1006,28 @@
       "fecha": "2026-05-12",
       "concepto": "MOEVE TRUJILLO II",
       "monto": -9.59,
-      "categoria": "Combustible",
+      "categoria": "Viajes",
       "nota": null
     },
     {
       "fecha": "2026-05-12",
       "concepto": "BP CAIADA",
       "monto": -15.0,
-      "categoria": "Combustible",
+      "categoria": "Viajes",
       "nota": null
     },
     {
       "fecha": "2026-05-12",
       "concepto": "MOEVE TRUJILLO II",
       "monto": -18.18,
-      "categoria": "Combustible",
+      "categoria": "Viajes",
       "nota": null
     },
     {
       "fecha": "2026-05-12",
       "concepto": "MOEVE ESTREMOZ N",
       "monto": -27.2,
-      "categoria": "Combustible",
+      "categoria": "Viajes",
       "nota": null
     },
     {
