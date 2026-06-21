@@ -1,6 +1,83 @@
 {
-  "generated_at": "2026-06-20 12:11",
+  "generated_at": "2026-06-21 11:32",
   "movimientos": [
+    {
+      "fecha": "2026-06-20",
+      "concepto": "TRASPASO",
+      "monto": 40.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-19",
+      "concepto": "Amazon.es",
+      "monto": -8.25,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-19",
+      "concepto": "WWW.AMAZON",
+      "monto": -65.58,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-19",
+      "concepto": "NEW YORK BURGER",
+      "monto": -56.55,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-19",
+      "concepto": "Gastos conjuntos",
+      "monto": -50.0,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-19",
+      "concepto": "AGENCIA TRIBUTARI",
+      "monto": -8.67,
+      "categoria": "Otros",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-18",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 45.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-18",
+      "concepto": "DEPOSITO A LA CUE",
+      "monto": -5000.0,
+      "categoria": "Inversion",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-18",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 41.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-18",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 120.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-18",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 45.0,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-06-17",
       "concepto": "APPLE.COM/BILL",
