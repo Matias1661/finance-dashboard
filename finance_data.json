@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-21 11:32",
+  "generated_at": "2026-06-21 11:41",
   "movimientos": [
     {
       "fecha": "2026-06-20",
@@ -40,7 +40,7 @@
       "fecha": "2026-06-19",
       "concepto": "AGENCIA TRIBUTARI",
       "monto": -8.67,
-      "categoria": "Otros",
+      "categoria": "Gastos moto",
       "nota": null
     },
     {
@@ -55,14 +55,14 @@
       "concepto": "DEPOSITO A LA CUE",
       "monto": -5000.0,
       "categoria": "Inversion",
-      "nota": null
+      "nota": "BEAST RAGE Guantes de boxeo"
     },
     {
       "fecha": "2026-06-18",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 41.0,
       "categoria": "Guille",
-      "nota": null
+      "nota": "Optimum Nutrition Serious Mass + 1 producto"
     },
     {
       "fecha": "2026-06-18",
