@@ -1,6 +1,48 @@
 {
-  "generated_at": "2026-06-23 12:38",
+  "generated_at": "2026-06-23 16:45",
   "movimientos": [
+    {
+      "fecha": "2026-06-22",
+      "concepto": "AMAZON.ES",
+      "monto": -9.99,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-22",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 164.43,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-22",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-22",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-22",
+      "concepto": "Heladeras Talho A",
+      "monto": -6723.97,
+      "categoria": "Talho Argentino",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-22",
+      "concepto": "Gastos conjuntos",
+      "monto": -50.0,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
     {
       "fecha": "2026-06-20",
       "concepto": "TRASPASO",
