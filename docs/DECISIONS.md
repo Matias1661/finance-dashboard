@@ -1,3 +1,10 @@
+## [2026-06-23] Tab Talho Argentino
+
+- Gráfico de barras verticales (Jan–mes actual) con gasto mensual. Eje X: meses; eje Y: EUR.
+- Lista de transacciones con selector de mes a la derecha del gráfico.
+- Categoría `Talho Argentino` **no** se modifica en el resto del dashboard (no se excluye de totales principales).
+- Rango del gráfico: enero–mes actual del año en curso; se ajustará en julio para mostrar solo desde el inicio del proyecto (jun 2025).
+
 ## 2026-06-05 — Mejoras prompt de categorización Relay
 
 Basado en análisis de 2393 movimientos reales. Cambios aplicados a `prompt_relay_current.txt` y despachados vía `update-relay-prompt.yml` → `'prompt relay'!A2` del Sheet.
