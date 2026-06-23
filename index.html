@@ -228,6 +228,7 @@
   <button class="tab" onclick="switchTab('transacciones', this)">Transacciones</button>
   <button class="tab" onclick="switchTab('guille', this)">Guille</button>
   <button class="tab" onclick="switchTab('inversiones', this)">Inversiones</button>
+  <button class="tab" onclick="switchTab('talho', this)">Talho Argentino</button>
 </div>
 
 <div id="tab-resumen" class="tab-panel active">
@@ -395,6 +396,31 @@
 
 </div>
 
+<div id="tab-talho" class="tab-panel">
+
+  <div style="display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start">
+
+    <div class="card">
+      <div class="card-title">Gastos Talho Argentino por mes</div>
+      <div class="chart-wrap-tall">
+        <canvas id="chart-talho-bars"></canvas>
+      </div>
+    </div>
+
+    <div class="card" style="min-width:0">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="card-title" style="margin-bottom:0">Transacciones</div>
+        <select id="talho-month-filter" onchange="renderTalho()" style="font-size:13px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit">
+          <option value="">Todos los meses</option>
+        </select>
+      </div>
+      <div id="talho-tx-list"></div>
+    </div>
+
+  </div>
+
+</div>
+
 </main>
 </div>
 
@@ -447,6 +473,7 @@ async function triggerRefresh(){
 
 </body>
 </html>
+
 
 
 
