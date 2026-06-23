@@ -1,3 +1,12 @@
+## [2026-06-23] — Tab Talho Argentino
+
+### Añadido
+- Nueva solapa `Talho Argentino` en el dashboard.
+- Gráfico de barras (Jan–mes actual) con gasto mensual de la categoría `Talho Argentino`.
+- Lista de transacciones con selector de mes para filtrar.
+- `renderTalho()` en `app.js`; dispatch en `switchTab`.
+- Sin cambios en el tratamiento de `Talho Argentino` en el resto del dashboard.
+
 ## 2026-06-23 — Organizar Movimientos
 
 ### change
