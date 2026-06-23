@@ -707,13 +707,15 @@ function renderTalho(){
     return m.toISOString().slice(0,10);
   }
 
-  // Build weekly buckets from Jan 1 of current year to today
+  // Build weekly buckets from first Talho movement to today
   const now = new Date();
-  const yearStart = new Date(Date.UTC(now.getFullYear(), 0, 1));
-  // Find Monday of the week containing Jan 1
-  const firstMonday = mondayOf(yearStart);
-  // Find Monday of the week containing today
   const lastMonday = mondayOf(now);
+
+  // Find Monday of the week containing the earliest Talho transaction
+  const firstTalhoDate = talhoAll.length
+    ? talhoAll.map(r => r.fecha).sort()[0]
+    : now.toISOString().slice(0,10);
+  const firstMonday = mondayOf(new Date(firstTalhoDate + 'T00:00:00Z'));
 
   const weeks = [];
   for(let d = new Date(firstMonday); d <= lastMonday; d.setUTCDate(d.getUTCDate() + 7)){
@@ -962,6 +964,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
