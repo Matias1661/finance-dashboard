@@ -677,6 +677,129 @@ function renderInversiones(){
 
 }
 
+
+function renderTalho(){
+  const RAW = window.FINANCE_STATE?.raw || [];
+  const MESES_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const fmt = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
+  const fmtFull = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(v);
+
+  // All Talho movements (expenses only)
+  const talhoAll = RAW.filter(r => r.categoria === 'Talho Argentino' && Number(r.monto) < 0);
+
+  // Build month labels Jan-current year
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth(); // 0-indexed
+  const months = [];
+  for(let m = 0; m <= currentMonth; m++){
+    months.push(`${currentYear}-${String(m+1).padStart(2,'0')}`);
+  }
+
+  // Populate month selector
+  const sel = document.getElementById('talho-month-filter');
+  if(sel){
+    const talhoMonths = [...new Set(talhoAll.map(r => r.fecha.slice(0,7)))].sort().reverse();
+    sel.innerHTML = '<option value="">Todos los meses</option>' +
+      talhoMonths.map(m => {
+        const [y, mo] = m.split('-');
+        return `<option value="${m}">${MESES_ES[parseInt(mo,10)-1]} ${y}</option>`;
+      }).join('');
+  }
+
+  // Monthly totals for chart
+  const monthTotals = months.map(m => {
+    const sum = talhoAll
+      .filter(r => r.fecha.slice(0,7) === m)
+      .reduce((acc, r) => acc + Math.abs(Number(r.monto)), 0);
+    return sum;
+  });
+
+  const labels = months.map(m => {
+    const [, mo] = m.split('-');
+    return MESES_ES[parseInt(mo,10)-1];
+  });
+
+  // Render chart
+  const ctx = document.getElementById('chart-talho-bars');
+  if(ctx){
+    if(window.talhoChart) window.talhoChart.destroy();
+    window.talhoChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          data: monthTotals,
+          backgroundColor: 'rgba(201,74,48,0.70)',
+          borderRadius: 4,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#ffffff',
+            borderColor: 'rgba(0,0,0,0.12)',
+            borderWidth: 1,
+            titleColor: '#1a1a17',
+            bodyColor: '#1a1a17',
+            callbacks: {
+              label: ctx => ' ' + fmtFull(ctx.parsed.y)
+            }
+          }
+        },
+        scales: {
+          x: { grid: { display: false } },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: v => fmt(v)
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // Transaction list
+  const selectedMonth = document.getElementById('talho-month-filter')?.value || '';
+  let txData = talhoAll;
+  if(selectedMonth) txData = txData.filter(r => r.fecha.slice(0,7) === selectedMonth);
+  txData = [...txData].sort((a,b) => b.fecha.localeCompare(a.fecha));
+
+  const listEl = document.getElementById('talho-tx-list');
+  if(listEl){
+    if(txData.length === 0){
+      listEl.innerHTML = '<div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Sin transacciones</div>';
+    } else {
+      listEl.innerHTML = `<table class="tx-table" style="font-size:13px">
+        <thead><tr>
+          <th>Fecha</th>
+          <th>Concepto</th>
+          <th style="text-align:right">Importe</th>
+        </tr></thead>
+        <tbody>
+          ${txData.map(r => `<tr>
+            <td style="font-family:'DM Mono';white-space:nowrap">${r.fecha}</td>
+            <td>${r.nota ? `<span title="${r.concepto}">${r.nota}</span>` : r.concepto}</td>
+            <td style="text-align:right;font-family:'DM Mono';color:var(--red)">${fmtFull(Math.abs(Number(r.monto)))}</td>
+          </tr>`).join('')}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" style="font-weight:600;padding-top:10px">Total</td>
+            <td style="text-align:right;font-family:'DM Mono';font-weight:600;color:var(--red);padding-top:10px">
+              ${fmtFull(txData.reduce((a,r) => a + Math.abs(Number(r.monto)), 0))}
+            </td>
+          </tr>
+        </tfoot>
+      </table>`;
+    }
+  }
+}
+
 function switchTab(tab, el){
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -690,6 +813,7 @@ function switchTab(tab, el){
   if(tab === 'transacciones') renderTransacciones();
   if(tab === 'guille')        renderGuille();
   if(tab === 'inversiones')   renderInversiones();
+  if(tab === 'talho')           renderTalho();
 }
 
 function populateTxMonthSelector(){
@@ -774,6 +898,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
