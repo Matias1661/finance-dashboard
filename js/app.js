@@ -680,23 +680,70 @@ function renderInversiones(){
 
 function renderTalho(){
   const RAW = window.FINANCE_STATE?.raw || [];
-  const MESES_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
   const fmt = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
   const fmtFull = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(v);
 
   // All Talho movements (expenses only)
   const talhoAll = RAW.filter(r => r.categoria === 'Talho Argentino' && Number(r.monto) < 0);
 
-  // Build month labels Jan-current year
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth(); // 0-indexed
-  const months = [];
-  for(let m = 0; m <= currentMonth; m++){
-    months.push(`${currentYear}-${String(m+1).padStart(2,'0')}`);
+  // Helper: ISO week number and Monday of that week
+  function isoWeek(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  }
+  function mondayOf(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const day = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() - day + 1);
+    return d;
+  }
+  function fmtMonday(d) {
+    return `${String(d.getUTCDate()).padStart(2,'0')}/${String(d.getUTCMonth()+1).padStart(2,'0')}`;
+  }
+  function weekKey(d) {
+    const m = mondayOf(d);
+    return m.toISOString().slice(0,10);
   }
 
-  // Populate month selector
+  // Build weekly buckets from Jan 1 of current year to today
+  const now = new Date();
+  const yearStart = new Date(Date.UTC(now.getFullYear(), 0, 1));
+  // Find Monday of the week containing Jan 1
+  const firstMonday = mondayOf(yearStart);
+  // Find Monday of the week containing today
+  const lastMonday = mondayOf(now);
+
+  const weeks = [];
+  for(let d = new Date(firstMonday); d <= lastMonday; d.setUTCDate(d.getUTCDate() + 7)){
+    weeks.push(new Date(d));
+  }
+
+  // Aggregate Talho spend by week
+  const weekTotals = weeks.map(mon => {
+    const sun = new Date(mon); sun.setUTCDate(sun.getUTCDate() + 6);
+    return talhoAll
+      .filter(r => {
+        const rd = new Date(r.fecha + 'T00:00:00Z');
+        return rd >= mon && rd <= sun;
+      })
+      .reduce((acc, r) => acc + Math.abs(Number(r.monto)), 0);
+  });
+
+  // Cumulative totals
+  const cumulative = [];
+  let running = 0;
+  for(const v of weekTotals){ running += v; cumulative.push(running); }
+
+  // Labels: "DD/MM (WkXX)"
+  const labels = weeks.map(mon => {
+    const wk = isoWeek(mon);
+    return `${fmtMonday(mon)} (Wk${String(wk).padStart(2,'0')})`;
+  });
+
+  // Populate month selector (keep monthly for transaction filtering)
+  const MESES_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
   const sel = document.getElementById('talho-month-filter');
   if(sel){
     const talhoMonths = [...new Set(talhoAll.map(r => r.fecha.slice(0,7)))].sort().reverse();
@@ -706,24 +753,6 @@ function renderTalho(){
         return `<option value="${m}">${MESES_ES[parseInt(mo,10)-1]} ${y}</option>`;
       }).join('');
   }
-
-  // Monthly totals for chart
-  const monthTotals = months.map(m => {
-    const sum = talhoAll
-      .filter(r => r.fecha.slice(0,7) === m)
-      .reduce((acc, r) => acc + Math.abs(Number(r.monto)), 0);
-    return sum;
-  });
-
-  // Cumulative totals
-  const cumulative = [];
-  let running = 0;
-  for(const v of monthTotals){ running += v; cumulative.push(running); }
-
-  const labels = months.map(m => {
-    const [, mo] = m.split('-');
-    return MESES_ES[parseInt(mo,10)-1];
-  });
 
   // Render chart
   const ctx = document.getElementById('chart-talho-bars');
@@ -736,7 +765,7 @@ function renderTalho(){
         datasets: [
           {
             type: 'bar',
-            label: 'Gasto mensual',
+            label: 'Gasto semanal',
             data: monthTotals,
             backgroundColor: 'rgba(201,74,48,0.70)',
             borderRadius: 4,
@@ -933,6 +962,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
