@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-06-23 17:18",
+  "generated_at": "2026-06-23 17:41",
   "movimientos": [
     {
       "fecha": "2026-06-22",
       "concepto": "AMAZON.ES",
       "monto": -9.99,
-      "categoria": "Compras",
+      "categoria": "Suscripciones",
       "nota": null
     },
     {
@@ -90,7 +90,7 @@
       "concepto": "DEPOSITO A LA CUE",
       "monto": -5000.0,
       "categoria": "Inversion",
-      "nota": "BEAST RAGE Guantes de boxeo"
+      "nota": null
     },
     {
       "fecha": "2026-06-18",
@@ -125,7 +125,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -6.84,
       "categoria": "Compras",
-      "nota": null
+      "nota": "BEAST RAGE Guantes de boxeo"
     },
     {
       "fecha": "2026-06-16",
@@ -216,7 +216,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -15.99,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Limpiador de mosquitos para coche"
     },
     {
       "fecha": "2026-06-12",
