@@ -1,18 +1,11 @@
 {
-  "generated_at": "2026-06-23 17:06",
+  "generated_at": "2026-06-23 17:17",
   "movimientos": [
     {
       "fecha": "2026-06-22",
       "concepto": "AMAZON.ES",
       "monto": -9.99,
       "categoria": "Compras",
-      "nota": null
-    },
-    {
-      "fecha": "2026-06-22",
-      "concepto": "TRANSFER. EN DIV.",
-      "monto": 164.43,
-      "categoria": "Suscripciones",
       "nota": null
     },
     {
@@ -214,9 +207,9 @@
     {
       "fecha": "2026-06-12",
       "concepto": "PAYPAL EUROPE S.",
-      "monto": -197.37,
+      "monto": -32.94,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Cobro anual erróneo de Relay (197,37€). Reintegrado parcialmente 164,43€ el 22/06. Neto real: -32,94€ (equivale a 1 mes). Fila del reintegro eliminada para evitar duplicidad."
     },
     {
       "fecha": "2026-06-12",
