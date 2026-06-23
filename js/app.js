@@ -766,7 +766,7 @@ function renderTalho(){
           {
             type: 'bar',
             label: 'Gasto semanal',
-            data: monthTotals,
+            data: weekTotals,
             backgroundColor: 'rgba(201,74,48,0.70)',
             borderRadius: 4,
             borderSkipped: false,
@@ -962,6 +962,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
