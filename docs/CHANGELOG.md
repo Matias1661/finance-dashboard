@@ -1,3 +1,11 @@
+## 2026-06-23 — Organizar Movimientos
+
+### change
+- Movimientos del 22/06/2026 revisados: AMAZON.ES (-9,99€ Compras), Heladeras Talho A (-6.723,97€ Talho Argentino), Gastos conjuntos (-50€), 2x TRANSFER INMEDIATA Guille.
+- PAYPAL EUROPE S. del 12/06 (-197,37€) consolidado con reintegro TRANSFER. EN DIV. del 22/06 (+164,43€): fila del reintegro eliminada, fila original actualizada a neto -32,94€. Nota en col K explicando el cobro anual erróneo de Relay.
+- Mayo 2026: Amazon Prime (-4,99€, 05/05) y RECIBO VIVAGYM (-34,9€, 04/05) marcados como revisados.
+- `reviewed_movements.json`: +8 entradas.
+
 ## 2026-06-18 — Organizar Movimientos
 
 ### change
