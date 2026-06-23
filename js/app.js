@@ -715,6 +715,11 @@ function renderTalho(){
     return sum;
   });
 
+  // Cumulative totals
+  const cumulative = [];
+  let running = 0;
+  for(const v of monthTotals){ running += v; cumulative.push(running); }
+
   const labels = months.map(m => {
     const [, mo] = m.split('-');
     return MESES_ES[parseInt(mo,10)-1];
@@ -728,17 +733,42 @@ function renderTalho(){
       type: 'bar',
       data: {
         labels,
-        datasets: [{
-          data: monthTotals,
-          backgroundColor: 'rgba(201,74,48,0.70)',
-          borderRadius: 4,
-          borderSkipped: false
-        }]
+        datasets: [
+          {
+            type: 'bar',
+            label: 'Gasto mensual',
+            data: monthTotals,
+            backgroundColor: 'rgba(201,74,48,0.70)',
+            borderRadius: 4,
+            borderSkipped: false,
+            yAxisID: 'y'
+          },
+          {
+            type: 'line',
+            label: 'Acumulado',
+            data: cumulative,
+            borderColor: 'rgba(37,99,190,0.9)',
+            backgroundColor: 'rgba(37,99,190,0.08)',
+            borderWidth: 2,
+            pointBackgroundColor: '#ffffff',
+            pointBorderColor: 'rgba(37,99,190,0.9)',
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            fill: true,
+            tension: 0.3,
+            yAxisID: 'y2'
+          }
+        ]
       },
       options: {
         responsive: true,
+        interaction: { mode: 'index', intersect: false },
         plugins: {
-          legend: { display: false },
+          legend: {
+            display: true,
+            position: 'top',
+            labels: { font: { family: 'DM Sans', size: 12 }, boxWidth: 12, padding: 16 }
+          },
           tooltip: {
             backgroundColor: '#ffffff',
             borderColor: 'rgba(0,0,0,0.12)',
@@ -746,7 +776,7 @@ function renderTalho(){
             titleColor: '#1a1a17',
             bodyColor: '#1a1a17',
             callbacks: {
-              label: ctx => ' ' + fmtFull(ctx.parsed.y)
+              label: c => ' ' + c.dataset.label + ': ' + fmtFull(c.parsed.y)
             }
           }
         },
@@ -754,9 +784,14 @@ function renderTalho(){
           x: { grid: { display: false } },
           y: {
             beginAtZero: true,
-            ticks: {
-              callback: v => fmt(v)
-            }
+            position: 'left',
+            ticks: { callback: v => fmt(v) }
+          },
+          y2: {
+            beginAtZero: true,
+            position: 'right',
+            grid: { drawOnChartArea: false },
+            ticks: { callback: v => fmt(v) }
           }
         }
       }
@@ -898,6 +933,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
