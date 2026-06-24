@@ -1036,7 +1036,7 @@ async function renderSociedad() {
         scales: {
           x: { stacked: true, grid: { display: false } },
           y: {
-            stacked: false,
+            stacked: true,
             beginAtZero: true,
             ticks: { callback: v => fmt(v) }
           }
@@ -1249,6 +1249,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
