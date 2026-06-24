@@ -18,15 +18,12 @@ print(f"Token  : {NOTION_TOKEN[:15]}...", flush=True)
 
 def notion_query(cursor=None):
     url = f"https://api.notion.com/v1/databases/{NOTION_DB_ID}/query"
-    body = {
-        "page_size": 100,
-        "sorts": [{"property": "Fecha", "direction": "ascending"}],
-    }
+    body = {"page_size": 100}
     if cursor:
         body["start_cursor"] = cursor
 
-    data = json.dumps(body).encode()
-    req = urllib.request.Request(url, data=data, method="POST")
+    req_data = json.dumps(body).encode()
+    req = urllib.request.Request(url, data=req_data, method="POST")
     req.add_header("Authorization", f"Bearer {NOTION_TOKEN}")
     req.add_header("Notion-Version", "2022-06-28")
     req.add_header("Content-Type", "application/json")
@@ -46,17 +43,21 @@ def notion_query(cursor=None):
 
 
 def parse_row(page):
-    props = page["properties"]
-    fecha_raw = (props.get("Fecha") or {}).get("date") or {}
-    fecha = fecha_raw.get("start") or ""
-    if fecha:
-        fecha = fecha[:10]
-    costo = (props.get("Costo") or {}).get("number") or 0
-    pagado_sel = (props.get("Pagado por") or {}).get("select") or {}
-    pagado = pagado_sel.get("name") or "Otro"
-    title_arr = (props.get("Concepto") or {}).get("title") or []
-    concepto = title_arr[0]["plain_text"] if title_arr else ""
-    return {"fecha": fecha, "costo": costo, "pagado": pagado, "concepto": concepto}
+    try:
+        props = page["properties"]
+        fecha_raw = (props.get("Fecha") or {}).get("date") or {}
+        fecha = fecha_raw.get("start") or ""
+        if fecha:
+            fecha = fecha[:10]
+        costo = (props.get("Costo") or {}).get("number") or 0
+        pagado_sel = (props.get("Pagado por") or {}).get("select") or {}
+        pagado = pagado_sel.get("name") or "Otro"
+        title_arr = (props.get("Concepto") or {}).get("title") or []
+        concepto = title_arr[0]["plain_text"] if title_arr else ""
+        return {"fecha": fecha, "costo": costo, "pagado": pagado, "concepto": concepto}
+    except Exception as ex:
+        print(f"  parse_row error: {ex} | page_id={page.get('id')}", flush=True)
+        return None
 
 
 def main():
@@ -67,15 +68,15 @@ def main():
     while True:
         page_num += 1
         print(f"Fetching page {page_num}...", flush=True)
-        data = notion_query(cursor)
-        results = data.get("results", [])
-        print(f"  Got {len(results)} rows, has_more={data.get('has_more')}", flush=True)
+        response = notion_query(cursor)
+        results = response.get("results", [])
+        print(f"  Got {len(results)} rows, has_more={response.get('has_more')}", flush=True)
         for page in results:
             row = parse_row(page)
-            if row["fecha"]:
+            if row and row["fecha"]:
                 rows.append(row)
-        if data.get("has_more"):
-            cursor = data["next_cursor"]
+        if response.get("has_more"):
+            cursor = response["next_cursor"]
         else:
             break
 
