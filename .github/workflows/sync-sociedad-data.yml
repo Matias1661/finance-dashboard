@@ -25,21 +25,32 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Debug env
+      - name: Test Notion connection
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: |
-          echo "Python: $(python --version)"
-          echo "Token set: $([ -n "$NOTION_TOKEN" ] && echo YES || echo NO)"
-          echo "Token length: ${#NOTION_TOKEN}"
-          python -c "import urllib.request; print('urllib ok')"
+          python3 - <<'PYEOF'
+          import os, json, urllib.request, urllib.error
+          token = os.environ['NOTION_TOKEN']
+          db_id = '38933ce50e6880b9899beedec9156145'
+          url = f'https://api.notion.com/v1/databases/{db_id}/query'
+          req = urllib.request.Request(url, data=b'{}', method='POST')
+          req.add_header('Authorization', f'Bearer {token}')
+          req.add_header('Notion-Version', '2022-06-28')
+          req.add_header('Content-Type', 'application/json')
+          try:
+              with urllib.request.urlopen(req) as r:
+                  d = json.loads(r.read())
+                  print(f"OK: {len(d.get('results',[]))} results, has_more={d.get('has_more')}")
+          except urllib.error.HTTPError as e:
+              print(f"HTTP {e.code}: {e.read().decode()}")
+          PYEOF
 
       - name: Fetch Notion data
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DB_ID: '38933ce50e6880b9899beedec9156145'
-        run: |
-          python scripts/sync_sociedad_data.py
+        run: python scripts/sync_sociedad_data.py
 
       - name: Commit and push if changed
         env:
