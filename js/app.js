@@ -604,7 +604,9 @@ function renderInversiones(){
     return filled;
   }
 
-  const capital13 = fillForward(capital).slice(-13);
+  const now = new Date();
+  const currentMes = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+  const capital13 = fillForward(capital).filter(d => d.mes >= '2025-01' && d.mes <= currentMes);
   const capLabels = capital13.map(d => formatMesLabel(d.mes));
   const capPB     = capital13.map(d => d.peerberry);
   const capMI     = capital13.map(d => d.myinvestor);
