@@ -25,23 +25,31 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Fetch Notion data and generate sociedad_data.json
+      - name: Fetch Notion data
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DB_ID: '38933ce50e6880b9899beedec9156145'
-        run: python scripts/sync_sociedad_data.py 2>&1 | tee sync_sociedad_log.txt; exit ${PIPESTATUS[0]}
+        run: |
+          python scripts/sync_sociedad_data.py > sync_sociedad_log.txt 2>&1
+          cat sync_sociedad_log.txt
 
-      - name: Commit and push
-        if: always()
+      - name: Commit and push if changed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/Matias1661/finance-dashboard.git
-          git add -f sociedad_data.json sync_sociedad_log.txt 2>/dev/null || true
+          git add sociedad_data.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: sync sociedad data [$(date +'%Y-%m-%d')]"
             git pull --rebase origin main
             git push origin main
           fi
+
+      - name: Upload log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sync-log
+          path: sync_sociedad_log.txt
