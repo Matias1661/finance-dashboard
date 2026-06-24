@@ -1,88 +1,45 @@
-"""
-sync_sociedad_data.py
-Lee la DB de Notion "Gastos del local" y genera sociedad_data.json.
-"""
-import json
-import os
-import sys
-import urllib.request
-import urllib.error
+import json, os, sys, urllib.request, urllib.error
 
-NOTION_TOKEN = os.environ["NOTION_TOKEN"]
-NOTION_DB_ID = os.environ.get("NOTION_DB_ID", "38933ce50e6880b9899beedec9156145")
-OUT_FILE = "sociedad_data.json"
+token  = os.environ["NOTION_TOKEN"]
+db_id  = os.environ.get("NOTION_DB_ID", "38933ce50e6880b9899beedec9156145")
+out    = "sociedad_data.json"
 
-print(f"DB ID  : {NOTION_DB_ID}", flush=True)
-print(f"Token  : {NOTION_TOKEN[:15]}...", flush=True)
+print(f"token={token[:12]}... db={db_id}", flush=True)
 
-
-def notion_query(cursor=None):
-    url = f"https://api.notion.com/v1/databases/{NOTION_DB_ID}/query"
-    # No sorts — keep request minimal like the inline test that works
+rows, cursor, page = [], None, 0
+while True:
+    page += 1
     body = {"page_size": 100}
     if cursor:
         body["start_cursor"] = cursor
-
-    req = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST")
-    req.add_header("Authorization", f"Bearer {NOTION_TOKEN}")
+    req = urllib.request.Request(
+        f"https://api.notion.com/v1/databases/{db_id}/query",
+        data=json.dumps(body).encode(), method="POST"
+    )
+    req.add_header("Authorization", f"Bearer {token}")
     req.add_header("Notion-Version", "2022-06-28")
     req.add_header("Content-Type", "application/json")
-
     try:
         with urllib.request.urlopen(req) as r:
-            raw = r.read().decode()
-            print(f"Notion HTTP 200, bytes={len(raw)}", flush=True)
-            return json.loads(raw)
+            d = json.loads(r.read().decode())
     except urllib.error.HTTPError as e:
-        print(f"Notion HTTP {e.code}: {e.read().decode()}", flush=True)
-        sys.exit(1)
-    except Exception as ex:
-        print(f"Notion error: {ex}", flush=True)
-        sys.exit(1)
-
-
-def parse_row(page):
-    try:
-        props = page["properties"]
-        fecha_raw = (props.get("Fecha") or {}).get("date") or {}
-        fecha = (fecha_raw.get("start") or "")[:10]
+        print(f"HTTP {e.code}: {e.read().decode()}", flush=True); sys.exit(1)
+    results = d.get("results", [])
+    print(f"page {page}: {len(results)} rows, has_more={d.get('has_more')}", flush=True)
+    for p in results:
+        props = p["properties"]
+        fecha = ((props.get("Fecha") or {}).get("date") or {}).get("start", "")[:10]
         costo = (props.get("Costo") or {}).get("number") or 0
         pagado = ((props.get("Pagado por") or {}).get("select") or {}).get("name") or "Otro"
-        title_arr = (props.get("Concepto") or {}).get("title") or []
-        concepto = title_arr[0]["plain_text"] if title_arr else ""
-        return {"fecha": fecha, "costo": costo, "pagado": pagado, "concepto": concepto}
-    except Exception as ex:
-        print(f"  parse_row error: {ex}", flush=True)
-        return None
+        concepto = (((props.get("Concepto") or {}).get("title") or [{}])[0]).get("plain_text", "")
+        if fecha:
+            rows.append({"fecha": fecha, "costo": costo, "pagado": pagado, "concepto": concepto})
+    if d.get("has_more"):
+        cursor = d["next_cursor"]
+    else:
+        break
 
-
-def main():
-    rows = []
-    cursor = None
-    page_num = 0
-
-    while True:
-        page_num += 1
-        print(f"Fetching page {page_num}...", flush=True)
-        resp = notion_query(cursor)
-        results = resp.get("results", [])
-        print(f"  {len(results)} rows, has_more={resp.get('has_more')}", flush=True)
-        for page in results:
-            row = parse_row(page)
-            if row and row["fecha"]:
-                rows.append(row)
-        if resp.get("has_more"):
-            cursor = resp["next_cursor"]
-        else:
-            break
-
-    rows.sort(key=lambda r: r["fecha"])
-
-    with open(OUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(rows, f, ensure_ascii=False, indent=2)
-
-    print(f"Done — {len(rows)} registros escritos.", flush=True)
-
-
-if __name__ == "__main__":
-    main()
+rows.sort(key=lambda r: r["fecha"])
+with open(out, "w") as f:
+    json.dump(rows, f, ensure_ascii=False, indent=2)
+print(f"Done: {len(rows)} rows -> {out}", flush=True)
