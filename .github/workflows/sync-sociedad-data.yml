@@ -25,29 +25,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Check token
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-        run: |
-          echo "Token length: ${#NOTION_TOKEN}"
-          echo "Token prefix: ${NOTION_TOKEN:0:8}"
-
       - name: Fetch Notion data and generate sociedad_data.json
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-        run: |
-          python3 scripts/sync_sociedad_data.py 2>&1 | tee /tmp/sociedad_debug.log
-          EXIT_CODE=${PIPESTATUS[0]}
-          if [ $EXIT_CODE -ne 0 ]; then
-            cp /tmp/sociedad_debug.log sociedad_debug.log
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Matias1661/finance-dashboard.git
-            git add sociedad_debug.log
-            git commit -m "debug: sociedad sync error log" || true
-            git push origin main || true
-            exit $EXIT_CODE
-          fi
+        run: python3 scripts/sync_sociedad_data.py
 
       - name: Commit and push if changed
         env:
