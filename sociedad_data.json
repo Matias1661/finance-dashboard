@@ -1,56 +1,56 @@
 [
   {
-    "Pagado por": "Willy",
-    "Fecha": "2026-06-15",
-    "Costo": 1000,
-    "Concepto": "Ingeniero habilitacion"
+    "fecha": "2026-06-15",
+    "concepto": "Ingeniero habilitacion",
+    "costo": 1000,
+    "pagado": "Willy"
   },
   {
-    "Pagado por": "Willy",
-    "Fecha": "2026-05-29",
-    "Costo": 1300,
-    "Concepto": "Alquiler Agosto"
+    "fecha": "2026-05-29",
+    "concepto": "Alquiler Agosto",
+    "costo": 1300,
+    "pagado": "Willy"
   },
   {
-    "Pagado por": "Willy",
-    "Fecha": "2026-05-29",
-    "Costo": 2600,
-    "Concepto": "Deposito Local"
+    "fecha": "2026-05-29",
+    "concepto": "Deposito Local",
+    "costo": 2600,
+    "pagado": "Willy"
   },
   {
-    "Pagado por": "Willy",
-    "Fecha": "2026-05-29",
-    "Costo": 1300,
-    "Concepto": "Fianza Local"
+    "fecha": "2026-05-29",
+    "concepto": "Fianza Local",
+    "costo": 1300,
+    "pagado": "Willy"
   },
   {
-    "Pagado por": "Mati",
-    "Fecha": "2026-06-22",
-    "Costo": 6723.97,
-    "Concepto": "Adelanto 50% Heladeras"
+    "fecha": "2026-06-22",
+    "concepto": "Adelanto 50% Heladeras",
+    "costo": 6723.97,
+    "pagado": "Mati"
   },
   {
-    "Pagado por": "Willy",
-    "Fecha": "2026-06-20",
-    "Costo": 648.55,
-    "Concepto": "Materiales Leroy Merlin"
+    "fecha": "2026-06-20",
+    "concepto": "Materiales Leroy Merlin",
+    "costo": 648.55,
+    "pagado": "Willy"
   },
   {
-    "Pagado por": "Willy",
-    "Fecha": "2026-06-10",
-    "Costo": 605,
-    "Concepto": "Seña Proyecto"
+    "fecha": "2026-06-10",
+    "concepto": "Seña Proyecto",
+    "costo": 605,
+    "pagado": "Willy"
   },
   {
-    "Pagado por": "Willy",
-    "Fecha": "2026-05-29",
-    "Costo": 1573,
-    "Concepto": "Honorarios Inmobiliarios "
+    "fecha": "2026-05-29",
+    "concepto": "Honorarios Inmobiliarios ",
+    "costo": 1573,
+    "pagado": "Willy"
   },
   {
-    "Pagado por": "Willy",
-    "Fecha": "2026-05-25",
-    "Costo": 1300,
-    "Concepto": "Reserva Inmobiliaria"
+    "fecha": "2026-05-25",
+    "concepto": "Reserva Inmobiliaria",
+    "costo": 1300,
+    "pagado": "Willy"
   }
 ]
