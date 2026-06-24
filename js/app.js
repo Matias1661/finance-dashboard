@@ -868,6 +868,279 @@ function renderTalho(){
   }
 }
 
+// ── Gastos de la sociedad (Notion DB) ──────────────────────────────────────
+let _sociedadData = null;
+let _sociedadLoading = false;
+
+async function fetchSociedadData() {
+  if (_sociedadData !== null) return _sociedadData;
+  if (_sociedadLoading) return null;
+  _sociedadLoading = true;
+
+  const dbId    = window.NOTION_DB_ID || '';
+  const token   = window.NOTION_TOKEN || '';
+  if (!token) {
+    _sociedadLoading = false;
+    return [];
+  }
+
+  const rows = [];
+  let cursor = undefined;
+  try {
+    do {
+      const body = { page_size: 100, sorts: [{ property: 'Fecha', direction: 'ascending' }] };
+      if (cursor) body.start_cursor = cursor;
+      const r = await fetch(`https://api.notion.com/v1/databases/${dbId}/query`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Notion-Version': '2022-06-28',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+      if (!r.ok) break;
+      const d = await r.json();
+      for (const page of d.results) {
+        const props = page.properties;
+        const fecha = props['Fecha']?.date?.start || null;
+        const costo = props['Costo']?.number ?? 0;
+        const pagado = props['Pagado por']?.select?.name || 'Otro';
+        const concepto = props['Concepto']?.title?.[0]?.plain_text || '';
+        if (fecha) rows.push({ fecha, costo, pagado, concepto });
+      }
+      cursor = d.has_more ? d.next_cursor : undefined;
+    } while (cursor);
+  } catch (e) {
+    console.error('Notion fetch error:', e);
+  }
+  _sociedadLoading = false;
+  _sociedadData = rows;
+  return rows;
+}
+
+async function renderSociedad() {
+  const fmt     = v => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v);
+  const fmtFull = v => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(v);
+
+  const listEl = document.getElementById('sociedad-tx-list');
+
+  // Check token
+  const token = window.NOTION_TOKEN || '';
+  if (!token) {
+    if (listEl) listEl.innerHTML = '<div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Configura <code>NOTION_TOKEN</code> en index.html para cargar los datos.</div>';
+    return;
+  }
+
+  if (listEl) listEl.innerHTML = '<div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Cargando…</div>';
+
+  const allRows = await fetchSociedadData();
+  if (!allRows || allRows.length === 0) {
+    if (listEl) listEl.innerHTML = '<div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Sin datos</div>';
+    return;
+  }
+
+  // Week helpers (same as renderTalho)
+  function isoWeek(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  }
+  function mondayOf(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const day = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() - day + 1);
+    return d;
+  }
+  function fmtMonday(d) {
+    return `${String(d.getUTCDate()).padStart(2,'0')}/${String(d.getUTCMonth()+1).padStart(2,'0')}`;
+  }
+
+  const now        = new Date();
+  const lastMonday = mondayOf(now);
+  const firstDate  = allRows.map(r => r.fecha).sort()[0];
+  const firstMonday = mondayOf(new Date(firstDate + 'T00:00:00Z'));
+
+  const weeks = [];
+  for (let d = new Date(firstMonday); d <= lastMonday; d.setUTCDate(d.getUTCDate() + 7)) {
+    weeks.push(new Date(d));
+  }
+
+  const matiTotals  = [];
+  const willyTotals = [];
+  const cumulative  = [];
+  let running = 0;
+
+  for (const mon of weeks) {
+    const sun = new Date(mon); sun.setUTCDate(sun.getUTCDate() + 6);
+    const weekRows = allRows.filter(r => {
+      const rd = new Date(r.fecha + 'T00:00:00Z');
+      return rd >= mon && rd <= sun;
+    });
+    const mati  = weekRows.filter(r => r.pagado === 'Mati').reduce((a, r) => a + r.costo, 0);
+    const willy = weekRows.filter(r => r.pagado === 'Willy').reduce((a, r) => a + r.costo, 0);
+    matiTotals.push(mati);
+    willyTotals.push(willy);
+    running += mati + willy;
+    cumulative.push(running);
+  }
+
+  const labels = weeks.map(mon => {
+    const wk = isoWeek(mon);
+    return `${fmtMonday(mon)} (Wk${String(wk).padStart(2,'0')})`;
+  });
+
+  const PRESUPUESTO = 75000;
+
+  const ctx = document.getElementById('chart-sociedad-bars');
+  if (ctx) {
+    if (window.sociedadChart) window.sociedadChart.destroy();
+    window.sociedadChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          {
+            type: 'bar',
+            label: 'Mati',
+            data: matiTotals,
+            backgroundColor: 'rgba(201,74,48,0.75)',
+            borderRadius: 4,
+            borderSkipped: false,
+            stack: 'gastos',
+            yAxisID: 'y'
+          },
+          {
+            type: 'bar',
+            label: 'Willy',
+            data: willyTotals,
+            backgroundColor: 'rgba(154,98,0,0.75)',
+            borderRadius: 4,
+            borderSkipped: false,
+            stack: 'gastos',
+            yAxisID: 'y'
+          },
+          {
+            type: 'line',
+            label: 'Acumulado',
+            data: cumulative,
+            borderColor: 'rgba(37,99,190,0.9)',
+            backgroundColor: 'rgba(37,99,190,0.08)',
+            borderWidth: 2,
+            pointBackgroundColor: '#ffffff',
+            pointBorderColor: 'rgba(37,99,190,0.9)',
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            fill: true,
+            tension: 0.3,
+            yAxisID: 'y2'
+          },
+          {
+            type: 'line',
+            label: 'Presupuesto',
+            data: Array(weeks.length).fill(PRESUPUESTO),
+            borderColor: 'rgba(13,138,82,0.85)',
+            borderWidth: 2,
+            borderDash: [6, 4],
+            pointRadius: 0,
+            fill: false,
+            tension: 0,
+            yAxisID: 'y2'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: { font: { family: 'DM Sans', size: 12 }, boxWidth: 12, padding: 16 }
+          },
+          tooltip: {
+            backgroundColor: '#ffffff',
+            borderColor: 'rgba(0,0,0,0.12)',
+            borderWidth: 1,
+            titleColor: '#1a1a17',
+            bodyColor: '#1a1a17',
+            callbacks: {
+              label: c => ' ' + c.dataset.label + ': ' + fmtFull(c.parsed.y)
+            }
+          }
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false } },
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            position: 'left',
+            ticks: { callback: v => fmt(v) }
+          },
+          y2: {
+            beginAtZero: true,
+            position: 'right',
+            grid: { drawOnChartArea: false },
+            ticks: { callback: v => fmt(v) }
+          }
+        }
+      }
+    });
+  }
+
+  // Month selector
+  const MESES_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const sel = document.getElementById('sociedad-month-filter');
+  if (sel) {
+    const months = [...new Set(allRows.map(r => r.fecha.slice(0,7)))].sort().reverse();
+    sel.innerHTML = '<option value="">Todos los meses</option>' +
+      months.map(m => {
+        const [y, mo] = m.split('-');
+        return `<option value="${m}">${MESES_ES[parseInt(mo,10)-1]} ${y}</option>`;
+      }).join('');
+  }
+
+  // Transaction table
+  const selectedMonth = document.getElementById('sociedad-month-filter')?.value || '';
+  let txData = allRows;
+  if (selectedMonth) txData = txData.filter(r => r.fecha.slice(0,7) === selectedMonth);
+  txData = [...txData].sort((a,b) => b.fecha.localeCompare(a.fecha));
+
+  if (listEl) {
+    if (txData.length === 0) {
+      listEl.innerHTML = '<div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Sin transacciones</div>';
+    } else {
+      const matiTotal  = txData.filter(r => r.pagado === 'Mati').reduce((a,r)=>a+r.costo, 0);
+      const willyTotal = txData.filter(r => r.pagado === 'Willy').reduce((a,r)=>a+r.costo, 0);
+      const total = matiTotal + willyTotal;
+      listEl.innerHTML = `<table class="tx-table" style="font-size:13px">
+        <thead><tr>
+          <th>Fecha</th>
+          <th>Concepto</th>
+          <th>Pagado por</th>
+          <th style="text-align:right">Importe</th>
+        </tr></thead>
+        <tbody>
+          ${txData.map(r => `<tr>
+            <td style="font-family:'DM Mono';white-space:nowrap">${r.fecha}</td>
+            <td>${r.concepto}</td>
+            <td><span style="font-size:11px;padding:2px 6px;border-radius:4px;background:${r.pagado==='Mati'?'rgba(201,74,48,0.12)':'rgba(154,98,0,0.12)'};color:${r.pagado==='Mati'?'var(--red)':'var(--amber)'}">${r.pagado}</span></td>
+            <td style="text-align:right;font-family:'DM Mono'">${fmtFull(r.costo)}</td>
+          </tr>`).join('')}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" style="font-weight:600;padding-top:10px">Total</td>
+            <td style="padding-top:10px;font-size:11px;color:var(--text-secondary)">M: ${fmtFull(matiTotal)} · W: ${fmtFull(willyTotal)}</td>
+            <td style="text-align:right;font-family:'DM Mono';font-weight:600;padding-top:10px">${fmtFull(total)}</td>
+          </tr>
+        </tfoot>
+      </table>`;
+    }
+  }
+}
+
 function switchTab(tab, el){
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -881,7 +1154,7 @@ function switchTab(tab, el){
   if(tab === 'transacciones') renderTransacciones();
   if(tab === 'guille')        renderGuille();
   if(tab === 'inversiones')   renderInversiones();
-  if(tab === 'talho')           renderTalho();
+  if(tab === 'talho')           { renderTalho(); renderSociedad(); }
 }
 
 function populateTxMonthSelector(){
@@ -966,6 +1239,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
