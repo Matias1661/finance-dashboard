@@ -4,12 +4,16 @@ Lee la DB de Notion "Gastos del local" y genera sociedad_data.json.
 """
 import json
 import os
+import sys
 import urllib.request
 import urllib.error
 
 NOTION_TOKEN = os.environ["NOTION_TOKEN"]
-NOTION_DB_ID = os.environ.get("NOTION_DB_ID", "38933ce50e6880ba9e03000b001f2431")
+NOTION_DB_ID = os.environ.get("NOTION_DB_ID", "38933ce50e6880b9899beedec9156145")
 OUT_FILE = "sociedad_data.json"
+
+print(f"DB ID  : {NOTION_DB_ID}", flush=True)
+print(f"Token  : {NOTION_TOKEN[:15]}...", flush=True)
 
 
 def notion_query(cursor=None):
@@ -21,18 +25,24 @@ def notion_query(cursor=None):
     if cursor:
         body["start_cursor"] = cursor
 
-    req = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST")
+    data = json.dumps(body).encode()
+    req = urllib.request.Request(url, data=data, method="POST")
     req.add_header("Authorization", f"Bearer {NOTION_TOKEN}")
     req.add_header("Notion-Version", "2022-06-28")
     req.add_header("Content-Type", "application/json")
 
     try:
         with urllib.request.urlopen(req) as r:
-            return json.loads(r.read().decode())
+            raw = r.read().decode()
+            print(f"Notion HTTP 200, bytes={len(raw)}", flush=True)
+            return json.loads(raw)
     except urllib.error.HTTPError as e:
-        body_text = e.read().decode()
-        print(f"HTTP {e.code} from Notion: {body_text}")
-        raise
+        body_bytes = e.read()
+        print(f"Notion HTTP {e.code}: {body_bytes.decode()}", flush=True)
+        sys.exit(1)
+    except Exception as ex:
+        print(f"Notion request error: {ex}", flush=True)
+        sys.exit(1)
 
 
 def parse_row(page):
@@ -50,17 +60,17 @@ def parse_row(page):
 
 
 def main():
-    print(f"DB ID: {NOTION_DB_ID}")
-    print(f"Token prefix: {NOTION_TOKEN[:12]}...")
-
     rows = []
     cursor = None
+    page_num = 0
 
     while True:
+        page_num += 1
+        print(f"Fetching page {page_num}...", flush=True)
         data = notion_query(cursor)
-        page_count = len(data.get("results", []))
-        print(f"Page fetched: {page_count} results, has_more={data.get('has_more')}")
-        for page in data.get("results", []):
+        results = data.get("results", [])
+        print(f"  Got {len(results)} rows, has_more={data.get('has_more')}", flush=True)
+        for page in results:
             row = parse_row(page)
             if row["fecha"]:
                 rows.append(row)
@@ -74,7 +84,7 @@ def main():
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(rows, f, ensure_ascii=False, indent=2)
 
-    print(f"sociedad_data.json — {len(rows)} registros escritos.")
+    print(f"Done — {len(rows)} registros escritos en {OUT_FILE}.", flush=True)
 
 
 if __name__ == "__main__":
