@@ -1,5 +1,11 @@
 [
   {
+    "fecha": "2026-06-20",
+    "concepto": "Materiales de construcción",
+    "costo": 784.74,
+    "pagado": "Willy"
+  },
+  {
     "fecha": "2026-06-15",
     "concepto": "Ingeniero habilitacion",
     "costo": 1000,
@@ -28,12 +34,6 @@
     "concepto": "Adelanto 50% Heladeras",
     "costo": 6723.97,
     "pagado": "Mati"
-  },
-  {
-    "fecha": "2026-06-20",
-    "concepto": "Materiales Leroy Merlin",
-    "costo": 648.55,
-    "pagado": "Willy"
   },
   {
     "fecha": "2026-06-10",
