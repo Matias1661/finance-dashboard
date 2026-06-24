@@ -28,7 +28,7 @@ jobs:
       - name: Fetch Notion data and generate sociedad_data.json
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          NOTION_DB_ID: '38933ce50e6880ba9e03000b001f2431'
+          NOTION_DB_ID: '38933ce50e6880b9899beedec9156145'
         run: python scripts/sync_sociedad_data.py
 
       - name: Commit and push if changed
