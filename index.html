@@ -398,7 +398,9 @@
 
 <div id="tab-talho" class="tab-panel">
 
-  <div style="display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start">
+  <!-- Gastos de Matias -->
+  <div style="margin-bottom:8px;font-size:13px;font-weight:600;color:var(--text-secondary);letter-spacing:0.04em;text-transform:uppercase">Gastos de Matias</div>
+  <div style="display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start;margin-bottom:32px">
 
     <div class="card">
       <div class="card-title">Gastos Talho Argentino por semana</div>
@@ -419,6 +421,29 @@
 
   </div>
 
+  <!-- Gastos de la sociedad -->
+  <div style="margin-bottom:8px;font-size:13px;font-weight:600;color:var(--text-secondary);letter-spacing:0.04em;text-transform:uppercase">Gastos de la sociedad</div>
+  <div style="display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start">
+
+    <div class="card">
+      <div class="card-title">Gastos de la sociedad por semana</div>
+      <div class="chart-wrap-tall">
+        <canvas id="chart-sociedad-bars"></canvas>
+      </div>
+    </div>
+
+    <div class="card" style="min-width:0">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="card-title" style="margin-bottom:0">Transacciones</div>
+        <select id="sociedad-month-filter" onchange="renderSociedad()" style="font-size:13px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit">
+          <option value="">Todos los meses</option>
+        </select>
+      </div>
+      <div id="sociedad-tx-list"><div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Cargando…</div></div>
+    </div>
+
+  </div>
+
 </div>
 
 </main>
@@ -428,6 +453,10 @@
 const GH_REPO  = 'Matias1661/finance-dashboard';
 const GH_WF    = ['286832931'];
 const GH_TOKEN = 'ghp_mwdGMZMC6lu' + 'nVud1n9EGxOl12dtYS52cpX1C';
+const NOTION_DB_ID = '38933ce50e6880b9899beedec9156145';
+const NOTION_TOKEN = '';
+window.NOTION_DB_ID = NOTION_DB_ID;
+window.NOTION_TOKEN = NOTION_TOKEN;
 
 async function triggerRefresh(){
   const btn = document.getElementById('btnRefresh');
@@ -473,6 +502,7 @@ async function triggerRefresh(){
 
 </body>
 </html>
+
 
 
 
