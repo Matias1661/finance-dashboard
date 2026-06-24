@@ -997,7 +997,7 @@ async function renderSociedad() {
             pointRadius: 4,
             fill: true,
             tension: 0.3,
-            yAxisID: 'y2'
+            yAxisID: 'y'
           },
           {
             type: 'line',
@@ -1009,7 +1009,7 @@ async function renderSociedad() {
             pointRadius: 0,
             fill: false,
             tension: 0,
-            yAxisID: 'y2'
+            yAxisID: 'y'
           }
         ]
       },
@@ -1036,15 +1036,8 @@ async function renderSociedad() {
         scales: {
           x: { stacked: true, grid: { display: false } },
           y: {
-            stacked: true,
+            stacked: false,
             beginAtZero: true,
-            position: 'left',
-            ticks: { callback: v => fmt(v) }
-          },
-          y2: {
-            beginAtZero: true,
-            position: 'right',
-            grid: { drawOnChartArea: false },
             ticks: { callback: v => fmt(v) }
           }
         }
@@ -1077,29 +1070,37 @@ async function renderSociedad() {
       const matiTotal  = txData.filter(r => r.pagado === 'Mati').reduce((a,r)=>a+r.costo, 0);
       const willyTotal = txData.filter(r => r.pagado === 'Willy').reduce((a,r)=>a+r.costo, 0);
       const total = matiTotal + willyTotal;
-      listEl.innerHTML = `<table class="tx-table" style="font-size:13px">
-        <thead><tr>
-          <th>Fecha</th>
-          <th>Concepto</th>
-          <th>Pagado por</th>
-          <th style="text-align:right">Importe</th>
-        </tr></thead>
-        <tbody>
-          ${txData.map(r => `<tr>
-            <td style="font-family:'DM Mono';white-space:nowrap">${r.fecha}</td>
-            <td>${r.concepto}</td>
-            <td><span style="font-size:11px;padding:2px 6px;border-radius:4px;background:${r.pagado==='Mati'?'rgba(201,74,48,0.12)':'rgba(154,98,0,0.12)'};color:${r.pagado==='Mati'?'var(--red)':'var(--amber)'}">${r.pagado}</span></td>
-            <td style="text-align:right;font-family:'DM Mono'">${fmtFull(r.costo)}</td>
-          </tr>`).join('')}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="2" style="font-weight:600;padding-top:10px">Total</td>
-            <td style="padding-top:10px;font-size:11px;color:var(--text-secondary)">M: ${fmtFull(matiTotal)} · W: ${fmtFull(willyTotal)}</td>
-            <td style="text-align:right;font-family:'DM Mono';font-weight:600;padding-top:10px">${fmtFull(total)}</td>
-          </tr>
-        </tfoot>
-      </table>`;
+      listEl.innerHTML = `<div style="overflow:hidden;border-radius:6px;border:1px solid var(--border)">
+        <table class="tx-table" style="font-size:13px;table-layout:fixed;width:100%;margin:0">
+          <colgroup>
+            <col style="width:90px">
+            <col>
+            <col style="width:60px">
+            <col style="width:90px">
+          </colgroup>
+          <thead><tr>
+            <th>Fecha</th>
+            <th>Concepto</th>
+            <th>Quién</th>
+            <th style="text-align:right">Importe</th>
+          </tr></thead>
+          <tbody>
+            ${txData.map(r => `<tr>
+              <td style="font-family:'DM Mono';font-size:12px;white-space:nowrap;color:var(--text-secondary)">${r.fecha}</td>
+              <td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.concepto}">${r.concepto}</td>
+              <td><span style="font-size:11px;padding:2px 5px;border-radius:4px;background:${r.pagado==='Mati'?'rgba(201,74,48,0.12)':'rgba(154,98,0,0.12)'};color:${r.pagado==='Mati'?'var(--red)':'var(--amber)'};white-space:nowrap">${r.pagado}</span></td>
+              <td style="text-align:right;font-family:'DM Mono';font-size:12px;white-space:nowrap">${fmtFull(r.costo)}</td>
+            </tr>`).join('')}
+          </tbody>
+          <tfoot>
+            <tr style="border-top:2px solid var(--border)">
+              <td colspan="4" style="padding-top:8px;padding-bottom:4px;font-size:11px;color:var(--text-secondary)">
+                <span style="color:var(--red);font-weight:600">Mati</span> ${fmtFull(matiTotal)} &nbsp;·&nbsp; <span style="color:var(--amber);font-weight:600">Willy</span> ${fmtFull(willyTotal)} &nbsp;·&nbsp; <strong>Total ${fmtFull(total)}</strong>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>`;
     }
   }
 }
@@ -1202,6 +1203,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
