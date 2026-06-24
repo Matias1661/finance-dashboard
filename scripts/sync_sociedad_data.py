@@ -18,12 +18,12 @@ print(f"Token  : {NOTION_TOKEN[:15]}...", flush=True)
 
 def notion_query(cursor=None):
     url = f"https://api.notion.com/v1/databases/{NOTION_DB_ID}/query"
+    # No sorts — keep request minimal like the inline test that works
     body = {"page_size": 100}
     if cursor:
         body["start_cursor"] = cursor
 
-    req_data = json.dumps(body).encode()
-    req = urllib.request.Request(url, data=req_data, method="POST")
+    req = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST")
     req.add_header("Authorization", f"Bearer {NOTION_TOKEN}")
     req.add_header("Notion-Version", "2022-06-28")
     req.add_header("Content-Type", "application/json")
@@ -34,11 +34,10 @@ def notion_query(cursor=None):
             print(f"Notion HTTP 200, bytes={len(raw)}", flush=True)
             return json.loads(raw)
     except urllib.error.HTTPError as e:
-        body_bytes = e.read()
-        print(f"Notion HTTP {e.code}: {body_bytes.decode()}", flush=True)
+        print(f"Notion HTTP {e.code}: {e.read().decode()}", flush=True)
         sys.exit(1)
     except Exception as ex:
-        print(f"Notion request error: {ex}", flush=True)
+        print(f"Notion error: {ex}", flush=True)
         sys.exit(1)
 
 
@@ -46,17 +45,14 @@ def parse_row(page):
     try:
         props = page["properties"]
         fecha_raw = (props.get("Fecha") or {}).get("date") or {}
-        fecha = fecha_raw.get("start") or ""
-        if fecha:
-            fecha = fecha[:10]
+        fecha = (fecha_raw.get("start") or "")[:10]
         costo = (props.get("Costo") or {}).get("number") or 0
-        pagado_sel = (props.get("Pagado por") or {}).get("select") or {}
-        pagado = pagado_sel.get("name") or "Otro"
+        pagado = ((props.get("Pagado por") or {}).get("select") or {}).get("name") or "Otro"
         title_arr = (props.get("Concepto") or {}).get("title") or []
         concepto = title_arr[0]["plain_text"] if title_arr else ""
         return {"fecha": fecha, "costo": costo, "pagado": pagado, "concepto": concepto}
     except Exception as ex:
-        print(f"  parse_row error: {ex} | page_id={page.get('id')}", flush=True)
+        print(f"  parse_row error: {ex}", flush=True)
         return None
 
 
@@ -68,15 +64,15 @@ def main():
     while True:
         page_num += 1
         print(f"Fetching page {page_num}...", flush=True)
-        response = notion_query(cursor)
-        results = response.get("results", [])
-        print(f"  Got {len(results)} rows, has_more={response.get('has_more')}", flush=True)
+        resp = notion_query(cursor)
+        results = resp.get("results", [])
+        print(f"  {len(results)} rows, has_more={resp.get('has_more')}", flush=True)
         for page in results:
             row = parse_row(page)
             if row and row["fecha"]:
                 rows.append(row)
-        if response.get("has_more"):
-            cursor = response["next_cursor"]
+        if resp.get("has_more"):
+            cursor = resp["next_cursor"]
         else:
             break
 
@@ -85,7 +81,7 @@ def main():
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(rows, f, ensure_ascii=False, indent=2)
 
-    print(f"Done — {len(rows)} registros escritos en {OUT_FILE}.", flush=True)
+    print(f"Done — {len(rows)} registros escritos.", flush=True)
 
 
 if __name__ == "__main__":
