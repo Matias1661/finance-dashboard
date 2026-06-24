@@ -1091,10 +1091,10 @@ async function renderSociedad() {
     });
   }
 
-  // Month selector
+  // Month selector — poblar solo la primera vez para no resetear la selección
   const MESES_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
   const sel = document.getElementById('sociedad-month-filter');
-  if (sel) {
+  if (sel && sel.options.length <= 1) {
     const months = [...new Set(allRows.map(r => r.fecha.slice(0,7)))].sort().reverse();
     sel.innerHTML = '<option value="">Todos los meses</option>' +
       months.map(m => {
@@ -1249,6 +1249,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
