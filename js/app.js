@@ -1045,6 +1045,52 @@ async function renderSociedad() {
     });
   }
 
+  // Pie chart — porcentaje por socio
+  const matiTotal_all  = allRows.filter(r => r.pagado === 'Mati').reduce((a,r)=>a+r.costo,0);
+  const willyTotal_all = allRows.filter(r => r.pagado === 'Willy').reduce((a,r)=>a+r.costo,0);
+  const ctxPie = document.getElementById('chart-sociedad-pie');
+  if (ctxPie) {
+    if (window.sociedadPieChart) window.sociedadPieChart.destroy();
+    window.sociedadPieChart = new Chart(ctxPie, {
+      type: 'doughnut',
+      data: {
+        labels: ['Mati', 'Willy'],
+        datasets: [{
+          data: [matiTotal_all, willyTotal_all],
+          backgroundColor: ['rgba(201,74,48,0.8)', 'rgba(154,98,0,0.8)'],
+          borderColor: ['#ffffff','#ffffff'],
+          borderWidth: 3,
+          hoverOffset: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        cutout: '60%',
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: { font: { family: 'DM Sans', size: 12 }, boxWidth: 12, padding: 16 }
+          },
+          tooltip: {
+            backgroundColor: '#ffffff',
+            borderColor: 'rgba(0,0,0,0.12)',
+            borderWidth: 1,
+            titleColor: '#1a1a17',
+            bodyColor: '#1a1a17',
+            callbacks: {
+              label: c => {
+                const total = c.dataset.data.reduce((a,v)=>a+v,0);
+                const pct = total > 0 ? ((c.parsed / total)*100).toFixed(1) : 0;
+                return ` ${fmtFull(c.parsed)} (${pct}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
   // Month selector
   const MESES_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
   const sel = document.getElementById('sociedad-month-filter');
