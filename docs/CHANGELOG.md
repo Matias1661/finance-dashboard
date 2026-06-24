@@ -1,3 +1,17 @@
+## [2026-06-24] — Tab Talho: sección Gastos de la sociedad
+
+### Añadido
+- Segunda sección en el tab Talho Argentino: `Gastos de la sociedad`.
+- Gráfico de barras apiladas por semana: columna Mati (rojo) y Willy (ámbar), sobre eje Y izquierdo.
+- Curva de acumulado (azul, eje Y derecho) con relleno, igual que el gráfico de Matias.
+- Línea horizontal discontinua en 75.000€ con leyenda `Presupuesto`.
+- Tabla de transacciones con columna `Pagado por` y selector de mes.
+- Pie de tabla desglosa total Mati / Willy.
+- Datos obtenidos en runtime desde Notion DB `Gastos del local` (ID `38933ce50e6880b9899beedec9156145`) vía REST API.
+- Constantes `NOTION_TOKEN` y `NOTION_DB_ID` añadidas al bloque `<script>` de `index.html`.
+- Función `renderSociedad()` en `app.js`; caché en `_sociedadData` para evitar re-fetch en cada renderizado.
+- El gráfico de Matias se renombra visualmente con cabecera de sección `GASTOS DE MATIAS` y el nuevo bloque lleva `GASTOS DE LA SOCIEDAD`.
+
 ## [2026-06-23] — Tab Talho Argentino
 
 ### Añadido
