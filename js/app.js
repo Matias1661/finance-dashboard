@@ -868,7 +868,7 @@ function renderTalho(){
   }
 }
 
-// ── Gastos de la sociedad (Notion DB) ──────────────────────────────────────
+// ── Gastos de la sociedad (sociedad_data.json) ─────────────────────────────
 let _sociedadData = null;
 let _sociedadLoading = false;
 
@@ -877,46 +877,16 @@ async function fetchSociedadData() {
   if (_sociedadLoading) return null;
   _sociedadLoading = true;
 
-  const dbId    = window.NOTION_DB_ID || '';
-  const token   = window.NOTION_TOKEN || '';
-  if (!token) {
-    _sociedadLoading = false;
-    return [];
-  }
-
-  const rows = [];
-  let cursor = undefined;
   try {
-    do {
-      const body = { page_size: 100, sorts: [{ property: 'Fecha', direction: 'ascending' }] };
-      if (cursor) body.start_cursor = cursor;
-      const r = await fetch(`https://api.notion.com/v1/databases/${dbId}/query`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Notion-Version': '2022-06-28',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      });
-      if (!r.ok) break;
-      const d = await r.json();
-      for (const page of d.results) {
-        const props = page.properties;
-        const fecha = props['Fecha']?.date?.start || null;
-        const costo = props['Costo']?.number ?? 0;
-        const pagado = props['Pagado por']?.select?.name || 'Otro';
-        const concepto = props['Concepto']?.title?.[0]?.plain_text || '';
-        if (fecha) rows.push({ fecha, costo, pagado, concepto });
-      }
-      cursor = d.has_more ? d.next_cursor : undefined;
-    } while (cursor);
+    const r = await fetch('sociedad_data.json?v=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    _sociedadData = await r.json();
   } catch (e) {
-    console.error('Notion fetch error:', e);
+    console.error('sociedad_data.json fetch error:', e);
+    _sociedadData = [];
   }
   _sociedadLoading = false;
-  _sociedadData = rows;
-  return rows;
+  return _sociedadData;
 }
 
 async function renderSociedad() {
@@ -925,18 +895,11 @@ async function renderSociedad() {
 
   const listEl = document.getElementById('sociedad-tx-list');
 
-  // Check token
-  const token = window.NOTION_TOKEN || '';
-  if (!token) {
-    if (listEl) listEl.innerHTML = '<div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Configura <code>NOTION_TOKEN</code> en index.html para cargar los datos.</div>';
-    return;
-  }
-
   if (listEl) listEl.innerHTML = '<div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Cargando…</div>';
 
   const allRows = await fetchSociedadData();
   if (!allRows || allRows.length === 0) {
-    if (listEl) listEl.innerHTML = '<div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Sin datos</div>';
+    if (listEl) listEl.innerHTML = '<div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Sin datos — lanza el workflow <strong>Sync Sociedad Data</strong> para generar <code>sociedad_data.json</code>.</div>';
     return;
   }
 
@@ -1239,6 +1202,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
