@@ -25,30 +25,32 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Debug env
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          echo "Python: $(python --version)"
+          echo "Token set: $([ -n "$NOTION_TOKEN" ] && echo YES || echo NO)"
+          echo "Token length: ${#NOTION_TOKEN}"
+          python -c "import urllib.request; print('urllib ok')"
+
       - name: Fetch Notion data
-        id: fetch
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DB_ID: '38933ce50e6880b9899beedec9156145'
         run: |
-          python scripts/sync_sociedad_data.py > sync_sociedad_log.txt 2>&1
-          echo "exit_code=$?" >> $GITHUB_OUTPUT
-        continue-on-error: true
+          python scripts/sync_sociedad_data.py
 
-      - name: Commit results
+      - name: Commit and push if changed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/Matias1661/finance-dashboard.git
-          git add sociedad_data.json sync_sociedad_log.txt 2>/dev/null || true
+          git add sociedad_data.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: sync sociedad data [$(date +'%Y-%m-%d')]"
             git pull --rebase origin main
             git push origin main
           fi
-
-      - name: Fail if fetch failed
-        if: steps.fetch.outcome == 'failure'
-        run: exit 1
