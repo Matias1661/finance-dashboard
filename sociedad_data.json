@@ -1,0 +1,56 @@
+[
+  {
+    "Pagado por": "Willy",
+    "Fecha": "2026-06-15",
+    "Costo": 1000,
+    "Concepto": "Ingeniero habilitacion"
+  },
+  {
+    "Pagado por": "Willy",
+    "Fecha": "2026-05-29",
+    "Costo": 1300,
+    "Concepto": "Alquiler Agosto"
+  },
+  {
+    "Pagado por": "Willy",
+    "Fecha": "2026-05-29",
+    "Costo": 2600,
+    "Concepto": "Deposito Local"
+  },
+  {
+    "Pagado por": "Willy",
+    "Fecha": "2026-05-29",
+    "Costo": 1300,
+    "Concepto": "Fianza Local"
+  },
+  {
+    "Pagado por": "Mati",
+    "Fecha": "2026-06-22",
+    "Costo": 6723.97,
+    "Concepto": "Adelanto 50% Heladeras"
+  },
+  {
+    "Pagado por": "Willy",
+    "Fecha": "2026-06-20",
+    "Costo": 648.55,
+    "Concepto": "Materiales Leroy Merlin"
+  },
+  {
+    "Pagado por": "Willy",
+    "Fecha": "2026-06-10",
+    "Costo": 605,
+    "Concepto": "Seña Proyecto"
+  },
+  {
+    "Pagado por": "Willy",
+    "Fecha": "2026-05-29",
+    "Costo": 1573,
+    "Concepto": "Honorarios Inmobiliarios "
+  },
+  {
+    "Pagado por": "Willy",
+    "Fecha": "2026-05-25",
+    "Costo": 1300,
+    "Concepto": "Reserva Inmobiliaria"
+  }
+]
