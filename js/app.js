@@ -997,6 +997,7 @@ async function renderSociedad() {
             pointRadius: 4,
             fill: true,
             tension: 0.3,
+            stack: 'acumulado',
             yAxisID: 'y'
           },
           {
@@ -1009,6 +1010,7 @@ async function renderSociedad() {
             pointRadius: 0,
             fill: false,
             tension: 0,
+            stack: 'presupuesto',
             yAxisID: 'y'
           }
         ]
