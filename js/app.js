@@ -968,7 +968,7 @@ async function renderSociedad() {
             type: 'bar',
             label: 'Mati',
             data: matiTotals,
-            backgroundColor: 'rgba(201,74,48,0.75)',
+            backgroundColor: 'rgba(13,138,82,0.75)',
             borderRadius: 4,
             borderSkipped: false,
             stack: 'gastos',
@@ -978,7 +978,7 @@ async function renderSociedad() {
             type: 'bar',
             label: 'Willy',
             data: willyTotals,
-            backgroundColor: 'rgba(154,98,0,0.75)',
+            backgroundColor: 'rgba(8,145,178,0.75)',
             borderRadius: 4,
             borderSkipped: false,
             stack: 'gastos',
@@ -1059,7 +1059,7 @@ async function renderSociedad() {
         labels: ['Mati', 'Willy'],
         datasets: [{
           data: [matiTotal_all, willyTotal_all],
-          backgroundColor: ['rgba(201,74,48,0.8)', 'rgba(154,98,0,0.8)'],
+          backgroundColor: ['rgba(13,138,82,0.8)', 'rgba(8,145,178,0.8)'],
           borderColor: ['#ffffff','#ffffff'],
           borderWidth: 3,
           hoverOffset: 6
@@ -1136,14 +1136,14 @@ async function renderSociedad() {
             ${txData.map(r => `<tr>
               <td style="font-family:'DM Mono';font-size:12px;white-space:nowrap;color:var(--text-secondary)">${r.fecha}</td>
               <td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.concepto}">${r.concepto}</td>
-              <td><span style="font-size:11px;padding:2px 5px;border-radius:4px;background:${r.pagado==='Mati'?'rgba(201,74,48,0.12)':'rgba(154,98,0,0.12)'};color:${r.pagado==='Mati'?'var(--red)':'var(--amber)'};white-space:nowrap">${r.pagado}</span></td>
+              <td><span style="font-size:11px;padding:2px 5px;border-radius:4px;background:${r.pagado==='Mati'?'rgba(13,138,82,0.12)':'rgba(8,145,178,0.12)'};color:${r.pagado==='Mati'?'var(--green)':'#0891b2'};white-space:nowrap">${r.pagado}</span></td>
               <td style="text-align:right;font-family:'DM Mono';font-size:12px;white-space:nowrap">${fmtFull(r.costo)}</td>
             </tr>`).join('')}
           </tbody>
           <tfoot>
             <tr style="border-top:2px solid var(--border)">
               <td colspan="4" style="padding-top:8px;padding-bottom:4px;font-size:11px;color:var(--text-secondary)">
-                <span style="color:var(--red);font-weight:600">Mati</span> ${fmtFull(matiTotal)} &nbsp;·&nbsp; <span style="color:var(--amber);font-weight:600">Willy</span> ${fmtFull(willyTotal)} &nbsp;·&nbsp; <strong>Total ${fmtFull(total)}</strong>
+                <span style="color:var(--green);font-weight:600">Mati</span> ${fmtFull(matiTotal)} &nbsp;·&nbsp; <span style="color:#0891b2;font-weight:600">Willy</span> ${fmtFull(willyTotal)} &nbsp;·&nbsp; <strong>Total ${fmtFull(total)}</strong>
               </td>
             </tr>
           </tfoot>
@@ -1251,6 +1251,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
