@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25 16:38",
+  "generated_at": "2026-06-25 16:57",
   "movimientos": [
     {
       "fecha": "2026-06-24",
@@ -45,7 +45,7 @@
     },
     {
       "fecha": "2026-06-22",
-      "concepto": "Heladeras Talho A",
+      "concepto": "Heladeras Talho Argentino",
       "monto": -6723.97,
       "categoria": "Talho Argentino",
       "nota": null
@@ -76,7 +76,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -65.58,
       "categoria": "Compras",
-      "nota": null
+      "nota": "ON Serious Mass + Creatina (65,58€)"
     },
     {
       "fecha": "2026-06-19",
@@ -153,7 +153,7 @@
       "concepto": "TRANSFER. EN DIV.",
       "monto": 150.0,
       "categoria": "Guille",
-      "nota": "Guantes de fitness BEAST RAGE"
+      "nota": null
     },
     {
       "fecha": "2026-06-16",
