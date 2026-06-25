@@ -850,8 +850,8 @@ function renderTalho(){
         </tr></thead>
         <tbody>
           ${txData.map(r => `<tr>
-            <td style="font-family:'DM Mono';white-space:nowrap">${r.fecha}</td>
-            <td>${r.nota ? `<span title="${r.concepto}">${r.nota}</span>` : r.concepto}</td>
+            <td style="font-family:'DM Mono';white-space:nowrap">${fmtDate(r.fecha)}</td>
+            <td style="word-break:break-word;max-width:200px">${r.nota ? `<span title="${r.concepto}">${r.nota}</span>` : r.concepto}</td>
             <td style="text-align:right;font-family:'DM Mono';color:var(--red)">${fmtFull(Math.abs(Number(r.monto)))}</td>
           </tr>`).join('')}
         </tbody>
@@ -892,6 +892,11 @@ async function fetchSociedadData() {
 async function renderSociedad() {
   const fmt     = v => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(v);
   const fmtFull = v => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(v);
+  const fmtDate = dateStr => {
+    const [y, m, d] = dateStr.split('-');
+    const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    return `${d} ${meses[parseInt(m,10)-1]}`;
+  };
 
   const listEl = document.getElementById('sociedad-tx-list');
 
@@ -1092,7 +1097,7 @@ async function renderSociedad() {
           datalabels: {
             anchor: 'end',
             align: 'end',
-            offset: 12,
+            offset: 8,
             color: '#1a1a17',
             font: { family: 'DM Sans', size: 12, weight: '600' },
             formatter: (value, ctx) => {
