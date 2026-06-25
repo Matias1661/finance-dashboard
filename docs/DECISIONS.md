@@ -1,3 +1,37 @@
+## [2026-06-25] Categoría Salud y Belleza
+
+- Nueva categoría añadida al prompt de Relay, al Sheet y a PROJECT_MEMORY.md.
+- Keywords semi-duras: KRUSS, WELLHUB, GYMPASS, VIVAGYM, FARMACIA, BARBERIA/BARBERÍA, ADENTIS, DENTIST, Suplementos.
+- Wellhub y Gympass movidos de Suscripciones → Salud y Belleza.
+- GROUPON → A revisar (ambiguo).
+- 42 movimientos históricos recategorizados en batch vía `update-sheet-cells.yml`.
+
+## [2026-06-25] Protocolo para operaciones batch en el Sheet
+
+**Problema:** Relay tiene un trigger que se activa ante cualquier cambio en la hoja Movimientos y dispara el sync `Sync Finance Data` (`finance_data.yml`). Un batch de 41 escrituras generó 41 runs innecesarios del sync.
+
+**Protocolo obligatorio antes de cualquier batch de escrituras al Sheet:**
+1. Pausar el trigger de Relay en Relay.app (el que detecta cambios en Movimientos y dispara el sync).
+2. Ejecutar el batch.
+3. Reactivar el trigger en Relay.app.
+4. Disparar manualmente el sync una sola vez si se necesita actualizar el dashboard de inmediato.
+
+**Aplica a:** recategorizaciones masivas, backfills de notas, correcciones en lote, cualquier operación que genere más de ~5 escrituras al Sheet.
+
+## [2026-06-25] Formato de fecha en update-sheet-cells.yml
+
+El Sheet almacena las fechas en columna A **sin zero-padding**: `6/12/2024`, no `06/12/2024`.
+El JSON (`finance_data.json`) las almacena con zero-padding: `2024-12-06`.
+
+Al llamar al workflow `update-sheet-cells.yml` en modo FIND_AND_UPDATE, el campo `find_fecha` debe usar el formato del Sheet: `d/M/yyyy` sin ceros a la izquierda.
+
+Conversión correcta en Python:
+```python
+from datetime import datetime
+dt = datetime.strptime(fecha_iso, '%Y-%m-%d')
+fecha_sheet = f"{dt.day}/{dt.month}/{dt.year}"  # sin zero-padding
+```
+
 ## [2026-06-23] Tab Talho Argentino
 
 - Gráfico de barras verticales (Jan–mes actual) con gasto mensual. Eje X: meses; eje Y: EUR.
