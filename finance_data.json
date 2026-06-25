@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25 17:18",
+  "generated_at": "2026-06-25 17:21",
   "movimientos": [
     {
       "fecha": "2026-06-24",
@@ -69,7 +69,7 @@
       "concepto": "Amazon.es",
       "monto": -8.25,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Cepillo Rowenta Pure Pop - Pago 2 de 4"
     },
     {
       "fecha": "2026-06-19",
@@ -958,7 +958,7 @@
       "concepto": "Amazon.es",
       "monto": -8.25,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Cepillo Rowenta Pure Pop - Pago 1 de 4"
     },
     {
       "fecha": "2026-05-19",
