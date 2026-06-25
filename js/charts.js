@@ -378,7 +378,7 @@ function renderCategoryAvgTable(){
   });
 
   // Ordenar por gasto mes anterior desc, luego avg año actual desc
-  rows.sort((a, b) => (b.lastMonthVal || 0) - (a.lastMonthVal || 0) || (b.avgThisYear || 0) - (a.avgThisYear || 0));
+  rows.sort((a, b) => a.cat.localeCompare(b.cat, 'es'));
 
   const fmt = v => v != null
     ? new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v)
