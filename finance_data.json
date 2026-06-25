@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25 17:55",
+  "generated_at": "2026-06-25 18:39",
   "movimientos": [
     {
       "fecha": "2026-06-24",
@@ -13,14 +13,14 @@
       "concepto": "SP KARL LAGERFELD",
       "monto": -125.0,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Regalo Joha"
     },
     {
       "fecha": "2026-06-23",
       "concepto": "KarlLagerfeld Las",
       "monto": -168.0,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Regalo Joha"
     },
     {
       "fecha": "2026-06-22",
