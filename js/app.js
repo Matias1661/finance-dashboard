@@ -1090,8 +1090,11 @@ async function renderSociedad() {
             }
           },
           datalabels: {
-            color: '#ffffff',
-            font: { family: 'DM Sans', size: 13, weight: '600' },
+            anchor: 'end',
+            align: 'end',
+            offset: 12,
+            color: '#1a1a17',
+            font: { family: 'DM Sans', size: 12, weight: '600' },
             formatter: (value, ctx) => {
               const total = ctx.dataset.data.reduce((a, v) => a + v, 0);
               const pct = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
