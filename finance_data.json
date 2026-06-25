@@ -1,32 +1,11 @@
 {
-  "generated_at": "2026-06-25 17:01",
+  "generated_at": "2026-06-25 17:09",
   "movimientos": [
     {
       "fecha": "2026-06-24",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 100.0,
       "categoria": "Guille",
-      "nota": null
-    },
-    {
-      "fecha": "2026-06-24",
-      "concepto": "TRANSFER INMEDIATA",
-      "monto": 100.0,
-      "categoria": "Guille",
-      "nota": null
-    },
-    {
-      "fecha": "2026-06-23",
-      "concepto": "SP KARL LAGERFELD",
-      "monto": -125.0,
-      "categoria": "Compras",
-      "nota": null
-    },
-    {
-      "fecha": "2026-06-23",
-      "concepto": "KarlLagerfeld Las",
-      "monto": -168.0,
-      "categoria": "Compras",
       "nota": null
     },
     {
@@ -66,7 +45,7 @@
     },
     {
       "fecha": "2026-06-22",
-      "concepto": "Heladeras Talho Argentino",
+      "concepto": "50 % Heladeras Talho Argentino",
       "monto": -6723.97,
       "categoria": "Talho Argentino",
       "nota": null
