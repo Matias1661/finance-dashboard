@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25 20:09",
+  "generated_at": "2026-06-25 20:22",
   "movimientos": [
     {
       "fecha": "2026-06-24",
@@ -481,7 +481,7 @@
       "fecha": "2026-06-04",
       "concepto": "RECIBO VIVAGYM",
       "monto": -34.9,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -495,7 +495,7 @@
       "fecha": "2026-06-04",
       "concepto": "Wellhub Matias Or",
       "monto": -22.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -2343,7 +2343,7 @@
       "fecha": "2026-04-04",
       "concepto": "Wellhub Matias Or",
       "monto": -22.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -3050,7 +3050,7 @@
       "fecha": "2026-03-04",
       "concepto": "Wellhub Matias Or",
       "monto": -22.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -3701,7 +3701,7 @@
       "fecha": "2026-02-08",
       "concepto": "FARMACIA A DE MAR",
       "monto": -26.29,
-      "categoria": "Compras",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -3834,7 +3834,7 @@
       "fecha": "2026-02-04",
       "concepto": "Gympass",
       "monto": -22.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -4828,7 +4828,7 @@
       "fecha": "2026-01-04",
       "concepto": "Wellhub EU",
       "monto": -22.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -4933,7 +4933,7 @@
       "fecha": "2026-01-01",
       "concepto": "Wellhub EU",
       "monto": -22.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -8391,7 +8391,7 @@
       "fecha": "2025-09-06",
       "concepto": "Wellhub EU",
       "monto": -22.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -8475,7 +8475,7 @@
       "fecha": "2025-09-03",
       "concepto": "Wellhub EU",
       "monto": -22.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -9469,14 +9469,14 @@
       "fecha": "2025-08-06",
       "concepto": "Wellhub EU",
       "monto": -22.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
       "fecha": "2025-08-06",
       "concepto": "FARMACIA B.CASTEL",
       "monto": -2.7,
-      "categoria": "Compras",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -10386,7 +10386,7 @@
       "fecha": "2025-07-06",
       "concepto": "Wellhub EU",
       "monto": -22.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -11429,14 +11429,14 @@
       "fecha": "2025-06-07",
       "concepto": "ADENTIS ALCOBENDA",
       "monto": -198.22,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
       "fecha": "2025-06-06",
       "concepto": "Wellhub EU",
       "monto": -21.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -12472,7 +12472,7 @@
       "fecha": "2025-05-06",
       "concepto": "Wellhub EU",
       "monto": -21.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -12549,7 +12549,7 @@
       "fecha": "2025-05-03",
       "concepto": "ADENTIS ALCOBENDA (Dentista)",
       "monto": -79.9,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -13536,7 +13536,7 @@
       "fecha": "2025-04-06",
       "concepto": "Wellhub EU",
       "monto": -21.99,
-      "categoria": "Suscripciones",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
