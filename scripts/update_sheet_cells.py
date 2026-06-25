@@ -16,5 +16,10 @@ result = service.spreadsheets().values().get(
 ).execute()
 
 rows = result.get("values", [])
+output = ""
 for i, row in enumerate(rows):
-    print(f"Row {i+1}: {row}")
+    output += f"Row {i+1}: {row}\n"
+
+print(output)
+with open("debug_log.txt", "w") as f:
+    f.write(output)
