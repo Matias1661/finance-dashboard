@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25 17:52",
+  "generated_at": "2026-06-25 17:55",
   "movimientos": [
     {
       "fecha": "2026-06-24",
@@ -1658,7 +1658,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -10.09,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Generisch Conector"
     },
     {
       "fecha": "2026-04-28",
@@ -1756,7 +1756,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -27.99,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Apple AirTag (2.ª generación)"
     },
     {
       "fecha": "2026-04-25",
@@ -1826,7 +1826,7 @@
       "concepto": "AMAZON.ES",
       "monto": -9.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Kindle Unlimited"
     },
     {
       "fecha": "2026-04-22",
@@ -2078,7 +2078,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -15.9,
       "categoria": "Compras",
-      "nota": null
+      "nota": "IPONE Pack Mantenimiento moto"
     },
     {
       "fecha": "2026-04-14",
@@ -2190,7 +2190,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -19.99,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Mechanix Wear FastFit guantes"
     },
     {
       "fecha": "2026-04-10",
