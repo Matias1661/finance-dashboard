@@ -1,9 +1,25 @@
-Traceback (most recent call last):
-  File "/home/runner/work/finance-dashboard/finance-dashboard/scripts/update_sheet_cells.py", line 152, in <module>
-    main()
-  File "/home/runner/work/finance-dashboard/finance-dashboard/scripts/update_sheet_cells.py", line 124, in main
-    row = find_row(service, find_fecha, find_concepto, float(find_importe))
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/finance-dashboard/finance-dashboard/scripts/update_sheet_cells.py", line 78, in find_row
-    raise ValueError(f"No se encontró fila: fecha={fecha}, concepto={concepto}, importe={importe}")
-ValueError: No se encontró fila: fecha=19/6/2026, concepto=WWW.AMAZON, importe=-65.58
+Row 1: ['Fecha', 'Concepto', 'Monto']
+Row 2: ['23/06/2026', 'SP KARL LAGERFELD', '-125,00 €']
+Row 3: ['23/06/2026', 'KarlLagerfeld Las', '-168,00 €']
+Row 4: ['24/06/2026', 'TRANSFER INMEDIATA', '100,00 €']
+Row 5: ['22/06/2026', 'AMAZON.ES', '-9,99 €']
+Row 6: ['22/06/2026', 'TRANSFER INMEDIATA', '50,00 €']
+Row 7: ['22/06/2026', 'TRANSFER INMEDIATA', '50,00 €']
+Row 8: ['22/06/2026', 'Heladeras Talho Argentino', '-6.723,97 €']
+Row 9: ['22/06/2026', 'Gastos conjuntos', '-50,00 €']
+Row 10: ['18/06/2026', 'TRANSF. A SU FAVOR', '45,00 €']
+Row 11: ['18/06/2026', 'DEPOSITO A LA CUE', '-5.000,00 €']
+Row 12: ['18/06/2026', 'TRANSFER INMEDIATA', '41,00 €']
+Row 13: ['18/06/2026', 'BIZUM RECIBIDO', '120,00 €']
+Row 14: ['18/06/2026', 'BIZUM RECIBIDO', '45,00 €']
+Row 15: ['19/06/2026', 'Amazon.es', '-8,25 €']
+Row 16: ['19/06/2026', 'WWW.AMAZON', '-65,58 €']
+Row 17: ['19/06/2026', 'NEW YORK BURGER', '-56,55 €']
+Row 18: ['19/06/2026', 'Gastos conjuntos', '-50,00 €']
+Row 19: ['19/06/2026', 'AGENCIA TRIBUTARI', '-8,67 €']
+Row 20: ['20/06/2026', 'TRASPASO', '40,00 €']
+Row 21: ['16/06/2026', 'WWW.AMAZON', '-6,84 €']
+Row 22: ['16/06/2026', 'TRANSFER. EN DIV.', '150,00 €']
+Row 23: ['16/06/2026', 'TRANSFER INMEDIATA', '50,00 €']
+Row 24: ['17/06/2026', 'APPLE.COM/BILL', '-22,00 €']
+Row 25: ['15/06/2026', 'TRASPASO', '40,00 €']
