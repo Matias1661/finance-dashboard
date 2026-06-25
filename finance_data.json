@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25 18:39",
+  "generated_at": "2026-06-25 18:43",
   "movimientos": [
     {
       "fecha": "2026-06-24",
@@ -2761,7 +2761,7 @@
     },
     {
       "fecha": "2026-03-18",
-      "concepto": "Delivery",
+      "concepto": "Suplementos Ciclo",
       "monto": -230.0,
       "categoria": "Compras",
       "nota": null
