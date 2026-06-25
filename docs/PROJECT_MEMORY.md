@@ -3,7 +3,7 @@
 ## Propósito
 Memoria técnica central del proyecto. Cualquier agente de IA o desarrollador debe poder reconstruir el estado completo del proyecto leyendo solo este documento y los demás archivos en `docs/`.
 
-Última actualización: 2026-06-02
+Última actualización: 2026-06-25
 
 ---
 
@@ -71,7 +71,7 @@ Claude solo escribe las últimas 5 columnas.
 `Guille` e `Inversion` — ver `js/state.js` → `excludedCategories`.
 
 ### Lista completa de categorías válidas
-Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar
+Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar, Salud y Belleza
 
 ---
 
