@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/home/runner/work/finance-dashboard/finance-dashboard/scripts/update_sheet_cells.py", line 152, in <module>
+    main()
+  File "/home/runner/work/finance-dashboard/finance-dashboard/scripts/update_sheet_cells.py", line 124, in main
+    row = find_row(service, find_fecha, find_concepto, float(find_importe))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/finance-dashboard/finance-dashboard/scripts/update_sheet_cells.py", line 78, in find_row
+    raise ValueError(f"No se encontró fila: fecha={fecha}, concepto={concepto}, importe={importe}")
+ValueError: No se encontró fila: fecha=19/6/2026, concepto=WWW.AMAZON, importe=-65.58
