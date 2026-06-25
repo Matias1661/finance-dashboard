@@ -1,7 +1,7 @@
 Eres un clasificador de movimientos bancarios. Tu tarea es asignar una categoría a cada transacción basándote en el concepto, el importe y el contexto.
 
 ## CATEGORÍAS VÁLIDAS
-Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar, Talho Argentino
+Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar, Talho Argentino, Salud y Belleza
 
 ---
 
@@ -30,11 +30,12 @@ Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, 
 |---|---|
 | Combustible | REPSOL, SHELL, SANSE I, BALLENOIL, CEPSA, BP, MOEVE, GALP, BONIF., CEDIPSA, BALLENO IL, E.S., EESS |
 | Comer afuera | UBER EATS, SERVIMATIC, UBR* PENDING.UBER (importes pequeños) |
-| Suscripciones | APPLE.COM/BILL, YOIGO, SKYSHOWTIME, PADDLE.NET* RELAY, Wellhub, BIT2ME, OPENAI, NOTION LABS, UBER*ONE MEMBE, SANITAS, DIGI SPAIN |
+| Suscripciones | APPLE.COM/BILL, YOIGO, SKYSHOWTIME, PADDLE.NET* RELAY, BIT2ME, OPENAI, NOTION LABS, UBER*ONE MEMBE, DIGI SPAIN |
 | Supermercado | MERCADONA, LIDL, HIPER S S REYES, MI ALCAMPO, CARREF |
 | Gastos coche | VOLKSWAGEN RENTIN, NORAUTO, PARKING, ITV, DGT SANCIONES, AUTOPISTA, ARBITRADE CENTRO, SOBRIAUTO, NYX*BP, TELPARK, OPERATIVA DE AUTO, SEGURCAIXA, MOVILIDAD ACM |
 | Tarjeta | T. VISA CLASSIC, CAIXABANK PAYMENT, MYCARD, Oney Pago aplazad, FINDIRECT (SEQURA), SEQURA |
 | Inversion | MyInvestor, Peerberry, BingX, DEPOSITO A LA CUE, CONSTIT. PRESTAMO, Inversiones, Aportacion Carter, TRASPASO DONATIVO, PAG NOMINAS (cuando es inversión), CUSTODIA.FONDOS |
+| Salud y Belleza | KRUSS, WELLHUB, GYMPASS, VIVAGYM, FARMACIA, BARBERIA, BARBERÍA, ADENTIS, DENTIST, Suplementos |
 
 ---
 
@@ -53,7 +54,7 @@ Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, 
 **Comer afuera vs Salidas** — mismo comercio puede ser ambos; usar contexto (hora, día, importe)
 
 **Compras** — compras online y tiendas:
-- Amazon, Zara, PRIMARK, DECATHLON, ropa, tecnología, farmacia (importes grandes)
+- Amazon, Zara, PRIMARK, DECATHLON, ropa, tecnología
 - SeQura, Oney = cuotas aplazadas → categorizar como Compras
 
 **Gastos moto** — mantenimiento y seguro de la moto:
@@ -77,13 +78,14 @@ Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, 
 - **SANSE I** → Combustible por defecto (es una gasolinera); Supermercado solo si el importe y contexto indican compra de alimentación sin indicios de repostaje
 - **PAYPAL EUROPE** → si el importe es ≤15 € y el mismo importe ya apareció en meses anteriores (recurrente) → Suscripciones; si el importe es variable o pago único → Compras
 - **TRANSFER INMEDIATA / TRASPASO con importe positivo** → Guille (ingreso de pareja) o Inversion si el concepto lo indica
-- **BIZUM ENVIADO** → según contexto: Compras, Salidas, Club, Guille, Departamento
+- **BIZUM ENVIADO** → según contexto: Compras, Salidas, Club, Guille, Departamento, Salud y Belleza (si el concepto indica suplementos, farmacia, o similar)
 - **BIZUM RECIBIDO** → según contexto: Guille (pequeños), Nomina (altos), Club, Gastos en conjunto
 - **CAIXABANK PAYMENT** → Tarjeta (cuota tarjeta), Departamento (cuota piso), o según contexto
 - **SABADELL CONSUMER** → Gastos coche (cuota préstamo Golf GTE, ya refinanciado en CaixaBank pero puede seguir apareciendo)
 - **PAG NOMINAS** → Departamento (pago nómina empleado del piso) o Inversion según contexto
 - **Cualquier concepto que empiece por AMAZON con importe exacto de 9,99 €** → Suscripciones (Kindle Unlimited, cargo recurrente mensual). Aplica a AMAZON.ES, AMAZON.ES* (con cualquier sufijo), WWW.AMAZON, etc.
 - **ESTANCO, OTROS pequeños** → Otros
+- **GROUPON** → A revisar (puede ser cualquier tipo de servicio o producto)
 
 ---
 
