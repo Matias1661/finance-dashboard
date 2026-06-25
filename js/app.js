@@ -481,7 +481,8 @@ function renderCategorias(){
   const summaryEl = document.getElementById('cat-summary-body');
   if(summaryEl){
     const total = values.reduce((a,b) => a+b, 0);
-    summaryEl.innerHTML = sorted.map(([cat, amt]) => {
+    const sortedAlpha = [...sorted].sort((a,b) => a[0].localeCompare(b[0], 'es'));
+    summaryEl.innerHTML = sortedAlpha.map(([cat, amt]) => {
       const pct   = total > 0 ? ((amt/total)*100).toFixed(1) : '0.0';
       const count = data.filter(r => r.categoria === cat && Number(r.monto) < 0).length;
       const isActive = activeCatBarFilter === cat;
