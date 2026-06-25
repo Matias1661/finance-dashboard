@@ -1055,6 +1055,24 @@ async function renderSociedad() {
     });
   }
 
+  // Alerta: filas sin pagado válido (no aparecen en ningún gráfico)
+  const sinPagado = allRows.filter(r => r.pagado !== 'Mati' && r.pagado !== 'Willy');
+  const alertEl = document.getElementById('sociedad-alert');
+  if (alertEl) {
+    if (sinPagado.length > 0) {
+      const total = sinPagado.reduce((a,r)=>a+r.costo,0);
+      const lista = sinPagado.map(r => {
+        const [,_m,_d] = r.fecha.split('-');
+        const _mn = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+        return _d + '\u00a0' + _mn[parseInt(_m,10)-1] + ' · ' + r.concepto + ' · ' + fmtFull(r.costo);
+      }).join('<br>');
+      alertEl.innerHTML = '<strong>⚠ ' + sinPagado.length + ' gasto' + (sinPagado.length > 1 ? 's' : '') + ' sin responsable asignado — ' + fmtFull(total) + ' excluidos de los gráficos</strong><br><span style="font-weight:400;opacity:0.85">' + lista + '</span>';
+      alertEl.style.display = 'block';
+    } else {
+      alertEl.style.display = 'none';
+    }
+  }
+
   // Pie chart — porcentaje por socio
   const matiTotal_all  = allRows.filter(r => r.pagado === 'Mati').reduce((a,r)=>a+r.costo,0);
   const willyTotal_all = allRows.filter(r => r.pagado === 'Willy').reduce((a,r)=>a+r.costo,0);
