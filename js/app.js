@@ -1107,7 +1107,8 @@ async function renderSociedad() {
             formatter: (value, ctx) => {
               const total = ctx.dataset.data.reduce((a, v) => a + v, 0);
               const pct = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
-              return pct + '%\n' + fmtFull(value);
+              const name = ctx.chart.data.labels[ctx.dataIndex];
+              return name + '\n' + pct + '%\n' + fmtFull(value);
             },
             textAlign: 'center'
           }
