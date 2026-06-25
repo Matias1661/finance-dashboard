@@ -54,7 +54,7 @@ on:
         default: ""
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   update:
@@ -86,3 +86,14 @@ jobs:
           UPDATE_VALUE: ${{ github.event.inputs.value }}
           UPDATE_BATCH: ${{ github.event.inputs.batch }}
         run: python scripts/update_sheet_cells.py
+
+      - name: Commit debug log if exists
+        if: failure()
+        run: |
+          if [ -f debug_log.txt ]; then
+            git config user.email "actions@github.com"
+            git config user.name "GitHub Actions"
+            git add debug_log.txt
+            git commit -m "debug: workflow error log"
+            git push
+          fi
