@@ -4,22 +4,21 @@ name: Update Sheet Cells
 #
 # 1. FIND_AND_UPDATE (recomendado para notas) — busca la fila exacta en el Sheet:
 #    { "ref": "main", "inputs": {
-#        "find_fecha": "19/6/2026", "find_concepto": "WWW.AMAZON",
-#        "find_importe": "-65.58", "find_column": "K", "find_value": "ON Serious Mass + Creatina"
+#        "find_fecha": "19/06/2026", "find_concepto": "WWW.AMAZON",
+#        "find_importe": "-65.58", "find_column": "K", "find_value": "texto"
 #    }}
 #
 # 2. Single — rango explícito:
 #    { "ref": "main", "inputs": { "range": "Movimientos!D13", "value": "Departamento" } }
 #
-# 3. Batch — múltiples celdas:
+# 3. Batch:
 #    { "ref": "main", "inputs": { "batch": "[{\"range\":\"Movimientos!D13\",\"value\":\"Departamento\"}]" } }
 
 on:
   workflow_dispatch:
     inputs:
-      # Modo FIND_AND_UPDATE
       find_fecha:
-        description: "Fecha del movimiento (ej: 19/6/2026)"
+        description: "Fecha del movimiento (dd/MM/yyyy, ej: 19/06/2026)"
         required: false
         default: ""
       find_concepto:
@@ -38,7 +37,6 @@ on:
         description: "Valor a escribir"
         required: false
         default: ""
-      # Modo single
       range:
         description: "Rango A1 (ej: Movimientos!D13)"
         required: false
@@ -47,14 +45,13 @@ on:
         description: "Valor a escribir"
         required: false
         default: ""
-      # Modo batch
       batch:
         description: "JSON array de actualizaciones [{range, value}, ...]"
         required: false
         default: ""
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   update:
@@ -86,14 +83,3 @@ jobs:
           UPDATE_VALUE: ${{ github.event.inputs.value }}
           UPDATE_BATCH: ${{ github.event.inputs.batch }}
         run: python scripts/update_sheet_cells.py
-
-      - name: Commit debug log if exists
-        if: always()
-        run: |
-          if [ -f debug_log.txt ]; then
-            git config user.email "actions@github.com"
-            git config user.name "GitHub Actions"
-            git add debug_log.txt
-            git commit -m "debug: workflow error log"
-            git push
-          fi
