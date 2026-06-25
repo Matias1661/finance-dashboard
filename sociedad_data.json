@@ -1,9 +1,9 @@
 [
   {
-    "fecha": "2026-06-20",
-    "concepto": "Materiales de construcción",
-    "costo": 784.74,
-    "pagado": null
+    "fecha": "2026-06-25",
+    "concepto": "Gasto de prueba",
+    "costo": 10000,
+    "pagado": "Mati"
   },
   {
     "fecha": "2026-06-24",
