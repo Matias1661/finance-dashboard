@@ -1,12 +1,6 @@
 [
   {
     "fecha": "2026-06-24",
-    "concepto": "Gasto de prueba",
-    "costo": 5500,
-    "pagado": "Mati"
-  },
-  {
-    "fecha": "2026-06-24",
     "concepto": "Adelanto reformista",
     "costo": 4500,
     "pagado": "Willy"
@@ -43,7 +37,7 @@
   },
   {
     "fecha": "2026-06-22",
-    "concepto": "50% Heladeras",
+    "concepto": "Adelanto Heladeras (50%)",
     "costo": 6723.97,
     "pagado": "Mati"
   },
