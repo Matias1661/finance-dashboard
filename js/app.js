@@ -849,11 +849,16 @@ function renderTalho(){
           <th style="text-align:right">Importe</th>
         </tr></thead>
         <tbody>
-          ${txData.map(r => `<tr>
-            <td style="font-family:'DM Mono';white-space:nowrap">${fmtDate(r.fecha)}</td>
-            <td style="word-break:break-word;max-width:200px">${r.nota ? `<span title="${r.concepto}">${r.nota}</span>` : r.concepto}</td>
-            <td style="text-align:right;font-family:'DM Mono';color:var(--red)">${fmtFull(Math.abs(Number(r.monto)))}</td>
-          </tr>`).join('')}
+          ${txData.map(r => {
+            const conceptoCell = r.nota
+              ? '<span title="' + r.concepto.replace(/"/g,'&quot;') + '">' + r.nota + '</span>'
+              : r.concepto;
+            return '<tr>' +
+              '<td style="font-family:'DM Mono';white-space:nowrap">' + fmtDate(r.fecha) + '</td>' +
+              '<td style="word-break:break-word;max-width:200px">' + conceptoCell + '</td>' +
+              '<td style="text-align:right;font-family:'DM Mono';color:var(--red)">' + fmtFull(Math.abs(Number(r.monto))) + '</td>' +
+              '</tr>';
+          }).join('')}
         </tbody>
         <tfoot>
           <tr>
@@ -1270,6 +1275,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
