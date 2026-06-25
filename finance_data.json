@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25 17:09",
+  "generated_at": "2026-06-25 17:18",
   "movimientos": [
     {
       "fecha": "2026-06-24",
@@ -118,7 +118,7 @@
       "concepto": "TRANSFER INMEDIATA",
       "monto": 41.0,
       "categoria": "Guille",
-      "nota": "ON Serious Mass + Creatina (65,58€)"
+      "nota": null
     },
     {
       "fecha": "2026-06-18",
