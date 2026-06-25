@@ -1,16 +1,44 @@
 name: Update Sheet Cells
 
-# Disparador manual con inputs declarados.
-# Para usar desde Claude o cualquier herramienta externa:
-#   POST /repos/Matias1661/finance-dashboard/actions/workflows/update-sheet-cells.yml/dispatches
-#   body: { "ref": "main", "inputs": { "range": "Movimientos!D13", "value": "Departamento" } }
+# Modos de uso:
 #
-# Para actualizaciones múltiples usar el input "batch" con JSON:
-#   { "ref": "main", "inputs": { "batch": "[{\"range\":\"Movimientos!D13\",\"value\":\"Departamento\"}]" } }
+# 1. FIND_AND_UPDATE (recomendado para notas) — busca la fila exacta en el Sheet:
+#    { "ref": "main", "inputs": {
+#        "find_fecha": "19/6/2026", "find_concepto": "WWW.AMAZON",
+#        "find_importe": "-65.58", "find_column": "K", "find_value": "ON Serious Mass + Creatina"
+#    }}
+#
+# 2. Single — rango explícito:
+#    { "ref": "main", "inputs": { "range": "Movimientos!D13", "value": "Departamento" } }
+#
+# 3. Batch — múltiples celdas:
+#    { "ref": "main", "inputs": { "batch": "[{\"range\":\"Movimientos!D13\",\"value\":\"Departamento\"}]" } }
 
 on:
   workflow_dispatch:
     inputs:
+      # Modo FIND_AND_UPDATE
+      find_fecha:
+        description: "Fecha del movimiento (ej: 19/6/2026)"
+        required: false
+        default: ""
+      find_concepto:
+        description: "Concepto exacto (ej: WWW.AMAZON)"
+        required: false
+        default: ""
+      find_importe:
+        description: "Importe como float (ej: -65.58)"
+        required: false
+        default: ""
+      find_column:
+        description: "Columna a escribir (ej: K)"
+        required: false
+        default: ""
+      find_value:
+        description: "Valor a escribir"
+        required: false
+        default: ""
+      # Modo single
       range:
         description: "Rango A1 (ej: Movimientos!D13)"
         required: false
@@ -19,6 +47,7 @@ on:
         description: "Valor a escribir"
         required: false
         default: ""
+      # Modo batch
       batch:
         description: "JSON array de actualizaciones [{range, value}, ...]"
         required: false
@@ -48,6 +77,11 @@ jobs:
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           SHEET_ID: "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI"
           SHEET_NAME: "Movimientos"
+          FIND_FECHA: ${{ github.event.inputs.find_fecha }}
+          FIND_CONCEPTO: ${{ github.event.inputs.find_concepto }}
+          FIND_IMPORTE: ${{ github.event.inputs.find_importe }}
+          FIND_COLUMN: ${{ github.event.inputs.find_column }}
+          FIND_VALUE: ${{ github.event.inputs.find_value }}
           UPDATE_RANGE: ${{ github.event.inputs.range }}
           UPDATE_VALUE: ${{ github.event.inputs.value }}
           UPDATE_BATCH: ${{ github.event.inputs.batch }}
