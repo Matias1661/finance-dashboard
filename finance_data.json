@@ -1,6 +1,27 @@
 {
-  "generated_at": "2026-06-25 12:17",
+  "generated_at": "2026-06-25 16:26",
   "movimientos": [
+    {
+      "fecha": "2026-06-24",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 100.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-23",
+      "concepto": "SP KARL LAGERFELD",
+      "monto": -125.0,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-23",
+      "concepto": "KarlLagerfeld Las",
+      "monto": -168.0,
+      "categoria": "Compras",
+      "nota": null
+    },
     {
       "fecha": "2026-06-22",
       "concepto": "AMAZON.ES",
