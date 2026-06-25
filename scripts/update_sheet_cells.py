@@ -147,4 +147,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import traceback, sys
+    try:
+        main()
+    except Exception as e:
+        err = traceback.format_exc()
+        print("ERROR:", err, file=sys.stderr)
+        with open("debug_log.txt", "w") as f:
+            f.write(err)
+        sys.exit(1)
