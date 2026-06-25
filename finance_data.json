@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25 17:21",
+  "generated_at": "2026-06-25 17:24",
   "movimientos": [
     {
       "fecha": "2026-06-24",
@@ -853,7 +853,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -25.64,
       "categoria": "Compras",
-      "nota": "Cepillo Rowenta Pure Pop"
+      "nota": null
     },
     {
       "fecha": "2026-05-23",
