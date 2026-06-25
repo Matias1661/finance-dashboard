@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25 17:35",
+  "generated_at": "2026-06-25 17:52",
   "movimientos": [
     {
       "fecha": "2026-06-24",
@@ -853,7 +853,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -25.64,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Báscula de cocina arboleaf"
     },
     {
       "fecha": "2026-05-23",
@@ -880,8 +880,8 @@
       "fecha": "2026-05-22",
       "concepto": "AMAZON.ES",
       "monto": -9.99,
-      "categoria": "Compras",
-      "nota": "Báscula de cocina arboleaf"
+      "categoria": "Suscripciones",
+      "nota": "Kindle Unlimited"
     },
     {
       "fecha": "2026-05-22",
@@ -1825,7 +1825,7 @@
       "fecha": "2026-04-22",
       "concepto": "AMAZON.ES",
       "monto": -9.99,
-      "categoria": "Compras",
+      "categoria": "Suscripciones",
       "nota": null
     },
     {
