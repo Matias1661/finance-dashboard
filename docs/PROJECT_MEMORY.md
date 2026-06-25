@@ -329,3 +329,45 @@ Patrones CSS establecidos:
 
 **Ventana temporal:** dinámica — todos los meses disponibles en la hoja `Inversiones` del sheet. Se extiende automáticamente con cada sync.
 
+---
+
+## Escritura de notas en columna K — reglas críticas
+
+**Nunca asumir que el índice de `finance_data.json` + 2 = fila en el Sheet.**
+Relay inserta nuevas filas arriba, por lo que el orden del Sheet cambia con cada sync.
+
+**Método correcto:** usar el modo `FIND_AND_UPDATE` del workflow `update-sheet-cells.yml`.
+El script busca la fila en vivo leyendo el Sheet por coincidencia exacta de fecha + concepto + importe.
+
+**Formato de los campos tal como aparecen en el Sheet (columnas A/B/C):**
+- Fecha (col A): `dd/MM/yyyy` con ceros — ej: `19/06/2026` (no `19/6/2026`)
+- Concepto (col B): texto exacto — ej: `WWW.AMAZON`, `Amazon.es`, `AMAZON.ES`
+- Importe (col C): formato español con coma decimal y símbolo € — ej: `-65,58 €`
+  El script parsea este formato automáticamente; pasar el importe como float al workflow — ej: `-65.58`
+
+**Llamada al workflow:**
+```json
+{
+  "ref": "main",
+  "inputs": {
+    "find_fecha": "19/06/2026",
+    "find_concepto": "WWW.AMAZON",
+    "find_importe": "-65.58",
+    "find_column": "K",
+    "find_value": "texto de la nota"
+  }
+}
+```
+
+**Cuotas / pagos fraccionados:**
+Cuando un movimiento es una cuota de una compra fraccionada, la nota debe incluir el número de cuota:
+- Formato: `<Descripción del producto> - Pago X de N`
+- Ejemplo: `Cepillo Rowenta Pure Pop - Pago 1 de 4`
+- Aplicar la nota a todas las cuotas ya presentes en el Sheet.
+- Las cuotas futuras (aún no en el Sheet) se anotarán cuando aparezcan.
+
+**Identificación de compras Amazon:**
+- Buscar en Gmail con `from:auto-confirm@amazon.es` filtrando por fecha cercana al cargo.
+- El cargo bancario aparece 1–3 días después del envío del email de confirmación.
+- Si hay varias cuotas del mismo producto, verificar que el concepto coincida exactamente
+  (`Amazon.es`, `WWW.AMAZON`, etc. son conceptos distintos en el Sheet).
