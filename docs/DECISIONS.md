@@ -29,7 +29,7 @@ Conversión correcta en Python:
 ```python
 from datetime import datetime
 dt = datetime.strptime(fecha_iso, '%Y-%m-%d')
-fecha_sheet = f"{dt.day}/{dt.month}/{dt.year}"  # sin zero-padding
+fecha_sheet = f"{dt.day}/{dt.month:02d}/{dt.year}"  # d/MM/yyyy: día sin cero, mes con cero
 ```
 
 ## [2026-06-23] Tab Talho Argentino
