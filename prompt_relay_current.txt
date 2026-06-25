@@ -82,7 +82,7 @@ Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, 
 - **CAIXABANK PAYMENT** → Tarjeta (cuota tarjeta), Departamento (cuota piso), o según contexto
 - **SABADELL CONSUMER** → Gastos coche (cuota préstamo Golf GTE, ya refinanciado en CaixaBank pero puede seguir apareciendo)
 - **PAG NOMINAS** → Departamento (pago nómina empleado del piso) o Inversion según contexto
-- **AMAZON.ES con importe exacto de 9,99 €** → Suscripciones (Kindle Unlimited, cargo recurrente mensual)
+- **Cualquier concepto que empiece por AMAZON con importe exacto de 9,99 €** → Suscripciones (Kindle Unlimited, cargo recurrente mensual). Aplica a AMAZON.ES, AMAZON.ES* (con cualquier sufijo), WWW.AMAZON, etc.
 - **ESTANCO, OTROS pequeños** → Otros
 
 ---
