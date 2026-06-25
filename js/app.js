@@ -1065,6 +1065,7 @@ async function renderSociedad() {
           hoverOffset: 6
         }]
       },
+      plugins: [ChartDataLabels],
       options: {
         responsive: true,
         cutout: '60%',
@@ -1087,6 +1088,16 @@ async function renderSociedad() {
                 return ` ${fmtFull(c.parsed)} (${pct}%)`;
               }
             }
+          },
+          datalabels: {
+            color: '#ffffff',
+            font: { family: 'DM Sans', size: 13, weight: '600' },
+            formatter: (value, ctx) => {
+              const total = ctx.dataset.data.reduce((a, v) => a + v, 0);
+              const pct = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+              return pct + '%\n' + fmtFull(value);
+            },
+            textAlign: 'center'
           }
         }
       }
