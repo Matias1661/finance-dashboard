@@ -1077,6 +1077,7 @@ async function renderSociedad() {
       options: {
         responsive: true,
         cutout: '60%',
+        layout: { padding: { top: 30, bottom: 10, left: 60, right: 60 } },
         plugins: {
           legend: {
             display: true,
@@ -1143,10 +1144,10 @@ async function renderSociedad() {
       listEl.innerHTML = `<div style="overflow:hidden;border-radius:6px;border:1px solid var(--border)">
         <table class="tx-table" style="font-size:13px;table-layout:fixed;width:100%;margin:0">
           <colgroup>
-            <col style="width:90px">
+            <col style="width:64px">
             <col>
-            <col style="width:60px">
-            <col style="width:90px">
+            <col style="width:44px">
+            <col style="width:80px">
           </colgroup>
           <thead><tr>
             <th>Fecha</th>
@@ -1155,12 +1156,17 @@ async function renderSociedad() {
             <th style="text-align:right">Importe</th>
           </tr></thead>
           <tbody>
-            ${txData.map(r => `<tr>
-              <td style="font-family:'DM Mono';font-size:12px;white-space:nowrap;color:var(--text-secondary)">${r.fecha}</td>
-              <td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.concepto}">${r.concepto}</td>
+            ${txData.map(r => {
+              const [,_m,_d] = r.fecha.split('-');
+              const _mn = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+              const _f = _d + ' ' + _mn[parseInt(_m,10)-1];
+              return `<tr>
+              <td style="font-family:'DM Mono';font-size:12px;white-space:nowrap;color:var(--text-secondary)">${_f}</td>
+              <td title="${r.concepto}">${r.concepto}</td>
               <td><span style="font-size:11px;padding:2px 5px;border-radius:4px;background:${r.pagado==='Mati'?'rgba(13,138,82,0.12)':'rgba(8,145,178,0.12)'};color:${r.pagado==='Mati'?'var(--green)':'#0891b2'};white-space:nowrap">${r.pagado}</span></td>
               <td style="text-align:right;font-family:'DM Mono';font-size:12px;white-space:nowrap">${fmtFull(r.costo)}</td>
-            </tr>`).join('')}
+            </tr>`;
+            }).join('')}
           </tbody>
           <tfoot>
             <tr style="border-top:2px solid var(--border)">
