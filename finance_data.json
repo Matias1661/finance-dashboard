@@ -1,6 +1,41 @@
 {
-  "generated_at": "2026-06-28 12:06",
+  "generated_at": "2026-06-28 22:35",
   "movimientos": [
+    {
+      "fecha": "2026-06-27",
+      "concepto": "Ssrr",
+      "monto": -2.95,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-27",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -3.49,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-27",
+      "concepto": "Gastos conjuntos",
+      "monto": -50.0,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-26",
+      "concepto": "GAGO III",
+      "monto": -8.8,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-25",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-06-24",
       "concepto": "TRANSFER INMEDIATA",
