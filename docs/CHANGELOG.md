@@ -1,3 +1,12 @@
+## [2026-06-29] — Auditoría y corrección de notas (col K)
+
+### Corregido
+- Auditadas las 52 notas de la columna K cruzando con Gmail, Calendar y verificación de comercios.
+- Detectado desfase sistemático: notas de compras Amazon/ropa duplicadas o desplazadas a movimientos vecinos no relacionados.
+- 19 correcciones aplicadas vía FIND_AND_UPDATE (14 limpiezas + 5 reubicaciones), trigger Relay pausado, espaciado 30s.
+- APPLE.COM/BILL -29,99€ reetiquetado como LinkedIn Premium Career (verificado en factura Apple).
+- Notas con valor: 52 → 43. Verificado contra JSON regenerado tras sync.
+
 ## [2026-06-24] — Tab Talho: sección Gastos de la sociedad
 
 ### Añadido
