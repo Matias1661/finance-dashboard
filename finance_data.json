@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29 12:38",
+  "generated_at": "2026-06-29 13:51",
   "movimientos": [
     {
       "fecha": "2026-06-27",
@@ -2505,7 +2505,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -12.9,
       "categoria": "Departamento",
-      "nota": "Pedido agujas/jeringa (cargo, reembolsado)"
+      "nota": null
     },
     {
       "fecha": "2026-04-01",
@@ -2519,7 +2519,7 @@
       "concepto": "TRANSFER INMEDIATA",
       "monto": 40.0,
       "categoria": "Guille",
-      "nota": "Reembolso pedido agujas/jeringa"
+      "nota": null
     },
     {
       "fecha": "2026-04-01",
@@ -2631,7 +2631,7 @@
       "concepto": "TRASPASO",
       "monto": 80.0,
       "categoria": "Guille",
-      "nota": "Agujas 23G + jeringa GIMA Rays"
+      "nota": null
     },
     {
       "fecha": "2026-03-27",
