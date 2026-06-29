@@ -152,6 +152,49 @@ function renderMonthly(){
   const income  = labels.map(k => map[k].income);
   const expense = labels.map(k => Math.max(0, Math.abs(map[k].expense) - map[k].refund));
 
+  // Rombo: promedio de gastos de los 3 meses anteriores hasta el día actual del mes
+  const now = new Date();
+  const currentDay = now.getDate();
+  const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const currentMonthIdx = labels.indexOf(currentMonthKey);
+
+  let avgDiamond = null;
+  if(currentMonthIdx !== -1){
+    const raw = window.FINANCE_STATE?.raw || [];
+    const excluded = window.FINANCE_STATE?.excludedCategories || [];
+    const reimbursable = window.FINANCE_STATE?.reimbursableCategories || [];
+
+    // Calcular gasto acumulado hasta el día N para cada uno de los 3 meses previos
+    const prevMonthExpenses = [];
+    for(let i = 1; i <= 3; i++){
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const yr = d.getFullYear();
+      const mo = String(d.getMonth()+1).padStart(2,'0');
+      const monthPrefix = `${yr}-${mo}-`;
+      let gross = 0, refund = 0;
+      raw.forEach(r => {
+        if(excluded.includes(r.categoria)) return;
+        if(!r.fecha || !r.fecha.startsWith(monthPrefix)) return;
+        const day = parseInt(r.fecha.slice(8,10), 10);
+        if(day > currentDay) return;
+        const v = Number(r.monto);
+        if(v < 0) gross += Math.abs(v);
+        else if(reimbursable.includes(r.categoria)) refund += v;
+      });
+      prevMonthExpenses.push(Math.max(0, gross - refund));
+    }
+
+    if(prevMonthExpenses.length > 0){
+      avgDiamond = prevMonthExpenses.reduce((a,b) => a+b, 0) / prevMonthExpenses.length;
+    }
+  }
+
+  // Dataset scatter para el rombo (solo un punto en el mes actual)
+  const diamondData = labels.map((lbl, idx) => {
+    if(avgDiamond !== null && idx === currentMonthIdx) return avgDiamond;
+    return null;
+  });
+
   const ctx = document.getElementById('chart-monthly');
   if(!ctx) return;
 
@@ -163,13 +206,38 @@ function renderMonthly(){
       labels,
       datasets: [
         { label:'Ingresos', data: income, backgroundColor: 'rgba(13,138,82,0.75)' },
-        { label:'Gastos netos', data: expense, backgroundColor: 'rgba(201,74,48,0.75)' }
+        { label:'Gastos netos', data: expense, backgroundColor: 'rgba(201,74,48,0.75)' },
+        ...(avgDiamond !== null ? [{
+          label: `Ritmo promedio (día ${currentDay})`,
+          type: 'scatter',
+          data: diamondData.map((v, i) => v !== null ? {x: i, y: v} : null).filter(Boolean),
+          pointStyle: 'rectRot',
+          pointRadius: 8,
+          pointHoverRadius: 10,
+          backgroundColor: 'rgba(201,74,48,1)',
+          borderColor: 'rgba(255,255,255,0.9)',
+          borderWidth: 1.5,
+          order: 0
+        }] : [])
       ]
     },
     options: {
       responsive: true,
-      plugins: { legend: { display: true } },
+      plugins: {
+        legend: { display: true },
+        tooltip: {
+          callbacks: {
+            label: function(ctx){
+              if(ctx.dataset.label && ctx.dataset.label.startsWith('Ritmo')){
+                return `Promedio hasta día ${currentDay}: ${new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(ctx.parsed.y)}`;
+              }
+              return `${ctx.dataset.label}: ${new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(ctx.parsed.y)}`;
+            }
+          }
+        }
+      },
       scales: {
+        x: { type: 'category' },
         y: {
           beginAtZero: true,
           ticks: {
@@ -434,5 +502,6 @@ function renderCategoryAvgTable(){
   const el = document.getElementById('cat-avg-table');
   if(el) el.innerHTML = html;
 }
+
 
 
