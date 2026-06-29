@@ -476,6 +476,7 @@ function renderCategorias(){
       labels,
       datasets: [
         {
+          label: 'Gasto mes actual',
           data: values,
           backgroundColor: labels.map((_, i) => {
             const base = colors[i % colors.length];
