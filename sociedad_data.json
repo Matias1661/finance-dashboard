@@ -3,19 +3,19 @@
     "fecha": "2026-06-27",
     "concepto": "Materiales eléctricos (Hilos, cinta aislante y tubo corrugado)",
     "costo": 146.51,
-    "pagado": null
+    "pagado": "Willy"
   },
   {
     "fecha": "2026-06-26",
-    "concepto": "OBRAMAT",
-    "costo": 90.22,
-    "pagado": null
+    "concepto": "Materiales electricos",
+    "costo": 70.22,
+    "pagado": "Willy"
   },
   {
     "fecha": "2026-06-27",
     "concepto": "Materiales",
     "costo": 3.9,
-    "pagado": null
+    "pagado": "Willy"
   },
   {
     "fecha": "2026-06-29",
