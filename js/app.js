@@ -416,35 +416,94 @@ function renderCategorias(){
   const ctx = document.getElementById('chart-categorias');
   if(!ctx) return;
 
+  // Rombo por categoría: promedio de gastos hasta el día actual en los 3 meses previos
+  const now = new Date();
+  const currentDay = now.getDate();
+  const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const isCurrentMonth = !month || month === currentMonthKey;
+
+  let diamondByCategory = {};
+  if(isCurrentMonth){
+    const rawAll = window.FINANCE_STATE?.raw || [];
+    const reimbursable = window.FINANCE_STATE?.reimbursableCategories || [];
+    for(let i = 1; i <= 3; i++){
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const yr = d.getFullYear();
+      const mo = String(d.getMonth()+1).padStart(2,'0');
+      const monthPrefix = `${yr}-${mo}-`;
+      rawAll.forEach(r => {
+        if(excluded.includes(r.categoria)) return;
+        if(!r.fecha || !r.fecha.startsWith(monthPrefix)) return;
+        const day = parseInt(r.fecha.slice(8,10), 10);
+        if(day > currentDay) return;
+        const v = Number(r.monto);
+        const cat = r.categoria || 'Sin categoría';
+        if(v < 0){
+          if(!diamondByCategory[cat]) diamondByCategory[cat] = {gross:0, refund:0, count:0};
+          diamondByCategory[cat].gross += Math.abs(v);
+          diamondByCategory[cat].count++;
+        } else if(reimbursable.includes(r.categoria)){
+          if(!diamondByCategory[cat]) diamondByCategory[cat] = {gross:0, refund:0, count:0};
+          diamondByCategory[cat].refund += v;
+        }
+      });
+    }
+    // Promediar dividiendo por 3
+    Object.keys(diamondByCategory).forEach(cat => {
+      const {gross, refund} = diamondByCategory[cat];
+      diamondByCategory[cat] = Math.max(0, (gross - refund) / 3);
+    });
+  }
+
+  const diamondDataset = isCurrentMonth ? {
+    label: `Promedio últimos 3 meses (día ${currentDay})`,
+    type: 'scatter',
+    data: labels.map((cat, i) => diamondByCategory[cat] != null ? {y: cat, x: diamondByCategory[cat]} : null).filter(Boolean),
+    pointStyle: 'rectRot',
+    pointRadius: 7,
+    pointHoverRadius: 9,
+    backgroundColor: 'rgba(154,98,0,1)',
+    borderColor: 'rgba(255,255,255,0.9)',
+    borderWidth: 1.5,
+    order: 0
+  } : null;
+
   if(window.categoriasChart) window.categoriasChart.destroy();
 
   window.categoriasChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels,
-      datasets: [{
-        data: values,
-        backgroundColor: labels.map((_, i) => {
-          const base = colors[i % colors.length];
-          // Dim non-selected bars when a filter is active
-          if(activeIdx >= 0 && i !== activeIdx){
-            return base.replace(/[\d.]+\)$/, '0.25)');
-          }
-          return base;
-        }),
-        borderWidth: labels.map((_, i) => (i === activeIdx ? 2 : 0)),
-        borderColor: labels.map((_, i) => (i === activeIdx ? colors[i % colors.length].replace(/[\d.]+\)$/, '1)') : 'transparent')),
-        borderRadius: 4
-      }]
+      datasets: [
+        {
+          data: values,
+          backgroundColor: labels.map((_, i) => {
+            const base = colors[i % colors.length];
+            if(activeIdx >= 0 && i !== activeIdx){
+              return base.replace(/[\d.]+\)$/, '0.25)');
+            }
+            return base;
+          }),
+          borderWidth: labels.map((_, i) => (i === activeIdx ? 2 : 0)),
+          borderColor: labels.map((_, i) => (i === activeIdx ? colors[i % colors.length].replace(/[\d.]+\)$/, '1)') : 'transparent')),
+          borderRadius: 4
+        },
+        ...(diamondDataset ? [diamondDataset] : [])
+      ]
     },
     options: {
       indexAxis: 'y',
       responsive: true,
       plugins: {
-        legend: { display: false },
+        legend: { display: isCurrentMonth },
         tooltip: {
           callbacks: {
-            label: ctx => ' ' + new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(ctx.parsed.x)
+            label: function(ctx){
+              if(ctx.dataset.label && ctx.dataset.label.startsWith('Promedio')){
+                return ` Promedio día ${currentDay}: ` + new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(ctx.parsed.x);
+              }
+              return ' ' + new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(ctx.parsed.x);
+            }
           }
         }
       },
@@ -455,7 +514,7 @@ function renderCategorias(){
             callback: v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v)
           }
         },
-        y: { grid: { display: false } }
+        y: { type: 'category', grid: { display: false } }
       },
       onClick: (event, elements) => {
         if(!elements || elements.length === 0){
@@ -1298,6 +1357,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
