@@ -1,3 +1,15 @@
+## [2026-06-29] Auditoría de notas (col K) y causa raíz del desfase
+
+**Problema detectado:** ~17 de 52 notas de la columna K estaban en el movimiento equivocado (peajes, transferencias a Guille, cafés, SERVIMATIC, suscripciones Apple), con la nota correcta a una fila de distancia.
+
+**Causa raíz:** el desfase proviene de escribir notas con el modo `batch` (rango A1 explícito `Movimientos!Kxx`) de `update-sheet-cells.yml`. El número de fila se calcula fuera del workflow; cuando varios movimientos comparten la misma fecha, el orden intra-día del JSON (fecha desc) no coincide con el del Sheet, y la fila calculada cae en el vecino contiguo.
+
+**Decisión:** las notas (col K) se escriben **siempre con FIND_AND_UPDATE**, nunca con batch por rango A1. FIND_AND_UPDATE ancla por fecha+concepto+importe exactos y es inmune al desfase. Es más lento (una invocación por celda) pero correcto.
+
+**Corrección aplicada:** 19 escrituras FIND_AND_UPDATE (14 CLEAR + 5 SET), espaciado 30s, trigger de Relay pausado. Verificado contra JSON regenerado: todas correctas, sin desfases residuales. Notas con valor: 52 → 43.
+
+**Verificaciones Gmail destacadas:** APPLE.COM/BILL -29,99€ = LinkedIn Premium Career (no "Farmacia"); APPLE -3,49€ = Hevy; cargos Amazon recientes confirmados por email de pedido.
+
 ## [2026-06-25] Categoría Salud y Belleza
 
 - Nueva categoría añadida al prompt de Relay, al Sheet y a PROJECT_MEMORY.md.
