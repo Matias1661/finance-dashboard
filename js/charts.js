@@ -210,7 +210,7 @@ function renderMonthly(){
         ...(avgDiamond !== null ? [{
           label: `Ritmo promedio (día ${currentDay})`,
           type: 'scatter',
-          data: diamondData.map((v, i) => v !== null ? {x: i, y: v} : null).filter(Boolean),
+          data: diamondData.map((v, i) => v !== null ? {x: labels[i], y: v} : null).filter(Boolean),
           pointStyle: 'rectRot',
           pointRadius: 8,
           pointHoverRadius: 10,
@@ -502,6 +502,7 @@ function renderCategoryAvgTable(){
   const el = document.getElementById('cat-avg-table');
   if(el) el.innerHTML = html;
 }
+
 
 
 
