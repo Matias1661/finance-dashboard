@@ -496,7 +496,12 @@ function renderCategorias(){
       indexAxis: 'y',
       responsive: true,
       plugins: {
-        legend: { display: isCurrentMonth },
+        legend: {
+          display: isCurrentMonth,
+          labels: {
+            filter: item => item.datasetIndex !== 0
+          }
+        },
         tooltip: {
           callbacks: {
             label: function(ctx){
