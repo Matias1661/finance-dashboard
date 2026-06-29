@@ -1,6 +1,12 @@
 [
   {
     "fecha": "2026-06-29",
+    "concepto": "PAV CASABLANCA 60X120 R16",
+    "costo": 250.14,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-06-29",
     "concepto": "Materiales eléctricos (Hilos, cinta aislante y tubo corrugado)",
     "costo": 146.51,
     "pagado": "Willy"
