@@ -416,8 +416,9 @@ function renderCategorias(){
   const ctx = document.getElementById('chart-categorias');
   if(!ctx) return;
 
-  // Rombo por categoría: promedio de gastos hasta el día actual en los 3 meses previos
-  const now = new Date();
+  // Rombo por categoría: promedio de gastos hasta el día de la última transacción
+  const _lastTxCat = window.FINANCE_STATE?.lastTxDate ? new Date(window.FINANCE_STATE.lastTxDate + 'T00:00:00') : new Date();
+  const now = _lastTxCat;
   const currentDay = now.getDate();
   const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
   const isCurrentMonth = !month || month === currentMonthKey;
@@ -1346,6 +1347,8 @@ async function init(){
   }
   if(window.FINANCE_STATE){
     window.FINANCE_STATE.raw = RAW;
+    const _lastTxDate = RAW.length > 0 ? RAW.map(r => r.fecha).filter(Boolean).sort().reverse()[0] : null;
+    window.FINANCE_STATE.lastTxDate = _lastTxDate || null;
   }
 
   // last-updated moved to KPI card
