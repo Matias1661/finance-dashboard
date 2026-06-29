@@ -152,8 +152,9 @@ function renderMonthly(){
   const income  = labels.map(k => map[k].income);
   const expense = labels.map(k => Math.max(0, Math.abs(map[k].expense) - map[k].refund));
 
-  // Rombo: promedio de gastos de los 3 meses anteriores hasta el día actual del mes
-  const now = new Date();
+  // Rombo: promedio de gastos de los 3 meses anteriores hasta el día de la última transacción
+  const _lastTx = window.FINANCE_STATE?.lastTxDate ? new Date(window.FINANCE_STATE.lastTxDate + 'T00:00:00') : new Date();
+  const now = _lastTx;
   const currentDay = now.getDate();
   const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
   const currentMonthIdx = labels.indexOf(currentMonthKey);
@@ -331,8 +332,9 @@ function renderCategoryTrend(){
     return parseFloat((g.sum / g.count).toFixed(2));
   });
 
-  // Rombo: promedio de gastos de esta categoría hasta el día actual en los 3 meses previos
-  const currentDay = now.getDate();
+  // Rombo: promedio de gastos de esta categoría hasta el día de la última transacción
+  const _lastTxTrend = window.FINANCE_STATE?.lastTxDate ? new Date(window.FINANCE_STATE.lastTxDate + 'T00:00:00') : now;
+  const currentDay = _lastTxTrend.getDate();
   const reimbursable = window.FINANCE_STATE?.reimbursableCategories || [];
   const prevTotals = [];
   for(let i = 1; i <= 3; i++){
