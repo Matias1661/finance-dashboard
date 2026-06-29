@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28 22:38",
+  "generated_at": "2026-06-29 10:33",
   "movimientos": [
     {
       "fecha": "2026-06-27",
@@ -26,7 +26,7 @@
       "fecha": "2026-06-26",
       "concepto": "GAGO III",
       "monto": -8.8,
-      "categoria": "A revisar",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -17396,7 +17396,7 @@
       },
       {
         "mes": "2026-06",
-        "peerberry": 11701.33,
+        "peerberry": 11702.99,
         "myinvestor": 8890.0
       }
     ],
@@ -17453,7 +17453,7 @@
       },
       {
         "mes": "2026-06",
-        "peerberry": 126.38,
+        "peerberry": 126.42,
         "myinvestor": 7.51
       }
     ]
