@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29 14:02",
+  "generated_at": "2026-06-29 14:19",
   "movimientos": [
     {
       "fecha": "2026-06-27",
@@ -1707,7 +1707,7 @@
       "concepto": "BIDEGI A8/A1 GIPU",
       "monto": -3.15,
       "categoria": "Viajes",
-      "nota": "Generisch conector"
+      "nota": null
     },
     {
       "fecha": "2026-04-28",
@@ -1798,7 +1798,7 @@
       "concepto": "SERVIMATIC",
       "monto": -0.55,
       "categoria": "Comer afuera",
-      "nota": "Apple AirTag (2ª gen)"
+      "nota": null
     },
     {
       "fecha": "2026-04-25",
@@ -2036,14 +2036,14 @@
       "concepto": "316-MINIT SPAIN S",
       "monto": -5.0,
       "categoria": "Compras",
-      "nota": "Groupon"
+      "nota": "Mister Minit (llaves/calzado)"
     },
     {
       "fecha": "2026-04-17",
       "concepto": "SERVIMATIC",
       "monto": -0.55,
       "categoria": "Comer afuera",
-      "nota": "Mister Minit (llaves/calzado)"
+      "nota": null
     },
     {
       "fecha": "2026-04-17",
@@ -2120,7 +2120,7 @@
       "concepto": "AUTOPISTA R4 SEIT",
       "monto": -4.85,
       "categoria": "Viajes",
-      "nota": "IPONE pack mantenimiento moto"
+      "nota": null
     },
     {
       "fecha": "2026-04-14",
@@ -2232,7 +2232,7 @@
       "concepto": "TRANSFER. EN DIV.",
       "monto": 50.0,
       "categoria": "Guille",
-      "nota": "Guantes Mechanix Wear FastFit"
+      "nota": null
     },
     {
       "fecha": "2026-04-10",
@@ -2253,7 +2253,7 @@
       "concepto": "BK14475 MEGAPARK",
       "monto": -26.71,
       "categoria": "Comer afuera",
-      "nota": null
+      "nota": "Megapark Barakaldo"
     },
     {
       "fecha": "2026-04-09",
@@ -2288,7 +2288,7 @@
       "concepto": "TRANSFER INMEDIATA",
       "monto": 50.0,
       "categoria": "Guille",
-      "nota": "Megapark Barakaldo"
+      "nota": null
     },
     {
       "fecha": "2026-04-08",
@@ -2456,7 +2456,7 @@
       "concepto": "SERVIMATIC",
       "monto": -0.55,
       "categoria": "Suscripciones",
-      "nota": "Suscripción Microsoft 365 Personal"
+      "nota": null
     },
     {
       "fecha": "2026-04-02",
@@ -2757,14 +2757,14 @@
       "concepto": "FARMACIA B.CASTEL",
       "monto": -7.0,
       "categoria": "Salud y Belleza",
-      "nota": "Venker contenedor/organizador"
+      "nota": null
     },
     {
       "fecha": "2026-03-20",
       "concepto": "APPLE.COM/BILL",
       "monto": -29.99,
       "categoria": "Suscripciones",
-      "nota": "Farmacia"
+      "nota": "LinkedIn Premium Career"
     },
     {
       "fecha": "2026-03-20",
@@ -2911,14 +2911,14 @@
       "concepto": "HOSPITAL DIGITAL",
       "monto": -16.0,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Consulta médica online"
     },
     {
       "fecha": "2026-03-12",
       "concepto": "TRANSFER. EN DIV.",
       "monto": 50.0,
       "categoria": "Guille",
-      "nota": "Consulta médica online"
+      "nota": null
     },
     {
       "fecha": "2026-03-12",
@@ -2946,7 +2946,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": "Libro Kindle 'No Easy Day' (probable)"
+      "nota": null
     },
     {
       "fecha": "2026-03-10",
@@ -2974,14 +2974,14 @@
       "concepto": "GlobalE /True Cla",
       "monto": -146.49,
       "categoria": "Compras",
-      "nota": null
+      "nota": "True Classic (ropa)"
     },
     {
       "fecha": "2026-03-09",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 50.0,
       "categoria": "Guille",
-      "nota": "True Classic (ropa)"
+      "nota": null
     },
     {
       "fecha": "2026-03-09",
@@ -17247,7 +17247,7 @@
       "concepto": "BLENDCAFE 1983",
       "monto": -5.2,
       "categoria": "Comer afuera",
-      "nota": "Proyector Portátil 1920x1080P"
+      "nota": null
     },
     {
       "fecha": "2024-12-01",
