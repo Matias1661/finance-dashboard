@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-29 14:19",
+  "generated_at": "2026-06-29 15:44",
   "movimientos": [
     {
       "fecha": "2026-06-27",
@@ -377,7 +377,7 @@
       "concepto": "Under Armour",
       "monto": -20.99,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Ropa deportiva Under Armour"
     },
     {
       "fecha": "2026-06-09",
@@ -524,7 +524,7 @@
       "concepto": "AMAZON.ES",
       "monto": -6.49,
       "categoria": "Compras",
-      "nota": "Libro Kindle 'Inside Delta Force'"
+      "nota": "TEST — borrar"
     },
     {
       "fecha": "2026-06-04",
@@ -1049,7 +1049,7 @@
       "concepto": "BOSTON GETAFE",
       "monto": -52.18,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Tienda de ropa Boston (Getafe)"
     },
     {
       "fecha": "2026-05-18",
@@ -1147,7 +1147,7 @@
       "concepto": "CAMPONACIONES SER",
       "monto": -61.82,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Camponaciones (accesorios campo/caza)"
     },
     {
       "fecha": "2026-05-13",
@@ -2449,7 +2449,7 @@
       "concepto": "PAYPAL EUROPE S.",
       "monto": -10.0,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Microsoft 365 Personal"
     },
     {
       "fecha": "2026-04-02",
@@ -2498,7 +2498,7 @@
       "concepto": "WWW.AMAZON*N240Z8",
       "monto": -30.37,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Venker Contenedor - 2ª cuota"
     },
     {
       "fecha": "2026-04-01",
@@ -2596,7 +2596,7 @@
       "concepto": "RESTO LE SALEYA",
       "monto": -135.7,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Restaurante Le Saleya (viaje Niza)"
     },
     {
       "fecha": "2026-03-29",
@@ -2624,7 +2624,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -30.37,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Venker Contenedor de almacenamiento"
     },
     {
       "fecha": "2026-03-28",
@@ -2680,7 +2680,7 @@
       "concepto": "AMAZON.ES",
       "monto": -14.65,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Jeringas 23G x 1¼ y producto médico"
     },
     {
       "fecha": "2026-03-26",
@@ -2939,7 +2939,7 @@
       "concepto": "AMAZON.ES",
       "monto": -8.49,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Libro Kindle 'No Easy Day'"
     },
     {
       "fecha": "2026-03-11",
@@ -3030,7 +3030,7 @@
       "concepto": "AMAZON.ES",
       "monto": -4.24,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Yerba mate Playadito"
     },
     {
       "fecha": "2026-03-06",
@@ -3268,7 +3268,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -34.3,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Libro Kindle 'Data Analytics + Data Storytelling'"
     },
     {
       "fecha": "2026-03-01",
@@ -3569,7 +3569,7 @@
       "concepto": "WWW.AMAZON.ES",
       "monto": -29.53,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Libro Kindle 'Project Management Automotive'"
     },
     {
       "fecha": "2026-02-13",
@@ -4276,7 +4276,7 @@
       "concepto": "DECATHLON ESPANA",
       "monto": -74.95,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Decathlon online"
     },
     {
       "fecha": "2026-01-27",
@@ -5382,7 +5382,7 @@
       "concepto": "Boutique Pandora",
       "monto": -74.99,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Joyería Pandora (probable regalo)"
     },
     {
       "fecha": "2025-12-08",
@@ -5431,7 +5431,7 @@
       "concepto": "PAYPAL *PAGO 3 PL",
       "monto": -29.26,
       "categoria": "Compras",
-      "nota": null
+      "nota": "LeatherProsUSA - cuota 3/3"
     },
     {
       "fecha": "2025-12-06",
@@ -6488,7 +6488,7 @@
       "concepto": "PAYPAL *PAGO 3 PL",
       "monto": -29.27,
       "categoria": "Compras",
-      "nota": null
+      "nota": "LeatherProsUSA - cuota 2/3"
     },
     {
       "fecha": "2025-11-06",
@@ -7181,7 +7181,7 @@
       "concepto": "Hotel at Booking.",
       "monto": -72.9,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Hotel vía Booking.com"
     },
     {
       "fecha": "2025-10-16",
@@ -7272,7 +7272,7 @@
       "concepto": "DRUNI, S.A",
       "monto": -42.95,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Druni (perfumería/cosmética)"
     },
     {
       "fecha": "2025-10-13",
@@ -7482,7 +7482,7 @@
       "concepto": "PAYPAL *PAGO 3 PL",
       "monto": -29.27,
       "categoria": "Compras",
-      "nota": null
+      "nota": "LeatherProsUSA - cuota 1/3 (ropa moto)"
     },
     {
       "fecha": "2025-10-07",
@@ -8063,7 +8063,7 @@
       "concepto": "PAYPAL *TEMU",
       "monto": -26.64,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Temu (marketplace)"
     },
     {
       "fecha": "2025-09-19",
@@ -8259,7 +8259,7 @@
       "concepto": "PAYPAL *ZALANDOSE",
       "monto": -25.94,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Zalando (ropa)"
     },
     {
       "fecha": "2025-09-10",
@@ -8420,7 +8420,7 @@
       "concepto": "MGP*Vinted",
       "monto": -36.75,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Vinted (segunda mano)"
     },
     {
       "fecha": "2025-09-06",
@@ -9022,7 +9022,7 @@
       "concepto": "Zara.com",
       "monto": -75.0,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Zara online (ropa)"
     },
     {
       "fecha": "2025-08-18",
@@ -10401,7 +10401,7 @@
       "concepto": "CROCANTICKETS",
       "monto": -202.2,
       "categoria": "Compras",
-      "nota": null
+      "nota": "CrocanTickets (entradas espectáculos)"
     },
     {
       "fecha": "2025-07-06",
@@ -10443,7 +10443,7 @@
       "concepto": "CALZADOS MARYPAZ",
       "monto": -27.99,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Marypaz (calzado)"
     },
     {
       "fecha": "2025-07-05",
@@ -10513,14 +10513,14 @@
       "concepto": "Deichmann Madrid",
       "monto": -40.24,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Deichmann (calzado)"
     },
     {
       "fecha": "2025-07-03",
       "concepto": "PAYPAL *AIRBNB HM",
       "monto": -351.24,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Airbnb Gijón (viaje julio 2025)"
     },
     {
       "fecha": "2025-07-03",
@@ -10912,14 +10912,14 @@
       "concepto": "Calzedonia",
       "monto": -125.8,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Calzedonia (ropa/baño)"
     },
     {
       "fecha": "2025-06-24",
       "concepto": "PRIMARK PLENILUNI",
       "monto": -135.1,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Primark (ropa)"
     },
     {
       "fecha": "2025-06-23",
@@ -11101,7 +11101,7 @@
       "concepto": "PAYPAL *AIRBNB HM",
       "monto": -87.82,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Airbnb (reserva viaje)"
     },
     {
       "fecha": "2025-06-16",
@@ -11556,7 +11556,7 @@
       "concepto": "MERKAL SS DE LOS",
       "monto": -91.58,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Merkal (calzado)"
     },
     {
       "fecha": "2025-06-02",
@@ -11934,7 +11934,7 @@
       "concepto": "IKEA IBERICA WEB",
       "monto": -34.8,
       "categoria": "Compras",
-      "nota": null
+      "nota": "IKEA online"
     },
     {
       "fecha": "2025-05-23",
@@ -16995,7 +16995,7 @@
       "concepto": "JD Spain Sport Fa",
       "monto": -120.0,
       "categoria": "Compras",
-      "nota": null
+      "nota": "JD Sports (ropa/calzado deportivo)"
     },
     {
       "fecha": "2024-12-04",
