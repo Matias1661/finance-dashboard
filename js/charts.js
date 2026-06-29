@@ -331,6 +331,33 @@ function renderCategoryTrend(){
     return parseFloat((g.sum / g.count).toFixed(2));
   });
 
+  // Rombo: promedio de gastos de esta categoría hasta el día actual en los 3 meses previos
+  const currentDay = now.getDate();
+  const reimbursable = window.FINANCE_STATE?.reimbursableCategories || [];
+  const prevTotals = [];
+  for(let i = 1; i <= 3; i++){
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const yr = d.getFullYear();
+    const mo = String(d.getMonth()+1).padStart(2,'0');
+    const monthPrefix = `${yr}-${mo}-`;
+    let gross = 0, refund = 0;
+    allData.forEach(r => {
+      if((r.categoria || 'Sin categoría') !== selectedCat) return;
+      if(!r.fecha || !r.fecha.startsWith(monthPrefix)) return;
+      const day = parseInt(r.fecha.slice(8,10), 10);
+      if(day > currentDay) return;
+      const v = Number(r.monto);
+      if(v < 0) gross += Math.abs(v);
+      else if(reimbursable.includes(r.categoria)) refund += v;
+    });
+    prevTotals.push(Math.max(0, gross - refund));
+  }
+  const avgDiamond = prevTotals.length > 0 ? prevTotals.reduce((a,b) => a+b, 0) / prevTotals.length : null;
+
+  // El rombo va en el índice del mes actual (último label)
+  const currentMonthIdx = months.length - 1;
+  const diamondData = labels.map((_, i) => i === currentMonthIdx && avgDiamond !== null ? avgDiamond : null);
+
   const ctx = document.getElementById('chart-cat-trend');
   if(!ctx) return;
   if(window.catTrendChart) window.catTrendChart.destroy();
@@ -367,7 +394,19 @@ function renderCategoryTrend(){
           segment: {
             borderDash: ctx => [6, 4]
           }
-        }
+        },
+        ...(avgDiamond !== null ? [{
+          label: `Ritmo promedio (día ${currentDay})`,
+          type: 'scatter',
+          data: diamondData.map((v, i) => v !== null ? {x: labels[i], y: v} : null).filter(Boolean),
+          pointStyle: 'rectRot',
+          pointRadius: 8,
+          pointHoverRadius: 10,
+          backgroundColor: 'rgba(201,74,48,1)',
+          borderColor: 'rgba(255,255,255,0.9)',
+          borderWidth: 1.5,
+          order: -1
+        }] : [])
       ]
     },
     options: {
@@ -502,6 +541,7 @@ function renderCategoryAvgTable(){
   const el = document.getElementById('cat-avg-table');
   if(el) el.innerHTML = html;
 }
+
 
 
 
