@@ -1,3 +1,19 @@
+## [2026-06-30] Fix: GitHub Pages bloqueado por build de Jekyll fallido — agregado .nojekyll
+
+**Síntoma:** tras una prueba manual (movimiento de prueba agregado en Notion → botón Actualizar), el deployment de GitHub Pages quedó casi 4 minutos en estado "queued" sin avanzar.
+
+**Causa raíz:** el repo tenía `build_type: legacy` en la configuración de Pages, que procesa todo el contenido con Jekyll antes de publicarlo. El sitio es HTML/CSS/JS estático puro — nunca necesitó ese procesamiento. Algunos commits recientes (de documentación en `docs/*.md`) produjeron builds en estado `errored` ("Page build failed"), y esos fallos bloquearon la cola de deployments siguientes, incluido el del `finance_data.json` actualizado tras la prueba.
+
+**Diagnóstico:** confirmado vía API (`GET /repos/.../pages/builds`) — varios builds consecutivos en `errored` con commits de docs, seguidos de uno en `building` indefinidamente.
+
+**Fix:** se agregó un archivo `.nojekyll` vacío en la raíz del repo. Esto le indica a GitHub Pages que sirva los archivos tal cual, sin pasarlos por Jekyll. Es la solución estándar para sitios estáticos puros alojados en Pages.
+
+**Resultado:** el build bloqueado pasó a `built` inmediatamente tras el commit de `.nojekyll`, y el build siguiente (con el archivo ya presente) completó en ~30 segundos sin errores. Verificado que `finance_data.json` servido coincide con el del repo (movimiento de prueba presente, luego confirmado eliminado por el usuario).
+
+**Impacto a futuro:** cualquier commit (incluidos los de `docs/*.md` que se hacen tras cada cambio, según el proceso obligatorio del proyecto) ya no debería poder bloquear el deployment del dashboard. Si vuelve a aparecer un build en `errored`, no es por falta de `.nojekyll` — investigar otra causa.
+
+---
+
 ## [2026-06-30] Migración Sheets → Notion: completada (8/8 pasos). Sheets deja de recibir escrituras.
 
 **Decisión:** saltar también la fase de validación de 1-2 semanas con ambos destinos activos (pasos 5-6 originales). El usuario configuró Relay para escribir **solo** en Notion, sin paralelo con Sheets, y prefirió entrar en producción con seguimiento manual de fallas en vez de la validación progresiva planificada originalmente.
