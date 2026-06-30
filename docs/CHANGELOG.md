@@ -1,3 +1,17 @@
+## [2026-06-30] — Migración Sheets → Notion: inicio (pasos 1-2)
+
+### Añadido
+- DB `Movimientos` creada en Notion (hija de Finance Tracker), schema: Fecha, Concepto, Monto, Categoria (select, 20 opciones), Nota.
+- 2.465 movimientos históricos importados manualmente vía CSV exportado del Sheet.
+- Verificación de integridad post-importación: conteo exacto (2.465/2.465), distribución por categoría coincide a centavo en las 19 categorías presentes, patrón de duplicados idéntico al origen.
+
+### Corregido
+- Nota residual "TEST — borrar" en AMAZON.ES (4/06/2026, -6,49€) — arrastrada de una prueba anterior no limpiada antes de exportar el CSV. Corregida a "Libro Kindle 'Inside Delta Force'" directamente en Notion.
+
+### Pendiente
+- Eliminar manualmente página vacía `[BORRAR — creada por error]` en la DB Movimientos (creada por error de tooling, sin herramienta de borrado vía MCP).
+- Pasos 3-8 del plan de migración: reescritura de `sync_finance_data.py`, configuración de Relay→Notion en paralelo, validación, desactivación de Sheets como destino de escritura, actualización del flujo "Organizar Movimientos".
+
 ## [2026-06-29] — Auditoría y corrección de notas (col K)
 
 ### Corregido
