@@ -36,7 +36,7 @@ SA_JSON           = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
 
 NOTION_TOKEN          = os.environ["NOTION_TOKEN"]
 NOTION_DATA_SOURCE_ID = os.environ["NOTION_MOVIMIENTOS_DATA_SOURCE_ID"]
-NOTION_VERSION        = "2022-06-28"
+NOTION_VERSION        = "2025-09-03"
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
