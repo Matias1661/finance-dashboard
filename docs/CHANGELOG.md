@@ -1,4 +1,19 @@
-## [2026-06-30] — Fix: botón Actualizar no disparaba deploy del dashboard
+## [2026-06-30] — Deploy de Pages filtrado + causa real de deployment_queued resuelta
+
+### Agregado
+- `deploy-pages.yml`: nuevo step que arma `_site/` con solo `index.html`, `js/`, `finance_data.json`, `sociedad_data.json`, `.nojekyll` antes de publicar.
+
+### Eliminado
+- `debug_log.txt` y `tmp_sheet_debug.txt` — archivos sueltos en la raíz con movimientos personales en texto plano, resabios de sesiones de diagnóstico previas.
+
+### Corregido
+- Causa real de `deployment_queued` indefinido (síntoma recurrente durante toda la sesión, sobrevivió al cambio de Source y al fix del trigger): el environment `github-pages` quedó corrupto por la sucesión de deployments cancelados durante el debugging. Borrado manualmente desde Settings → Environments y recreado limpio. Verificado con ciclo completo exitoso. Detalle en `docs/DECISIONS.md`, entrada `[2026-06-30] Optimización: deploy de Pages filtrado + causa real de deployment_queued resuelta`.
+
+### Resultado
+- El sitio público ya no expone `docs/`, `scripts/`, `prompt_relay_current.txt` ni `reviewed_movements.json`.
+- Ciclo botón Actualizar → sync → commit → deploy automático → success, confirmado de punta a punta.
+
+
 
 ### Cambiado
 - `.github/workflows/sync-finance-data.yml` y `.github/workflows/sync-sociedad-data.yml`: agregado step `Trigger Pages deploy` que ejecuta `gh workflow run deploy-pages.yml` tras un commit exitoso. Agregado permiso `actions: write` a ambos.
