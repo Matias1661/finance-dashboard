@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30 12:33",
+  "generated_at": "2026-06-30 12:52",
   "movimientos": [
     {
       "fecha": "2026-06-29",
@@ -47,8 +47,8 @@
       "fecha": "2026-06-29",
       "concepto": "Kerastase",
       "monto": -47.0,
-      "categoria": "Salud y Belleza",
-      "nota": null
+      "categoria": "Compras",
+      "nota": "Regalo Joha"
     },
     {
       "fecha": "2026-06-29",
@@ -299,7 +299,7 @@
       "fecha": "2026-06-13",
       "concepto": "REINT.CA JERO",
       "monto": -100.0,
-      "categoria": "Compras",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -6599,7 +6599,7 @@
       "fecha": "2025-11-05",
       "concepto": "SOBRIAUTO",
       "monto": -9.7,
-      "categoria": "Otros",
+      "categoria": "Gastos coche",
       "nota": null
     },
     {
@@ -7250,7 +7250,7 @@
       "fecha": "2025-10-16",
       "concepto": "ARBITRADE CENTRO",
       "monto": -4.2,
-      "categoria": "Otros",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -7362,7 +7362,7 @@
       "fecha": "2025-10-12",
       "concepto": "MARVIZA",
       "monto": -13.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -8041,7 +8041,7 @@
       "fecha": "2025-09-22",
       "concepto": "MARVIZA",
       "monto": -27.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -8916,7 +8916,7 @@
       "fecha": "2025-08-20",
       "concepto": "SERICA SUBIRATS S",
       "monto": -21.26,
-      "categoria": "Otros",
+      "categoria": "Combustible",
       "nota": null
     },
     {
@@ -9371,7 +9371,7 @@
       "fecha": "2025-08-12",
       "concepto": "ARBITRADE CENTRO",
       "monto": -4.2,
-      "categoria": "Otros",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -9756,7 +9756,7 @@
       "fecha": "2025-08-01",
       "concepto": "MYCARD",
       "monto": -26.3,
-      "categoria": "Otros",
+      "categoria": "Tarjeta",
       "nota": null
     },
     {
@@ -10113,7 +10113,7 @@
       "fecha": "2025-07-18",
       "concepto": "CASA CARMEN",
       "monto": -45.35,
-      "categoria": "Otros",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -10148,14 +10148,14 @@
       "fecha": "2025-07-17",
       "concepto": "BALCON DEL PARQUE",
       "monto": -51.2,
-      "categoria": "Otros",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
       "fecha": "2025-07-17",
       "concepto": "DELIKIA SP",
       "monto": -1.15,
-      "categoria": "Otros",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -10211,7 +10211,7 @@
       "fecha": "2025-07-14",
       "concepto": "MARVIZA",
       "monto": -27.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -10708,7 +10708,7 @@
       "fecha": "2025-07-01",
       "concepto": "MYCARD",
       "monto": -11.26,
-      "categoria": "Otros",
+      "categoria": "Tarjeta",
       "nota": null
     },
     {
