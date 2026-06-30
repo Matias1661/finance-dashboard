@@ -27,10 +27,19 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Build public site (solo archivos del dashboard)
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp finance_data.json _site/
+          cp sociedad_data.json _site/
+          cp -r js _site/
+          cp .nojekyll _site/ 2>/dev/null || true
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
