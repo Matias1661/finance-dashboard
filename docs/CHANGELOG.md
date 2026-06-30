@@ -1,4 +1,22 @@
-## [2026-06-30] — Migración Movimientos a Notion: sync_finance_data.py reescrito y desplegado
+## [2026-06-30] — Migración Sheets → Notion completada (8/8 pasos)
+
+### Eliminado
+- `.github/workflows/update-sheet-cells.yml` — obsoleto, Relay ya no escribe en Sheets.
+- `.github/workflows/find-update-nota.yml` — obsoleto por el mismo motivo.
+
+### Cambiado
+- Flujo "Organizar Movimientos": la escritura de categoría y nota ahora usa `notion-update-page` vía MCP (localizando la página por fecha+concepto+monto) en vez de `update-sheet-cells.yml`. Detalle completo en `docs/PROJECT_MEMORY.md`, sección "Flujo Organizar Movimientos".
+- Relay configurado para escribir solo en Notion (sin paralelo con Sheets, por decisión del usuario — se saltó la fase de validación de 1-2 semanas).
+
+### Sin cambios
+- `update-relay-prompt.yml` y `read-relay-prompt.yml` se mantienen activos.
+- Hoja Inversiones en Sheets sigue en uso normal — su migración a Notion queda como fase futura sin fecha.
+
+### Estado
+- Google Sheet Movimientos deja de recibir escrituras desde hoy. Queda como histórico de solo lectura.
+- Migración completa: detalle en `docs/DECISIONS.md`, entrada `[2026-06-30] Migración Sheets → Notion: completada (8/8 pasos)`.
+
+
 
 ### Añadido
 - `sync_finance_data.py` reescrito: la sección Movimientos ahora lee de la API REST de Notion (`POST /v1/data_sources/{id}/query`, `Notion-Version: 2025-09-03`, paginado vía `start_cursor`/`has_more`) en vez de Google Sheets. La sección Inversiones no cambió, sigue leyendo Sheets.
