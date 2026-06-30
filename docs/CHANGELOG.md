@@ -1,4 +1,23 @@
-## [2026-06-30] — Recategorización de movimientos "Otros" (enero-junio 2025)
+## [2026-06-30] — Migración Movimientos a Notion: sync_finance_data.py reescrito y desplegado
+
+### Añadido
+- `sync_finance_data.py` reescrito: la sección Movimientos ahora lee de la API REST de Notion (`POST /v1/data_sources/{id}/query`, `Notion-Version: 2025-09-03`, paginado vía `start_cursor`/`has_more`) en vez de Google Sheets. La sección Inversiones no cambió, sigue leyendo Sheets.
+- Workflow `sync-finance-data.yml` actualizado: nuevas env vars `NOTION_TOKEN` (secret existente) y `NOTION_MOVIMIENTOS_DATA_SOURCE_ID`; dependencia `requests` agregada al step de instalación.
+- Integración "Notion Talho" (la del secret `NOTION_TOKEN`) conectada manualmente a la página Finance Tracker en Notion — no estaba conectada, causaba 404 en las queries.
+
+### Validado
+- 3 dispatches manuales del workflow en producción: 2 fallos diagnosticados (versión de API incorrecta, integración sin conectar) y corregidos, 1 éxito confirmado.
+- `finance_data.json` generado con 2473 movimientos (2465 históricos + movimientos del 29/06 cargados en la prueba de Relay→Notion), 28 meses de capital y 11 de rendimiento en Inversiones — estructura idéntica a la versión anterior basada en Sheets.
+
+### Decisión
+Se saltó la fase de comparación en paralelo (paso 4 del plan original) y se desplegó directo a producción. Detalle completo en `docs/DECISIONS.md`, entrada `[2026-06-30] Migración Sheets → Notion: pasos 3-4 completados`.
+
+## [2026-06-30] — Verificación de salud: prueba Relay → Notion (29/06/2026)
+
+### Verificado
+- 8 movimientos del 29/06/2026 comparados campo por campo entre Google Sheets (origen) y Notion (destino de la prueba del nuevo flujo de Relay): fechas, montos y conceptos coinciden exactos en los 8. Categoría y nota coinciden en 7/8; la discrepancia en "Kerastase" (Compras vs. Salud y Belleza, nota "Regalo Joha" faltante en Notion) se debió a una edición manual posterior en Sheets, no a un fallo del flujo de Relay. Prueba validada como correcta.
+
+
 
 ### Añadido
 - Análisis de los 65 movimientos categorizados como "Otros" entre enero y junio 2025 (35 conceptos únicos).
