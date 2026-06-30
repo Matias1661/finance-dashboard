@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30 13:24",
+  "generated_at": "2026-06-30 14:16",
   "movimientos": [
     {
       "fecha": "2026-06-29",
@@ -11058,7 +11058,7 @@
       "fecha": "2025-06-21",
       "concepto": "HOTEL PARQUESUR",
       "monto": -95.2,
-      "categoria": "Otros",
+      "categoria": "Salidas",
       "nota": null
     },
     {
@@ -11401,7 +11401,7 @@
       "fecha": "2025-06-10",
       "concepto": "ESTETICA ECOLOGIC",
       "monto": -50.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -11891,7 +11891,7 @@
       "fecha": "2025-05-27",
       "concepto": "JOMISOLEO HOSTALG",
       "monto": -6.33,
-      "categoria": "Otros",
+      "categoria": "Combustible",
       "nota": null
     },
     {
@@ -12297,7 +12297,7 @@
       "fecha": "2025-05-13",
       "concepto": "ESTETICA ECOLOGIC",
       "monto": -30.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -12402,7 +12402,7 @@
       "fecha": "2025-05-10",
       "concepto": "NYX*AIRservSpain",
       "monto": -1.5,
-      "categoria": "Otros",
+      "categoria": "Gastos coche",
       "nota": null
     },
     {
@@ -12556,7 +12556,7 @@
       "fecha": "2025-05-06",
       "concepto": "SANITAS S A SEG.",
       "monto": -69.01,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -12584,7 +12584,7 @@
       "fecha": "2025-05-06",
       "concepto": "SANITAS S A SEG.",
       "monto": -3.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -12675,7 +12675,7 @@
       "fecha": "2025-05-03",
       "concepto": "NYX*AIRservSpain",
       "monto": -1.5,
-      "categoria": "Otros",
+      "categoria": "Gastos coche",
       "nota": null
     },
     {
@@ -13039,7 +13039,7 @@
       "fecha": "2025-04-25",
       "concepto": "NYX*AIRservSpain",
       "monto": -1.5,
-      "categoria": "Otros",
+      "categoria": "Gastos coche",
       "nota": null
     },
     {
@@ -13739,7 +13739,7 @@
       "fecha": "2025-04-02",
       "concepto": "DIGI SPAIN TELEC.",
       "monto": -7.72,
-      "categoria": "Otros",
+      "categoria": "Suscripciones",
       "nota": null
     },
     {
@@ -13767,7 +13767,7 @@
       "fecha": "2025-04-02",
       "concepto": "SANITAS S A SEG.",
       "monto": -69.01,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -13942,7 +13942,7 @@
       "fecha": "2025-03-24",
       "concepto": "LASER B360",
       "monto": -50.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -13970,7 +13970,7 @@
       "fecha": "2025-03-23",
       "concepto": "ROSA CREMA S.L.",
       "monto": -26.84,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -14257,7 +14257,7 @@
       "fecha": "2025-03-10",
       "concepto": "ARBITRADE CENTRO",
       "monto": -3.7,
-      "categoria": "Otros",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -14320,7 +14320,7 @@
       "fecha": "2025-03-04",
       "concepto": "SANITAS S A SEG.",
       "monto": -69.01,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -14397,7 +14397,7 @@
       "fecha": "2025-03-02",
       "concepto": "DIGI SPAIN TELEC.",
       "monto": -17.93,
-      "categoria": "Otros",
+      "categoria": "Suscripciones",
       "nota": null
     },
     {
@@ -15069,7 +15069,7 @@
       "fecha": "2025-02-04",
       "concepto": "SANITAS S A SEG.",
       "monto": -4.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -15083,7 +15083,7 @@
       "fecha": "2025-02-04",
       "concepto": "SANITAS S A SEG.",
       "monto": -69.01,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -15153,7 +15153,7 @@
       "fecha": "2025-02-03",
       "concepto": "ORANGE JAEN ROLDA",
       "monto": -30.0,
-      "categoria": "Otros",
+      "categoria": "Suscripciones",
       "nota": null
     },
     {
@@ -15209,7 +15209,7 @@
       "fecha": "2025-02-02",
       "concepto": "DIGI SPAIN TELEC.",
       "monto": -24.0,
-      "categoria": "Otros",
+      "categoria": "Suscripciones",
       "nota": null
     },
     {
@@ -16042,7 +16042,7 @@
       "fecha": "2025-01-03",
       "concepto": "SANITAS S A SEG.",
       "monto": -69.01,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -16084,7 +16084,7 @@
       "fecha": "2025-01-02",
       "concepto": "DIGI SPAIN TELEC.",
       "monto": -24.0,
-      "categoria": "Otros",
+      "categoria": "Suscripciones",
       "nota": null
     },
     {
