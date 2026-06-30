@@ -1,4 +1,12 @@
-## [2026-06-30] — Migración Sheets → Notion completada (8/8 pasos)
+## [2026-06-30] — Fix: deployment de GitHub Pages bloqueado por build de Jekyll
+
+### Agregado
+- `.nojekyll` (archivo vacío en la raíz) — desactiva el procesamiento Jekyll de GitHub Pages, innecesario para este sitio estático puro.
+
+### Corregido
+- El botón "Actualizar" del dashboard quedaba bloqueado ~4 minutos en "deployment queued" por builds de Jekyll fallidos en commits previos de documentación. Con `.nojekyll`, los deployments vuelven a completar en segundos. Detalle en `docs/DECISIONS.md`, entrada `[2026-06-30] Fix: GitHub Pages bloqueado por build de Jekyll fallido`.
+
+
 
 ### Eliminado
 - `.github/workflows/update-sheet-cells.yml` — obsoleto, Relay ya no escribe en Sheets.
