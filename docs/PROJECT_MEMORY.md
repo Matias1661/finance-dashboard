@@ -21,10 +21,12 @@ Memoria técnica central del proyecto. Cualquier agente de IA o desarrollador de
 
 ## 🔄 MIGRACIÓN EN CURSO: Google Sheets → Notion (Movimientos)
 
-**Estado: pasos 1-4 de 8 completados (30/06/2026). Próximo paso: 5.**
+**Estado: 8 de 8 pasos completados (30/06/2026). Migración de Movimientos terminada.**
 
 ### Decisión de secuencia (30/06/2026)
 Se saltó deliberadamente el paso 4 original ("probar en paralelo, comparar JSON") y se fue directo a producción: el script reescrito se desplegó en el workflow real y se validó corriendo contra datos reales (2473 movimientos generados correctamente, Inversiones intacta desde Sheets con 28 meses de capital / 11 de rendimiento). Justificación del usuario: confianza alta tras la verificación manual de salud de Notion (ver entrada `[2026-06-30] verificación salud Notion` más abajo). Riesgo aceptado: sin comparación lado a lado de ambos JSON antes del corte; mitigado por el hecho de que `finance_data.json` se generó con éxito y su estructura fue inspeccionada directamente.
+
+También se saltó la validación de 1-2 semanas con ambos destinos activos (pasos 5-6 originales): el usuario confirmó que Relay ya escribe **solo** en Notion (no en paralelo con Sheets), y eligió entrar en producción con seguimiento manual de fallas en vez de la fase de validación progresiva. Esto implica que Sheets dejó de recibir movimientos nuevos desde el 30/06/2026 — queda como archivo histórico de solo lectura hasta nueva decisión.
 
 ### Motivación
 `update-sheet-cells.yml` (escritura via GitHub Actions) es lento para escrituras individuales: requiere espaciado de 30s entre dispatches y pausar Relay antes de cualquier batch. El sandbox de Claude tiene bloqueados a nivel de red `sheets.googleapis.com` y `script.google.com` (`host_not_allowed`), así que GitHub Actions es hoy el único canal de escritura al Sheet. Notion es accesible directamente vía MCP — sin intermediarios, sin espaciado.
@@ -51,17 +53,20 @@ La hoja `Inversiones` (datos manuales de Peerberry/MyInvestor, no provienen de R
 2. ✅ Importar 2.465 movimientos históricos (vía CSV manual, no por MCP batch — más confiable para este volumen)
 3. ✅ Reescribir `sync_finance_data.py`: Movimientos se lee de Notion vía API REST (`POST /v1/data_sources/{id}/query`, paginado por `start_cursor`/`has_more`), Inversiones sigue leyendo de Sheets sin cambios (misma función `build_inversiones`, intacta). Output JSON verificado con la misma estructura: `{fecha, concepto, monto, categoria, nota}`.
 4. ✅ Desplegado directo a producción (sin fase de comparación en paralelo, ver "Decisión de secuencia" arriba). Workflow `sync-finance-data.yml` actualizado con secrets `NOTION_TOKEN` (ya existía en el repo) y env var `NOTION_MOVIMIENTOS_DATA_SOURCE_ID`. Validado con 3 dispatches manuales: 2 fallos diagnosticados y corregidos, 1 éxito confirmado generando 2473 movimientos.
-5. ⬜ Configurar Relay: acción de destino Notion (tiene soporte nativo) en paralelo a Sheets — no cortar Sheets todavía
-6. ⬜ Validar 1-2 semanas con ambos destinos activos, confirmando que Relay escribe correctamente en Notion
-7. ⬜ Apagar escritura en Sheets. Eliminar `update-sheet-cells.yml`, `find-update-nota.yml`. Evaluar `update-relay-prompt.yml`/`read-relay-prompt.yml` (quedan obsoletos si el prompt vive solo en `prompt_relay_current.txt` del repo)
-8. ⬜ Actualizar flujo "Organizar Movimientos": escritura de notas/categorías pasa a `notion-update-page` vía MCP en vez de disparar `update-sheet-cells.yml`. Buscar el page_id por fecha+concepto+monto (la clave `reviewed_movements.json` no cambia).
+5. ✅ Relay configurado para escribir solo en Notion (no en paralelo — el usuario decidió cortar Sheets como destino directamente)
+6. ⬜ (Omitido por decisión del usuario) Validación de 1-2 semanas con ambos destinos activos — no aplica porque Sheets dejó de recibir escrituras de Relay
+7. ✅ Workflows `update-sheet-cells.yml` y `find-update-nota.yml` eliminados del repo (30/06/2026). `update-relay-prompt.yml` y `read-relay-prompt.yml` se mantienen — siguen vigentes porque Relay sigue activo (solo cambió su destino de escritura) y el prompt sigue viviendo en `prompt_relay_current.txt`.
+8. ✅ Flujo "Organizar Movimientos" actualizado: la escritura de categoría/nota ahora usa `notion-update-page` vía MCP, localizando la página por fecha+concepto+monto (`notion-query-data-sources`). Detalle completo en la sección "Flujo Organizar Movimientos" más abajo en este documento.
 
 ### Problemas encontrados y resueltos durante el despliegue del paso 4
 1. **Notion-Version incorrecta**: el endpoint `/v1/data_sources/{id}/query` requiere el header `Notion-Version: 2025-09-03`. Usar la versión antigua `2022-06-28` con este endpoint nuevo devuelve error de schema/no reconocido. Corregido en el script.
 2. **404 en la query pese a versión correcta**: la integración de Notion asociada al secret `NOTION_TOKEN` de GitHub (identificada como "Notion Talho", creada 24/06/2026 según fecha de creación del secret) no estaba conectada a la página Finance Tracker / DB Movimientos. Solo Relay.app y Zapier tenían conexión. Se resolvió conectándola manualmente desde Notion: `···` → Conexiones → Añadir conexión → Notion Talho. Lección: cualquier integración nueva que vaya a leer/escribir una DB de Notion debe conectarse explícitamente a esa página, no basta con tener el token.
 
 ### Lo que desaparece al completar la migración
-Workflow `update-sheet-cells.yml`, workflow `find-update-nota.yml`, el protocolo de pausar Relay antes de cualquier batch de escrituras (ya no aplica — las escrituras directas vía MCP no disparan runs de GitHub Actions).
+Workflow `update-sheet-cells.yml` (eliminado), workflow `find-update-nota.yml` (eliminado), el protocolo de pausar Relay antes de cualquier batch de escrituras (ya no aplica — las escrituras directas vía MCP no disparan runs de GitHub Actions). `update-relay-prompt.yml` y `read-relay-prompt.yml` se conservan: siguen activos porque Relay sigue funcionando, solo cambió el destino de escritura de Sheets a Notion.
+
+### Estado de Sheets tras la migración
+El Google Sheet (`1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI`) deja de recibir movimientos nuevos de Relay desde el 30/06/2026. Queda como archivo histórico de solo lectura para la hoja Movimientos. La hoja Inversiones sigue activa y en uso normal (Peerberry/MyInvestor, actualización manual mensual) — su migración a Notion es una fase futura sin fecha definida, según decisión explícita del usuario.
 
 ### Lo que NO se toca
 `sync-sociedad-data.yml` (ya usa Notion, sin relación con esta migración). El botón "Actualizar" de `index.html` sigue disparando el mismo workflow de sync, solo cambia qué lee internamente.
@@ -218,26 +223,27 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 
 ---
 
-## Flujo "Organizar Movimientos" — implementado 2026-06-04
+## Flujo "Organizar Movimientos" — implementado 2026-06-04, migrado a Notion 2026-06-30
 
 **Trigger:** escribir "Organizar Movimientos" en el chat de Claude.
 
 **Qué hace Claude al recibir el trigger:**
-1. Lee `finance_data.json` del repo (GitHub API)
+1. Lee `finance_data.json` del repo (GitHub API) — ya generado desde Notion por `sync_finance_data.py`
 2. Lee `reviewed_movements.json` del repo — lista de claves `fecha|concepto|monto` ya revisadas
 3. Filtra candidatos no revisados por fase (PayPal, Uber, Amazon, Viajes)
 4. Para PayPal/Uber/Amazon: busca en Gmail el recibo por fecha y remitente
 5. Presenta propuestas al usuario fase a fase, una por una en el chat
-6. Aplica aprobados en batch via `update-sheet-cells.yml`
-7. **Enriquecimiento de Nota (col K)** — para los movimientos procesados (prioridad *Compras*), genera la nota descriptiva y la escribe en la columna K:
+6. Aplica aprobados escribiendo directo en Notion vía MCP (`notion-update-page`): localizar la página en la data source Movimientos (`367d58ce-928b-4e31-832d-07707f876365`) filtrando por Fecha+Concepto+Monto exactos (`notion-query-data-sources`, SQL), luego `notion-update-page` sobre la propiedad Categoria (select).
+7. **Enriquecimiento de Nota** — para los movimientos procesados (prioridad *Compras*), genera la nota descriptiva y la escribe en la propiedad Nota (rich text) de la misma página:
    a. Si es Amazon → buscar el producto en Gmail (`auto-confirm@amazon.es`, `confirmar-envio@amazon.es`, `order-update@amazon.es`, `digital-no-reply@amazon.es` para Kindle) y casar por fecha/importe.
    b. Si no es Amazon → buscar recibo del comercio en Gmail por ventana de fecha (±pocos días).
    c. Si no hay nada en Gmail → búsqueda web para identificar la tienda/marca.
    d. Si nada concluyente → dejar la nota en blanco (no inventar).
-   Escritura: `update-sheet-cells.yml`, rango `Movimientos!K{row}`, texto plano (RAW). `row = json_idx + 2`.
 8. Actualiza `reviewed_movements.json` con todos los presentados (aprobados y rechazados)
 
-**Nota sobre columnas:** la categoría se escribe en `D{row}`, la nota en `K{row}`. Nunca usar E–J (en uso; E = filtro de positivos "Ingreso").
+**Cambio respecto al flujo anterior (basado en Sheets):** ya no hay concepto de "row" ni rango A1. La página de Notion se localiza por fecha+concepto+monto (misma clave que `reviewed_movements.json`, sin cambios en su formato) y se edita directo con `notion-update-page`, sin GitHub Actions ni `update-sheet-cells.yml` (eliminado el 30/06/2026). Esto elimina el espaciado de 30s entre dispatches y el protocolo de pausar Relay antes de escrituras batch — las escrituras MCP son inmediatas y no disparan workflows.
+
+**Caso de fechas/montos duplicados:** si la query SQL devuelve más de una página con la misma combinación fecha+concepto+monto, Claude debe pedir confirmación al usuario indicando ambas antes de escribir, en vez de asumir cuál corresponde (paralelo al caso NYX*AIRservSpain documentado en el CHANGELOG bajo el flujo anterior).
 
 **Registro:** `reviewed_movements.json` — `{ "reviewed": ["fecha|concepto|monto", ...] }`
 
