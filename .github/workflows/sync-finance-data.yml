@@ -26,13 +26,14 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install google-auth google-auth-httplib2 google-api-python-client
+        run: pip install google-auth google-auth-httplib2 google-api-python-client requests
 
       - name: Generate finance_data.json
         env:
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           SHEET_ID: "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI"
-          SHEET_NAME: "Movimientos"
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_MOVIMIENTOS_DATA_SOURCE_ID: "367d58ce-928b-4e31-832d-07707f876365"
         run: python scripts/sync_finance_data.py
 
       - name: Commit and push if changed
