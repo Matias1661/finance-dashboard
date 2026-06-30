@@ -1,4 +1,18 @@
-## [2026-06-30] Fix: GitHub Pages bloqueado por build de Jekyll fallido — agregado .nojekyll
+## [2026-06-30] Fix definitivo: GitHub Pages cambiado a "GitHub Actions" como Source
+
+**Contexto:** el fix anterior (agregar `.nojekyll`) resultó insuficiente. El deployment seguía trabándose indefinidamente en estado `deployment_queued`, confirmado con captura del log del job "Deploy to GitHub Pages" del usuario (6+ minutos sin avanzar, reintentando "Getting Pages deployment status..." en loop).
+
+**Causa raíz real:** el repo tenía **Source: "Deploy from a branch"** en Settings → Pages (sistema legacy), pero el deployment efectivo corría a través de un workflow interno automático (`pages build and deployment`) que GitHub genera implícitamente para ese modo. Cuando varios commits se sucedían rápido (sync-finance-data, sync-sociedad-data, commits de docs casi simultáneos), este modo legacy gestionaba mal la cola de deployments encadenados y se trababa sin recuperarse — el campo `.nojekyll` no tiene ningún efecto sobre este problema de concurrencia, solo afecta si se usa o no el procesador Jekyll.
+
+**Fix:** cambiar Source de "Deploy from a branch" a **"GitHub Actions"**, y agregar un workflow propio `.github/workflows/deploy-pages.yml` (trigger: push a `main` + `workflow_dispatch`, usa `actions/configure-pages`, `actions/upload-pages-artifact`, `actions/deploy-pages`, con `concurrency: group: pages, cancel-in-progress: true`). Publica todo el root del repo, igual que el modo anterior.
+
+**Resultado:** verificado con un ciclo completo real — disparo manual de `Sync Finance Data` → commit automático → `Deploy Pages` disparado automáticamente → `success` en segundos, sin colas. El antiguo `pages build and deployment` ya no aparece en runs nuevos tras el cambio de Source.
+
+**Nota sobre el campo `status` de la API de Pages:** `GET /repos/.../pages` puede reportar `status: errored` de forma persistente incluso después de deployments exitosos confirmados — no es confiable como fuente de verdad. Verificar siempre contra `GET /repos/.../actions/runs` (workflow `Deploy Pages`, `conclusion: success`) en su lugar.
+
+---
+
+## [2026-06-30] Fix: GitHub Pages bloqueado por build de Jekyll fallido — agregado .nojekyll (insuficiente, ver entrada siguiente)
 
 **Síntoma:** tras una prueba manual (movimiento de prueba agregado en Notion → botón Actualizar), el deployment de GitHub Pages quedó casi 4 minutos en estado "queued" sin avanzar.
 
