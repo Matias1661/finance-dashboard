@@ -1,3 +1,17 @@
+## [2026-06-30] Fix: botón "Actualizar" no disparaba deploy tras el cambio a GitHub Actions
+
+**Síntoma:** tras migrar correctamente a Source "GitHub Actions" (ver entrada anterior) y confirmar que un deploy manual funcionaba bien, el usuario probó el flujo real (botón Actualizar → dispara `Sync Finance Data` y `Sync Sociedad Data`) y el commit se generó correctamente, pero ningún `Deploy Pages` se disparó después.
+
+**Causa raíz:** comportamiento documentado de GitHub Actions — los pushes hechos con el `GITHUB_TOKEN` automático del workflow (como hacen `sync-finance-data.yml` y `sync-sociedad-data.yml` al comitear `finance_data.json`/`sociedad_data.json` con usuario `github-actions[bot]`) **no disparan otros workflows** por triggers de tipo `push`, a propósito, para evitar loops de automatización infinitos. Esto es independiente del problema de `deployment_queued` documentado en la entrada anterior — son dos bugs distintos que coincidieron en la misma sesión de debugging.
+
+**Fix:** se agregó un step `Trigger Pages deploy` al final de ambos workflows de sync, que ejecuta `gh workflow run deploy-pages.yml --ref main` usando el CLI de GitHub (preinstalado en `ubuntu-latest`), condicionado a que el step de commit haya detectado cambios (`steps.commit.outputs.changed == 'true'`, vía `git diff --cached --quiet` capturado en `$GITHUB_OUTPUT`). Se agregó el permiso `actions: write` a ambos workflows, requerido para que `gh workflow run` funcione.
+
+**Resultado:** verificado con un ciclo real — `Sync Finance Data` corrió, comiteó `finance_data.json`, y disparó `Deploy Pages` automáticamente sin intervención manual, terminando en `success`.
+
+**Patrón a futuro:** cualquier workflow nuevo que comitee datos generados automáticamente (vía `GITHUB_TOKEN`) y dependa de que el dashboard se actualice debe replicar este mismo patrón (`id: commit` con output `changed`, seguido de un step condicional que dispare `deploy-pages.yml`), no asumir que el push solo lo hace.
+
+---
+
 ## [2026-06-30] Fix definitivo: GitHub Pages cambiado a "GitHub Actions" como Source
 
 **Contexto:** el fix anterior (agregar `.nojekyll`) resultó insuficiente. El deployment seguía trabándose indefinidamente en estado `deployment_queued`, confirmado con captura del log del job "Deploy to GitHub Pages" del usuario (6+ minutos sin avanzar, reintentando "Getting Pages deployment status..." en loop).
