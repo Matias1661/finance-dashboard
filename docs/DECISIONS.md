@@ -1,3 +1,56 @@
+## [2026-06-30] Migración Sheets → Notion: arrancada, paso 1-2 completos
+
+**Decisión:** Migrar la hoja `Movimientos` del Google Sheet a una base de datos en Notion, para permitir escritura directa via MCP (sin GitHub Actions, sin espaciado de 30s, sin pausar Relay).
+
+**Motivación:** `update-sheet-cells.yml` (GitHub Actions) es lento y aparatoso para escrituras individuales (notas, categorías). El sandbox de Claude tiene bloqueados a nivel de red `sheets.googleapis.com` y `script.google.com` (confirmado con `host_not_allowed`), así que GitHub Actions es el único canal de escritura posible hoy. Notion, en cambio, es accesible directamente via MCP.
+
+**Análisis de impacto realizado:** las columnas E–J del Sheet (Ingreso, Gastos, Módulo monto, Ingreso/Gasto, Mes, Año) son ornamentales — `finance_data.json` solo exporta 5 campos (fecha, concepto, monto, categoria, nota) y el dashboard recalcula todo desde `monto`/`fecha`. El frontend (app.js, charts.js, filters.js, state.js) no requiere ningún cambio si el schema del JSON se mantiene.
+
+**Relay tiene integración nativa con Notion** (verificado vía búsqueda web, octubre 2025). No es más frágil que el destino Sheets actual.
+
+**Decisión sobre Inversiones:** la hoja `Inversiones` del Sheet (datos manuales de Peerberry/MyInvestor, no provienen de Relay) se mantiene en Google Sheets en esta primera fase. El script de sync lee Movimientos de Notion e Inversiones de Sheets simultáneamente.
+
+**Plan de 8 pasos:**
+1. ✅ Crear DB Movimientos en Notion (Fecha, Concepto, Monto, Categoría, Nota)
+2. ✅ Importar 2.465 movimientos históricos
+3. ⬜ Reescribir `sync_finance_data.py` para leer Notion + Sheets (Inversiones)
+4. ⬜ Probar sync en paralelo, verificar JSON idéntico
+5. ⬜ Configurar Relay para escribir en Notion en paralelo (mantener Sheets activo)
+6. ⬜ Validar 1-2 semanas con ambos destinos activos
+7. ⬜ Apagar escritura en Sheets y workflows de update-sheet-cells
+8. ⬜ Actualizar flujo "Organizar Movimientos" para escribir vía MCP
+
+**Workflows que desaparecen al completar la migración:** `update-sheet-cells.yml`, `find-update-nota.yml`, `update-relay-prompt.yml`, `read-relay-prompt.yml` (este último deja de tener sentido si el prompt vive solo en `prompt_relay_current.txt`).
+
+**Workflows sin impacto:** `sync-sociedad-data.yml` (ya usa Notion). Frontend completo. Botón Actualizar de index.html.
+
+---
+
+## [2026-06-30] DB Movimientos creada en Notion
+
+**Database ID (data source):** `367d58ce-928b-4e31-832d-07707f876365`
+**URL:** https://app.notion.com/p/46a204b1ad5a464593ca739648123569
+**Parent:** Finance Tracker (`19833ce5-0e68-804c-9693-d4f2f2592968`)
+
+**Schema:**
+- Concepto (title)
+- Fecha (date)
+- Monto (number)
+- Categoria (select, 20 opciones con colores asignados — coincide exacto con las categorías válidas del prompt de Relay)
+- Nota (rich text)
+
+**Importación:** 2.465 movimientos importados manualmente por el usuario vía CSV exportado del Google Sheet (descarga vía Google Drive MCP en formato CSV, decodificado de base64, parseado con Python: fechas `d/M/yyyy` → ISO `yyyy-MM-dd`, montos formato español `-65,58 €` → float `-65.58`).
+
+**Verificación de la importación (vía `notion-query-data-sources`, SQL contra el data source):**
+- Conteo total: 2.465 / 2.465 — exacto
+- Distribución por categoría (19 categorías encontradas en los datos): conteo y suma de montos coinciden a centavo exacto contra el CSV de origen, sin excepciones
+- Patrón de duplicados (fecha+concepto+monto repetidos, ej. SERVIMATIC -0,50€ varias veces el mismo día): 2.253 combinaciones distintas / 2.465 filas totales — patrón idéntico entre CSV fuente y Notion, confirmando que no hubo duplicación introducida por la importación
+- Único hallazgo: nota residual "TEST — borrar" en el movimiento AMAZON.ES del 4/06/2026 (-6,49€) — arrastrada del test del Apps Script de la sesión anterior, que no se había limpiado antes de exportar el CSV. Corregida directamente en Notion a "Libro Kindle 'Inside Delta Force'".
+
+**Nota operativa:** el rate limit de la API de Notion para queries SQL es agresivo — se necesitaron pausas de 30-60s entre llamadas de `notion-query-data-sources` durante la verificación.
+
+**Pendiente de limpieza manual del usuario:** una página vacía quedó creada por error de tooling durante la sesión, titulada `[BORRAR — creada por error]` en la DB Movimientos — eliminar manualmente desde Notion (no hay herramienta de borrado de páginas vía MCP).
+
 ## [2026-06-29] Auditoría de notas (col K) y causa raíz del desfase
 
 **Problema detectado:** ~17 de 52 notas de la columna K estaban en el movimiento equivocado (peajes, transferencias a Guille, cafés, SERVIMATIC, suscripciones Apple), con la nota correcta a una fila de distancia.
@@ -356,4 +409,5 @@ Allow future AI agents and developers to reconstruct project state without relyi
 renderDonut() consumes filteredData() directly.
 ### Reason
 Ensures the donut chart always reflects the active period and month filter.
+
 
