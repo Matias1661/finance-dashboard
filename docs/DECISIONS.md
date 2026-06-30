@@ -1,3 +1,21 @@
+## [2026-06-30] Migración Sheets → Notion: pasos 3-4 completados, despliegue directo a producción
+
+**Decisión:** saltar la fase de "probar en paralelo y comparar JSON" (paso 4 original) y desplegar directo el script reescrito al workflow de producción, basándose en la verificación de salud de Notion realizada antes (8/8 movimientos de prueba correctos, ver verificación manual del mismo día) y en validar contra datos reales en lugar de una comparación sintética.
+
+**Implementación del paso 3:** `sync_finance_data.py` reescrito. Movimientos se lee con `requests` contra la API REST de Notion (`POST /v1/data_sources/{id}/query`, paginado), Inversiones sin cambios (sigue leyendo Sheets con `google-api-python-client`). El output mantiene exactamente el mismo schema de `finance_data.json`.
+
+**Implementación del paso 4 (adaptado):** workflow `sync-finance-data.yml` actualizado con env vars `NOTION_TOKEN` (secret ya existente, creado 24/06/2026) y `NOTION_MOVIMIENTOS_DATA_SOURCE_ID`. Validado con dispatches manuales directos contra producción.
+
+**Problemas encontrados y resueltos:**
+1. `Notion-Version: 2022-06-28` no es compatible con el endpoint `/v1/data_sources/{id}/query` — ese endpoint requiere `2025-09-03`. Corregido.
+2. 404 persistente pese al fix anterior: la integración del token guardado en `NOTION_TOKEN` (identificada como "Notion Talho" por fecha de creación coincidente) no estaba conectada a la página Finance Tracker en Notion — solo Relay.app y Zapier lo estaban. El usuario conectó la integración manualmente desde el menú de conexiones de la página. Resuelto.
+
+**Resultado:** workflow corre exitosamente, genera `finance_data.json` con 2473 movimientos (2465 históricos + movimientos de la prueba del 29/06), Inversiones intacta (28 meses de capital, 11 de rendimiento).
+
+**Riesgo aceptado:** no hubo comparación lado a lado del JSON generado por Sheets vs. Notion antes del corte. Mitigado por inspección directa del JSON resultante y por la verificación de salud previa de la base de Notion.
+
+---
+
 ## [2026-06-30] Migración Sheets → Notion: arrancada, paso 1-2 completos
 
 **Decisión:** Migrar la hoja `Movimientos` del Google Sheet a una base de datos en Notion, para permitir escritura directa via MCP (sin GitHub Actions, sin espaciado de 30s, sin pausar Relay).
