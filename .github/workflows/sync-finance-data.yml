@@ -34,7 +34,20 @@ jobs:
           SHEET_ID: "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI"
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_MOVIMIENTOS_DATA_SOURCE_ID: "367d58ce-928b-4e31-832d-07707f876365"
-        run: python scripts/sync_finance_data.py
+        run: python scripts/sync_finance_data.py > /tmp/sync_debug.log 2>&1 || (cat /tmp/sync_debug.log; cp /tmp/sync_debug.log sync_debug.log; exit 1)
+
+      - name: Commit debug log on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/Matias1661/finance-dashboard.git
+          git add sync_debug.log
+          git commit -m "debug: sync failure log" || true
+          git pull --rebase origin main || true
+          git push origin main || true
 
       - name: Commit and push if changed
         env:
