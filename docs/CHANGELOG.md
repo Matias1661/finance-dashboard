@@ -1,4 +1,12 @@
-## [2026-06-30] — Fix definitivo: GitHub Pages migrado a Source "GitHub Actions"
+## [2026-06-30] — Fix: botón Actualizar no disparaba deploy del dashboard
+
+### Cambiado
+- `.github/workflows/sync-finance-data.yml` y `.github/workflows/sync-sociedad-data.yml`: agregado step `Trigger Pages deploy` que ejecuta `gh workflow run deploy-pages.yml` tras un commit exitoso. Agregado permiso `actions: write` a ambos.
+
+### Corregido
+- El botón "Actualizar" disparaba los syncs y estos comiteaban `finance_data.json`/`sociedad_data.json` correctamente, pero el deploy del sitio nunca se activaba — los pushes hechos con `GITHUB_TOKEN` automático no disparan otros workflows por diseño de GitHub (previene loops de automatización). Verificado con ciclo completo: sync → commit → deploy automático → success. Detalle en `docs/DECISIONS.md`, entrada `[2026-06-30] Fix: botón "Actualizar" no disparaba deploy tras el cambio a GitHub Actions`.
+
+
 
 ### Agregado
 - `.github/workflows/deploy-pages.yml` — workflow propio de deploy (trigger: push a `main`, `workflow_dispatch`; usa `actions/configure-pages`, `actions/upload-pages-artifact`, `actions/deploy-pages`; `concurrency` con `cancel-in-progress`).
