@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-30 17:01",
+  "generated_at": "2026-06-30 17:07",
   "movimientos": [
     {
       "fecha": "2026-06-30",
       "concepto": "Movimiento de prueba",
-      "monto": 2000,
+      "monto": -2000,
       "categoria": "Compras",
       "nota": "Borrar"
     },
