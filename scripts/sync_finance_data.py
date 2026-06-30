@@ -1,9 +1,9 @@
 """
-Sync finance data from Google Sheets to finance_data.json
+Sync finance data to finance_data.json
 
-Reads two sheets:
-  - Movimientos: transacciones diarias
-  - Inversiones: tabla de inversiones (col A=fecha, D=Peerberry, E=MyInvestor, F=CaixaBank)
+Fuentes:
+  - Movimientos: Notion (DB "Movimientos", via API REST)
+  - Inversiones: Google Sheets (col A=fecha, D=Peerberry, E=MyInvestor, F=CaixaBank)
     Cada fuente puede estar en filas separadas del mismo mes.
     Toma el ultimo valor no-nulo de cada columna por mes.
 
@@ -24,15 +24,19 @@ Output finance_data.json:
 """
 
 import os, json, re
+import requests
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 SHEET_ID          = os.environ["SHEET_ID"]
-MOVIMIENTOS_SHEET = os.environ.get("SHEET_NAME", "Movimientos")
 FINANZAS_SHEET    = "Inversiones"
 SA_JSON           = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
+
+NOTION_TOKEN          = os.environ["NOTION_TOKEN"]
+NOTION_DATA_SOURCE_ID = os.environ["NOTION_MOVIMIENTOS_DATA_SOURCE_ID"]
+NOTION_VERSION        = "2022-06-28"
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
@@ -114,31 +118,48 @@ def parse_mes_label(raw):
     return None
 
 
-def build_movimientos(rows):
-    if not rows:
-        return []
-    headers = [h.strip().lower().replace(" ", "_") for h in rows[0]]
-    col_map = {}
-    for i, h in enumerate(headers):
-        if h in ("fecha", "date"):                            col_map["fecha"] = i
-        elif h in ("concepto", "descripcion", "description"): col_map["concepto"] = i
-        elif h in ("importe", "monto", "amount", "valor"):    col_map["monto"] = i
-        elif h in ("categoria", "categoría", "category"):     col_map["categoria"] = i
-        elif h in ("nota", "notas", "note", "detalle"):        col_map["nota"] = i
+def fetch_movimientos_notion():
+    """Lee todas las paginas de la data source Movimientos via API REST de Notion."""
+    url = f"https://api.notion.com/v1/data_sources/{NOTION_DATA_SOURCE_ID}/query"
+    headers = {
+        "Authorization": f"Bearer {NOTION_TOKEN}",
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json"
+    }
 
+    results = []
+    payload = {"page_size": 100}
+    while True:
+        resp = requests.post(url, headers=headers, json=payload, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+        results.extend(data.get("results", []))
+        if not data.get("has_more"):
+            break
+        payload["start_cursor"] = data["next_cursor"]
+
+    return results
+
+
+def build_movimientos(pages):
+    """Convierte paginas de Notion (propiedades Fecha/Concepto/Monto/Categoria/Nota) a records."""
     records = []
-    for row in rows[1:]:
-        def get(key):
-            idx = col_map.get(key)
-            if idx is None or idx >= len(row):
-                return None
-            return row[idx]
+    for page in pages:
+        props = page.get("properties", {})
 
-        fecha     = parse_date(get("fecha"))
-        concepto  = (get("concepto") or "").strip()
-        monto     = parse_amount(get("monto"))
-        categoria = (get("categoria") or "").strip()
-        nota      = (get("nota") or "").strip()
+        fecha_prop = props.get("Fecha", {}).get("date")
+        fecha = fecha_prop["start"][:10] if fecha_prop and fecha_prop.get("start") else None
+
+        concepto_title = props.get("Concepto", {}).get("title", [])
+        concepto = "".join(t.get("plain_text", "") for t in concepto_title).strip()
+
+        monto = props.get("Monto", {}).get("number")
+
+        categoria_select = props.get("Categoria", {}).get("select")
+        categoria = categoria_select["name"] if categoria_select else None
+
+        nota_rich = props.get("Nota", {}).get("rich_text", [])
+        nota = "".join(t.get("plain_text", "") for t in nota_rich).strip()
 
         if not fecha or monto is None:
             continue
@@ -251,15 +272,15 @@ def build_inversiones(rows):
 
 if __name__ == "__main__":
     try:
-        service = get_service()
-
-        print("Leyendo Movimientos...")
-        mov_rows = read_range(service, MOVIMIENTOS_SHEET)
-        print(f"  {len(mov_rows)} filas")
-        movimientos = build_movimientos(mov_rows)
+        print("Leyendo Movimientos (Notion)...")
+        mov_pages = fetch_movimientos_notion()
+        print(f"  {len(mov_pages)} paginas")
+        movimientos = build_movimientos(mov_pages)
         print(f"  {len(movimientos)} registros validos")
 
-        print("Leyendo Inversiones...")
+        service = get_service()
+
+        print("Leyendo Inversiones (Sheets)...")
         try:
             fin_rows = read_range(service, FINANZAS_SHEET)
             print(f"  {len(fin_rows)} filas")
