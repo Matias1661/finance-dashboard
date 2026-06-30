@@ -1,6 +1,62 @@
 {
-  "generated_at": "2026-06-29 15:44",
+  "generated_at": "2026-06-30 12:16",
   "movimientos": [
+    {
+      "fecha": "2026-06-29",
+      "concepto": "VOLKSWAGEN RENTIN",
+      "monto": -29.5,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-29",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 41.0,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-29",
+      "concepto": "Ad free for Prime",
+      "monto": -1.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-29",
+      "concepto": "E.S. TRUCK COSLAD",
+      "monto": -15.0,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-29",
+      "concepto": "UBER * EATS PEN",
+      "monto": -23.89,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-29",
+      "concepto": "PIPE EMPANADAS AR",
+      "monto": -45.9,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-29",
+      "concepto": "Kerastase",
+      "monto": -47.0,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-29",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50.0,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-06-27",
       "concepto": "Ssrr",
