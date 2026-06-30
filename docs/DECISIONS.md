@@ -1,3 +1,17 @@
+## [2026-06-30] Optimización: deploy de Pages filtrado + causa real de deployment_queued resuelta
+
+**Optimización de artifact:** `deploy-pages.yml` ahora arma una carpeta `_site` con solo lo que el dashboard necesita (`index.html`, `js/`, `finance_data.json`, `sociedad_data.json`, `.nojekyll`) antes de subir el artifact, en vez de publicar el root completo del repo. Esto deja de exponer públicamente `docs/` (incluye `DECISIONS.md` y `CHANGELOG.md`, ~90 KB de detalle interno), `scripts/`, `prompt_relay_current.txt` y `reviewed_movements.json` (87 KB, contiene movimientos personales en texto plano). Tamaño del artifact recortado a la mitad aproximadamente, aunque el impacto en velocidad de deploy es menor — el costo dominante no era el tamaño del artifact.
+
+**Limpieza:** eliminados `debug_log.txt` y `tmp_sheet_debug.txt`, dos archivos sueltos en la raíz con volcados de movimientos personales, resabios de sesiones de diagnóstico anteriores que nunca se borraron.
+
+**Causa real de `deployment_queued` indefinido (las dos entradas anteriores, "Fix definitivo" y la del trigger, no la resolvían del todo):** el environment `github-pages` del repo quedó en un estado corrupto tras la sucesión de deployments cancelados a medio aplicar durante esta misma sesión de debugging. Ni el cambio de Source a "GitHub Actions" ni el filtrado del artifact tenían efecto sobre esto — el síntoma seguía reproduciéndose intermitentemente con cualquier configuración.
+
+**Fix definitivo real:** borrar el environment desde Settings → Environments → github-pages → Delete environment, y dejar que el siguiente deploy lo recree desde cero. Verificado: el primer deploy tras el borrado completó en segundos, sin cola. Verificado también el ciclo completo (botón Actualizar → `Sync Finance Data` → commit → `Deploy Pages` disparado automático → success) de punta a punta.
+
+**Lección para diagnósticos futuros:** si vuelve a aparecer `deployment_queued` indefinido en el log de "Deploy to GitHub Pages" (reconocible por el loop de "Getting Pages deployment status..." / "Current status: deployment_queued" sin avanzar nunca), no perder tiempo ajustando el workflow — ir directo a borrar y recrear el environment `github-pages`.
+
+---
+
 ## [2026-06-30] Fix: botón "Actualizar" no disparaba deploy tras el cambio a GitHub Actions
 
 **Síntoma:** tras migrar correctamente a Source "GitHub Actions" (ver entrada anterior) y confirmar que un deploy manual funcionaba bien, el usuario probó el flujo real (botón Actualizar → dispara `Sync Finance Data` y `Sync Sociedad Data`) y el commit se generó correctamente, pero ningún `Deploy Pages` se disparó después.
