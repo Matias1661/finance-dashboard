@@ -1,3 +1,15 @@
+## [2026-06-30] — Recategorización de movimientos "Otros" (enero-junio 2025)
+
+### Añadido
+- Análisis de los 65 movimientos categorizados como "Otros" entre enero y junio 2025 (35 conceptos únicos).
+- Identificación vía búsqueda web de 10 conceptos: SANITAS S A SEG. (seguro médico) → Salud y Belleza; DIGI SPAIN TELEC. y ORANGE JAEN ROLDA (operadores móviles) → Suscripciones; NYX*AIRservSpain (inflado de neumáticos en gasolineras) → Gastos coche; ARBITRADE CENTRO (vending, ya confirmado en lote anterior) → Comer afuera; ESTETICA ECOLOGIC y ROSA CREMA S.L. (cosmética/estética) → Salud y Belleza; JOMISOLEO HOSTALG (gasolinera Repsol, Madridejos) → Combustible; HOTEL PARQUESUR (hotel Leganés) → Salidas; LASER B360 (depilación láser, confianza media) → Salud y Belleza.
+- 23 movimientos recategorizados vía `update-sheet-cells.yml` (FIND_AND_UPDATE, columna D), protocolo batch aplicado.
+- Caso especial: dos movimientos NYX*AIRservSpain idénticos (misma fecha 10/05/2025, mismo importe -1,50€) requirieron 2 dispatches separados — FIND_AND_UPDATE solo actualiza una coincidencia por llamada cuando hay filas duplicadas exactas.
+- Resultado: "Otros" en el rango bajó de 65 a 43 movimientos, y de -881,58€ a -159,31€.
+
+### Sin recategorizar (quedan en "Otros")
+25 conceptos sin confirmación suficiente: Ssrr (9 apariciones), BIZUM ENVIADO/RECIBIDO sin comercio identificable (5), HNOS BOLIVAR MAYA, SumUp *Glenhurst, MALAGA EXPESS, Adelanto honorari, PARAISO ESTACION, VALDEPEaAS, OUIGO Espana, Buckaroo *appw, My Investor, CUSTODIA.FONDOS, CA JERO SERVIRED/CAJERO SERVIRED/COSTE USO CA JERO (retiros de cajero), PRECIO SERV.ALERTAS, TRANSF. A SU FAVOR, TRANSFER INMEDIATA, ONE HUNDRED RESTR, MOVILIDAD ACM, TRASPASO, ABON.TARJ.CREDITO (abono sin comercio asociado, correcto como está).
+
 ## [2026-06-30] — Recategorización de movimientos "Otros" (últimos 12 meses)
 
 ### Añadido
