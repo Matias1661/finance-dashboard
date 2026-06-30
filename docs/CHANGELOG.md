@@ -1,3 +1,15 @@
+## [2026-06-30] — Recategorización de movimientos "Otros" (últimos 12 meses)
+
+### Añadido
+- Análisis de los 39 movimientos categorizados como "Otros" en los últimos 12 meses (22 conceptos únicos, 5 recurrentes investigados una sola vez y aplicados a todas sus apariciones).
+- Identificación vía Gmail (cuando había recibo) y búsqueda web (identificación de comercio) de 8 conceptos: MARVIZA (barbería/estética, Sanse) → Salud y Belleza; MYCARD (cuota tarjeta crédito CaixaBank) → Tarjeta; DELIKIA SP y ARBITRADE CENTRO (vending, café/snacks) → Comer afuera; BALCON DEL PARQUE y CASA CARMEN (restaurantes) → Comer afuera; SERICA SUBIRATS S (gasolinera) → Combustible; SOBRIAUTO (taller chapa y pintura, Leganés) → Gastos coche.
+- 15 movimientos recategorizados vía `update-sheet-cells.yml` (FIND_AND_UPDATE, columna D), protocolo batch aplicado (Relay pausado antes de los 15 dispatches, reactivado después).
+- Movimientos marcados en `reviewed_movements.json` (2318 entradas).
+- Movimiento UBER * EATS PEN (29/06/2026, -23,89€) marcado como revisado — ya estaba correctamente categorizado, solo faltaba el registro.
+
+### Sin recategorizar (quedan en "Otros")
+14 conceptos sin confirmación suficiente: CAIXABANK PAYMENT (probable cuota DIGI móvil, sin recibo directo), RUKITECH (única empresa con ese nombre encontrada es japonesa, no aplica), DAILY, MADRI, TCB 2025 GIRA 2, COBRO, CUSTODIA.FONDOS, PRECIO SERV.ALERTAS, P.SERV.CERTIF., CAZALEGAS, DONAELIA SL, T214, SARANDRE SL, ESTANCO ALCOBENDA, ESTETICA ECOLOGIC, CRED MA JADAHONDA, AMAZON* ZL2PP1154.
+
 ## [2026-06-30] — Migración Sheets → Notion: inicio (pasos 1-2)
 
 ### Añadido
