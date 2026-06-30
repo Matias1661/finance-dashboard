@@ -1,3 +1,19 @@
+## [2026-06-30] Migración Sheets → Notion: completada (8/8 pasos). Sheets deja de recibir escrituras.
+
+**Decisión:** saltar también la fase de validación de 1-2 semanas con ambos destinos activos (pasos 5-6 originales). El usuario configuró Relay para escribir **solo** en Notion, sin paralelo con Sheets, y prefirió entrar en producción con seguimiento manual de fallas en vez de la validación progresiva planificada originalmente.
+
+**Implicación:** el Google Sheet Movimientos deja de recibir escrituras de Relay desde el 30/06/2026. Queda como archivo histórico de solo lectura. Ningún workflow lo escribe más.
+
+**Workflows eliminados:** `update-sheet-cells.yml`, `find-update-nota.yml`.
+
+**Workflows conservados:** `update-relay-prompt.yml`, `read-relay-prompt.yml` — siguen vigentes porque Relay continúa activo (cambió el destino de escritura, no se desactivó) y el prompt sigue centralizado en `prompt_relay_current.txt`.
+
+**Flujo "Organizar Movimientos" actualizado:** la escritura de categoría (propiedad Categoria, select) y nota (propiedad Nota, rich text) pasa de `update-sheet-cells.yml` (FIND_AND_UPDATE por fecha+concepto+monto en el Sheet) a `notion-update-page` vía MCP, localizando la página de Notion con la misma clave fecha+concepto+monto via `notion-query-data-sources`. La clave de `reviewed_movements.json` no cambia. Se agregó manejo explícito para el caso de duplicados exactos (mismo caso que NYX*AIRservSpain documentado en el flujo anterior): si la query devuelve más de una página candidata, Claude pide confirmación al usuario en vez de asumir.
+
+**Pendiente, fuera de esta migración:** Inversiones (Peerberry/MyInvestor) sigue en Google Sheets, sin fecha definida para su propia migración a Notion — decisión explícita del usuario, fase futura.
+
+---
+
 ## [2026-06-30] Migración Sheets → Notion: pasos 3-4 completados, despliegue directo a producción
 
 **Decisión:** saltar la fase de "probar en paralelo y comparar JSON" (paso 4 original) y desplegar directo el script reescrito al workflow de producción, basándose en la verificación de salud de Notion realizada antes (8/8 movimientos de prueba correctos, ver verificación manual del mismo día) y en validar contra datos reales en lugar de una comparación sintética.
