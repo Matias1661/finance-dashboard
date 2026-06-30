@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30 12:16",
+  "generated_at": "2026-06-30 12:33",
   "movimientos": [
     {
       "fecha": "2026-06-29",
@@ -4779,7 +4779,7 @@
       "fecha": "2026-01-09",
       "concepto": "DELIKIA SP",
       "monto": -1.15,
-      "categoria": "Otros",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -5752,7 +5752,7 @@
       "fecha": "2025-12-01",
       "concepto": "MYCARD",
       "monto": -11.3,
-      "categoria": "Otros",
+      "categoria": "Tarjeta",
       "nota": null
     },
     {
@@ -5773,7 +5773,7 @@
       "fecha": "2025-11-30",
       "concepto": "MARVIZA",
       "monto": -27.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
