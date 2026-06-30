@@ -21,7 +21,10 @@ Memoria técnica central del proyecto. Cualquier agente de IA o desarrollador de
 
 ## 🔄 MIGRACIÓN EN CURSO: Google Sheets → Notion (Movimientos)
 
-**Estado: pasos 1-2 de 8 completados (30/06/2026). Próximo paso: 3.**
+**Estado: pasos 1-4 de 8 completados (30/06/2026). Próximo paso: 5.**
+
+### Decisión de secuencia (30/06/2026)
+Se saltó deliberadamente el paso 4 original ("probar en paralelo, comparar JSON") y se fue directo a producción: el script reescrito se desplegó en el workflow real y se validó corriendo contra datos reales (2473 movimientos generados correctamente, Inversiones intacta desde Sheets con 28 meses de capital / 11 de rendimiento). Justificación del usuario: confianza alta tras la verificación manual de salud de Notion (ver entrada `[2026-06-30] verificación salud Notion` más abajo). Riesgo aceptado: sin comparación lado a lado de ambos JSON antes del corte; mitigado por el hecho de que `finance_data.json` se generó con éxito y su estructura fue inspeccionada directamente.
 
 ### Motivación
 `update-sheet-cells.yml` (escritura via GitHub Actions) es lento para escrituras individuales: requiere espaciado de 30s entre dispatches y pausar Relay antes de cualquier batch. El sandbox de Claude tiene bloqueados a nivel de red `sheets.googleapis.com` y `script.google.com` (`host_not_allowed`), así que GitHub Actions es hoy el único canal de escritura al Sheet. Notion es accesible directamente vía MCP — sin intermediarios, sin espaciado.
@@ -46,12 +49,16 @@ La hoja `Inversiones` (datos manuales de Peerberry/MyInvestor, no provienen de R
 
 1. ✅ Crear DB Movimientos en Notion
 2. ✅ Importar 2.465 movimientos históricos (vía CSV manual, no por MCP batch — más confiable para este volumen)
-3. ⬜ Reescribir `sync_finance_data.py`: leer Movimientos de Notion (API) + Inversiones de Sheets (sin cambios). Output JSON debe ser byte-idéntico en estructura al actual.
-4. ⬜ Probar el sync nuevo en paralelo al actual, comparar `finance_data.json` generado por ambos
+3. ✅ Reescribir `sync_finance_data.py`: Movimientos se lee de Notion vía API REST (`POST /v1/data_sources/{id}/query`, paginado por `start_cursor`/`has_more`), Inversiones sigue leyendo de Sheets sin cambios (misma función `build_inversiones`, intacta). Output JSON verificado con la misma estructura: `{fecha, concepto, monto, categoria, nota}`.
+4. ✅ Desplegado directo a producción (sin fase de comparación en paralelo, ver "Decisión de secuencia" arriba). Workflow `sync-finance-data.yml` actualizado con secrets `NOTION_TOKEN` (ya existía en el repo) y env var `NOTION_MOVIMIENTOS_DATA_SOURCE_ID`. Validado con 3 dispatches manuales: 2 fallos diagnosticados y corregidos, 1 éxito confirmado generando 2473 movimientos.
 5. ⬜ Configurar Relay: acción de destino Notion (tiene soporte nativo) en paralelo a Sheets — no cortar Sheets todavía
 6. ⬜ Validar 1-2 semanas con ambos destinos activos, confirmando que Relay escribe correctamente en Notion
 7. ⬜ Apagar escritura en Sheets. Eliminar `update-sheet-cells.yml`, `find-update-nota.yml`. Evaluar `update-relay-prompt.yml`/`read-relay-prompt.yml` (quedan obsoletos si el prompt vive solo en `prompt_relay_current.txt` del repo)
 8. ⬜ Actualizar flujo "Organizar Movimientos": escritura de notas/categorías pasa a `notion-update-page` vía MCP en vez de disparar `update-sheet-cells.yml`. Buscar el page_id por fecha+concepto+monto (la clave `reviewed_movements.json` no cambia).
+
+### Problemas encontrados y resueltos durante el despliegue del paso 4
+1. **Notion-Version incorrecta**: el endpoint `/v1/data_sources/{id}/query` requiere el header `Notion-Version: 2025-09-03`. Usar la versión antigua `2022-06-28` con este endpoint nuevo devuelve error de schema/no reconocido. Corregido en el script.
+2. **404 en la query pese a versión correcta**: la integración de Notion asociada al secret `NOTION_TOKEN` de GitHub (identificada como "Notion Talho", creada 24/06/2026 según fecha de creación del secret) no estaba conectada a la página Finance Tracker / DB Movimientos. Solo Relay.app y Zapier tenían conexión. Se resolvió conectándola manualmente desde Notion: `···` → Conexiones → Añadir conexión → Notion Talho. Lección: cualquier integración nueva que vaya a leer/escribir una DB de Notion debe conectarse explícitamente a esa página, no basta con tener el token.
 
 ### Lo que desaparece al completar la migración
 Workflow `update-sheet-cells.yml`, workflow `find-update-nota.yml`, el protocolo de pausar Relay antes de cualquier batch de escrituras (ya no aplica — las escrituras directas vía MCP no disparan runs de GitHub Actions).
@@ -61,6 +68,8 @@ Workflow `update-sheet-cells.yml`, workflow `find-update-nota.yml`, el protocolo
 
 ### Notas operativas para continuar
 - El rate limit de la API de Notion para queries SQL (`notion-query-data-sources`) es agresivo — esperar 30-60s entre llamadas consecutivas durante validaciones masivas.
+- **API REST de Notion vía `requests` (no MCP)**: usa `Notion-Version: 2025-09-03` con el endpoint `/v1/data_sources/{id}/query`. Versiones de API anteriores no reconocen este endpoint.
+- **Integraciones nuevas necesitan conexión explícita por página**: tener el token (secret) no alcanza. Hay que ir a la página en Notion → `···` → Conexiones → Añadir conexión → seleccionar la integración. Sin esto, la API devuelve 404 aunque el token sea válido.
 - Pendiente de limpieza manual del usuario: una página vacía titulada `[BORRAR — creada por error]` quedó en la DB Movimientos por un error de tooling durante la importación — no hay herramienta de borrado de páginas vía MCP, eliminar manualmente desde Notion.
 - Ver `docs/DECISIONS.md` entrada `[2026-06-30]` para el detalle completo del análisis de impacto componente por componente que precedió a esta migración.
 
