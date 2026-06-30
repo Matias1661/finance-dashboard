@@ -1,3 +1,15 @@
+## [2026-06-30] Fix: filtrado del artifact rompió el KPI "Sin analizar por Claude"
+
+**Síntoma:** el usuario reportó 241 movimientos "sin verificar por Claude" pese a que el registro real (`reviewed_movements.json`) tenía 2318 entradas cargadas.
+
+**Causa raíz:** al filtrar `deploy-pages.yml` para publicar solo los archivos del dashboard (entrada anterior del mismo día), `reviewed_movements.json` quedó afuera de la lista de `cp`. El archivo no es solo de uso interno de Claude/backend — `js/app.js` lo consume directamente vía `fetch('reviewed_movements.json...')` en `init()` para calcular qué movimientos ya fueron revisados. Sin el archivo publicado, el fetch fallaba (404), `window.FINANCE_STATE.reviewedMovements` quedaba como array vacío, y el KPI contaba **todos** los movimientos candidatos como no revisados.
+
+**Fix:** agregado `cp reviewed_movements.json _site/` al step de armado del artifact en `deploy-pages.yml`.
+
+**Lección:** antes de filtrar qué se publica en un sitio estático, hay que mapear todos los `fetch()` reales del frontend (`grep -n "fetch(" js/*.js index.html`), no asumir por el nombre o ubicación del archivo si es "interno" o "público". Los tres archivos que el frontend consume vía fetch son: `finance_data.json`, `sociedad_data.json`, `reviewed_movements.json` — los tres deben estar siempre en el artifact publicado.
+
+---
+
 ## [2026-06-30] Optimización: deploy de Pages filtrado + causa real de deployment_queued resuelta
 
 **Optimización de artifact:** `deploy-pages.yml` ahora arma una carpeta `_site` con solo lo que el dashboard necesita (`index.html`, `js/`, `finance_data.json`, `sociedad_data.json`, `.nojekyll`) antes de subir el artifact, en vez de publicar el root completo del repo. Esto deja de exponer públicamente `docs/` (incluye `DECISIONS.md` y `CHANGELOG.md`, ~90 KB de detalle interno), `scripts/`, `prompt_relay_current.txt` y `reviewed_movements.json` (87 KB, contiene movimientos personales en texto plano). Tamaño del artifact recortado a la mitad aproximadamente, aunque el impacto en velocidad de deploy es menor — el costo dominante no era el tamaño del artifact.
