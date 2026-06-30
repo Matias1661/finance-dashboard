@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30 13:20",
+  "generated_at": "2026-06-30 13:24",
   "movimientos": [
     {
       "fecha": "2026-06-29",
@@ -1195,7 +1195,7 @@
       "fecha": "2026-05-13",
       "concepto": "ESTETICA ECOLOGIC",
       "monto": -45.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -9532,7 +9532,7 @@
       "fecha": "2025-08-07",
       "concepto": "MARVIZA",
       "monto": -27.0,
-      "categoria": "Comer afuera",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -11450,7 +11450,7 @@
       "fecha": "2025-06-09",
       "concepto": "MARVIZA",
       "monto": -19.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -13291,7 +13291,7 @@
       "fecha": "2025-04-15",
       "concepto": "MARVIZA",
       "monto": -27.0,
-      "categoria": "Comer afuera",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -13949,7 +13949,7 @@
       "fecha": "2025-03-24",
       "concepto": "MARVIZA",
       "monto": -27.0,
-      "categoria": "Otros",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -14593,7 +14593,7 @@
       "fecha": "2025-02-23",
       "concepto": "MARVIZA",
       "monto": -27.0,
-      "categoria": "Supermercado",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
