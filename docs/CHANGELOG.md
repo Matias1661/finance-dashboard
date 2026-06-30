@@ -1,4 +1,9 @@
-## [2026-06-30] — Deploy de Pages filtrado + causa real de deployment_queued resuelta
+## [2026-06-30] — Fix: KPI "Sin analizar por Claude" mostraba 241 en vez del conteo real
+
+### Corregido
+- `deploy-pages.yml`: agregado `reviewed_movements.json` a los archivos copiados a `_site/`. Había quedado afuera al filtrar el artifact (entrada anterior del mismo día), rompiendo el `fetch` que el frontend hace a ese archivo y haciendo que el KPI contara todos los candidatos como no revisados. Detalle en `docs/DECISIONS.md`, entrada `[2026-06-30] Fix: filtrado del artifact rompió el KPI "Sin analizar por Claude"`.
+
+
 
 ### Agregado
 - `deploy-pages.yml`: nuevo step que arma `_site/` con solo `index.html`, `js/`, `finance_data.json`, `sociedad_data.json`, `.nojekyll` antes de publicar.
