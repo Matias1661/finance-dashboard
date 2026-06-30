@@ -11,6 +11,7 @@ Memoria técnica central del proyecto. Cualquier agente de IA o desarrollador de
 
 - Repo: `Matias1661/finance-dashboard`
 - GitHub Pages: `https://matias1661.github.io/finance-dashboard/`
+- **Deployment de Pages: Source = "GitHub Actions"** (cambiado desde "Deploy from a branch" el 30/06/2026). Workflow `.github/workflows/deploy-pages.yml` se dispara en cada push a `main` y publica el root del repo. No usar el campo `status` de `GET /repos/.../pages` como fuente de verdad — puede quedar en `errored` aunque el deploy real haya sido exitoso; verificar contra el run del workflow `Deploy Pages`. Detalle completo en `docs/DECISIONS.md`, entrada `[2026-06-30] Fix definitivo: GitHub Pages cambiado a "GitHub Actions" como Source`.
 - Rama principal: `main`
 - Frontend: HTML/CSS/JavaScript estático modularizado
 - Librería de gráficos: Chart.js 4.4.1 (CDN)
