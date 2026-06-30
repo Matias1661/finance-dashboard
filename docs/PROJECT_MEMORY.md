@@ -3,7 +3,7 @@
 ## Propósito
 Memoria técnica central del proyecto. Cualquier agente de IA o desarrollador debe poder reconstruir el estado completo del proyecto leyendo solo este documento y los demás archivos en `docs/`.
 
-Última actualización: 2026-06-25
+Última actualización: 2026-06-30
 
 ---
 
@@ -16,6 +16,54 @@ Memoria técnica central del proyecto. Cualquier agente de IA o desarrollador de
 - Librería de gráficos: Chart.js 4.4.1 (CDN)
 
 ---
+
+---
+
+## 🔄 MIGRACIÓN EN CURSO: Google Sheets → Notion (Movimientos)
+
+**Estado: pasos 1-2 de 8 completados (30/06/2026). Próximo paso: 3.**
+
+### Motivación
+`update-sheet-cells.yml` (escritura via GitHub Actions) es lento para escrituras individuales: requiere espaciado de 30s entre dispatches y pausar Relay antes de cualquier batch. El sandbox de Claude tiene bloqueados a nivel de red `sheets.googleapis.com` y `script.google.com` (`host_not_allowed`), así que GitHub Actions es hoy el único canal de escritura al Sheet. Notion es accesible directamente vía MCP — sin intermediarios, sin espaciado.
+
+### Qué NO cambia (verificado)
+El frontend completo (`app.js`, `charts.js`, `filters.js`, `state.js`, `index.html`) no requiere ningún cambio. `finance_data.json` sigue siendo el contrato único: `{ movimientos: [{fecha, concepto, monto, categoria, nota}], inversiones: {...} }`. Las columnas E–J del Sheet (Ingreso, Gastos, Módulo monto, Ingreso/Gasto, Mes, Año) son ornamentales — nunca se exportaron al JSON, el dashboard siempre las recalculó desde `monto`/`fecha`.
+
+### Decisión sobre Inversiones
+La hoja `Inversiones` (datos manuales de Peerberry/MyInvestor, no provienen de Relay) **se mantiene en Google Sheets** en esta fase. El sync futuro lee Movimientos de Notion e Inversiones de Sheets simultáneamente. Migrar Inversiones es una fase opcional posterior, sin urgencia.
+
+### DB Movimientos en Notion — ya creada
+
+- **Data source ID:** `367d58ce-928b-4e31-832d-07707f876365`
+- **URL:** https://app.notion.com/p/46a204b1ad5a464593ca739648123569
+- **Parent:** página Finance Tracker (`19833ce5-0e68-804c-9693-d4f2f2592968`)
+- **Schema:** Concepto (title), Fecha (date), Monto (number), Categoria (select — 20 opciones, coinciden exacto con las categorías válidas del prompt de Relay), Nota (rich text)
+- **Datos:** 2.465 movimientos históricos importados manualmente por el usuario vía CSV (export del Sheet → decode base64 → parseo Python → CSV con fecha ISO y monto float → importación manual en Notion UI)
+- **Verificación de integridad:** conteo exacto 2.465/2.465; las 19 categorías presentes coinciden en conteo y suma de montos a centavo exacto contra el origen; patrón de duplicados (fecha+concepto+monto repetidos) idéntico entre CSV fuente y Notion (2.253 combinaciones distintas / 2.465 filas — confirma que no hubo duplicación introducida)
+- **Corrección aplicada post-importación:** nota residual "TEST — borrar" en AMAZON.ES (4/06/2026, -6,49€) corregida a "Libro Kindle 'Inside Delta Force'"
+
+### Plan completo (8 pasos)
+
+1. ✅ Crear DB Movimientos en Notion
+2. ✅ Importar 2.465 movimientos históricos (vía CSV manual, no por MCP batch — más confiable para este volumen)
+3. ⬜ Reescribir `sync_finance_data.py`: leer Movimientos de Notion (API) + Inversiones de Sheets (sin cambios). Output JSON debe ser byte-idéntico en estructura al actual.
+4. ⬜ Probar el sync nuevo en paralelo al actual, comparar `finance_data.json` generado por ambos
+5. ⬜ Configurar Relay: acción de destino Notion (tiene soporte nativo) en paralelo a Sheets — no cortar Sheets todavía
+6. ⬜ Validar 1-2 semanas con ambos destinos activos, confirmando que Relay escribe correctamente en Notion
+7. ⬜ Apagar escritura en Sheets. Eliminar `update-sheet-cells.yml`, `find-update-nota.yml`. Evaluar `update-relay-prompt.yml`/`read-relay-prompt.yml` (quedan obsoletos si el prompt vive solo en `prompt_relay_current.txt` del repo)
+8. ⬜ Actualizar flujo "Organizar Movimientos": escritura de notas/categorías pasa a `notion-update-page` vía MCP en vez de disparar `update-sheet-cells.yml`. Buscar el page_id por fecha+concepto+monto (la clave `reviewed_movements.json` no cambia).
+
+### Lo que desaparece al completar la migración
+Workflow `update-sheet-cells.yml`, workflow `find-update-nota.yml`, el protocolo de pausar Relay antes de cualquier batch de escrituras (ya no aplica — las escrituras directas vía MCP no disparan runs de GitHub Actions).
+
+### Lo que NO se toca
+`sync-sociedad-data.yml` (ya usa Notion, sin relación con esta migración). El botón "Actualizar" de `index.html` sigue disparando el mismo workflow de sync, solo cambia qué lee internamente.
+
+### Notas operativas para continuar
+- El rate limit de la API de Notion para queries SQL (`notion-query-data-sources`) es agresivo — esperar 30-60s entre llamadas consecutivas durante validaciones masivas.
+- Pendiente de limpieza manual del usuario: una página vacía titulada `[BORRAR — creada por error]` quedó en la DB Movimientos por un error de tooling durante la importación — no hay herramienta de borrado de páginas vía MCP, eliminar manualmente desde Notion.
+- Ver `docs/DECISIONS.md` entrada `[2026-06-30]` para el detalle completo del análisis de impacto componente por componente que precedió a esta migración.
+
 
 ## Pipeline de datos
 
@@ -371,3 +419,4 @@ Cuando un movimiento es una cuota de una compra fraccionada, la nota debe inclui
 - El cargo bancario aparece 1–3 días después del envío del email de confirmación.
 - Si hay varias cuotas del mismo producto, verificar que el concepto coincida exactamente
   (`Amazon.es`, `WWW.AMAZON`, etc. son conceptos distintos en el Sheet).
+
