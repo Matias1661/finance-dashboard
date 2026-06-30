@@ -1,6 +1,13 @@
 {
-  "generated_at": "2026-06-30 15:13",
+  "generated_at": "2026-06-30 16:17",
   "movimientos": [
+    {
+      "fecha": "2026-06-30",
+      "concepto": "Movimiento de prueba",
+      "monto": 10000,
+      "categoria": "Salidas",
+      "nota": "Borrar"
+    },
     {
       "fecha": "2026-06-29",
       "concepto": "VOLKSWAGEN RENTIN",
