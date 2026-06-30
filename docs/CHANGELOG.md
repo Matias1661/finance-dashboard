@@ -1,4 +1,15 @@
-## [2026-06-30] — Fix: deployment de GitHub Pages bloqueado por build de Jekyll
+## [2026-06-30] — Fix definitivo: GitHub Pages migrado a Source "GitHub Actions"
+
+### Agregado
+- `.github/workflows/deploy-pages.yml` — workflow propio de deploy (trigger: push a `main`, `workflow_dispatch`; usa `actions/configure-pages`, `actions/upload-pages-artifact`, `actions/deploy-pages`; `concurrency` con `cancel-in-progress`).
+
+### Cambiado
+- Settings → Pages → Source: de "Deploy from a branch" a "GitHub Actions".
+
+### Corregido
+- El intento anterior (`.nojekyll`, ver entrada de abajo) resultó insuficiente: el deployment seguía trabándose en `deployment_queued` indefinidamente. La causa real era el modo legacy "Deploy from a branch", que gestionaba mal la concurrencia entre deployments encadenados (varios commits seguidos de los workflows de sync + docs). El nuevo workflow vía Actions resuelve esto de raíz — verificado con un ciclo completo real (sync → commit → deploy → success en segundos, sin colas). Detalle en `docs/DECISIONS.md`, entrada `[2026-06-30] Fix definitivo: GitHub Pages cambiado a "GitHub Actions" como Source`.
+
+## [2026-06-30] — Fix (insuficiente, ver entrada de arriba): deployment de GitHub Pages bloqueado por build de Jekyll
 
 ### Agregado
 - `.nojekyll` (archivo vacío en la raíz) — desactiva el procesamiento Jekyll de GitHub Pages, innecesario para este sitio estático puro.
