@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01 10:04",
+  "generated_at": "2026-07-01 10:09",
   "movimientos": [
     {
       "fecha": "2026-06-30",
@@ -33,7 +33,7 @@
       "fecha": "2026-06-30",
       "concepto": "APARCAMIENTO PZA",
       "monto": -9.45,
-      "categoria": "Gastos coche",
+      "categoria": "Salidas",
       "nota": null
     },
     {
@@ -68,7 +68,7 @@
       "fecha": "2026-06-30",
       "concepto": "Matricula 1854MDY",
       "monto": -60,
-      "categoria": "Gastos coche",
+      "categoria": "Gastos moto",
       "nota": null
     },
     {
