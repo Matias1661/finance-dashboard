@@ -1,3 +1,8 @@
+## [2026-07-01] — Fix: gráfico Talho Argentino, gasto semanal y acumulado en escalas distintas
+
+### Corregido
+- `js/app.js`: chart `chart-talho-bars` (tab Talho Argentino) usaba dos ejes Y (`y` para gasto semanal, `y2` para acumulado), cada uno con su propia escala, dificultando la comparación visual. Ambos datasets ahora comparten el eje `y` con la misma escala. Eje `y2` eliminado de `scales`.
+
 ## [2026-06-30] — Fix: KPI "Sin analizar por Claude" mostraba 241 en vez del conteo real
 
 ### Corregido

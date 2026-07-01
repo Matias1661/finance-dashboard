@@ -855,7 +855,7 @@ function renderTalho(){
             pointRadius: 4,
             fill: true,
             tension: 0.3,
-            yAxisID: 'y2'
+            yAxisID: 'y'
           }
         ]
       },
@@ -884,12 +884,6 @@ function renderTalho(){
           y: {
             beginAtZero: true,
             position: 'left',
-            ticks: { callback: v => fmt(v) }
-          },
-          y2: {
-            beginAtZero: true,
-            position: 'right',
-            grid: { drawOnChartArea: false },
             ticks: { callback: v => fmt(v) }
           }
         }
