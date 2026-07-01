@@ -1,6 +1,62 @@
 {
-  "generated_at": "2026-07-01 10:14",
+  "generated_at": "2026-07-01 11:57",
   "movimientos": [
+    {
+      "fecha": "2026-07-01",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-01",
+      "concepto": "T. VISA CLASSIC",
+      "monto": -100,
+      "categoria": "Tarjeta",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-01",
+      "concepto": "PRES.32334358886",
+      "monto": -277.95,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-01",
+      "concepto": "PRES.32664031137",
+      "monto": -193.49,
+      "categoria": "Talho Argentino",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-01",
+      "concepto": "PRES.80194189697",
+      "monto": -246.83,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-01",
+      "concepto": "SABADELL CONSUMER",
+      "monto": -218.12,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-01",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-01",
+      "concepto": "RECIBO UNICO MYBOX",
+      "monto": -114.38,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
     {
       "fecha": "2026-06-30",
       "concepto": "CAIXABANK PAYMENT",
@@ -237,7 +293,7 @@
       "concepto": "AMAZON.ES",
       "monto": -9.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Kindle Unlimited"
     },
     {
       "fecha": "2026-06-20",
@@ -3064,7 +3120,7 @@
       "fecha": "2026-03-12",
       "concepto": "HOSPITAL DIGITAL",
       "monto": -16,
-      "categoria": "Compras",
+      "categoria": "Salud y Belleza",
       "nota": "Consulta médica online"
     },
     {
@@ -3548,7 +3604,7 @@
       "concepto": "AMAZON.ES",
       "monto": -9.99,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Kindle Unlimited"
     },
     {
       "fecha": "2026-02-21",
@@ -4598,7 +4654,7 @@
       "concepto": "AMAZON.ES",
       "monto": -9.99,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Kindle Unlimited"
     },
     {
       "fecha": "2026-01-21",
