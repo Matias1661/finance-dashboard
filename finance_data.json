@@ -1,6 +1,97 @@
 {
-  "generated_at": "2026-06-30 17:33",
+  "generated_at": "2026-07-01 10:04",
   "movimientos": [
+    {
+      "fecha": "2026-06-30",
+      "concepto": "CAIXABANK PAYMENT",
+      "monto": -12.9,
+      "categoria": "Tarjeta",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "NOMINA (TRF)",
+      "monto": 2648.99,
+      "categoria": "Nomina",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "SkyShowtime Limit",
+      "monto": -4.49,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "YELMOFILMSWEB",
+      "monto": -22.8,
+      "categoria": "Salidas",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "APARCAMIENTO PZA",
+      "monto": -9.45,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "PAG NOMINAS",
+      "monto": -700,
+      "categoria": "Departamento",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "NATURITAS",
+      "monto": -45.05,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "Gastos conjuntos",
+      "monto": -250,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "Matricula 1854MDY",
+      "monto": -60,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 90,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-06-30",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-06-29",
       "concepto": "VOLKSWAGEN RENTIN",
@@ -69,7 +160,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -3.49,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Hevy Pro"
     },
     {
       "fecha": "2026-06-27",
@@ -230,7 +321,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -22,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Claude Pro"
     },
     {
       "fecha": "2026-06-16",
@@ -377,7 +468,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2026-06-11",
@@ -874,7 +965,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -3.49,
       "categoria": "Suscripciones",
-      "nota": "Hevy"
+      "nota": "Hevy Pro"
     },
     {
       "fecha": "2026-05-26",
@@ -1147,7 +1238,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -22,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Claude Pro"
     },
     {
       "fecha": "2026-05-16",
@@ -1322,7 +1413,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2026-05-11",
@@ -2267,7 +2358,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2026-04-10",
@@ -2820,7 +2911,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -22,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Claude Pro"
     },
     {
       "fecha": "2026-03-20",
@@ -2988,7 +3079,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2026-03-11",
@@ -3716,7 +3807,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2026-02-10",
@@ -4703,7 +4794,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2026-01-10",
@@ -5319,7 +5410,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-12-10",
@@ -6229,7 +6320,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-11-12",
@@ -7363,7 +7454,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-10-12",
@@ -8280,7 +8371,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-09-11",
@@ -9344,7 +9435,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-08-12",
@@ -10261,7 +10352,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-07-12",
@@ -11283,7 +11374,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-06-12",
@@ -12361,7 +12452,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-05-12",
@@ -13411,7 +13502,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-04-12",
@@ -14195,7 +14286,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-03-12",
@@ -14846,7 +14937,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-02-11",
@@ -15791,7 +15882,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -29.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "LinkedIn Premium Career"
     },
     {
       "fecha": "2025-01-13",
@@ -15812,7 +15903,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2025-01-12",
@@ -16596,7 +16687,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2024-12-14",
@@ -17107,7 +17198,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -22,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Claude Pro"
     },
     {
       "fecha": "2024-12-03",
@@ -17458,11 +17549,6 @@
     ],
     "rendimiento": [
       {
-        "mes": "2025-08",
-        "peerberry": -9.8,
-        "myinvestor": 0.76
-      },
-      {
         "mes": "2025-09",
         "peerberry": 23.49,
         "myinvestor": 4.45
@@ -17511,6 +17597,11 @@
         "mes": "2026-06",
         "peerberry": 126.42,
         "myinvestor": 7.51
+      },
+      {
+        "mes": "2026-07",
+        "peerberry": 0.0,
+        "myinvestor": 0.0
       }
     ]
   }
