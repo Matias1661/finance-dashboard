@@ -145,9 +145,12 @@ Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, 
 ```html
 <script src="js/state.js"></script>
 <script src="js/filters.js"></script>
+<script src="js/insights.js"></script>
 <script src="js/charts.js"></script>
 <script src="js/app.js"></script>
 ```
+
+`insights.js` debe cargar antes de `charts.js`: `renderKPIs` consume sus helpers (`getRendimientoLastMonths`, `getAportesLastMonths`).
 
 Sin bloques `<script>` inline con lógica de negocio.
 
@@ -162,9 +165,17 @@ Sin bloques `<script>` inline con lógica de negocio.
 - `setMonthFilter(m)` — actualiza activeMonth
 - `populateMonthSelector(RAW)` — selector del tab Resumen
 
+**js/insights.js** (añadido 2026-07-03)
+- `detectRecurring()` — cargos recurrentes: concepto+importe exacto, ≥3 cobros, mediana de intervalo 25–35 días. Estado activa/inactiva con ventana de 45 días desde `lastTxDate`.
+- `SUB_ALIASES` / `SUB_KEYWORDS` / `SUB_KEYWORDS_AMT` — clasificación y nombres legibles de suscripciones. Verificar alias periódicamente (los precios cambian).
+- `renderSuscripciones()` — sección en Resumen (`#subs-card`).
+- `computeInsights()` / `renderInsights()` — último mes completo vs. previo, top variaciones, alertas media+2σ (`#insights-card`).
+- `getRendimientoLastMonths(n)` / `getAportesLastMonths(n)` — helpers del KPI Ahorro real.
+- Detalle de reglas en `docs/DECISIONS.md`, entrada `[2026-07-03] Fase 2 analítica`.
+
 **js/charts.js**
 - `formatEUR(v)` — fuente única del formateador EUR. No duplicar en otros módulos.
-- `renderKPIs()` — 4 tarjetas: Ingresos, Gastos (positivo con rojo), Balance, Tasa de ahorro. Consume `filteredData()`.
+- `renderKPIs()` — tarjetas del Resumen: Última transacción, Patrimonio invertido, Ahorro real 12m (balance + rendimiento, desglose de aportes), Sin analizar por Claude.
 - `renderMonthly()` — barras ingresos/gastos por mes. Consume `filteredData()`. Eje Y en EUR.
 - `renderDonut()` — donut de gastos por categoría. Consume `filteredData()`.
 

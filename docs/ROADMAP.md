@@ -18,15 +18,15 @@
 - [ ] Panel de revisión de transacciones: vista filtrable de movimientos con categoría "A revisar" o baja confianza, con acción de reclasificación directa desde el dashboard que dispara el workflow `update-sheet-cells.yml`
 - [x] Vista ampliada de Viajes en tab Categorías (desglose por viaje, subcategorías, transacciones colapsables)
 - [x] Campo Nota (col K) por movimiento + enriquecimiento automático de Compras (Amazon/Gmail/web); backfill últimos 3 meses
-- [ ] Insights automáticos: comparación vs mes anterior, alertas de gasto por categoría
+- [x] Insights automáticos: comparación vs mes anterior, alertas de gasto por categoría (js/insights.js, 2026-07-03)
 - [ ] Enriquecimiento de Nota como fase del flujo "Organizar Movimientos" (de aquí en adelante, no solo backfill)
-- [ ] KPI de ahorro real incluyendo inversiones (tab Inversiones)
+- [x] KPI de ahorro real incluyendo inversiones (tarjeta en Resumen: balance + rendimiento, 2026-07-03)
 
 ## Prioridad media
 - [ ] Dashboard de vivienda (desglose Departamento)
 - [ ] Dashboard de movilidad (Combustible + Gastos coche + Gastos moto)
-- [ ] Seguimiento de suscripciones con histórico
-- [ ] Detección de anomalías (gasto fuera de rango histórico)
+- [x] Seguimiento de suscripciones con histórico (sección en Resumen, detección por recurrencia, 2026-07-03)
+- [x] Detección de anomalías (alertas media+2σ en bloque Insights, 2026-07-03)
 
 ## Futuro
 - [ ] Seguimiento de patrimonio neto

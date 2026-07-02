@@ -1,3 +1,23 @@
+## [2026-07-03] Fase 2 analítica: Suscripciones, KPI Ahorro real e Insights automáticos
+
+**Contexto:** implementación de la fase 2 del plan de mejoras (evaluación del 03/07/2026). Decisiones del usuario: seguimiento de suscripciones como sección dentro del tab Resumen (no tab nuevo), y ahorro real definido como aportes + rendimiento de inversiones.
+
+**Nuevo módulo `js/insights.js`** (orden de carga: state → filters → **insights** → charts → app; charts.js consume sus helpers):
+
+1. **Detección de cargos recurrentes (`detectRecurring`)**: agrupa gastos por concepto normalizado + importe exacto; requiere ≥3 cobros con mediana de intervalo entre 25 y 35 días (cadencia mensual). Estado "Activa" si el último cobro está a ≤45 días de la última transacción del dataset (se usa `lastTxDate`, no la fecha del navegador, para que el estado no envejezca si el sync se detiene). Excluye Guille, Talho Argentino, Nomina e Inversion.
+2. **Clasificación suscripción vs. otros recurrentes**: es suscripción si la categoría modal del grupo es "Suscripciones", o si el concepto matchea la lista `SUB_KEYWORDS` (Wellhub, Apple, Prime, etc.), o `SUB_KEYWORDS_AMT` para comercios ambiguos (AMAZON.ES solo a 9,99€ = Kindle; PAYPAL EUROPE solo a 10€ = M365). El resto (financiaciones PRES./SABADELL/ONEY, recibos, cuotas de tarjeta) se muestra colapsado como "Otros cargos recurrentes".
+3. **Alias legibles (`SUB_ALIASES`)**: mapeo concepto+importe → nombre (iCloud+ 2,99, Hevy 3,49, Claude Pro 22, LinkedIn 29,99, Kindle 9,99, M365 10). Verificar periódicamente: los precios cambian con renovaciones. Si no hay alias, se usa la nota más reciente del grupo.
+4. **KPI Ahorro real (12 meses)**, cuarta tarjeta del grid de KPIs: `balance líquido + rendimiento de inversiones`. Los aportes a inversión NO se restan del balance porque la categoría Inversion está excluida del cálculo de gastos — el dinero invertido ya cuenta como ahorro dentro del balance. Se muestran como línea informativa ("Aportes netos a inv."), junto con la tasa de ahorro real (ahorro real / ingresos).
+5. **Insights automáticos (`computeInsights`)**: compara el último mes COMPLETO contra su previo (si el mes de la última transacción es el mes en curso, se retrocede uno). Muestra variación del gasto total, top 3 variaciones por categoría (delta ≥50€), y alertas de gasto fuera de rango: categoría con gasto >100€ que supere media + 2 desviaciones estándar de los 6 meses previos (mínimo 4 meses de historial y +20% sobre la media, para evitar falsos positivos con desviación cercana a cero).
+
+**Verificación con datos reales (03/07/2026):** 33 grupos recurrentes, 11 clasificados como suscripción, 5 activas (29,96€/mes). Microsoft 365 y Kindle Unlimited aún figuran "Activa" por sus cobros de junio — pasarán a "Sin cobros" pasada la ventana de 45 días, verificando las cancelaciones del 01/07. Wellhub ya figura sin cobros desde enero 2026. Insights: junio vs mayo, −8% de gasto total, sin alertas.
+
+**Caso conocido:** el cargo APPLE.COM/BILL de 22€ (Claude Pro) no se detecta todavía — sus cobros son irregulares (mediana de intervalo 57 días). Aparecerá automáticamente cuando acumule cadencia mensual. No es un bug.
+
+**Contenedores nuevos en index.html:** `#insights-card` (después de #kpis) y `#subs-card` (después del gráfico mensual), ambos con `display:none` hasta que su render tenga datos.
+
+---
+
 ## [2026-06-30] Fix: filtrado del artifact rompió el KPI "Sin analizar por Claude"
 
 **Síntoma:** el usuario reportó 241 movimientos "sin verificar por Claude" pese a que el registro real (`reviewed_movements.json`) tenía 2318 entradas cargadas.

@@ -124,6 +124,27 @@ function renderKPIs(){
         <div style="display:flex;justify-content:space-between;margin-top:4px"><span>MyInvestor</span><span style="font-family:'DM Mono'">${formatEUR(invMyinvestor)}</span></div>
       </div>
     </div>
+    ${(() => {
+      // Ahorro real (últimos 12 meses) = balance líquido + rendimiento de inversiones.
+      // Los aportes a inversión no se restan del balance (Inversion está excluida),
+      // por lo que ya cuentan como ahorro; el rendimiento se suma aparte.
+      const rendimiento12 = typeof getRendimientoLastMonths === 'function' ? getRendimientoLastMonths(12) : 0;
+      const aportes12     = typeof getAportesLastMonths === 'function' ? getAportesLastMonths(12) : 0;
+      const ahorroReal    = net + rendimiento12;
+      const tasaReal      = income > 0 ? Math.round(ahorroReal / income * 100) : null;
+      const arColor       = ahorroReal >= 0 ? 'var(--green)' : 'var(--red)';
+      return `
+    <div class="card">
+      <div class="card-title">Ahorro real · últimos 12 meses</div>
+      <div style="font-size:22px;font-weight:600;color:${arColor}">${formatEUR(ahorroReal)}</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">
+        <div style="display:flex;justify-content:space-between"><span>Balance líquido</span><span style="font-family:'DM Mono'">${formatEUR(net)}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px"><span>Rendim. inversiones</span><span style="font-family:'DM Mono'">${formatEUR(rendimiento12)}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px"><span>Aportes netos a inv.</span><span style="font-family:'DM Mono'">${formatEUR(aportes12)}</span></div>
+        ${tasaReal !== null ? `<div style="display:flex;justify-content:space-between;margin-top:4px"><span>Tasa de ahorro real</span><span style="font-family:'DM Mono'">${tasaReal}%</span></div>` : ''}
+      </div>
+    </div>`;
+    })()}
     <div class="card" style="${pendingReview > 0 ? 'border:1.5px solid var(--amber)' : ''}">
       <div class="card-title">Sin analizar por Claude</div>
       <div style="font-size:22px;font-weight:600;color:${pendingReview > 0 ? 'var(--amber)' : 'var(--green)'}">${pendingReview}</div>

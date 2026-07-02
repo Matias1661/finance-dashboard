@@ -1,3 +1,21 @@
+## [2026-07-03] — Fase 2: Suscripciones, KPI Ahorro real e Insights automáticos
+
+### Añadido
+- `js/insights.js` — nuevo módulo (cargado entre `filters.js` y `charts.js`): detección de cargos recurrentes por cadencia mensual, clasificación suscripciones vs. financiación/recibos, alias de suscripciones conocidas, insights mensuales y helpers de ahorro real.
+- Sección "Suscripciones" en el tab Resumen (`#subs-card`): suscripciones activas con total €/mes, inactivas en gris (verificación de cancelaciones — M365, Kindle y Wellhub pasarán a "Sin cobros" al cumplirse 45 días sin cargo), y "Otros cargos recurrentes" colapsado.
+- Bloque "Insights" en el tab Resumen (`#insights-card`): variación de gasto del último mes completo vs. el previo, top 3 variaciones por categoría (≥50€) y alertas de gasto fuera de rango histórico (media + 2σ de 6 meses).
+- Cuarta tarjeta KPI "Ahorro real · últimos 12 meses" en `renderKPIs` (charts.js): balance líquido + rendimiento de inversiones, con desglose de aportes netos y tasa de ahorro real.
+
+### Cambiado
+- `index.html`: import de `js/insights.js` y dos contenedores nuevos en el panel Resumen.
+- `js/app.js`: `renderResumen()` llama a `renderInsights()` y `renderSuscripciones()`.
+
+### Validado
+- `node --check` sobre los 5 módulos JS.
+- Lógica ejecutada contra `finance_data.json` real (2.494 movimientos): 11 suscripciones detectadas, 5 activas (29,96€/mes), insights junio vs mayo coherentes.
+
+Detalle de decisiones en `docs/DECISIONS.md`, entrada `[2026-07-03] Fase 2 analítica`.
+
 ## [2026-07-01] — Fix: gráfico Talho Argentino, gasto semanal y acumulado en escalas distintas
 
 ### Corregido

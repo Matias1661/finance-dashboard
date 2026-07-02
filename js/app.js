@@ -9,7 +9,9 @@ let activeCatBarFilter = null;
 
 function renderResumen(){
   if(typeof renderKPIs === 'function') renderKPIs();
+  if(typeof renderInsights === 'function') renderInsights();
   if(typeof renderMonthly === 'function') renderMonthly();
+  if(typeof renderSuscripciones === 'function') renderSuscripciones();
   if(typeof renderCategoryTrend === 'function') renderCategoryTrend();
 }
 
