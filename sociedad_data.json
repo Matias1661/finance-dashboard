@@ -1,5 +1,23 @@
 [
   {
+    "fecha": "2026-07-02",
+    "concepto": "Tasa Actividad Apertura y Funcionamiento",
+    "costo": 400,
+    "pagado": "Willy"
+  },
+  {
+    "fecha": "2026-07-02",
+    "concepto": "I.C.I.O. - Impuesto sobre Construcciones, Instalaciones y Obras",
+    "costo": 322,
+    "pagado": "Willy"
+  },
+  {
+    "fecha": "2026-07-02",
+    "concepto": "Fianzas - Gestión de Residuos con Proyecto Técnico",
+    "costo": 150,
+    "pagado": "Willy"
+  },
+  {
     "fecha": "2026-06-29",
     "concepto": "PAV CASABLANCA 60X120 R16",
     "costo": 250.14,
