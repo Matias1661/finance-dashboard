@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02 12:45",
+  "generated_at": "2026-07-02 13:00",
   "movimientos": [
     {
       "fecha": "2026-07-01",
@@ -17600,7 +17600,7 @@
       {
         "mes": "2026-06",
         "peerberry": 11702.99,
-        "myinvestor": 8890.0
+        "myinvestor": 8864.0
       }
     ],
     "rendimiento": [
@@ -17652,7 +17652,7 @@
       {
         "mes": "2026-06",
         "peerberry": 126.42,
-        "myinvestor": 7.51
+        "myinvestor": 7.2
       },
       {
         "mes": "2026-07",
