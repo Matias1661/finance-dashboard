@@ -182,7 +182,14 @@ def fetch_rendimiento_inversiones_notion():
 def build_ganancia_inversiones(pages):
     """Convierte paginas de 'Rendimiento Inversiones' (Plataforma/Ganancia/Fecha reporte)
     a { mes: { peerberry, myinvestor } } en EUR, sumando si hubiera mas de una fila
-    por plataforma/mes."""
+    por plataforma/mes.
+
+    Peerberry envia su reporte todos los lunes, cadencia semanal fija sin relacion
+    al calendario mensual. Cuando el lunes de reporte cae en los primeros 3 dias de
+    un mes, la Ganancia corresponde al mes anterior (el reporte "cierra" ese mes,
+    no abre el siguiente) y se atribuye ahi. MyInvestor no necesita este ajuste:
+    su reporte es mensual y llega dentro del propio mes que informa.
+    """
     by_month = {}
     for page in pages:
         props = page.get("properties", {})
@@ -191,12 +198,18 @@ def build_ganancia_inversiones(pages):
         fecha = fecha_prop["start"][:10] if fecha_prop and fecha_prop.get("start") else None
         if not fecha:
             continue
-        mk = fecha[:7]
 
         plataforma_select = props.get("Plataforma", {}).get("select")
         plataforma = plataforma_select["name"] if plataforma_select else None
         if plataforma not in ("Peerberry", "MyInvestor"):
             continue
+
+        y, m, d = int(fecha[:4]), int(fecha[5:7]), int(fecha[8:10])
+        if plataforma == "Peerberry" and d <= 3:
+            m -= 1
+            if m == 0:
+                m, y = 12, y - 1
+        mk = f"{y:04d}-{m:02d}"
 
         ganancia = props.get("Ganancia", {}).get("number")
         if ganancia is None:
