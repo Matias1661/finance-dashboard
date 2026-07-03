@@ -170,7 +170,7 @@ Sin bloques `<script>` inline con lógica de negocio.
 - `SUB_ALIASES` / `SUB_KEYWORDS` / `SUB_KEYWORDS_AMT` — clasificación y nombres legibles de suscripciones. Verificar alias periódicamente (los precios cambian).
 - `renderSuscripciones()` — sección en Resumen (`#subs-card`).
 - `computeInsights()` / `renderInsights()` — último mes completo vs. previo, top variaciones, alertas media+2σ (`#insights-card`).
-- `getRendimientoLastMonths(n)` / `getAportesLastMonths(n)` — helpers del KPI Ahorro real.
+- `getRendimientoLastMonths(n)` — suma `inversiones.ganancia` (EUR, Notion "Rendimiento Inversiones") de los últimos n meses. `getAportesLastMonths(n)` — helpers del KPI Ahorro real.
 - Detalle de reglas en `docs/DECISIONS.md`, entrada `[2026-07-03] Fase 2 analítica`.
 
 **js/charts.js**
@@ -392,7 +392,11 @@ Patrones CSS establecidos:
 
 **Por qué no la columna "Rendimiento %" del Sheet:** mezcla depósitos y rentabilidad real (confirmado con el usuario — el valor mensual que hoy carga en Sheets es el balance total de la cartera, no un % de retorno puro).
 
-**Estado del backfill (03/07/2026):** MyInvestor COMPLETO, 19 meses sin huecos (dic 2024–jun 2026). Peerberry solo 2 meses (nov 2024 baseline + dic 2024 calculado); quedan 17 meses pendientes (ene 2025–may 2026) — anchors de Gmail ya identificados, pausado por costo de contexto (cada correo de Peerberry trae HTML completo, no solo texto). Detalle y lista de thread IDs en `docs/DECISIONS.md`.
+**Estado del backfill:** COMPLETO. MyInvestor 19 meses (dic 2024–jun 2026), Peerberry 18 meses (dic 2024–may 2026), ambos sin huecos. Detalle mes a mes y verificación de consistencia en `docs/DECISIONS.md`.
+
+**Estado de la integración con el dashboard (04/07/2026):** parcial, alcance acotado. `build_inversiones()` en `scripts/sync_finance_data.py` sigue leyendo `capital` y `rendimiento` (%) de la hoja Sheets sin cambios — la migración completa que describe este apartado (capital + rendimiento ambos desde Notion) no se hizo. En su lugar se agregó un tercer campo, `inversiones.ganancia` (EUR, sourced de esta DB Notion, ver función `build_ganancia_inversiones()`), usado exclusivamente por el KPI "Ahorro real 12m" (`getRendimientoLastMonths` en `js/insights.js`). El tab Inversiones (sus 4 KPIs y los 2 gráficos) sigue 100% sourced de Sheets, sin cambios. Ver DECISIONS.md `[2026-07-04]` para el detalle y una limitación conocida (atribución de mes cuando el informe de Peerberry llega los primeros días del mes siguiente).
+
+**Pendiente:** decidir si migrar también `capital`/`rendimiento` del tab Inversiones a esta DB, y configurar Relay para poblarla automáticamente hacia adelante (hoy sigue siendo carga manual mes a mes).
 
 **Pendiente de automatización:** reglas de Relay para poblar esta DB automáticamente desde ambos correos — no configuradas (requiere UI de Relay.app). Especificación completa en `docs/DECISIONS.md`.
 
