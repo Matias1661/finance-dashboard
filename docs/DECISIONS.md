@@ -14,7 +14,7 @@
 
 (Sep-Dic 2025 registrados en la entrada anterior.)
 
-**Estado final:** Peerberry cubre dic 2024 - may 2026, 18 meses consecutivos verificados sin huecos. Cadena de Profit acumulado validada extremo a extremo contra los correos (ningun salto inconsistente). MyInvestor ya estaba completo desde una sesion anterior (dic 2024 - jun 2026).  queda al dia para ambas plataformas salvo una fila suelta "Semanal" de Peerberry en jun 2026 (fecha 2026-06-28, capital 11702.99) que no forma parte de este backfill mensual y no fue tocada — su origen no esta documentado, revisar en sesion futura si genera inconsistencias en el grafico.
+**Estado final:** Peerberry cubre dic 2024 - may 2026, 18 meses consecutivos verificados sin huecos. Cadena de Profit acumulado validada extremo a extremo contra los correos (ningun salto inconsistente). MyInvestor ya estaba completo desde una sesion anterior (dic 2024 - jun 2026). `Rendimiento Inversiones` queda al dia para ambas plataformas salvo una fila suelta "Semanal" de Peerberry en jun 2026 (fecha 2026-06-28, capital 11702.99) que no forma parte de este backfill mensual y no fue tocada — su origen no esta documentado, revisar en sesion futura si genera inconsistencias en el grafico.
 
 **Backfill de Rendimiento Inversiones: cerrado.** Proximo paso relacionado: auditoria de la categoria "Inversion" en Movimientos (pendiente, ver seccion "Estado actual").
 
