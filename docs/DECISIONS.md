@@ -1,3 +1,23 @@
+## [2026-07-04] KPI "Ahorro real 12m": fuente cambiada de % Sheet a Ganancia EUR Notion
+
+**Motivacion:** el KPI usaba `inversiones.rendimiento` (%, hoja Sheets), que mezcla depositos con rentabilidad real (ver entrada de migracion 2026-07-03). Con el backfill de Peerberry completo, ambas plataformas tienen Ganancia EUR limpia en la DB Notion "Rendimiento Inversiones" para todo el rango dic2024-may2026.
+
+**Decision:** cambio quirurgico, no la migracion completa de build_inversiones() que documenta la seccion "Migracion Inversiones" de PROJECT_MEMORY. Se agrega un campo nuevo `inversiones.ganancia` (EUR) sourced de Notion, dejando `capital` y `rendimiento` (%) intactos y sourced de Sheets como antes — el tab Inversiones (KPIs, ambos graficos) no se toco y sigue funcionando igual.
+
+**Cambios:**
+- `scripts/sync_finance_data.py`: nueva `fetch_rendimiento_inversiones_notion()` (data source `93eda06b-9207-4589-b3f0-66be10ab9caf`, filtro Periodo=Mensual en la query) y `build_ganancia_inversiones()` — agrupa por mes calendario de "Fecha reporte", suma Ganancia por plataforma.
+- `.github/workflows/sync-finance-data.yml`: env var nueva `NOTION_RENDIMIENTO_DATA_SOURCE_ID`.
+- `js/insights.js`: `getRendimientoLastMonths(months)` reescrita — suma directa de `inversiones.ganancia` en la ventana, sin multiplicar por capital (ya viene en EUR).
+- `js/app.js`: fallback de `FINANCE_STATE.inversiones` incluye `ganancia: []`.
+
+**Bloqueo encontrado y resuelto:** la integracion "Notion Talho" (secret `NOTION_TOKEN` de GitHub Actions) no estaba conectada a la pagina "Rendimiento Inversiones" — mismo patron que el bloqueo de Movimientos documentado el 30/06/2026. Resuelto conectando manualmente desde Notion (pagina → ··· → Conexiones → Notion Talho).
+
+**Verificado:** dispatch manual de `sync-finance-data.yml` exitoso, `finance_data.json` con 19 meses en `inversiones.ganancia` (dic2024-jun2026), deploy de Pages exitoso.
+
+**Limitacion conocida, no corregida:** al agrupar Ganancia por mes calendario de "Fecha reporte", los informes de Peerberry que llegan los primeros dias de un mes (cadencia no fija al 1ro) se atribuyen al mes de recepcion en vez del mes que cubren. Caso detectado: informe de febrero 2026 llego 2026-03-02 → su Ganancia (46.79€) quedo en el bucket "2026-03" junto con la de marzo, dejando "2026-02" en 0 para Peerberry. El total acumulado no se pierde, solo se corre de mes. No afecta MyInvestor (cadencia mas estable dentro del mes). Pendiente decidir si vale la pena un offset de atribucion si se repite.
+
+---
+
 ## [2026-07-03] Backfill Peerberry Rendimiento Inversiones: COMPLETO (dic 2024 - may 2026, 18 meses)
 
 **Contexto:** cierre del backfill iniciado en sesiones anteriores. Se cargaron los 9 meses restantes: sep 2025 - may 2026.
