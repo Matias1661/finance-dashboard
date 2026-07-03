@@ -1,6 +1,34 @@
 {
-  "generated_at": "2026-07-02 13:00",
+  "generated_at": "2026-07-03 09:53",
   "movimientos": [
+    {
+      "fecha": "2026-07-02",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-02",
+      "concepto": "SAN SEBASTIAN DE",
+      "monto": -1.35,
+      "categoria": "Gastos moto",
+      "nota": "Carta al registro propiedad"
+    },
+    {
+      "fecha": "2026-07-02",
+      "concepto": "Kerastase",
+      "monto": 47,
+      "categoria": "Compras",
+      "nota": "Regalo Joha"
+    },
+    {
+      "fecha": "2026-07-02",
+      "concepto": "Kerastase",
+      "monto": -47,
+      "categoria": "Compras",
+      "nota": "Regalo Joha"
+    },
     {
       "fecha": "2026-07-01",
       "concepto": "TRANSF. A SU FAVOR",
