@@ -1,3 +1,14 @@
+## [2026-07-03] — Backfill Peerberry Rendimiento Inversiones: Enero 2025 completado, 16 meses pendientes
+
+### Añadido
+- 1 registro mensual de Peerberry (enero 2025): Ganancia 20,24€, Capital 2.799,64€, Fecha 2025-01-27.
+- Método de extracción de correos de Peerberry validado: `Gmail:get_thread` → plaintextBody (descarte HTML posterior).
+
+### Pendiente
+- Peerberry: 16 meses (feb 2025 – may 2026). Todos los thread IDs ya identificados, procesamiento iniciado en tandas de 1-2 meses por sesión para gestionar costo de contexto (~20-30k tokens por correo HTML).
+
+Detalle: `docs/DECISIONS.md`, entrada `[2026-07-03] Backfill Peerberry (sesión 1)`.
+
 ## [2026-07-03] — Rendimiento Inversiones: MyInvestor completo (19 meses, dic 2024-jun 2026), Peerberry a 2 meses
 
 ### Añadido

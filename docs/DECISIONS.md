@@ -1,3 +1,46 @@
+## [2026-07-03] Backfill Peerberry Rendimiento Inversiones (sesión 1 de tandas): Enero 2025 cargado
+
+**Contexto:** continuación de entrada anterior. Iniciado backfill de Peerberry en tandas de 1-2 meses por sesión para no repetir problema de contexto (cada correo trae HTML de 20-30k tokens).
+
+**Estado:** Enero 2025 completamente cargado en Notion `Rendimiento Inversiones`.
+
+| Mes | Profit € | Ganancia € | Capital € | Fecha reporte |
+|---|---|---|---|---|
+| Ene 2025 | 249,64 | 20,24 | 2.799,64 | 2025-01-27 |
+
+Cálculo ganancia: 249,64 (ene) − 229,40 (dic 2024, baseline) = 20,24€. Capital = Invested funds (2.796,35) + Available balance (3,29).
+
+**Método utilizado:**
+1. `Gmail:get_thread(threadId: "194c983652a9860c")` → `plaintextBody` con tabla Portfolio
+2. Parseo manual: extraer "Profit: € X.XXX,XX", "Invested funds: € X.XXX,XX", "Available balance: € X.XXX,XX"
+3. Descarte HTML después de extracción (no reutilizar en procesamiento posterior)
+4. `Notion:notion-create-pages` con `data_source_id: 93eda06b-9207-4589-b3f0-66be10ab9caf`
+
+**Pendiente — 16 meses restantes:**
+
+| Mes | Thread ID | Estado |
+|---|---|---|
+| Feb 2025 | 19559b284f96ed37 | Pendiente |
+| Mar 2025 | 195a1cb8fc2004d3 | Pendiente |
+| Abr 2025 | 1969f321835d18a1 | Pendiente |
+| May 2025 | 1972f63864403a88 | Pendiente |
+| Jun 2025 | 1979b88bd3d4af2e | Pendiente |
+| Jul 2025 | 19873d4a21aa829e | Pendiente |
+| Ago 2025 | 198dff85b09f3076 | Pendiente |
+| Sep 2025 | 19994354bf624765 | Pendiente |
+| Oct 2025 | 19a4873578c81c0b | Pendiente |
+| Nov 2025 | 19ad8ae2d3ecf34f | Pendiente |
+| Dic 2025 | 19b8ce3ea0e07d10 | Pendiente |
+| Ene 2026 | 19c1d1589067a4fc | Pendiente |
+| Feb 2026 | 19cd152854bfba34 | Pendiente |
+| Mar 2026 | 19d618588e7b80bb | Pendiente |
+| Abr 2026 | 19df1b616daf6650 | Pendiente |
+| May 2026 | 19e81edf88fed371 | Pendiente |
+
+Próxima sesión: febrero - marzo 2025 (2 meses). Contexto estimado: 2 correos × 20-30k tokens/HTML = ~50-60k tokens consumidos, amplio margen dentro del límite.
+
+---
+
 ## [2026-07-03] Backfill Rendimiento Inversiones: MyInvestor completo (19 meses), Peerberry solo 2 meses por costo de contexto
 
 **Contexto:** continuación de la sesión anterior (ver entrada siguiente, "13 meses MyInvestor cargados"). Objetivo: completar el backfill de `Rendimiento Inversiones` desde diciembre 2024.
