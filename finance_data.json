@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-04 00:49",
+  "generated_at": "2026-07-04 01:10",
   "movimientos": [
     {
       "fecha": "2026-07-02",
@@ -17688,6 +17688,102 @@
         "myinvestor": 0.0
       }
     ],
-    "ganancia": []
+    "ganancia": [
+      {
+        "mes": "2024-12",
+        "peerberry": 22.67,
+        "myinvestor": -52.0
+      },
+      {
+        "mes": "2025-01",
+        "peerberry": 20.24,
+        "myinvestor": 121.0
+      },
+      {
+        "mes": "2025-02",
+        "peerberry": 22.2,
+        "myinvestor": 80.0
+      },
+      {
+        "mes": "2025-03",
+        "peerberry": 10.71,
+        "myinvestor": -380.0
+      },
+      {
+        "mes": "2025-04",
+        "peerberry": 33.37,
+        "myinvestor": -229.0
+      },
+      {
+        "mes": "2025-05",
+        "peerberry": 21.47,
+        "myinvestor": 277.0
+      },
+      {
+        "mes": "2025-06",
+        "peerberry": 12.62,
+        "myinvestor": -4.0
+      },
+      {
+        "mes": "2025-07",
+        "peerberry": 32.58,
+        "myinvestor": 268.0
+      },
+      {
+        "mes": "2025-08",
+        "peerberry": 10.99,
+        "myinvestor": 114.0
+      },
+      {
+        "mes": "2025-09",
+        "peerberry": 43.63,
+        "myinvestor": 389.0
+      },
+      {
+        "mes": "2025-10",
+        "peerberry": 42.86,
+        "myinvestor": 620.0
+      },
+      {
+        "mes": "2025-11",
+        "peerberry": 34.9,
+        "myinvestor": -78.0
+      },
+      {
+        "mes": "2025-12",
+        "peerberry": 37.11,
+        "myinvestor": 151.0
+      },
+      {
+        "mes": "2026-01",
+        "peerberry": 35.86,
+        "myinvestor": 568.0
+      },
+      {
+        "mes": "2026-02",
+        "peerberry": 0.0,
+        "myinvestor": 158.0
+      },
+      {
+        "mes": "2026-03",
+        "peerberry": 71.66,
+        "myinvestor": -476.0
+      },
+      {
+        "mes": "2026-04",
+        "peerberry": 43.86,
+        "myinvestor": 518.0
+      },
+      {
+        "mes": "2026-05",
+        "peerberry": 23.63,
+        "myinvestor": 427.0
+      },
+      {
+        "mes": "2026-06",
+        "peerberry": 0.0,
+        "myinvestor": 151.0
+      }
+    ]
   }
 }
