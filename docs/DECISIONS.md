@@ -1,3 +1,42 @@
+## [2026-07-03] Backfill parcial Rendimiento Inversiones: 13 meses MyInvestor cargados, resto pendiente
+
+**Contexto:** verificación de correos históricos de Peerberry y MyInvestor antes de automatizar con Relay. Objetivo: reemplazar por completo la hoja Inversiones de Sheets con la nueva DB de Notion `Rendimiento Inversiones` (data source `93eda06b-9207-4589-b3f0-66be10ab9caf`, dentro de Finance Tracker), alimentando tanto el gráfico de capital como el de rendimiento.
+
+**Verificación de correos — hallazgos:**
+1. **Peerberry ("Account summary overview", semanal, `info@peerberry.com`)**: formato estable (Balance/Interest income/Principal repayment/Investment/Deposit/Withdrawals) desde mediados de 2024. Cadencia semanal limpia sin huecos desde diciembre 2025 hasta hoy. Huecos reales entre mayo y noviembre 2025: saltos de hasta 4-6 semanas sin correo. El campo `Profit` del bloque Portfolio es acumulado desde el origen de la cuenta (verificado restando dos correos consecutivos: delta de Profit = Interest income de esa semana exacto), lo que permite calcular rendimiento de cualquier período como `Profit(fin) − Profit(inicio)` sin verse afectado por los huecos. Cuenta abierta ~octubre 2023; formato de campo era "Opening balance" antes de mediados de 2024 (cambia a "Balance on").
+2. **MyInvestor ("Rentabilidad de tu cartera en [mes]", mensual, `comunicaciones@myinvestor.es`)**: cadencia mensual perfecta sin huecos, revisado desde abril 2024. Cada correo trae directamente "GANANCIAS ... En [mes]" en euros, ya neto de aportaciones — no requiere cálculo de deltas. Cartera cambió de nombre "GREY" a "RED" en julio 2025 (misma cuenta, ES8315447889726650823242, mismos campos — no afecta parseo). Entre abril-mayo 2024 hubo brevemente 3 carteras simultáneas (POP x2 + GREY); para diciembre 2024 en adelante (alcance del backfill) ya está consolidado a una sola.
+
+**Decisión de alcance del backfill:** hasta diciembre 2024, alineado con el inicio de los datos de Movimientos (no hasta octubre 2023, apertura real de Peerberry).
+
+**Estado del backfill (03/07/2026):** 13 meses de MyInvestor cargados en Notion: diciembre 2024, enero a noviembre 2025, junio 2026.
+
+| Mes | Capital € | Ganancia € |
+|---|---|---|
+| Dic 2024 | 14.174 | -52 |
+| Ene 2025 | 14.292 | 121 |
+| Feb 2025 | 14.372 | 80 |
+| Mar 2025 | 13.993 | -380 |
+| Abr 2025 | 13.763 | -229 |
+| May 2025 | 14.040 | 277 |
+| Jun 2025 | 14.037 | -4 |
+| Jul 2025 | 14.961 | 268 |
+| Ago 2025 | 15.075 | 114 |
+| Sep 2025 | 15.746 | 389 |
+| Oct 2025 | 14.227 | 620 |
+| Nov 2025 | 15.140 | -78 |
+| Jun 2026 | 8.864 | 151 |
+
+**Pendiente:** dic 2025 – mayo 2026 de MyInvestor (6 meses), y los ~19 meses de Peerberry completos (requieren full-body fetch de cada correo por el campo Profit, no viene en el snippet de búsqueda). Se pausó el backfill exhaustivo por consumo excesivo de contexto en la sesión; el usuario decidió cargar lo ya extraído y continuar en sesión aparte.
+
+**Automatización pendiente (Relay):** reglas para parsear ambos correos hacia esta DB — no configuradas aún en Relay.app (requiere acceso a la UI, fuera del alcance de las herramientas disponibles). Especificación de las 2 reglas:
+- Peerberry: trigger `info@peerberry.com` asunto "Account summary overview" → extraer "Interest income" (Ganancia), "Balance on [fecha]" más reciente + "Invested funds" (sumar para Capital total), esa fecha (Fecha reporte). Fijo: Plataforma=Peerberry, Periodo=Semanal.
+- MyInvestor: trigger `comunicaciones@myinvestor.es` asunto "Rentabilidad de tu cartera" → extraer "GANANCIAS ... En [mes]" (Ganancia, la cifra del mes, no la YTD), "VALOR DE TU CARTERA" (Capital total), fecha del correo (Fecha reporte). Fijo: Plataforma=MyInvestor, Periodo=Mensual.
+- Ambas escriben en Notion, data source `93eda06b-9207-4589-b3f0-66be10ab9caf`. Requiere conectar explícitamente la integración de Relay a esta base (`···` → Conexiones → Añadir conexión), como ya pasó con la DB Movimientos.
+
+**Nota de proceso:** un intento anterior de commitear esta misma entrada falló silenciosamente (el script que escribía los docs nunca se ejecutó por un error en la llamada de herramienta; el commit posterior solo capturó un cambio de código pendiente y quedó con un mensaje que no correspondía al contenido real). Verificar siempre el commit vía la API de contenidos de GitHub después de escribir documentación, no asumir por el mensaje del commit.
+
+---
+
 ## [2026-07-03] Fase 2 analítica: Suscripciones, KPI Ahorro real e Insights automáticos
 
 **Contexto:** implementación de la fase 2 del plan de mejoras (evaluación del 03/07/2026). Decisiones del usuario: seguimiento de suscripciones como sección dentro del tab Resumen (no tab nuevo), y ahorro real definido como aportes + rendimiento de inversiones.

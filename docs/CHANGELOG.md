@@ -1,3 +1,18 @@
+## [2026-07-03] — Rendimiento Inversiones: DB creada en Notion, backfill parcial (13 meses MyInvestor)
+
+### Añadido
+- Nueva DB Notion "Rendimiento Inversiones" (data source `93eda06b-9207-4589-b3f0-66be10ab9caf`, en Finance Tracker): Fecha, Plataforma (Peerberry/MyInvestor), Periodo (Semanal/Mensual), Ganancia, Capital total, Fecha reporte. Reemplazará la hoja Inversiones de Sheets para capital y rendimiento.
+- 13 registros mensuales de MyInvestor cargados (dic 2024, ene-nov 2025, jun 2026), extraídos manualmente de los correos "Rentabilidad de tu cartera en [mes]".
+- 1 registro semanal semilla de Peerberry (semana cerrada 28/06/2026).
+- `js/insights.js`: `getRendimientoLastMonths` corregido para convertir el campo "Rendimiento %" del Sheet a euros multiplicando por el capital del mes correspondiente, en vez de sumarlo como si ya fuera un importe en euros.
+
+### Pendiente
+- Backfill: dic 2025 – mayo 2026 de MyInvestor, historial completo de Peerberry (dic 2024 en adelante).
+- Configurar en Relay.app las reglas de parseo de ambos correos hacia esta DB (especificación completa en `docs/DECISIONS.md`).
+- Reescribir `build_inversiones()` en `sync_finance_data.py` para leer de esta DB en vez de la hoja Inversiones, una vez el backfill esté completo y Relay esté configurado.
+
+Detalle de la verificación de correos y decisiones en `docs/DECISIONS.md`, entrada `[2026-07-03] Backfill parcial Rendimiento Inversiones`.
+
 ## [2026-07-03] — Fase 2: Suscripciones, KPI Ahorro real e Insights automáticos
 
 ### Añadido

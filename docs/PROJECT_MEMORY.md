@@ -380,6 +380,26 @@ Patrones CSS establecidos:
 
 ---
 
+## Migración Inversiones: Sheets → Notion (EN CURSO, iniciada 2026-07-03)
+
+**Objetivo:** reemplazar la hoja `Inversiones` del Sheet por la DB Notion `Rendimiento Inversiones` (data source `93eda06b-9207-4589-b3f0-66be10ab9caf`, dentro de Finance Tracker), para capital y rendimiento.
+
+**Schema:** Fecha (título), Plataforma (select: Peerberry/MyInvestor), Periodo (select: Semanal/Mensual), Ganancia (number, €), Capital total (number, € — capital de esa plataforma específica, no combinado), Fecha reporte (date).
+
+**Fuente de los datos — correos, NO la columna "Rendimiento %" del Sheet actual:**
+- Peerberry: `info@peerberry.com`, asunto "Account summary overview", semanal. Campo "Interest income" = rendimiento de esa semana en €. Campo "Profit" (bloque Portfolio) = acumulado desde el origen de la cuenta — permite calcular rendimiento de cualquier período como delta, inmune a huecos en el envío semanal. Capital de Peerberry en un momento = Invested funds + Available balance.
+- MyInvestor: `comunicaciones@myinvestor.es`, asunto "Rentabilidad de tu cartera en [mes]", mensual. Campo "GANANCIAS ... En [mes]" = rendimiento neto de aportaciones de ese mes en €, directo, sin cálculo. Campo "VALOR DE TU CARTERA" = capital.
+
+**Por qué no la columna "Rendimiento %" del Sheet:** mezcla depósitos y rentabilidad real (confirmado con el usuario — el valor mensual que hoy carga en Sheets es el balance total de la cartera, no un % de retorno puro).
+
+**Estado del backfill:** 13 meses de MyInvestor cargados (dic 2024–nov 2025, jun 2026). Pendiente: dic 2025–may 2026 de MyInvestor, todo el historial de Peerberry. Detalle en `docs/DECISIONS.md`.
+
+**Pendiente de automatización:** reglas de Relay para poblar esta DB automáticamente desde ambos correos — no configuradas (requiere UI de Relay.app). Especificación completa en `docs/DECISIONS.md`.
+
+**Cuando el backfill y Relay estén listos:** reescribir `build_inversiones()` en `scripts/sync_finance_data.py` para leer de esta DB (capital = último valor por plataforma/mes, rendimiento = suma de Ganancia en la ventana) en vez de la hoja Inversiones del Sheet.
+
+---
+
 ## Tab Inversiones — especificación actual
 
 **Fuente de datos:** `window.FINANCE_STATE.inversiones`, populado en `init()` desde `finance_data.json`. Se actualiza automáticamente con el sync diario — no requiere intervención manual.
