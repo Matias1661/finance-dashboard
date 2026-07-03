@@ -1,3 +1,22 @@
+## [2026-07-03] Backfill Peerberry Rendimiento Inversiones (sesion 2): sep 2025 - dic 2025 cargados, correccion de duplicados
+
+**Contexto:** continuacion del backfill Peerberry. Verificacion previa del rango dic2024-ago2025 confirmo consistencia (cadena de Profit acumulado sin errores). Se detectaron y corrigieron 3 filas duplicadas en feb 2025 (renombradas y movidas fuera de la DB) y un titulo vacio en mar 2025.
+
+**Meses cargados esta sesion:**
+
+| Mes | Ganancia EUR | Capital EUR | Fecha reporte |
+|---|---|---|---|
+| Sep 2025 | 43.63 | 5487.21 | 2025-09-22 |
+| Oct 2025 | 42.86 | 5530.07 | 2025-10-27 |
+| Nov 2025 | 34.90 | 5464.97 | 2025-11-24 |
+| Dic 2025 | 37.11 | 5502.08 | 2025-12-29 |
+
+Profit acumulado en dic 2025 = 552.08EUR (verificado contra correo).
+
+**Peerberry pendiente:** ene 2026 (19c1d1589067a4fc), feb 2026 (19cd152854bfba34), mar 2026 (19d618588e7b80bb), abr 2026 (19df1b616daf6650), may 2026 (19e81edf88fed371). Metodo igual a sesiones anteriores: Ganancia = Profit(mes) - Profit(mes anterior, ultimo Profit conocido = 552.08 dic 2025). Capital = Invested funds + Available balance.
+
+---
+
 ## [2026-07-03] Backfill Peerberry Rendimiento Inversiones (sesión 1 de tandas): Enero 2025 cargado
 
 **Contexto:** continuación de entrada anterior. Iniciado backfill de Peerberry en tandas de 1-2 meses por sesión para no repetir problema de contexto (cada correo trae HTML de 20-30k tokens).
