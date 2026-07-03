@@ -1,3 +1,13 @@
+## [2026-07-04] Fix atribucion de mes Peerberry en build_ganancia_inversiones
+
+**Causa confirmada por el usuario:** Peerberry envia su reporte todos los lunes, cadencia semanal fija sin relacion al calendario mensual (no el "primeros dias del mes" que se especulaba). El informe que cierra febrero 2026 llego el lunes 2026-03-02.
+
+**Fix:** en `build_ganancia_inversiones()`, si Plataforma=Peerberry y el dia de "Fecha reporte" es <=3, se atribuye al mes anterior. Regla acotada a Peerberry — MyInvestor no la necesita (reporte mensual, llega dentro del mes que informa).
+
+**Verificado:** re-sync exitoso. `2026-02` paso de 0 a 46.79EUR, `2026-03` paso de 71.66 a 24.87EUR (46.79+24.87=71.66, confirma que no se perdio ni duplico nada, solo se corrigio la atribucion). Resto de los 19 meses sin cambios.
+
+---
+
 ## [2026-07-04] KPI "Ahorro real 12m": fuente cambiada de % Sheet a Ganancia EUR Notion
 
 **Motivacion:** el KPI usaba `inversiones.rendimiento` (%, hoja Sheets), que mezcla depositos con rentabilidad real (ver entrada de migracion 2026-07-03). Con el backfill de Peerberry completo, ambas plataformas tienen Ganancia EUR limpia en la DB Notion "Rendimiento Inversiones" para todo el rango dic2024-may2026.
