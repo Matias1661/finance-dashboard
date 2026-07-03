@@ -1,3 +1,25 @@
+## [2026-07-03] Backfill Peerberry Rendimiento Inversiones: COMPLETO (dic 2024 - may 2026, 18 meses)
+
+**Contexto:** cierre del backfill iniciado en sesiones anteriores. Se cargaron los 9 meses restantes: sep 2025 - may 2026.
+
+**Meses cargados en esta tanda final:**
+
+| Mes | Ganancia EUR | Capital EUR | Fecha reporte |
+|---|---|---|---|
+| Ene 2026 | 35.86 | 5537.94 | 2026-01-26 |
+| Feb 2026 | 46.79 | 5084.73 | 2026-03-02 |
+| Mar 2026 | 24.87 | 5109.60 | 2026-03-30 |
+| Abr 2026 | 43.86 | 5153.46 | 2026-04-27 |
+| May 2026 | 23.63 | 5177.09 | 2026-05-25 |
+
+(Sep-Dic 2025 registrados en la entrada anterior.)
+
+**Estado final:** Peerberry cubre dic 2024 - may 2026, 18 meses consecutivos verificados sin huecos. Cadena de Profit acumulado validada extremo a extremo contra los correos (ningun salto inconsistente). MyInvestor ya estaba completo desde una sesion anterior (dic 2024 - jun 2026).  queda al dia para ambas plataformas salvo una fila suelta "Semanal" de Peerberry en jun 2026 (fecha 2026-06-28, capital 11702.99) que no forma parte de este backfill mensual y no fue tocada — su origen no esta documentado, revisar en sesion futura si genera inconsistencias en el grafico.
+
+**Backfill de Rendimiento Inversiones: cerrado.** Proximo paso relacionado: auditoria de la categoria "Inversion" en Movimientos (pendiente, ver seccion "Estado actual").
+
+---
+
 ## [2026-07-03] Backfill Peerberry Rendimiento Inversiones (sesion 2): sep 2025 - dic 2025 cargados, correccion de duplicados
 
 **Contexto:** continuacion del backfill Peerberry. Verificacion previa del rango dic2024-ago2025 confirmo consistencia (cadena de Profit acumulado sin errores). Se detectaron y corrigieron 3 filas duplicadas en feb 2025 (renombradas y movidas fuera de la DB) y un titulo vacio en mar 2025.
