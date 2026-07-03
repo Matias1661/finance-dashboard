@@ -1,3 +1,6 @@
+## [2026-07-04]
+- KPI "Ahorro real · ultimos 12 meses" (tab Resumen) ahora usa Ganancia EUR real de la DB Notion "Rendimiento Inversiones" en vez del % de rentabilidad del Sheet (que mezclaba depositos con retorno). Nuevo campo `inversiones.ganancia` en finance_data.json. Ver DECISIONS.md para detalle y limitacion conocida de atribucion de mes en Peerberry.
+
 ## [2026-07-03] — Backfill Peerberry Rendimiento Inversiones: Enero 2025 completado, 16 meses pendientes
 
 ### Añadido
