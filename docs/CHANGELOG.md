@@ -1,3 +1,6 @@
+## [2026-07-04] (fix)
+- Corregida atribucion de mes en `inversiones.ganancia` para Peerberry: reportes que llegan el lunes de los primeros dias de un mes (cadencia semanal fija de Peerberry) ahora se atribuyen al mes que cierran, no al de recepcion. Afecto solo feb/mar 2026.
+
 ## [2026-07-04]
 - KPI "Ahorro real · ultimos 12 meses" (tab Resumen) ahora usa Ganancia EUR real de la DB Notion "Rendimiento Inversiones" en vez del % de rentabilidad del Sheet (que mezclaba depositos con retorno). Nuevo campo `inversiones.ganancia` en finance_data.json. Ver DECISIONS.md para detalle y limitacion conocida de atribucion de mes en Peerberry.
 
