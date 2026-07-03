@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-03 12:08",
+  "generated_at": "2026-07-04 00:49",
   "movimientos": [
     {
       "fecha": "2026-07-02",
@@ -17687,6 +17687,7 @@
         "peerberry": 0.0,
         "myinvestor": 0.0
       }
-    ]
+    ],
+    "ganancia": []
   }
 }
