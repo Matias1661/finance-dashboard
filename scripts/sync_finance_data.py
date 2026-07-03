@@ -18,9 +18,18 @@ Output finance_data.json:
       "rendimiento": [
         { "mes": "2025-08", "peerberry": -9.80, "myinvestor": 0.76 },
         ...
+      ],
+      "ganancia": [
+        { "mes": "2025-08", "peerberry": 32.58, "myinvestor": 14.20 },
+        ...
       ]
     }
   }
+
+"ganancia" viene de la DB Notion "Rendimiento Inversiones" (Ganancia en EUR,
+periodo Mensual). Es la fuente correcta para el KPI "Ahorro real" porque son
+EUR reales, no un % que mezcla depositos con rentabilidad (ver DECISIONS.md
+2026-07-04). "capital" y "rendimiento" (%) siguen viniendo del Sheet sin cambios.
 """
 
 import os, json, re
@@ -34,9 +43,10 @@ SHEET_ID          = os.environ["SHEET_ID"]
 FINANZAS_SHEET    = "Inversiones"
 SA_JSON           = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
 
-NOTION_TOKEN          = os.environ["NOTION_TOKEN"]
-NOTION_DATA_SOURCE_ID = os.environ["NOTION_MOVIMIENTOS_DATA_SOURCE_ID"]
-NOTION_VERSION        = "2025-09-03"
+NOTION_TOKEN               = os.environ["NOTION_TOKEN"]
+NOTION_DATA_SOURCE_ID      = os.environ["NOTION_MOVIMIENTOS_DATA_SOURCE_ID"]
+NOTION_RENDIMIENTO_DS_ID   = os.environ.get("NOTION_RENDIMIENTO_DATA_SOURCE_ID")
+NOTION_VERSION             = "2025-09-03"
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
@@ -139,6 +149,69 @@ def fetch_movimientos_notion():
         payload["start_cursor"] = data["next_cursor"]
 
     return results
+
+
+def fetch_rendimiento_inversiones_notion():
+    """Lee todas las paginas de la DB Notion 'Rendimiento Inversiones' via API REST.
+    Filtra por Periodo = 'Mensual' en la propia query para ignorar filas Semanales
+    sueltas (ej. Peerberry jun-2026) que no forman parte de la serie mensual."""
+    url = f"https://api.notion.com/v1/data_sources/{NOTION_RENDIMIENTO_DS_ID}/query"
+    headers = {
+        "Authorization": f"Bearer {NOTION_TOKEN}",
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "page_size": 100,
+        "filter": {"property": "Periodo", "select": {"equals": "Mensual"}}
+    }
+
+    results = []
+    while True:
+        resp = requests.post(url, headers=headers, json=payload, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+        results.extend(data.get("results", []))
+        if not data.get("has_more"):
+            break
+        payload["start_cursor"] = data["next_cursor"]
+
+    return results
+
+
+def build_ganancia_inversiones(pages):
+    """Convierte paginas de 'Rendimiento Inversiones' (Plataforma/Ganancia/Fecha reporte)
+    a { mes: { peerberry, myinvestor } } en EUR, sumando si hubiera mas de una fila
+    por plataforma/mes."""
+    by_month = {}
+    for page in pages:
+        props = page.get("properties", {})
+
+        fecha_prop = props.get("Fecha reporte", {}).get("date")
+        fecha = fecha_prop["start"][:10] if fecha_prop and fecha_prop.get("start") else None
+        if not fecha:
+            continue
+        mk = fecha[:7]
+
+        plataforma_select = props.get("Plataforma", {}).get("select")
+        plataforma = plataforma_select["name"] if plataforma_select else None
+        if plataforma not in ("Peerberry", "MyInvestor"):
+            continue
+
+        ganancia = props.get("Ganancia", {}).get("number")
+        if ganancia is None:
+            continue
+
+        if mk not in by_month:
+            by_month[mk] = {"peerberry": 0.0, "myinvestor": 0.0}
+
+        key = "peerberry" if plataforma == "Peerberry" else "myinvestor"
+        by_month[mk][key] += ganancia
+
+    return [
+        {"mes": mk, "peerberry": round(v["peerberry"], 2), "myinvestor": round(v["myinvestor"], 2)}
+        for mk, v in sorted(by_month.items())
+    ]
 
 
 def build_movimientos(pages):
@@ -290,6 +363,18 @@ if __name__ == "__main__":
         except Exception as fin_err:
             print(f"  AVISO: no se pudo leer hoja Inversiones: {fin_err}")
             inversiones = {"capital": [], "rendimiento": []}
+
+        print("Leyendo Rendimiento Inversiones (Notion, Ganancia EUR)...")
+        try:
+            if not NOTION_RENDIMIENTO_DS_ID:
+                raise RuntimeError("falta env var NOTION_RENDIMIENTO_DATA_SOURCE_ID")
+            rend_pages = fetch_rendimiento_inversiones_notion()
+            print(f"  {len(rend_pages)} paginas (Periodo=Mensual)")
+            inversiones["ganancia"] = build_ganancia_inversiones(rend_pages)
+            print(f"  {len(inversiones['ganancia'])} meses de ganancia")
+        except Exception as rend_err:
+            print(f"  AVISO: no se pudo leer Rendimiento Inversiones: {rend_err}")
+            inversiones["ganancia"] = []
 
         output = {
             "generated_at": datetime.now(ZoneInfo("Europe/Madrid")).strftime("%Y-%m-%d %H:%M"),
