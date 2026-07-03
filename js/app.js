@@ -1337,7 +1337,7 @@ async function init(){
   } else {
     RAW = rawData.movimientos || [];
     if(window.FINANCE_STATE){
-      window.FINANCE_STATE.inversiones  = rawData.inversiones  || { capital: [], rendimiento: [] };
+      window.FINANCE_STATE.inversiones  = rawData.inversiones  || { capital: [], rendimiento: [], ganancia: [] };
       window.FINANCE_STATE.generatedAt  = rawData.generated_at || '—';
     }
   }
