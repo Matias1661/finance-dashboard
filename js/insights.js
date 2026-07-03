@@ -4,15 +4,29 @@
 
 // ---------- Helpers de ahorro real (consumidos por renderKPIs en charts.js) ----------
 
-// Suma de rendimiento de inversiones (Peerberry + MyInvestor) de los últimos N meses
+// Suma en EUROS del rendimiento de inversiones de los últimos N meses.
+// finance_data.json guarda 'rendimiento' como PORCENTAJE mensual (no euros) —
+// ver docs/PROJECT_MEMORY.md, sección "Tab Inversiones", Gráfico 2.
+// Euros = porcentaje/100 × capital de esa plataforma ese mes (Peerberry y MyInvestor por separado).
 function getRendimientoLastMonths(months){
   const rend = window.FINANCE_STATE?.inversiones?.rendimiento || [];
+  const capital = window.FINANCE_STATE?.inversiones?.capital || [];
+  const capitalByMonth = {};
+  capital.forEach(c => { capitalByMonth[c.mes] = c; });
+
   const cutoff = new Date();
   cutoff.setMonth(cutoff.getMonth() - months);
   const cutoffKey = cutoff.toISOString().slice(0, 7);
+
   return rend
     .filter(r => r.mes >= cutoffKey)
-    .reduce((s, r) => s + (Number(r.peerberry) || 0) + (Number(r.myinvestor) || 0), 0);
+    .reduce((s, r) => {
+      const cap = capitalByMonth[r.mes];
+      if(!cap) return s; // sin capital de referencia ese mes, no se puede convertir a euros
+      const pbEur = (Number(r.peerberry) || 0) / 100 * (Number(cap.peerberry) || 0);
+      const miEur = (Number(r.myinvestor) || 0) / 100 * (Number(cap.myinvestor) || 0);
+      return s + pbEur + miEur;
+    }, 0);
 }
 
 // Aportes netos a inversión de los últimos N meses.
