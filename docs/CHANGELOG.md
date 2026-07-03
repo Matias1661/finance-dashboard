@@ -1,3 +1,16 @@
+## [2026-07-03] — Rendimiento Inversiones: MyInvestor completo (19 meses, dic 2024-jun 2026), Peerberry a 2 meses
+
+### Añadido
+- 6 registros mensuales de MyInvestor cargados (dic 2025, ene-may 2026), completando el histórico dic 2024 – jun 2026 sin huecos.
+- 1 registro mensual de Peerberry (dic 2024), más el baseline de Profit de nov 2024 (206,73€, no cargado como fila, usado solo para el cálculo).
+
+### Pendiente
+- Peerberry: 17 meses (ene 2025 – may 2026). Anchors (thread IDs de Gmail) ya identificados, ver `docs/DECISIONS.md` para la lista completa y el método de cálculo (`Profit(mes) − Profit(mes anterior)`). Pausado por costo de contexto de los correos de Peerberry (HTML completo por correo, no hay forma de pedir solo el texto plano).
+- Configurar en Relay.app las reglas de parseo de ambos correos hacia esta DB (especificación completa en `docs/DECISIONS.md`).
+- Reescribir `build_inversiones()` en `sync_finance_data.py` para leer de esta DB en vez de la hoja Inversiones, una vez el backfill de Peerberry esté completo.
+
+Detalle en `docs/DECISIONS.md`, entrada `[2026-07-03] Backfill Rendimiento Inversiones: MyInvestor completo`.
+
 ## [2026-07-03] — Rendimiento Inversiones: DB creada en Notion, backfill parcial (13 meses MyInvestor)
 
 ### Añadido

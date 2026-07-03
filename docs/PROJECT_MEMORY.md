@@ -392,7 +392,7 @@ Patrones CSS establecidos:
 
 **Por qué no la columna "Rendimiento %" del Sheet:** mezcla depósitos y rentabilidad real (confirmado con el usuario — el valor mensual que hoy carga en Sheets es el balance total de la cartera, no un % de retorno puro).
 
-**Estado del backfill:** 13 meses de MyInvestor cargados (dic 2024–nov 2025, jun 2026). Pendiente: dic 2025–may 2026 de MyInvestor, todo el historial de Peerberry. Detalle en `docs/DECISIONS.md`.
+**Estado del backfill (03/07/2026):** MyInvestor COMPLETO, 19 meses sin huecos (dic 2024–jun 2026). Peerberry solo 2 meses (nov 2024 baseline + dic 2024 calculado); quedan 17 meses pendientes (ene 2025–may 2026) — anchors de Gmail ya identificados, pausado por costo de contexto (cada correo de Peerberry trae HTML completo, no solo texto). Detalle y lista de thread IDs en `docs/DECISIONS.md`.
 
 **Pendiente de automatización:** reglas de Relay para poblar esta DB automáticamente desde ambos correos — no configuradas (requiere UI de Relay.app). Especificación completa en `docs/DECISIONS.md`.
 

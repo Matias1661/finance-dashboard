@@ -1,3 +1,54 @@
+## [2026-07-03] Backfill Rendimiento Inversiones: MyInvestor completo (19 meses), Peerberry solo 2 meses por costo de contexto
+
+**Contexto:** continuación de la sesión anterior (ver entrada siguiente, "13 meses MyInvestor cargados"). Objetivo: completar el backfill de `Rendimiento Inversiones` desde diciembre 2024.
+
+**MyInvestor: COMPLETO.** Se cargaron los 6 meses que faltaban (dic 2025 – may 2026), sumando a los 13 ya cargados = 19 meses consecutivos sin huecos, dic 2024 a may 2026 (jun 2026 ya estaba cargado de la sesión anterior, así que MyInvestor cubre dic 2024 – jun 2026 completo).
+
+| Mes | Capital € | Ganancia € |
+|---|---|---|
+| Dic 2025 | 15.491 | 151 |
+| Ene 2026 | 6.276 | 568 |
+| Feb 2026 | 6.434 | 158 |
+| Mar 2026 | 6.439 | -476 |
+| Abr 2026 | 7.404 | 518 |
+| May 2026 | 8.269 | 427 |
+
+Nota: la caída de capital entre dic 2025 (15.491) y ene 2026 (6.276) corresponde a un reembolso de -9.783€ en aportaciones ese mes ("APORTACIONES en enero"), no a una pérdida — la ganancia de enero siguió siendo positiva (568€).
+
+**Peerberry: solo 2 meses cargados (nov 2024 baseline + dic 2024).** Motivo: cada correo de Peerberry, a diferencia de MyInvestor, no tiene snippet útil para el campo `Profit` — hay que traer el `plaintextBody` completo vía `Gmail:get_thread`, y el `htmlBody` (que no se puede omitir en la respuesta) pesa decenas de miles de tokens por correo. Con ~17 meses pendientes a un correo por mes, el costo de contexto para completar todo Peerberry en una sola sesión es prohibitivo. Se decidió cargar solo lo necesario para dejar un baseline verificado (Profit nov 2024 = 206,73€) y el primer mes calculado (dic 2024), y pausar aquí en vez de hacer un backfill a medias con datos inconsistentes.
+
+Datos del único mes Peerberry cargado esta sesión:
+- Nov 2024 (baseline, no se carga como fila): Profit 206,73€, Invested funds 2.747,65€, Available balance 9,08€.
+- Dic 2024: Profit 229,40€ → Ganancia = 229,40 − 206,73 = 22,67€. Invested funds 2.759,76€ + Available balance 19,64€ = Capital total 2.779,40€.
+
+**Peerberry pendiente — anchors ya identificados (thread IDs), solo falta fetch + cálculo de Profit:**
+
+| Mes | Balance más cercano a cierre | Thread ID |
+|---|---|---|
+| Ene 2025 | 2025-01-27 | 194c983652a9860c |
+| Feb 2025 | 2025-02-24 | 19559b284f96ed37 |
+| Mar 2025 | 2025-03-10 (hueco real hasta abr) | 195a1cb8fc2004d3 |
+| Abr 2025 | 2025-04-28 | 1969f321835d18a1 |
+| May 2025 | 2025-05-26 | 1972f63864403a88 |
+| Jun 2025 | 2025-06-16 (hueco real hasta jul) | 1979b88bd3d4af2e |
+| Jul 2025 | 2025-07-28 | 19873d4a21aa829e |
+| Ago 2025 | 2025-08-18 (hueco real hasta sep) | 198dff85b09f3076 |
+| Sep 2025 | 2025-09-22 | 19994354bf624765 |
+| Oct 2025 | 2025-10-27 | 19a4873578c81c0b |
+| Nov 2025 | 2025-11-24 | 19ad8ae2d3ecf34f |
+| Dic 2025 | 2025-12-29 | 19b8ce3ea0e07d10 |
+| Ene 2026 | 2026-01-26 | 19c1d1589067a4fc |
+| Feb 2026 | 2026-03-02 | 19cd152854bfba34 |
+| Mar 2026 | 2026-03-30 | 19d618588e7b80bb |
+| Abr 2026 | 2026-04-27 | 19df1b616daf6650 |
+| May 2026 | 2026-06-01 | 19e81edf88fed371 |
+
+Método para continuar: `Gmail:get_thread` con cada ID en orden, extraer `Profit:` del `plaintextBody` (formato "Profit: € X.XXX,XX"), calcular Ganancia del mes = Profit(mes actual) − Profit(mes anterior) — el primer cálculo usa Profit dic 2024 = 229,40€ como base. Capital total = Invested funds + Available balance del mismo correo. Escribir en Notion con `notion-create-pages`, parent `data_source_id: 93eda06b-9207-4589-b3f0-66be10ab9caf`, mismo esquema que MyInvestor pero Plataforma=Peerberry, Periodo=Mensual. Recomendación: hacerlo en tandas de 4-5 meses por sesión para no repetir el problema de contexto.
+
+**Automatización Relay:** sigue sin configurar (ver entrada siguiente, sin cambios).
+
+---
+
 ## [2026-07-03] Backfill parcial Rendimiento Inversiones: 13 meses MyInvestor cargados, resto pendiente
 
 **Contexto:** verificación de correos históricos de Peerberry y MyInvestor antes de automatizar con Relay. Objetivo: reemplazar por completo la hoja Inversiones de Sheets con la nueva DB de Notion `Rendimiento Inversiones` (data source `93eda06b-9207-4589-b3f0-66be10ab9caf`, dentro de Finance Tracker), alimentando tanto el gráfico de capital como el de rendimiento.
