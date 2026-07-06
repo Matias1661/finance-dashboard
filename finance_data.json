@@ -1,6 +1,76 @@
 {
-  "generated_at": "2026-07-06 09:01",
+  "generated_at": "2026-07-06 10:40",
   "movimientos": [
+    {
+      "fecha": "2026-07-05",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-05",
+      "concepto": "Amazon Prime",
+      "monto": -4.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-05",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-04",
+      "concepto": "Klarna*Motea",
+      "monto": -117.66,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-04",
+      "concepto": "KRUSS STUDIO",
+      "monto": -39,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-04",
+      "concepto": "MGP*Vinted",
+      "monto": -115.09,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-04",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 20,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-04",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-03",
+      "concepto": "PAGO TRANSFERENCIAS",
+      "monto": -550,
+      "categoria": "Inversion",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-03",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-07-02",
       "concepto": "TRANSF. A SU FAVOR",
@@ -17699,7 +17769,7 @@
         "peerberry": 22.67,
         "myinvestor": -52.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 771.0,
         "peerberry_capital": 2779.4,
         "myinvestor_capital": 14174
       },
@@ -17708,7 +17778,7 @@
         "peerberry": 20.24,
         "myinvestor": 121.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 0.0,
         "peerberry_capital": 2799.64,
         "myinvestor_capital": 14292
       },
@@ -17717,7 +17787,7 @@
         "peerberry": 22.2,
         "myinvestor": 80.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 0.0,
         "peerberry_capital": 2821.84,
         "myinvestor_capital": 14372
       },
@@ -17726,7 +17796,7 @@
         "peerberry": 10.71,
         "myinvestor": -380.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 0.0,
         "peerberry_capital": 2832.55,
         "myinvestor_capital": 13993
       },
@@ -17735,7 +17805,7 @@
         "peerberry": 33.37,
         "myinvestor": -229.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 0.0,
         "peerberry_capital": 2865.92,
         "myinvestor_capital": 13763
       },
@@ -17744,7 +17814,7 @@
         "peerberry": 21.47,
         "myinvestor": 277.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 0.0,
         "peerberry_capital": 5287.39,
         "myinvestor_capital": 14040
       },
@@ -17753,7 +17823,7 @@
         "peerberry": 12.62,
         "myinvestor": -4.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 0.0,
         "peerberry_capital": 4300.01,
         "myinvestor_capital": 14037
       },
@@ -17762,7 +17832,7 @@
         "peerberry": 32.58,
         "myinvestor": 268.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 657.0,
         "peerberry_capital": 4932.59,
         "myinvestor_capital": 14961
       },
@@ -17771,7 +17841,7 @@
         "peerberry": 10.99,
         "myinvestor": 114.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 0.0,
         "peerberry_capital": 4443.58,
         "myinvestor_capital": 15075
       },
@@ -17780,7 +17850,7 @@
         "peerberry": 43.63,
         "myinvestor": 389.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 281.0,
         "peerberry_capital": 5487.21,
         "myinvestor_capital": 15746
       },
@@ -17789,7 +17859,7 @@
         "peerberry": 42.86,
         "myinvestor": 620.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": -2139.0,
         "peerberry_capital": 5530.07,
         "myinvestor_capital": 14227
       },
@@ -17798,7 +17868,7 @@
         "peerberry": 34.9,
         "myinvestor": -78.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 992.0,
         "peerberry_capital": 5464.97,
         "myinvestor_capital": 15140
       },
@@ -17807,7 +17877,7 @@
         "peerberry": 37.11,
         "myinvestor": 151.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 199.0,
         "peerberry_capital": 5502.08,
         "myinvestor_capital": 15491
       },
@@ -17816,7 +17886,7 @@
         "peerberry": 35.86,
         "myinvestor": 568.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": -9783.0,
         "peerberry_capital": 5537.94,
         "myinvestor_capital": 6276
       },
@@ -17825,7 +17895,7 @@
         "peerberry": 0.0,
         "myinvestor": 158.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 0.0,
         "peerberry_capital": null,
         "myinvestor_capital": 6434
       },
@@ -17834,7 +17904,7 @@
         "peerberry": 71.66,
         "myinvestor": -476.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 480.0,
         "peerberry_capital": 5084.73,
         "myinvestor_capital": 6439
       },
@@ -17843,7 +17913,7 @@
         "peerberry": 43.86,
         "myinvestor": 518.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 448.0,
         "peerberry_capital": 5153.46,
         "myinvestor_capital": 7404
       },
@@ -17852,7 +17922,7 @@
         "peerberry": 23.63,
         "myinvestor": 427.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 438.0,
         "peerberry_capital": 5177.09,
         "myinvestor_capital": 8269
       },
@@ -17861,7 +17931,7 @@
         "peerberry": 25.9,
         "myinvestor": 151.0,
         "peerberry_aportes": 6500.0,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 444.0,
         "peerberry_capital": 11702.99,
         "myinvestor_capital": 8864
       }
@@ -17870,7 +17940,7 @@
       "pct_ultimo_mes": 1.32,
       "pct_12m": 16.74,
       "ganancia_12m": 3212.98,
-      "aportes_12m": null,
+      "aportes_12m": 6944.0,
       "aportes_12m_incompleto": true,
       "capital_actual": 20566.989999999998,
       "por_plataforma": {
@@ -17886,8 +17956,8 @@
           "pct_ultimo_mes": 1.83,
           "pct_12m": 25.93,
           "ganancia_12m": 2810.0,
-          "aportes_12m": null,
-          "aportes_12m_incompleto": true,
+          "aportes_12m": -7983.0,
+          "aportes_12m_incompleto": false,
           "capital_actual": 8864
         }
       }
