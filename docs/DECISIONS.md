@@ -1,3 +1,25 @@
+## [2026-07-06] Rendimiento Inversiones: modelo semanal Peerberry, campos Aportes y Profit acumulado
+
+**Contexto:** el usuario confirmo que Peerberry NO emite reportes mensuales — solo el mail semanal de los lunes ("Account summary overview", info@peerberry.com). Las 18 filas Mensual historicas son construcciones del backfill (deltas de Profit entre lunes elegidos). La fila "Semanal" del 28/06 quedo validada como reporte real: Capital 11.702,99 = Invested funds 8.360,91 + Available balance 3.342,08 del mail del 29/06; los depositos de junio (1.500 el 10/06 + 5.000 el 18/06) explican el salto de capital.
+
+**Contenido verificado de los mails (para el flow de Relay):**
+- Peerberry semanal: Balance on [inicio/fin] con fechas del periodo, Interest income (ganancia semanal directa, sin deltas), Principal repayment, Investment, Deposit, Withdrawals, y bloque Portfolio (Invested funds, Available balance, Profit acumulado).
+- MyInvestor mensual ("Rentabilidad de tu cartera en [mes]", comunicaciones@myinvestor.es, dia 1-2): Valor de cartera, Aportaciones (mes/anio), Ganancias (mes/anio/desde inicio), Rentabilidad % (mes/anio/desde inicio).
+
+**Decisiones:**
+1. Schema DB Rendimiento Inversiones (93eda06b-9207-4589-b3f0-66be10ab9caf): +2 campos number, `Aportes` y `Profit acumulado`.
+2. Convencion nueva: Peerberry se carga como Periodo=Semanal (una fila por lunes, Fecha reporte = fecha FIN del periodo del mail, no la fecha de envio). MyInvestor sigue Mensual.
+3. Mapping Relay: Peerberry → Ganancia=Interest income, Aportes=Deposit−Withdrawals, Capital total=Invested funds+Available balance, Profit acumulado=Profit. MyInvestor → Ganancia=Ganancias mes, Aportes=Aportaciones mes, Capital total=Valor de cartera, Profit acumulado vacio.
+4. Historico Mensual de Peerberry (dic24-may26) se conserva tal cual. Regla de agregacion futura en sync: por mes, si existe fila Mensual se usa esa; si no, se suman las Semanal del mes (sin doble conteo). Filas Mensual viejas no tienen Aportes → el sync puede derivarlo como delta Capital − Ganancia (aproximado).
+
+**Backfill junio 2026 Peerberry (desde mails reales de Gmail):** 3 filas Semanal creadas (fin 07/06, 14/06, 21/06) + fila 28/06 completada con Aportes=0 y Profit=752,99. Cadena de Profit validada extremo a extremo: 737,82 → 745,70 → 751,33 → 752,99 (cada delta = Interest income de la semana). Totales junio: Ganancia 25,90 EUR, Aportes 6.500 EUR (coincide con depositos confirmados).
+
+**Decision KPI (usuario):** reemplazar "Ahorro real 12m" del tab Resumen por: rentabilidad % ultimo mes, rentabilidad % 12m (TWR compuesto), y descomposicion aportado vs generado — nivel total cartera con desglose por plataforma. Implementacion pendiente en sync_finance_data.py e insights.js/charts.js.
+
+**Pendiente:** usuario crea flow Relay→Notion con el mapping de arriba (recordar conectar la DB a la conexion de Notion que use Relay, independiente de "Notion Talho").
+
+---
+
 ## [2026-07-04] Fix atribucion de mes Peerberry en build_ganancia_inversiones
 
 **Causa confirmada por el usuario:** Peerberry envia su reporte todos los lunes, cadencia semanal fija sin relacion al calendario mensual (no el "primeros dias del mes" que se especulaba). El informe que cierra febrero 2026 llego el lunes 2026-03-02.
