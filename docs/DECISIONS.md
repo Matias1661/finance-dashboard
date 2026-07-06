@@ -1,3 +1,22 @@
+## [2026-07-06] KPI rentabilidad inversiones: reemplaza Ahorro real 12m
+
+**Implementado (steps 3-4 del rediseno de KPI, ver entrada anterior 2026-07-06 sobre Aportes/Profit acumulado):**
+
+- `scripts/sync_finance_data.py`: `fetch_rendimiento_inversiones_notion()` ya no filtra por Periodo (trae Semanal+Mensual). Nueva `_aggregate_rendimiento_by_month()` agrega por mes calendario y plataforma (Mensual si existe, si no suma de Semanales — sin ajuste de atribucion, `Fecha reporte` ya es fecha de cierre real). `build_ganancia_inversiones()` ahora recibe ese dict agregado y agrega campos `*_aportes` y `*_capital` a cada mes. Nueva `build_kpi_inversiones()`: calcula `pct_ultimo_mes` y `pct_12m` (TWR compuesto, encadenando retornos mensuales = Ganancia/Capital cierre mes anterior) mas `ganancia_12m`/`aportes_12m`, total y por plataforma (`por_plataforma.peerberry`/`.myinvestor`). `aportes_12m` total es `null` si algun mes de la ventana no tiene Aportes conocido en ambas plataformas (evita subestimar sumando un 0 implicito).
+- `js/insights.js`: `getRendimientoLastMonths()`/`getAportesLastMonths()` (obsoletos) reemplazados por `getKpiInversiones()`, que solo lee `inversiones.kpi` ya calculado.
+- `js/charts.js`: tarjeta "Ahorro real · ultimos 12 meses" reemplazada por "Rentabilidad inversiones · ultimo mes" — % ultimo mes destacado, % 12m compuesto, generado por intereses (12m) y aportado (12m) en EUR, con desglose de % mensual por plataforma debajo. Si `aportes_12m` es null se muestra nota de dato incompleto.
+- `js/app.js`: fallback de `FINANCE_STATE.inversiones` incluye `kpi: null`.
+
+**Validacion:** `pct_ultimo_mes` de MyInvestor calculado (1.83%) coincide contra el 1.8% que MyInvestor reporta en su propio mail de junio 2026 (formula propia: Ganancia/Capital cierre mes anterior, vs la de MyInvestor que usa saldo medio — la cercania confirma que el proxy es razonable).
+
+**Limitacion conocida:** `aportes_12m` sera `null` hasta que MyInvestor tambien tenga Aportes cargado por Relay (las filas Mensuales historicas no lo tienen). Por plataforma, Peerberry ya tiene Aportes desde el backfill de junio 2026.
+
+**Verificado:** sync-finance-data.yml run exitoso (dispatch manual), finance_data.json con `inversiones.kpi` poblado, deploy-pages.yml exitoso.
+
+**Pendiente:** flow de Relay Peerberry/MyInvestor → Notion (usuario), que ademas resolvera el `aportes_12m_incompleto` una vez ambas plataformas informen Aportes mensualmente.
+
+---
+
 ## [2026-07-06] Rendimiento Inversiones: modelo semanal Peerberry, campos Aportes y Profit acumulado
 
 **Contexto:** el usuario confirmo que Peerberry NO emite reportes mensuales — solo el mail semanal de los lunes ("Account summary overview", info@peerberry.com). Las 18 filas Mensual historicas son construcciones del backfill (deltas de Profit entre lunes elegidos). La fila "Semanal" del 28/06 quedo validada como reporte real: Capital 11.702,99 = Invested funds 8.360,91 + Available balance 3.342,08 del mail del 29/06; los depositos de junio (1.500 el 10/06 + 5.000 el 18/06) explican el salto de capital.
