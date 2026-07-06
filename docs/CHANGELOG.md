@@ -1,3 +1,8 @@
+## 2026-07-06 (3)
+
+- Backfill de Aportes historico MyInvestor: 19 meses (dic 2024 - jun 2026), extraidos de los mails de rentabilidad.
+- KPI ya no marca aportes incompleto para MyInvestor en la ventana de 12m.
+
 ## 2026-07-06 (2)
 
 - KPI "Ahorro real 12m" reemplazado por "Rentabilidad inversiones": % ultimo mes, % 12m compuesto (TWR), y descomposicion aportado vs generado, total con desglose por plataforma.
