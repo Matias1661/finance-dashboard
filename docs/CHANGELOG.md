@@ -1,3 +1,9 @@
+## 2026-07-06
+
+- DB Notion "Rendimiento Inversiones": agregados campos `Aportes` (number) y `Profit acumulado` (number).
+- Backfill Peerberry junio 2026 desde mails semanales reales: 3 filas Semanal nuevas (07/06, 14/06, 21/06) y fila 28/06 completada. Cadena de Profit verificada.
+- Convencion nueva documentada: Peerberry semanal, MyInvestor mensual (ver DECISIONS.md 2026-07-06).
+
 ## [2026-07-04] (fix)
 - Corregida atribucion de mes en `inversiones.ganancia` para Peerberry: reportes que llegan el lunes de los primeros dias de un mes (cadencia semanal fija de Peerberry) ahora se atribuyen al mes que cierran, no al de recepcion. Afecto solo feb/mar 2026.
 
