@@ -590,15 +590,7 @@ function renderInversiones(){
   // ── KPIs ──
   // Aplicar fill-forward antes de calcular KPIs para evitar que meses sin dato
   // (valor 0) distorsionen el incremento respecto al mes anterior
-  function fillForwardKPI(arr) {
-    let lastPB = 0, lastMI = 0;
-    return arr.map(d => {
-      lastPB = d.peerberry  > 0 ? d.peerberry  : lastPB;
-      lastMI = d.myinvestor > 0 ? d.myinvestor : lastMI;
-      return { mes: d.mes, peerberry: lastPB, myinvestor: lastMI };
-    });
-  }
-  const capitalFilled = fillForwardKPI(capital);
+  const capitalFilled = fillForwardCapital(capital);
 
   const latest      = capitalFilled[capitalFilled.length - 1] || {};
   const totalCapital = (latest.peerberry || 0) + (latest.myinvestor || 0);
