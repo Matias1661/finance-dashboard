@@ -1,3 +1,7 @@
+## 2026-07-06 (5)
+
+- Unificado el cálculo de capital invertido entre Resumen ("Patrimonio invertido") e Inversiones ("Capital total"): ambos usan ahora `fillForwardCapital()` (js/state.js), antes solo Inversiones aplicaba fill-forward. Corrige discrepancia cuando MyInvestor todavía no reportó el mes en curso. Ver DECISIONS.md.
+
 ## 2026-07-06 (4)
 
 - KPI "Rentabilidad inversiones": se retira la linea "Aportado (12m)" (total y por plataforma). Motivo: dependia de reconciliar Movimientos contra emails plataforma por plataforma, categoria "Inversion" mezclada con nomina/traspasos/prestamos - no daba resultado confiable a tiempo razonable. Ver DECISIONS.md.
