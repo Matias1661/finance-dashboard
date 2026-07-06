@@ -1,3 +1,18 @@
+## [2026-07-06] Backfill Aportes historico MyInvestor (19 meses, dic 2024 - jun 2026)
+
+Se revisaron los 19 mails "Rentabilidad de tu cartera en [mes]" (comunicaciones@myinvestor.es) y se completo el campo `Aportes` en las 19 filas Mensuales de la DB Rendimiento Inversiones, extraido directo del bloque APORTACIONES de cada mail (sin calculo derivado).
+
+Valores cargados (EUR, mes: aportes):
+dic24: 771 | ene25: 0 | feb25: 0 | mar25: 0 | abr25: 0 | may25: 0 | jun25: 0 | jul25: 657 | ago25: 0 | sep25: 281 | oct25: -2139 | nov25: 992 | dic25: 199 | ene26: -9783 | feb26: 0 | mar26: 480 | abr26: 448 | may26: 438 | jun26: 444 (ya cargado).
+
+**Nota sobre enero 2026:** el aporte de -9.783€ explica el salto de capital de 15.491€ (dic25) a 6.276€ (ene26) que se veia en la serie — fue un retiro grande, no un error de datos.
+
+**Efecto en el KPI (verificado tras sync):** `myinvestor.aportes_12m_incompleto` paso de `true` a `false` (los 12 meses de la ventana ya tienen Aportes conocido). El total combinado (`aportes_12m`) sigue en `true` (incompleto) porque Peerberry solo tiene Aportes conocido para junio 2026 (unico mes con datos Semanales backfilleados) — se resuelve cuando el histórico de Peerberry tambien tenga Aportes, o naturalmente a medida que pasen los meses con el flow de Relay activo.
+
+**Verificado:** sync-finance-data.yml run exitoso, finance_data.json con `aportes_12m` = 6.944€ (Peerberry 6.500 + MyInvestor 444, único mes con ambas plataformas conocidas).
+
+---
+
 ## [2026-07-06] KPI rentabilidad inversiones: reemplaza Ahorro real 12m
 
 **Implementado (steps 3-4 del rediseno de KPI, ver entrada anterior 2026-07-06 sobre Aportes/Profit acumulado):**
