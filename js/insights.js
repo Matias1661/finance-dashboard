@@ -1,39 +1,18 @@
 // Finance Dashboard - Insights Module
-// Detección de cargos recurrentes/suscripciones, insights mensuales y ahorro real.
-// Carga: después de filters.js, antes de charts.js (charts.js usa los helpers de ahorro real).
+// Detección de cargos recurrentes/suscripciones e insights mensuales.
+// Carga: después de filters.js, antes de charts.js.
 
-// ---------- Helpers de ahorro real (consumidos por renderKPIs en charts.js) ----------
+// ---------- KPI de rentabilidad de inversiones (consumido por renderKPIs en charts.js) ----------
 
-// Suma en EUROS del rendimiento de inversiones de los últimos N meses.
-// finance_data.json guarda 'rendimiento' como PORCENTAJE mensual (no euros) —
-// ver docs/PROJECT_MEMORY.md, sección "Tab Inversiones", Gráfico 2.
-// Euros = porcentaje/100 × capital de esa plataforma ese mes (Peerberry y MyInvestor por separado).
-function getRendimientoLastMonths(months){
-  // Fuente: inversiones.ganancia (Notion, DB "Rendimiento Inversiones"), ya en EUR.
-  // Reemplaza el calculo anterior basado en % del Sheet, que mezclaba depositos
-  // con rentabilidad real (ver DECISIONS.md 2026-07-04).
-  const ganancia = window.FINANCE_STATE?.inversiones?.ganancia || [];
-
-  const cutoff = new Date();
-  cutoff.setMonth(cutoff.getMonth() - months);
-  const cutoffKey = cutoff.toISOString().slice(0, 7);
-
-  return ganancia
-    .filter(g => g.mes >= cutoffKey)
-    .reduce((s, g) => s + (Number(g.peerberry) || 0) + (Number(g.myinvestor) || 0), 0);
-}
-
-// Aportes netos a inversión de los últimos N meses.
-// Los depósitos a plataformas son montos negativos en la categoría Inversion,
-// por eso se invierte el signo: aporte positivo = dinero enviado a invertir.
-function getAportesLastMonths(months){
-  const raw = window.FINANCE_STATE?.raw || [];
-  const cutoff = new Date();
-  cutoff.setMonth(cutoff.getMonth() - months);
-  const cutoffStr = cutoff.toISOString().slice(0, 10);
-  return raw
-    .filter(r => r.categoria === 'Inversion' && r.fecha >= cutoffStr)
-    .reduce((s, r) => s - Number(r.monto), 0);
+// Devuelve el bloque inversiones.kpi de finance_data.json, ya calculado por
+// sync_finance_data.py (build_kpi_inversiones): % último mes, % 12m (TWR
+// compuesto) y descomposición aportado/generado, total y por plataforma.
+// Reemplaza el antiguo KPI "Ahorro real 12m" (ver DECISIONS.md 2026-07-06):
+// ese KPI mezclaba balance líquido con rendimiento de inversiones en una
+// sola cifra en euros; este separa rentabilidad porcentual real de cuánto
+// del crecimiento de capital es aporte propio vs interés/ganancia generada.
+function getKpiInversiones(){
+  return window.FINANCE_STATE?.inversiones?.kpi || null;
 }
 
 // ---------- Detección de cargos recurrentes ----------
