@@ -27,8 +27,7 @@ Output finance_data.json:
       ],
       "kpi": {
         "pct_ultimo_mes": 1.8, "pct_12m": 15.2,
-        "ganancia_12m": 1650.4, "aportes_12m": -1473.0,
-        "aportes_12m_incompleto": false, "capital_actual": 20567.08,
+        "ganancia_12m": 1650.4, "capital_actual": 20567.08,
         "por_plataforma": { "peerberry": {...}, "myinvestor": {...} }
       }
     }
@@ -36,10 +35,11 @@ Output finance_data.json:
 
 "ganancia" y "kpi" vienen de la DB Notion "Rendimiento Inversiones", agregando
 por mes calendario (fila Mensual si existe; si no, suma de filas Semanales de
-Peerberry). "kpi" reemplaza el antiguo "Ahorro real 12m": separa rentabilidad
-porcentual (ultimo mes y TWR 12m compuesto) de la descomposicion aportado vs
-generado en EUR (ver DECISIONS.md 2026-07-06). "capital" y "rendimiento" (%)
-siguen viniendo del Sheet sin cambios (tab Inversiones, no tocado).
+Peerberry). "kpi" reemplaza el antiguo "Ahorro real 12m": solo rentabilidad
+porcentual (ultimo mes y TWR 12m compuesto) y ganancia en EUR — sin descomponer
+aportado, que requeria reconciliar Movimientos y no era confiable (ver
+DECISIONS.md 2026-07-06). "capital" y "rendimiento" (%) siguen viniendo del
+Sheet sin cambios (tab Inversiones, no tocado).
 """
 
 import os, json, re
@@ -361,16 +361,11 @@ def _kpi_from_series(months):
 
     last12_months = months[-12:]
     ganancia_12m = round(sum(m["ganancia"] for m in last12_months), 2)
-    aportes_conocidos = [m["aportes"] for m in last12_months if m["aportes"] is not None]
-    aportes_12m = round(sum(aportes_conocidos), 2) if aportes_conocidos else None
-    aportes_incompleto = len(aportes_conocidos) < len(last12_months)
 
     return {
         "pct_ultimo_mes":        pct_ultimo_mes,
         "pct_12m":               pct_12m,
         "ganancia_12m":          ganancia_12m,
-        "aportes_12m":           aportes_12m,
-        "aportes_12m_incompleto": aportes_incompleto,
         "capital_actual":        months[-1]["capital"]
     }
 
