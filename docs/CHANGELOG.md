@@ -1,3 +1,9 @@
+## 2026-07-06 (4)
+
+- KPI "Rentabilidad inversiones": se retira la linea "Aportado (12m)" (total y por plataforma). Motivo: dependia de reconciliar Movimientos contra emails plataforma por plataforma, categoria "Inversion" mezclada con nomina/traspasos/prestamos - no daba resultado confiable a tiempo razonable. Ver DECISIONS.md.
+- sync_finance_data.py: `_kpi_from_series()` simplificado, ya no devuelve `aportes_12m`/`aportes_12m_incompleto`.
+- js/charts.js: tarjeta de rentabilidad sin fila de aportado ni nota de dato incompleto.
+
 ## 2026-07-06 (3)
 
 - Backfill de Aportes historico MyInvestor: 19 meses (dic 2024 - jun 2026), extraidos de los mails de rentabilidad.
