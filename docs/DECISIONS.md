@@ -1,3 +1,18 @@
+## [2026-07-06] KPI rentabilidad inversiones: se retira "Aportado (12m)"
+
+**Contexto:** la linea "Aportado (12m)" dependia de reconciliar la categoria "Inversion" de Movimientos (Notion) contra los emails de cada plataforma para saber que transferencias eran aportes reales. Se detecto que esa categoria mezcla conceptos no relacionados (nomina redirigida a MyInvestor via "PAG NOMINAS", traspasos, prestamos, donativos, crypto) y que reconciliarla mes a mes consume tiempo desproporcionado al valor que aporta el dato. Se decidio simplificar el KPI en vez de automatizar esa reconciliacion.
+
+**Cambio:**
+- `scripts/sync_finance_data.py`: `_kpi_from_series()` ya no calcula `aportes_12m` ni `aportes_12m_incompleto`. El objeto `kpi` (total y por plataforma) queda con `pct_ultimo_mes`, `pct_12m`, `ganancia_12m`, `capital_actual`.
+- `js/charts.js`: se quita la fila "Aportado (12m)" y la nota de pie sobre dato incompleto de la tarjeta "Rentabilidad inversiones".
+- El calculo de aportes en `build_ganancia_inversiones()` (usado en el grafico de barras del tab Inversiones, no en el KPI) no se toca.
+
+**Verificado:** sync-finance-data.yml disparado manualmente tras el push. `node -c` y `py_compile` sobre ambos archivos antes de subir.
+
+**No se automatiza (por ahora):** la idea alternativa de leer directamente los emails de cada plataforma (sin pasar por Movimientos) para reconstruir Aportes queda en el roadmap si en el futuro se vuelve a necesitar ese dato.
+
+---
+
 ## [2026-07-06] Backfill Aportes historico MyInvestor (19 meses, dic 2024 - jun 2026)
 
 Se revisaron los 19 mails "Rentabilidad de tu cartera en [mes]" (comunicaciones@myinvestor.es) y se completo el campo `Aportes` en las 19 filas Mensuales de la DB Rendimiento Inversiones, extraido directo del bloque APORTACIONES de cada mail (sin calculo derivado).
