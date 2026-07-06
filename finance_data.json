@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06 13:40",
+  "generated_at": "2026-07-06 22:24",
   "movimientos": [
     {
       "fecha": "2026-07-05",
@@ -17940,24 +17940,18 @@
       "pct_ultimo_mes": 1.32,
       "pct_12m": 16.74,
       "ganancia_12m": 3212.98,
-      "aportes_12m": -983.0,
-      "aportes_12m_incompleto": true,
       "capital_actual": 20566.989999999998,
       "por_plataforma": {
         "peerberry": {
           "pct_ultimo_mes": 0.5,
           "pct_12m": 6.97,
           "ganancia_12m": 402.98,
-          "aportes_12m": 7000.0,
-          "aportes_12m_incompleto": true,
           "capital_actual": 11702.99
         },
         "myinvestor": {
           "pct_ultimo_mes": 1.83,
           "pct_12m": 25.93,
           "ganancia_12m": 2810.0,
-          "aportes_12m": -7983.0,
-          "aportes_12m_incompleto": false,
           "capital_actual": 8864
         }
       }
