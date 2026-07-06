@@ -20,16 +20,26 @@ Output finance_data.json:
         ...
       ],
       "ganancia": [
-        { "mes": "2025-08", "peerberry": 32.58, "myinvestor": 14.20 },
+        { "mes": "2025-08", "peerberry": 32.58, "myinvestor": 14.20,
+          "peerberry_aportes": 0, "myinvestor_aportes": null,
+          "peerberry_capital": 4932.59, "myinvestor_capital": 14961 },
         ...
-      ]
+      ],
+      "kpi": {
+        "pct_ultimo_mes": 1.8, "pct_12m": 15.2,
+        "ganancia_12m": 1650.4, "aportes_12m": -1473.0,
+        "aportes_12m_incompleto": false, "capital_actual": 20567.08,
+        "por_plataforma": { "peerberry": {...}, "myinvestor": {...} }
+      }
     }
   }
 
-"ganancia" viene de la DB Notion "Rendimiento Inversiones" (Ganancia en EUR,
-periodo Mensual). Es la fuente correcta para el KPI "Ahorro real" porque son
-EUR reales, no un % que mezcla depositos con rentabilidad (ver DECISIONS.md
-2026-07-04). "capital" y "rendimiento" (%) siguen viniendo del Sheet sin cambios.
+"ganancia" y "kpi" vienen de la DB Notion "Rendimiento Inversiones", agregando
+por mes calendario (fila Mensual si existe; si no, suma de filas Semanales de
+Peerberry). "kpi" reemplaza el antiguo "Ahorro real 12m": separa rentabilidad
+porcentual (ultimo mes y TWR 12m compuesto) de la descomposicion aportado vs
+generado en EUR (ver DECISIONS.md 2026-07-06). "capital" y "rendimiento" (%)
+siguen viniendo del Sheet sin cambios (tab Inversiones, no tocado).
 """
 
 import os, json, re
@@ -152,19 +162,18 @@ def fetch_movimientos_notion():
 
 
 def fetch_rendimiento_inversiones_notion():
-    """Lee todas las paginas de la DB Notion 'Rendimiento Inversiones' via API REST.
-    Filtra por Periodo = 'Mensual' en la propia query para ignorar filas Semanales
-    sueltas (ej. Peerberry jun-2026) que no forman parte de la serie mensual."""
+    """Lee todas las paginas de la DB Notion 'Rendimiento Inversiones' via API REST,
+    sin filtrar por Periodo. Desde 2026-07-06, Peerberry se carga como filas
+    Semanales (un reporte real por lunes) y MyInvestor como Mensual; el filtro
+    anterior por Periodo=Mensual descartaba las semanas de Peerberry, que ahora
+    son la fuente primaria para meses sin backfill Mensual (ver DECISIONS.md)."""
     url = f"https://api.notion.com/v1/data_sources/{NOTION_RENDIMIENTO_DS_ID}/query"
     headers = {
         "Authorization": f"Bearer {NOTION_TOKEN}",
         "Notion-Version": NOTION_VERSION,
         "Content-Type": "application/json"
     }
-    payload = {
-        "page_size": 100,
-        "filter": {"property": "Periodo", "select": {"equals": "Mensual"}}
-    }
+    payload = {"page_size": 100}
 
     results = []
     while True:
@@ -179,52 +188,206 @@ def fetch_rendimiento_inversiones_notion():
     return results
 
 
-def build_ganancia_inversiones(pages):
-    """Convierte paginas de 'Rendimiento Inversiones' (Plataforma/Ganancia/Fecha reporte)
-    a { mes: { peerberry, myinvestor } } en EUR, sumando si hubiera mas de una fila
-    por plataforma/mes.
+def _extract_rendimiento_row(page):
+    """Extrae los campos relevantes de una pagina de 'Rendimiento Inversiones'."""
+    props = page.get("properties", {})
 
-    Peerberry envia su reporte todos los lunes, cadencia semanal fija sin relacion
-    al calendario mensual. Cuando el lunes de reporte cae en los primeros 3 dias de
-    un mes, la Ganancia corresponde al mes anterior (el reporte "cierra" ese mes,
-    no abre el siguiente) y se atribuye ahi. MyInvestor no necesita este ajuste:
-    su reporte es mensual y llega dentro del propio mes que informa.
+    fecha_prop = props.get("Fecha reporte", {}).get("date")
+    fecha = fecha_prop["start"][:10] if fecha_prop and fecha_prop.get("start") else None
+
+    plataforma_select = props.get("Plataforma", {}).get("select")
+    plataforma = plataforma_select["name"] if plataforma_select else None
+
+    periodo_select = props.get("Periodo", {}).get("select")
+    periodo = periodo_select["name"] if periodo_select else None
+
+    if not fecha or plataforma not in ("Peerberry", "MyInvestor"):
+        return None
+
+    return {
+        "fecha":      fecha,
+        "plataforma": plataforma,
+        "periodo":    periodo,
+        "ganancia":   props.get("Ganancia", {}).get("number"),
+        "aportes":    props.get("Aportes", {}).get("number"),
+        "capital":    props.get("Capital total", {}).get("number"),
+    }
+
+
+def _aggregate_rendimiento_by_month(pages):
+    """Agrega filas de 'Rendimiento Inversiones' por mes calendario y plataforma.
+
+    Regla de agregacion (ver DECISIONS.md 2026-07-06):
+    - Si existe una fila Mensual para esa plataforma/mes, se usa tal cual
+      (backfill historico ya verificado contra los mails de resumen).
+    - Si no existe fila Mensual, se suman las filas Semanales cuyo
+      'Fecha reporte' (fin del periodo semanal) cae en ese mes calendario.
+      No hace falta ningun ajuste de atribucion: 'Fecha reporte' ya es la
+      fecha de cierre real de cada semana, a diferencia de las fechas de
+      envio usadas en el backfill Mensual antiguo.
+    - Capital de cada mes/plataforma: el valor de la fila mas reciente
+      (Semanal o Mensual) dentro de ese mes.
+    - Aportes: se suman igual que Ganancia. Las filas Mensuales cargadas
+      antes de este cambio no tienen Aportes (aportes_known=False); el
+      consumidor puede aproximarlo como delta de capital menos ganancia.
+
+    Devuelve { mes: { "peerberry": {...}, "myinvestor": {...} } }.
     """
+    rows = [r for r in (_extract_rendimiento_row(p) for p in pages) if r]
+    mensual = [r for r in rows if r["periodo"] == "Mensual"]
+    semanal = [r for r in rows if r["periodo"] == "Semanal"]
+
     by_month = {}
-    for page in pages:
-        props = page.get("properties", {})
+    mensual_keys = set()
 
-        fecha_prop = props.get("Fecha reporte", {}).get("date")
-        fecha = fecha_prop["start"][:10] if fecha_prop and fecha_prop.get("start") else None
-        if not fecha:
-            continue
+    def plat_key(p):
+        return "peerberry" if p == "Peerberry" else "myinvestor"
 
-        plataforma_select = props.get("Plataforma", {}).get("select")
-        plataforma = plataforma_select["name"] if plataforma_select else None
-        if plataforma not in ("Peerberry", "MyInvestor"):
-            continue
-
-        y, m, d = int(fecha[:4]), int(fecha[5:7]), int(fecha[8:10])
-        if plataforma == "Peerberry" and d <= 3:
-            m -= 1
-            if m == 0:
-                m, y = 12, y - 1
-        mk = f"{y:04d}-{m:02d}"
-
-        ganancia = props.get("Ganancia", {}).get("number")
-        if ganancia is None:
-            continue
-
+    def ensure(mk):
         if mk not in by_month:
-            by_month[mk] = {"peerberry": 0.0, "myinvestor": 0.0}
+            by_month[mk] = {
+                "peerberry":  {"ganancia": 0.0, "aportes": 0.0, "aportes_known": False, "capital": None, "capital_fecha": None},
+                "myinvestor": {"ganancia": 0.0, "aportes": 0.0, "aportes_known": False, "capital": None, "capital_fecha": None},
+            }
+        return by_month[mk]
 
-        key = "peerberry" if plataforma == "Peerberry" else "myinvestor"
-        by_month[mk][key] += ganancia
+    for r in mensual:
+        mk = r["fecha"][:7]
+        pk = plat_key(r["plataforma"])
+        entry = ensure(mk)[pk]
+        entry["ganancia"] += r["ganancia"] or 0.0
+        if r["aportes"] is not None:
+            entry["aportes"] += r["aportes"]
+            entry["aportes_known"] = True
+        if r["capital"] is not None:
+            entry["capital"] = r["capital"]
+            entry["capital_fecha"] = r["fecha"]
+        mensual_keys.add((mk, pk))
 
-    return [
-        {"mes": mk, "peerberry": round(v["peerberry"], 2), "myinvestor": round(v["myinvestor"], 2)}
-        for mk, v in sorted(by_month.items())
-    ]
+    for r in semanal:
+        mk = r["fecha"][:7]
+        pk = plat_key(r["plataforma"])
+        if (mk, pk) in mensual_keys:
+            continue
+        entry = ensure(mk)[pk]
+        entry["ganancia"] += r["ganancia"] or 0.0
+        if r["aportes"] is not None:
+            entry["aportes"] += r["aportes"]
+            entry["aportes_known"] = True
+        if r["capital"] is not None:
+            if entry["capital_fecha"] is None or r["fecha"] >= entry["capital_fecha"]:
+                entry["capital"] = r["capital"]
+                entry["capital_fecha"] = r["fecha"]
+
+    return by_month
+
+
+def build_ganancia_inversiones(by_month):
+    """Serializa by_month a la lista { mes, peerberry, myinvestor, ... } que
+    consume el grafico de Ganancia del tab Inversiones (formato retrocompatible,
+    con aportes y capital agregados como campos nuevos)."""
+    result = []
+    for mk in sorted(by_month.keys()):
+        pb, mi = by_month[mk]["peerberry"], by_month[mk]["myinvestor"]
+        result.append({
+            "mes":                mk,
+            "peerberry":          round(pb["ganancia"], 2),
+            "myinvestor":         round(mi["ganancia"], 2),
+            "peerberry_aportes":  round(pb["aportes"], 2) if pb["aportes_known"] else None,
+            "myinvestor_aportes": round(mi["aportes"], 2) if mi["aportes_known"] else None,
+            "peerberry_capital":  pb["capital"],
+            "myinvestor_capital": mi["capital"],
+        })
+    return result
+
+
+def _monthly_totals(by_month):
+    """Serie mensual ordenada de {mes, capital, ganancia, aportes} a nivel
+    total cartera y por plataforma, para el calculo de KPIs."""
+    out = {"total": [], "peerberry": [], "myinvestor": []}
+    for mk in sorted(by_month.keys()):
+        pb, mi = by_month[mk]["peerberry"], by_month[mk]["myinvestor"]
+        pb_cap = pb["capital"] or 0
+        mi_cap = mi["capital"] or 0
+        out["peerberry"].append({
+            "mes": mk, "capital": pb_cap, "ganancia": pb["ganancia"],
+            "aportes": pb["aportes"] if pb["aportes_known"] else None
+        })
+        out["myinvestor"].append({
+            "mes": mk, "capital": mi_cap, "ganancia": mi["ganancia"],
+            "aportes": mi["aportes"] if mi["aportes_known"] else None
+        })
+        # Solo se suma si AMBAS plataformas tienen Aportes conocido: sumar con
+        # un 0 implicito para la plataforma sin dato subestimaria el total
+        # (ej. mientras MyInvestor historico no tenga Aportes cargado).
+        aportes_total = None
+        if pb["aportes_known"] and mi["aportes_known"]:
+            aportes_total = pb["aportes"] + mi["aportes"]
+        out["total"].append({
+            "mes": mk, "capital": pb_cap + mi_cap,
+            "ganancia": pb["ganancia"] + mi["ganancia"],
+            "aportes": aportes_total
+        })
+    return out
+
+
+def _kpi_from_series(months):
+    """A partir de una serie mensual [{mes, capital, ganancia, aportes}]
+    calcula: % ultimo mes, % 12m compuesto (TWR encadenando retornos
+    mensuales), ganancia y aportes acumulados de los ultimos 12 meses.
+
+    Rentabilidad mensual = Ganancia(mes) / Capital al cierre del mes anterior.
+    El primer mes de la serie no tiene mes anterior y queda fuera del calculo
+    de rentabilidad (solo aporta a ganancia/aportes si cae en la ventana 12m).
+    """
+    if not months:
+        return None
+
+    returns = []
+    for i in range(1, len(months)):
+        prev_capital = months[i - 1]["capital"]
+        if prev_capital:
+            returns.append(months[i]["ganancia"] / prev_capital)
+
+    pct_ultimo_mes = round(returns[-1] * 100, 2) if returns else None
+
+    last12_returns = returns[-12:]
+    pct_12m = None
+    if last12_returns:
+        acc = 1.0
+        for r in last12_returns:
+            acc *= (1 + r)
+        pct_12m = round((acc - 1) * 100, 2)
+
+    last12_months = months[-12:]
+    ganancia_12m = round(sum(m["ganancia"] for m in last12_months), 2)
+    aportes_conocidos = [m["aportes"] for m in last12_months if m["aportes"] is not None]
+    aportes_12m = round(sum(aportes_conocidos), 2) if aportes_conocidos else None
+    aportes_incompleto = len(aportes_conocidos) < len(last12_months)
+
+    return {
+        "pct_ultimo_mes":        pct_ultimo_mes,
+        "pct_12m":               pct_12m,
+        "ganancia_12m":          ganancia_12m,
+        "aportes_12m":           aportes_12m,
+        "aportes_12m_incompleto": aportes_incompleto,
+        "capital_actual":        months[-1]["capital"]
+    }
+
+
+def build_kpi_inversiones(by_month):
+    """KPI de rentabilidad para el tab Resumen: % ultimo mes, % 12m (TWR) y
+    descomposicion aportado/generado, a nivel total con desglose por
+    plataforma (reemplaza 'Ahorro real 12m', ver DECISIONS.md 2026-07-06)."""
+    series = _monthly_totals(by_month)
+    total = _kpi_from_series(series["total"])
+    if total is None:
+        return None
+    total["por_plataforma"] = {
+        "peerberry":  _kpi_from_series(series["peerberry"]),
+        "myinvestor": _kpi_from_series(series["myinvestor"]),
+    }
+    return total
 
 
 def build_movimientos(pages):
@@ -377,17 +540,20 @@ if __name__ == "__main__":
             print(f"  AVISO: no se pudo leer hoja Inversiones: {fin_err}")
             inversiones = {"capital": [], "rendimiento": []}
 
-        print("Leyendo Rendimiento Inversiones (Notion, Ganancia EUR)...")
+        print("Leyendo Rendimiento Inversiones (Notion, Ganancia/Aportes/Capital)...")
         try:
             if not NOTION_RENDIMIENTO_DS_ID:
                 raise RuntimeError("falta env var NOTION_RENDIMIENTO_DATA_SOURCE_ID")
             rend_pages = fetch_rendimiento_inversiones_notion()
-            print(f"  {len(rend_pages)} paginas (Periodo=Mensual)")
-            inversiones["ganancia"] = build_ganancia_inversiones(rend_pages)
-            print(f"  {len(inversiones['ganancia'])} meses de ganancia")
+            print(f"  {len(rend_pages)} paginas (Semanal + Mensual)")
+            by_month = _aggregate_rendimiento_by_month(rend_pages)
+            inversiones["ganancia"] = build_ganancia_inversiones(by_month)
+            inversiones["kpi"] = build_kpi_inversiones(by_month)
+            print(f"  {len(inversiones['ganancia'])} meses agregados")
         except Exception as rend_err:
             print(f"  AVISO: no se pudo leer Rendimiento Inversiones: {rend_err}")
             inversiones["ganancia"] = []
+            inversiones["kpi"] = None
 
         output = {
             "generated_at": datetime.now(ZoneInfo("Europe/Madrid")).strftime("%Y-%m-%d %H:%M"),
