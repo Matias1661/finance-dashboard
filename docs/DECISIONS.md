@@ -1,3 +1,11 @@
+## [2026-07-06] Unificar cálculo de capital invertido entre Resumen e Inversiones
+
+**Contexto:** la card "Patrimonio invertido" (Resumen) y la card "Capital total" (Inversiones) leen ambas de `inversiones.capital`, pero con lógica distinta: Inversiones aplicaba fill-forward (arrastra el último valor > 0 si un mes no tiene reporte de una plataforma) y Resumen tomaba el último registro tal cual. Cuando MyInvestor (carga mensual) todavía no reportó el mes en curso, esto producía cifras distintas entre ambas tabs para el mismo concepto.
+
+**Cambio:** se extrajo la función de fill-forward a `js/state.js` como `fillForwardCapital()`, reemplazando la copia local en `renderInversiones()` (app.js) y aplicándola también en la card de Resumen (charts.js). Ambas cards ahora parten del mismo dato procesado.
+
+---
+
 ## [2026-07-06] KPI rentabilidad inversiones: se retira "Aportado (12m)"
 
 **Contexto:** la linea "Aportado (12m)" dependia de reconciliar la categoria "Inversion" de Movimientos (Notion) contra los emails de cada plataforma para saber que transferencias eran aportes reales. Se detecto que esa categoria mezcla conceptos no relacionados (nomina redirigida a MyInvestor via "PAG NOMINAS", traspasos, prestamos, donativos, crypto) y que reconciliarla mes a mes consume tiempo desproporcionado al valor que aporta el dato. Se decidio simplificar el KPI en vez de automatizar esa reconciliacion.
