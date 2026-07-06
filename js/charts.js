@@ -73,7 +73,8 @@ function renderKPIs(){
   const net = income + expense;
 
   const capital = window.FINANCE_STATE?.inversiones?.capital || [];
-  const lastCapital = capital.length > 0 ? capital[capital.length - 1] : {};
+  const capitalFilled = fillForwardCapital(capital);
+  const lastCapital = capitalFilled.length > 0 ? capitalFilled[capitalFilled.length - 1] : {};
   const invPeerberry = lastCapital.peerberry || 0;
   const invMyinvestor = lastCapital.myinvestor || 0;
 
