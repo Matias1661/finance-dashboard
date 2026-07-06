@@ -3,7 +3,25 @@
 ## Propósito
 Memoria técnica central del proyecto. Cualquier agente de IA o desarrollador debe poder reconstruir el estado completo del proyecto leyendo solo este documento y los demás archivos en `docs/`.
 
-Última actualización: 2026-06-30
+Última actualización: 2026-07-06
+
+---
+
+## Continuidad entre agentes
+
+Distintos agentes de IA pueden trabajar sobre este proyecto en sesiones separadas. Ninguno debe asumir acceso al historial de conversaciones previas: la documentación en `docs/` debe alcanzar por sí sola para reconstruir el estado del proyecto.
+
+**Jerarquía de fuentes:** si algo dicho en una conversación contradice `docs/PROJECT_MEMORY.md`, `docs/DECISIONS.md`, `docs/ROADMAP.md` o `docs/CHANGELOG.md`, prevalece la documentación del repositorio.
+
+**Proceso obligatorio antes de un cambio significativo:**
+1. Revisar `PROJECT_MEMORY.md`, `DECISIONS.md`, `ROADMAP.md` y `CHANGELOG.md`.
+2. Registrar la decisión relevante en `DECISIONS.md`.
+3. Implementar el cambio.
+4. Actualizar `CHANGELOG.md`.
+5. Actualizar `ROADMAP.md` si corresponde.
+6. Actualizar este archivo si cambió el contexto general del proyecto.
+
+Ante cualquier duda sobre alcance, preguntar antes de asumir.
 
 ---
 
