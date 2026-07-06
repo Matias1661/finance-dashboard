@@ -1,3 +1,9 @@
+## 2026-07-06 (2)
+
+- KPI "Ahorro real 12m" reemplazado por "Rentabilidad inversiones": % ultimo mes, % 12m compuesto (TWR), y descomposicion aportado vs generado, total con desglose por plataforma.
+- sync_finance_data.py: agregacion semanal/mensual unificada de Rendimiento Inversiones (Peerberry Semanal + MyInvestor Mensual), nuevo bloque inversiones.kpi en finance_data.json.
+- Verificado en produccion: sync + deploy exitosos.
+
 ## 2026-07-06
 
 - DB Notion "Rendimiento Inversiones": agregados campos `Aportes` (number) y `Profit acumulado` (number).
