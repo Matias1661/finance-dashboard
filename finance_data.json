@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06 10:40",
+  "generated_at": "2026-07-06 10:54",
   "movimientos": [
     {
       "fecha": "2026-07-05",
@@ -17777,7 +17777,7 @@
         "mes": "2025-01",
         "peerberry": 20.24,
         "myinvestor": 121.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 0.0,
         "myinvestor_aportes": 0.0,
         "peerberry_capital": 2799.64,
         "myinvestor_capital": 14292
@@ -17786,7 +17786,7 @@
         "mes": "2025-02",
         "peerberry": 22.2,
         "myinvestor": 80.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 0.0,
         "myinvestor_aportes": 0.0,
         "peerberry_capital": 2821.84,
         "myinvestor_capital": 14372
@@ -17795,7 +17795,7 @@
         "mes": "2025-03",
         "peerberry": 10.71,
         "myinvestor": -380.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 0.0,
         "myinvestor_aportes": 0.0,
         "peerberry_capital": 2832.55,
         "myinvestor_capital": 13993
@@ -17804,7 +17804,7 @@
         "mes": "2025-04",
         "peerberry": 33.37,
         "myinvestor": -229.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 0.0,
         "myinvestor_aportes": 0.0,
         "peerberry_capital": 2865.92,
         "myinvestor_capital": 13763
@@ -17813,7 +17813,7 @@
         "mes": "2025-05",
         "peerberry": 21.47,
         "myinvestor": 277.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 2400.0,
         "myinvestor_aportes": 0.0,
         "peerberry_capital": 5287.39,
         "myinvestor_capital": 14040
@@ -17822,7 +17822,7 @@
         "mes": "2025-06",
         "peerberry": 12.62,
         "myinvestor": -4.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": -1000.0,
         "myinvestor_aportes": 0.0,
         "peerberry_capital": 4300.01,
         "myinvestor_capital": 14037
@@ -17831,7 +17831,7 @@
         "mes": "2025-07",
         "peerberry": 32.58,
         "myinvestor": 268.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 600.0,
         "myinvestor_aportes": 657.0,
         "peerberry_capital": 4932.59,
         "myinvestor_capital": 14961
@@ -17840,7 +17840,7 @@
         "mes": "2025-08",
         "peerberry": 10.99,
         "myinvestor": 114.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": -500.0,
         "myinvestor_aportes": 0.0,
         "peerberry_capital": 4443.58,
         "myinvestor_capital": 15075
@@ -17849,7 +17849,7 @@
         "mes": "2025-09",
         "peerberry": 43.63,
         "myinvestor": 389.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 1000.0,
         "myinvestor_aportes": 281.0,
         "peerberry_capital": 5487.21,
         "myinvestor_capital": 15746
@@ -17858,7 +17858,7 @@
         "mes": "2025-10",
         "peerberry": 42.86,
         "myinvestor": 620.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 0.0,
         "myinvestor_aportes": -2139.0,
         "peerberry_capital": 5530.07,
         "myinvestor_capital": 14227
@@ -17867,7 +17867,7 @@
         "mes": "2025-11",
         "peerberry": 34.9,
         "myinvestor": -78.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": -100.0,
         "myinvestor_aportes": 992.0,
         "peerberry_capital": 5464.97,
         "myinvestor_capital": 15140
@@ -17876,7 +17876,7 @@
         "mes": "2025-12",
         "peerberry": 37.11,
         "myinvestor": 151.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 0.0,
         "myinvestor_aportes": 199.0,
         "peerberry_capital": 5502.08,
         "myinvestor_capital": 15491
@@ -17885,7 +17885,7 @@
         "mes": "2026-01",
         "peerberry": 35.86,
         "myinvestor": 568.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 0.0,
         "myinvestor_aportes": -9783.0,
         "peerberry_capital": 5537.94,
         "myinvestor_capital": 6276
@@ -17903,7 +17903,7 @@
         "mes": "2026-03",
         "peerberry": 71.66,
         "myinvestor": -476.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": -500.0,
         "myinvestor_aportes": 480.0,
         "peerberry_capital": 5084.73,
         "myinvestor_capital": 6439
@@ -17912,7 +17912,7 @@
         "mes": "2026-04",
         "peerberry": 43.86,
         "myinvestor": 518.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 0.0,
         "myinvestor_aportes": 448.0,
         "peerberry_capital": 5153.46,
         "myinvestor_capital": 7404
@@ -17921,7 +17921,7 @@
         "mes": "2026-05",
         "peerberry": 23.63,
         "myinvestor": 427.0,
-        "peerberry_aportes": null,
+        "peerberry_aportes": 0.0,
         "myinvestor_aportes": 438.0,
         "peerberry_capital": 5177.09,
         "myinvestor_capital": 8269
@@ -17940,7 +17940,7 @@
       "pct_ultimo_mes": 1.32,
       "pct_12m": 16.74,
       "ganancia_12m": 3212.98,
-      "aportes_12m": 6944.0,
+      "aportes_12m": -983.0,
       "aportes_12m_incompleto": true,
       "capital_actual": 20566.989999999998,
       "por_plataforma": {
@@ -17948,7 +17948,7 @@
           "pct_ultimo_mes": 0.5,
           "pct_12m": 6.97,
           "ganancia_12m": 402.98,
-          "aportes_12m": 6500.0,
+          "aportes_12m": 7000.0,
           "aportes_12m_incompleto": true,
           "capital_actual": 11702.99
         },
