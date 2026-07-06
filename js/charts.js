@@ -137,7 +137,6 @@ function renderKPIs(){
       const pctMes  = kpi.pct_ultimo_mes;
       const pct12m  = kpi.pct_12m;
       const mesColor = pctMes >= 0 ? 'var(--green)' : 'var(--red)';
-      const aportesTxt = kpi.aportes_12m !== null ? formatEUR(kpi.aportes_12m) : 'N/D *';
 
       const pb = kpi.por_plataforma?.peerberry;
       const mi = kpi.por_plataforma?.myinvestor;
@@ -149,12 +148,10 @@ function renderKPIs(){
       <div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">
         <div style="display:flex;justify-content:space-between"><span>Rentabilidad 12m (compuesta)</span><span style="font-family:'DM Mono'">${pct12m !== null ? pct12m + '%' : '—'}</span></div>
         <div style="display:flex;justify-content:space-between;margin-top:4px"><span>Generado por intereses (12m)</span><span style="font-family:'DM Mono'">${formatEUR(kpi.ganancia_12m)}</span></div>
-        <div style="display:flex;justify-content:space-between;margin-top:4px"><span>Aportado (12m)</span><span style="font-family:'DM Mono'">${aportesTxt}</span></div>
         <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08)">
           <div style="display:flex;justify-content:space-between"><span>Peerberry · mes</span><span style="font-family:'DM Mono'">${pb?.pct_ultimo_mes !== null && pb?.pct_ultimo_mes !== undefined ? pb.pct_ultimo_mes + '%' : '—'}</span></div>
           <div style="display:flex;justify-content:space-between;margin-top:4px"><span>MyInvestor · mes</span><span style="font-family:'DM Mono'">${mi?.pct_ultimo_mes !== null && mi?.pct_ultimo_mes !== undefined ? mi.pct_ultimo_mes + '%' : '—'}</span></div>
         </div>
-        ${kpi.aportes_12m === null ? '<div style="margin-top:6px;font-size:10px">* dato de aportes incompleto para alguna plataforma en la ventana de 12m</div>' : ''}
       </div>
     </div>`;
     })()}
