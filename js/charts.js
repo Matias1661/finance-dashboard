@@ -125,23 +125,36 @@ function renderKPIs(){
       </div>
     </div>
     ${(() => {
-      // Ahorro real (últimos 12 meses) = balance líquido + rendimiento de inversiones.
-      // Los aportes a inversión no se restan del balance (Inversion está excluida),
-      // por lo que ya cuentan como ahorro; el rendimiento se suma aparte.
-      const rendimiento12 = typeof getRendimientoLastMonths === 'function' ? getRendimientoLastMonths(12) : 0;
-      const aportes12     = typeof getAportesLastMonths === 'function' ? getAportesLastMonths(12) : 0;
-      const ahorroReal    = net + rendimiento12;
-      const tasaReal      = income > 0 ? Math.round(ahorroReal / income * 100) : null;
-      const arColor       = ahorroReal >= 0 ? 'var(--green)' : 'var(--red)';
+      const kpi = typeof getKpiInversiones === 'function' ? getKpiInversiones() : null;
+      if(!kpi){
+        return `
+    <div class="card">
+      <div class="card-title">Rentabilidad inversiones</div>
+      <div style="font-size:13px;color:var(--text-secondary)">Sin datos suficientes todavía.</div>
+    </div>`;
+      }
+
+      const pctMes  = kpi.pct_ultimo_mes;
+      const pct12m  = kpi.pct_12m;
+      const mesColor = pctMes >= 0 ? 'var(--green)' : 'var(--red)';
+      const aportesTxt = kpi.aportes_12m !== null ? formatEUR(kpi.aportes_12m) : 'N/D *';
+
+      const pb = kpi.por_plataforma?.peerberry;
+      const mi = kpi.por_plataforma?.myinvestor;
+
       return `
     <div class="card">
-      <div class="card-title">Ahorro real · últimos 12 meses</div>
-      <div style="font-size:22px;font-weight:600;color:${arColor}">${formatEUR(ahorroReal)}</div>
+      <div class="card-title">Rentabilidad inversiones · último mes</div>
+      <div style="font-size:22px;font-weight:600;color:${mesColor}">${pctMes !== null ? pctMes + '%' : '—'}</div>
       <div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">
-        <div style="display:flex;justify-content:space-between"><span>Balance líquido</span><span style="font-family:'DM Mono'">${formatEUR(net)}</span></div>
-        <div style="display:flex;justify-content:space-between;margin-top:4px"><span>Rendim. inversiones</span><span style="font-family:'DM Mono'">${formatEUR(rendimiento12)}</span></div>
-        <div style="display:flex;justify-content:space-between;margin-top:4px"><span>Aportes netos a inv.</span><span style="font-family:'DM Mono'">${formatEUR(aportes12)}</span></div>
-        ${tasaReal !== null ? `<div style="display:flex;justify-content:space-between;margin-top:4px"><span>Tasa de ahorro real</span><span style="font-family:'DM Mono'">${tasaReal}%</span></div>` : ''}
+        <div style="display:flex;justify-content:space-between"><span>Rentabilidad 12m (compuesta)</span><span style="font-family:'DM Mono'">${pct12m !== null ? pct12m + '%' : '—'}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px"><span>Generado por intereses (12m)</span><span style="font-family:'DM Mono'">${formatEUR(kpi.ganancia_12m)}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px"><span>Aportado (12m)</span><span style="font-family:'DM Mono'">${aportesTxt}</span></div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08)">
+          <div style="display:flex;justify-content:space-between"><span>Peerberry · mes</span><span style="font-family:'DM Mono'">${pb?.pct_ultimo_mes !== null && pb?.pct_ultimo_mes !== undefined ? pb.pct_ultimo_mes + '%' : '—'}</span></div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px"><span>MyInvestor · mes</span><span style="font-family:'DM Mono'">${mi?.pct_ultimo_mes !== null && mi?.pct_ultimo_mes !== undefined ? mi.pct_ultimo_mes + '%' : '—'}</span></div>
+        </div>
+        ${kpi.aportes_12m === null ? '<div style="margin-top:6px;font-size:10px">* dato de aportes incompleto para alguna plataforma en la ventana de 12m</div>' : ''}
       </div>
     </div>`;
     })()}
