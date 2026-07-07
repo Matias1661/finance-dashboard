@@ -366,7 +366,8 @@ def _kpi_from_series(months):
         "pct_ultimo_mes":        pct_ultimo_mes,
         "pct_12m":               pct_12m,
         "ganancia_12m":          ganancia_12m,
-        "capital_actual":        months[-1]["capital"]
+        "capital_actual":        months[-1]["capital"],
+        "periodo_ultimo_mes":    months[-1]["mes"]
     }
 
 
