@@ -1,3 +1,8 @@
+## 2026-07-07 (2)
+
+- Unificadas las cards "Patrimonio invertido" y "Rentabilidad inversiones · último mes" (tab Resumen) en una sola card. Se quita la línea "Rentabilidad 12m (compuesta)". Ver DECISIONS.md.
+- js/charts.js: `renderKPIs()` modificado, sin cambios en el cálculo de datos.
+
 ## 2026-07-07
 
 - Suscripciones inactivas dejan de mostrarse pasados 6 meses (180 días) sin cobros. Antes quedaban visibles para siempre en la sección colapsable "Inactivas". Ver DECISIONS.md.
