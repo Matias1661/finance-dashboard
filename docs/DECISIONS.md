@@ -1,3 +1,15 @@
+## [2026-07-07] Rendimiento Inversiones: eliminado campo "Profit acumulado"
+
+**Contexto:** revision de la DB Notion "Rendimiento Inversiones" (data source 93eda06b-9207-4589-b3f0-66be10ab9caf) para confirmar que todos los campos siguen siendo necesarios.
+
+**Hallazgo:** `_extract_rendimiento_row()` en `scripts/sync_finance_data.py` solo lee Fecha reporte, Plataforma, Periodo, Ganancia, Aportes y Capital total. El campo "Profit acumulado" (agregado el 2026-07-06 para Peerberry) se usaba unicamente como verificacion manual de la cadena de backfill contra los correos, no lo consume el script ni el dashboard.
+
+**Cambio:** columna "Profit acumulado" eliminada de la DB Notion via `DROP COLUMN`. Schema actual: Fecha (titulo), Plataforma, Periodo, Ganancia, Aportes, Capital total, Fecha reporte.
+
+**Impacto:** ninguno en el dashboard (no se leia). Reduce el mapping que Relay tiene que completar en los flujos de Peerberry y MyInvestor.
+
+---
+
 ## [2026-07-07] Card "Rentabilidad inversiones": mostrar nombre del mes en vez de "último mes"
 
 **Contexto:** el título de la card decía "Rentabilidad inversiones · último mes", sin indicar a qué mes correspondía el dato.
