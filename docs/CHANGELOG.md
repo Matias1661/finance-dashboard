@@ -1,3 +1,7 @@
+## 2026-07-07 (3)
+
+- Revertida la unificación de cards: "Patrimonio invertido" y "Rentabilidad inversiones · último mes" vuelven a ser dos cards separadas. Se mantiene sin la línea "Rentabilidad 12m (compuesta)". Ver DECISIONS.md.
+
 ## 2026-07-07 (2)
 
 - Unificadas las cards "Patrimonio invertido" y "Rentabilidad inversiones · último mes" (tab Resumen) en una sola card. Se quita la línea "Rentabilidad 12m (compuesta)". Ver DECISIONS.md.
