@@ -1,3 +1,7 @@
+## 2026-07-07 (6)
+
+- KPI de rentabilidad de inversiones: ahora siempre muestra el último mes calendario completo (no el mes en curso), y espera a que MyInvestor haya reportado ese mes antes de mostrarlo. Ver DECISIONS.md.
+
 ## 2026-07-07 (5)
 
 - Eliminado el campo "Profit acumulado" de la DB Notion "Rendimiento Inversiones" (no lo consumía sync_finance_data.py). Ver DECISIONS.md.
