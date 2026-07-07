@@ -141,9 +141,14 @@ function renderKPIs(){
       const pb = kpi.por_plataforma?.peerberry;
       const mi = kpi.por_plataforma?.myinvestor;
 
+      const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+      const periodo = kpi.periodo_ultimo_mes;
+      const nombreMes = periodo ? MESES[parseInt(periodo.split('-')[1], 10) - 1] : null;
+      const tituloMes = nombreMes ? `Rentabilidad inversiones · ${nombreMes}` : 'Rentabilidad inversiones · último mes';
+
       return `
     <div class="card">
-      <div class="card-title">Rentabilidad inversiones · último mes</div>
+      <div class="card-title">${tituloMes}</div>
       <div style="font-size:22px;font-weight:600;color:${mesColor}">${pctMes !== null ? pctMes + '%' : '—'}</div>
       <div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">
         <div style="display:flex;justify-content:space-between"><span>Generado por intereses (12m)</span><span style="font-family:'DM Mono'">${formatEUR(kpi.ganancia_12m)}</span></div>
