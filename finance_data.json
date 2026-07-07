@@ -1,6 +1,20 @@
 {
-  "generated_at": "2026-07-07 16:03",
+  "generated_at": "2026-07-07 17:06",
   "movimientos": [
+    {
+      "fecha": "2026-07-06",
+      "concepto": "RECIBO VIVAGYM",
+      "monto": -34.9,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-06",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-07-06",
       "concepto": "TRANSFER INMEDIATA",
@@ -13,13 +27,13 @@
       "concepto": "WWW.AMAZON",
       "monto": -3.59,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Meliya Funda para AirTag (llavero antipérdida)"
     },
     {
       "fecha": "2026-07-06",
       "concepto": "E.S PAULAR",
       "monto": -3.34,
-      "categoria": "Combustible",
+      "categoria": "Salidas",
       "nota": null
     },
     {
@@ -40,7 +54,7 @@
       "fecha": "2026-07-06",
       "concepto": "HOSTAL- RTE EL VA",
       "monto": -69.2,
-      "categoria": "Viajes",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -61,7 +75,7 @@
       "fecha": "2026-07-06",
       "concepto": "BIZUM ENVIADO",
       "monto": -16.5,
-      "categoria": "Otros",
+      "categoria": "Club",
       "nota": null
     },
     {
