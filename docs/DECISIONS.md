@@ -1,3 +1,15 @@
+## [2026-07-07] KPI rentabilidad inversiones: usar siempre el último mes calendario completo
+
+**Contexto:** el KPI "% último mes" tomaba directamente el último mes presente en la serie de `Rendimiento Inversiones`. Como Peerberry carga reportes Semanales durante todo el mes en curso, ese mes aparecía en la serie antes de estar cerrado, mostrando rentabilidad parcial del mes actual en vez del último mes completo (ej. 7 de julio mostrando julio en vez de junio).
+
+**Cambio:** `scripts/sync_finance_data.py`:
+- Nueva función `_last_complete_month(by_month, current_month)`: busca, entre los meses anteriores al mes en curso, el último que ya tiene reporte Mensual de MyInvestor cargado (`capital` no nulo). MyInvestor reporta los primeros días del mes siguiente, así que un mes recién cerrado puede no tener aún su dato — en ese caso se usa el mes anterior a ese, evitando mostrar ganancia 0 o parcial.
+- `build_kpi_inversiones()` calcula el mes actual (zona Europe/Madrid), obtiene el mes objetivo con `_last_complete_month()` y filtra `by_month` a `mes <= objetivo` antes de armar la serie. Así "último mes" y el TWR de 12m siempre terminan en un mes calendario completo y con dato de ambas plataformas.
+
+**Impacto:** ninguno en el schema de `finance_data.json` (mismo objeto `kpi`, mismos campos). `js/charts.js` no requiere cambios: sigue leyendo `periodo_ultimo_mes` para el título de la card.
+
+---
+
 ## [2026-07-07] Rendimiento Inversiones: eliminado campo "Profit acumulado"
 
 **Contexto:** revision de la DB Notion "Rendimiento Inversiones" (data source 93eda06b-9207-4589-b3f0-66be10ab9caf) para confirmar que todos los campos siguen siendo necesarios.
