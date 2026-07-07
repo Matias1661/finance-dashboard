@@ -1,3 +1,7 @@
+## 2026-07-07 (5)
+
+- Eliminado el campo "Profit acumulado" de la DB Notion "Rendimiento Inversiones" (no lo consumía sync_finance_data.py). Ver DECISIONS.md.
+
 ## 2026-07-07 (4)
 
 - Card "Rentabilidad inversiones" ahora muestra el mes real ("· junio") en vez de "· último mes". Ver DECISIONS.md.
