@@ -129,9 +129,11 @@ function renderSuscripciones(){
   if(!recs.length){ el.style.display = 'none'; return; }
   el.style.display = '';
 
-  const subs   = recs.filter(r => r.esSuscripcion);
-  const otros  = recs.filter(r => !r.esSuscripcion);
-  const totalSubsAct  = subs.filter(r => r.activa).reduce((s, r) => s + r.monto, 0);
+  const subs        = recs.filter(r => r.esSuscripcion);
+  const otros       = recs.filter(r => !r.esSuscripcion);
+  const subsAct     = subs.filter(r => r.activa);
+  const subsInact   = subs.filter(r => !r.activa);
+  const totalSubsAct  = subsAct.reduce((s, r) => s + r.monto, 0);
   const totalOtrosAct = otros.filter(r => r.activa).reduce((s, r) => s + r.monto, 0);
 
   const row = r => `<tr style="${r.activa ? '' : 'opacity:0.55'}">
@@ -156,7 +158,14 @@ function renderSuscripciones(){
       <span style="font-family:'DM Mono';color:var(--red)">${formatEUR(-totalSubsAct)}/mes</span>
       <span style="color:var(--text-secondary);font-size:12px"> · "Sin cobros" = más de ${RECURRING_ACTIVE_DAYS} días sin cargo (cancelación verificada)</span>
     </div>
-    <div style="overflow-x:auto"><table>${tableHead}<tbody>${subs.map(row).join('')}</tbody></table></div>
+    <div style="overflow-x:auto"><table>${tableHead}<tbody>${subsAct.map(row).join('')}</tbody></table></div>
+    ${subsInact.length ? `
+    <details style="margin-top:14px">
+      <summary style="cursor:pointer;font-size:13px;color:var(--text-secondary)">
+        Inactivas: ${subsInact.length}
+      </summary>
+      <div style="overflow-x:auto;margin-top:10px"><table>${tableHead}<tbody>${subsInact.map(row).join('')}</tbody></table></div>
+    </details>` : ''}
     ${otros.length ? `
     <details style="margin-top:14px">
       <summary style="cursor:pointer;font-size:13px;color:var(--text-secondary)">
