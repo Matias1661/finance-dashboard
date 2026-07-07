@@ -1,3 +1,15 @@
+## [2026-07-07] Card "Rentabilidad inversiones": mostrar nombre del mes en vez de "último mes"
+
+**Contexto:** el título de la card decía "Rentabilidad inversiones · último mes", sin indicar a qué mes correspondía el dato.
+
+**Cambio:**
+- `scripts/sync_finance_data.py`: `_kpi_from_series()` agrega `periodo_ultimo_mes` (formato "YYYY-MM", tomado de `months[-1]["mes"]") al objeto kpi (total y por plataforma).
+- `js/charts.js`: `renderKPIs()` traduce `periodo_ultimo_mes` a nombre de mes en español (array `MESES`) y arma el título "Rentabilidad inversiones · {mes}". Si no hay dato, cae a "· último mes" como antes.
+
+**Verificado:** `sync-finance-data.yml` disparado manualmente; `finance_data.json` confirma `periodo_ultimo_mes: "2026-06"`.
+
+---
+
 ## [2026-07-07] Revertir a dos cards separadas: "Patrimonio invertido" y "Rentabilidad inversiones"
 
 **Contexto:** la unificación en una sola card (entrada anterior del mismo día) quedó demasiado grande visualmente. Se pidió volver a separarlas.
