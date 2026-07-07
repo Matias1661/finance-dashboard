@@ -1,3 +1,8 @@
+## 2026-07-07
+
+- Suscripciones inactivas dejan de mostrarse pasados 6 meses (180 días) sin cobros. Antes quedaban visibles para siempre en la sección colapsable "Inactivas". Ver DECISIONS.md.
+- js/insights.js: nueva constante `RECURRING_HIDE_DAYS`, campo `diasSinCobro` en cada registro recurrente, filtro en `renderSuscripciones()`.
+
 ## 2026-07-06 (5)
 
 - Unificado el cálculo de capital invertido entre Resumen ("Patrimonio invertido") e Inversiones ("Capital total"): ambos usan ahora `fillForwardCapital()` (js/state.js), antes solo Inversiones aplicaba fill-forward. Corrige discrepancia cuando MyInvestor todavía no reportó el mes en curso. Ver DECISIONS.md.
