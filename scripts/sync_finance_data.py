@@ -371,11 +371,39 @@ def _kpi_from_series(months):
     }
 
 
+def _last_complete_month(by_month, current_month):
+    """Devuelve el ultimo mes calendario anterior al actual que ya tiene
+    reporte Mensual de MyInvestor (capital no nulo). MyInvestor reporta los
+    primeros dias del mes siguiente; hasta que ese reporte llega, el mes
+    recien cerrado queda incompleto y no debe mostrarse como 'ultimo mes'
+    (mostraria ganancia 0 o parcial). Si ningun mes anterior tiene MyInvestor
+    completo, devuelve el ultimo mes anterior al actual disponible (fallback)."""
+    anteriores = sorted(mk for mk in by_month if mk < current_month)
+    if not anteriores:
+        return None
+    for mk in reversed(anteriores):
+        if by_month[mk]["myinvestor"]["capital"] is not None:
+            return mk
+    return anteriores[-1]
+
+
 def build_kpi_inversiones(by_month):
     """KPI de rentabilidad para el tab Resumen: % ultimo mes, % 12m (TWR) y
     descomposicion aportado/generado, a nivel total con desglose por
-    plataforma (reemplaza 'Ahorro real 12m', ver DECISIONS.md 2026-07-06)."""
-    series = _monthly_totals(by_month)
+    plataforma (reemplaza 'Ahorro real 12m', ver DECISIONS.md 2026-07-06).
+
+    El 'ultimo mes' siempre es el ultimo mes calendario completo (nunca el
+    mes en curso, aunque Peerberry ya haya cargado reportes semanales de
+    ese mes), y solo una vez que MyInvestor reporto ese mes. Ver
+    DECISIONS.md 2026-07-07 (mes completo vs mes en curso)."""
+    if not by_month:
+        return None
+    current_month = datetime.now(ZoneInfo("Europe/Madrid")).strftime("%Y-%m")
+    target = _last_complete_month(by_month, current_month)
+    if target is None:
+        return None
+    filtered = {mk: v for mk, v in by_month.items() if mk <= target}
+    series = _monthly_totals(filtered)
     total = _kpi_from_series(series["total"])
     if total is None:
         return None
@@ -564,5 +592,6 @@ if __name__ == "__main__":
     except Exception as e:
         print(f'Error: {e}')
         raise
+
 
 
