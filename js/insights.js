@@ -47,6 +47,7 @@ const RECURRING_MIN_CHARGES = 3;
 const RECURRING_GAP_MIN = 25;   // días — cadencia mensual
 const RECURRING_GAP_MAX = 35;
 const RECURRING_ACTIVE_DAYS = 45; // sin cobro en más de 45 días → inactiva
+const RECURRING_HIDE_DAYS = 180;  // sin cobro en más de 180 días (6 meses) → dejar de mostrar
 
 function _median(arr){
   const s = [...arr].sort((a, b) => a - b);
@@ -92,7 +93,8 @@ function detectRecurring(){
     const modalCat = Object.keys(catCount).sort((a, b) => catCount[b] - catCount[a])[0];
 
     const ultimo = fechas[fechas.length - 1];
-    const activa = _daysBetween(ultimo, lastTx) <= RECURRING_ACTIVE_DAYS;
+    const diasSinCobro = _daysBetween(ultimo, lastTx);
+    const activa = diasSinCobro <= RECURRING_ACTIVE_DAYS;
 
     // Clasificación suscripción vs otro cargo recurrente
     const esSub =
@@ -114,7 +116,7 @@ function detectRecurring(){
 
     result.push({
       concepto: g.concepto, alias, monto: g.amt, categoria: modalCat,
-      cobros: g.items.length, ultimo, activa, esSuscripcion: esSub
+      cobros: g.items.length, ultimo, activa, diasSinCobro, esSuscripcion: esSub
     });
   });
 
@@ -129,7 +131,7 @@ function renderSuscripciones(){
   if(!recs.length){ el.style.display = 'none'; return; }
   el.style.display = '';
 
-  const subs        = recs.filter(r => r.esSuscripcion);
+  const subs        = recs.filter(r => r.esSuscripcion && r.diasSinCobro <= RECURRING_HIDE_DAYS);
   const otros       = recs.filter(r => !r.esSuscripcion);
   const subsAct     = subs.filter(r => r.activa);
   const subsInact   = subs.filter(r => !r.activa);
