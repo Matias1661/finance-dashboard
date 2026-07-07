@@ -1,3 +1,11 @@
+## [2026-07-07] Revertir a dos cards separadas: "Patrimonio invertido" y "Rentabilidad inversiones"
+
+**Contexto:** la unificación en una sola card (entrada anterior del mismo día) quedó demasiado grande visualmente. Se pidió volver a separarlas.
+
+**Cambio:** en `renderKPIs()` (js/charts.js), cada bloque vuelve a su propio `<div class="card">`, sin reintroducir la línea "Rentabilidad 12m (compuesta)" que ya se había quitado. Contenido de cada card idéntico al de la versión unificada, solo cambia el contenedor.
+
+---
+
 ## [2026-07-07] Unificar cards "Patrimonio invertido" y "Rentabilidad inversiones" (Resumen)
 
 **Contexto:** en el tab Resumen, "Patrimonio invertido" y "Rentabilidad inversiones · último mes" eran dos cards separadas. Se pidió fusionarlas en una sola y quitar la línea "Rentabilidad 12m (compuesta)".
