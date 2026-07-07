@@ -1,3 +1,13 @@
+## [2026-07-07] Suscripciones inactivas: dejar de mostrarse tras 6 meses sin cobros
+
+**Contexto:** `detectRecurring()` en `js/insights.js` marca una suscripción como inactiva cuando pasan más de 45 días sin cobro (`RECURRING_ACTIVE_DAYS`), pero seguía mostrándola indefinidamente en la sección colapsable "Inactivas" del bloque Suscripciones.
+
+**Cambio:** nueva constante `RECURRING_HIDE_DAYS = 180`. Cada registro recurrente ahora guarda `diasSinCobro`. En `renderSuscripciones()`, las suscripciones (`esSuscripcion: true`) con más de 180 días sin cobro se excluyen del listado (activas e inactivas), sin afectar "otros cargos recurrentes" ni la detección en sí.
+
+**Verificado:** `node --check` sobre `js/insights.js` antes de subir.
+
+---
+
 ## [2026-07-06] Unificar cálculo de capital invertido entre Resumen e Inversiones
 
 **Contexto:** la card "Patrimonio invertido" (Resumen) y la card "Capital total" (Inversiones) leen ambas de `inversiones.capital`, pero con lógica distinta: Inversiones aplicaba fill-forward (arrastra el último valor > 0 si un mes no tiene reporte de una plataforma) y Resumen tomaba el último registro tal cual. Cuando MyInvestor (carga mensual) todavía no reportó el mes en curso, esto producía cifras distintas entre ambas tabs para el mismo concepto.
