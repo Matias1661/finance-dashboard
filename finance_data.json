@@ -1,6 +1,76 @@
 {
-  "generated_at": "2026-07-07 12:28",
+  "generated_at": "2026-07-07 16:03",
   "movimientos": [
+    {
+      "fecha": "2026-07-06",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-06",
+      "concepto": "WWW.AMAZON",
+      "monto": -3.59,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-06",
+      "concepto": "E.S PAULAR",
+      "monto": -3.34,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-06",
+      "concepto": "DOS CASTILLAS RES",
+      "monto": -15,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-06",
+      "concepto": "SANSE I",
+      "monto": -16.61,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-06",
+      "concepto": "HOSTAL- RTE EL VA",
+      "monto": -69.2,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-06",
+      "concepto": "LIDL SAN SEBASTI",
+      "monto": -89.9,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-06",
+      "concepto": "TRASPASO",
+      "monto": 40,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-06",
+      "concepto": "BIZUM ENVIADO",
+      "monto": -16.5,
+      "categoria": "Otros",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-06",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 30,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-07-05",
       "concepto": "TRANSFER INMEDIATA",
@@ -17920,18 +17990,18 @@
       {
         "mes": "2026-05",
         "peerberry": 23.63,
-        "myinvestor": 854.0,
+        "myinvestor": 427.0,
         "peerberry_aportes": 0.0,
-        "myinvestor_aportes": 876.0,
+        "myinvestor_aportes": 438.0,
         "peerberry_capital": 5177.09,
         "myinvestor_capital": 8269
       },
       {
         "mes": "2026-06",
         "peerberry": 25.9,
-        "myinvestor": 302.0,
+        "myinvestor": 151.0,
         "peerberry_aportes": 6500.0,
-        "myinvestor_aportes": 888.0,
+        "myinvestor_aportes": 444.0,
         "peerberry_capital": 11702.99,
         "myinvestor_capital": 8864
       },
@@ -17946,25 +18016,25 @@
       }
     ],
     "kpi": {
-      "pct_ultimo_mes": 0.08,
-      "pct_12m": 20.04,
-      "ganancia_12m": 3507.49,
-      "capital_actual": 11720.08,
-      "periodo_ultimo_mes": "2026-07",
+      "pct_ultimo_mes": 1.32,
+      "pct_12m": 16.74,
+      "ganancia_12m": 3212.98,
+      "capital_actual": 20566.989999999998,
+      "periodo_ultimo_mes": "2026-06",
       "por_plataforma": {
         "peerberry": {
-          "pct_ultimo_mes": 0.15,
-          "pct_12m": 6.88,
-          "ganancia_12m": 387.49,
-          "capital_actual": 11720.08,
-          "periodo_ultimo_mes": "2026-07"
+          "pct_ultimo_mes": 0.5,
+          "pct_12m": 6.97,
+          "ganancia_12m": 402.98,
+          "capital_actual": 11702.99,
+          "periodo_ultimo_mes": "2026-06"
         },
         "myinvestor": {
-          "pct_ultimo_mes": 0.0,
-          "pct_12m": 32.65,
-          "ganancia_12m": 3120.0,
-          "capital_actual": 0,
-          "periodo_ultimo_mes": "2026-07"
+          "pct_ultimo_mes": 1.83,
+          "pct_12m": 25.93,
+          "ganancia_12m": 2810.0,
+          "capital_actual": 8864,
+          "periodo_ultimo_mes": "2026-06"
         }
       }
     }
