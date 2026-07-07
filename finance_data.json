@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-07 11:13",
+  "generated_at": "2026-07-07 12:16",
   "movimientos": [
     {
       "fecha": "2026-07-05",
@@ -17920,42 +17920,51 @@
       {
         "mes": "2026-05",
         "peerberry": 23.63,
-        "myinvestor": 427.0,
+        "myinvestor": 854.0,
         "peerberry_aportes": 0.0,
-        "myinvestor_aportes": 438.0,
+        "myinvestor_aportes": 876.0,
         "peerberry_capital": 5177.09,
         "myinvestor_capital": 8269
       },
       {
         "mes": "2026-06",
         "peerberry": 25.9,
-        "myinvestor": 151.0,
+        "myinvestor": 302.0,
         "peerberry_aportes": 6500.0,
-        "myinvestor_aportes": 444.0,
+        "myinvestor_aportes": 888.0,
         "peerberry_capital": 11702.99,
         "myinvestor_capital": 8864
+      },
+      {
+        "mes": "2026-07",
+        "peerberry": 17.09,
+        "myinvestor": 0.0,
+        "peerberry_aportes": 0.0,
+        "myinvestor_aportes": null,
+        "peerberry_capital": 11720.08,
+        "myinvestor_capital": null
       }
     ],
     "kpi": {
-      "pct_ultimo_mes": 1.32,
-      "pct_12m": 16.74,
-      "ganancia_12m": 3212.98,
-      "capital_actual": 20566.989999999998,
-      "periodo_ultimo_mes": "2026-06",
+      "pct_ultimo_mes": 0.08,
+      "pct_12m": 20.04,
+      "ganancia_12m": 3507.49,
+      "capital_actual": 11720.08,
+      "periodo_ultimo_mes": "2026-07",
       "por_plataforma": {
         "peerberry": {
-          "pct_ultimo_mes": 0.5,
-          "pct_12m": 6.97,
-          "ganancia_12m": 402.98,
-          "capital_actual": 11702.99,
-          "periodo_ultimo_mes": "2026-06"
+          "pct_ultimo_mes": 0.15,
+          "pct_12m": 6.88,
+          "ganancia_12m": 387.49,
+          "capital_actual": 11720.08,
+          "periodo_ultimo_mes": "2026-07"
         },
         "myinvestor": {
-          "pct_ultimo_mes": 1.83,
-          "pct_12m": 25.93,
-          "ganancia_12m": 2810.0,
-          "capital_actual": 8864,
-          "periodo_ultimo_mes": "2026-06"
+          "pct_ultimo_mes": 0.0,
+          "pct_12m": 32.65,
+          "ganancia_12m": 3120.0,
+          "capital_actual": 0,
+          "periodo_ultimo_mes": "2026-07"
         }
       }
     }
