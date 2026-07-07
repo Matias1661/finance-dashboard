@@ -1,3 +1,9 @@
+## 2026-07-07 (4)
+
+- Card "Rentabilidad inversiones" ahora muestra el mes real ("· junio") en vez de "· último mes". Ver DECISIONS.md.
+- sync_finance_data.py: nuevo campo `periodo_ultimo_mes` en `inversiones.kpi` (total y por plataforma).
+- Workflow sync-finance-data.yml disparado manualmente para regenerar finance_data.json.
+
 ## 2026-07-07 (3)
 
 - Revertida la unificación de cards: "Patrimonio invertido" y "Rentabilidad inversiones · último mes" vuelven a ser dos cards separadas. Se mantiene sin la línea "Rentabilidad 12m (compuesta)". Ver DECISIONS.md.
