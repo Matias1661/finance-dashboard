@@ -1,3 +1,13 @@
+## [2026-07-07] Unificar cards "Patrimonio invertido" y "Rentabilidad inversiones" (Resumen)
+
+**Contexto:** en el tab Resumen, "Patrimonio invertido" y "Rentabilidad inversiones · último mes" eran dos cards separadas. Se pidió fusionarlas en una sola y quitar la línea "Rentabilidad 12m (compuesta)".
+
+**Cambio:** en `renderKPIs()` (js/charts.js) ambos bloques ahora comparten un único `<div class="card">`, separados por un borde interno. Se elimina la fila de `pct_12m`. El cálculo del dato (`getKpiInversiones()`, `pct_ultimo_mes`, `ganancia_12m`) no cambia, solo la presentación.
+
+**Verificado:** diff revisado antes de subir; no afecta `finance_data.json` ni sync.
+
+---
+
 ## [2026-07-07] Suscripciones inactivas: dejar de mostrarse tras 6 meses sin cobros
 
 **Contexto:** `detectRecurring()` en `js/insights.js` marca una suscripción como inactiva cuando pasan más de 45 días sin cobro (`RECURRING_ACTIVE_DAYS`), pero seguía mostrándola indefinidamente en la sección colapsable "Inactivas" del bloque Suscripciones.
