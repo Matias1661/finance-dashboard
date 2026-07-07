@@ -117,41 +117,42 @@ function renderKPIs(){
       <div class="card-title" style="margin-top:14px">Última sincronización</div>
       <div style="font-size:13px;font-weight:500;font-family:'DM Mono';color:var(--text-secondary)">${generatedAt}</div>
     </div>
-    <div class="card">
-      <div class="card-title">Patrimonio invertido</div>
-      <div style="font-size:22px;font-weight:600;color:var(--blue)">${formatEUR(invPeerberry + invMyinvestor)}</div>
-      <div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">
-        <div style="display:flex;justify-content:space-between"><span>Peerberry</span><span style="font-family:'DM Mono'">${formatEUR(invPeerberry)}</span></div>
-        <div style="display:flex;justify-content:space-between;margin-top:4px"><span>MyInvestor</span><span style="font-family:'DM Mono'">${formatEUR(invMyinvestor)}</span></div>
-      </div>
-    </div>
     ${(() => {
       const kpi = typeof getKpiInversiones === 'function' ? getKpiInversiones() : null;
+
+      const patrimonioBlock = `
+      <div class="card-title">Patrimonio invertido</div>
+      <div style="font-size:22px;font-weight:600;color:var(--blue)">${formatEUR(invPeerberry + invMyinvestor)}</div>
+      <div style="margin-top:10px;margin-bottom:14px;font-size:12px;color:var(--text-secondary)">
+        <div style="display:flex;justify-content:space-between"><span>Peerberry</span><span style="font-family:'DM Mono'">${formatEUR(invPeerberry)}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px"><span>MyInvestor</span><span style="font-family:'DM Mono'">${formatEUR(invMyinvestor)}</span></div>
+      </div>`;
+
       if(!kpi){
         return `
-    <div class="card">
-      <div class="card-title">Rentabilidad inversiones</div>
+    <div class="card">${patrimonioBlock}
+      <div class="card-title" style="padding-top:14px;border-top:1px solid rgba(0,0,0,0.08)">Rentabilidad inversiones</div>
       <div style="font-size:13px;color:var(--text-secondary)">Sin datos suficientes todavía.</div>
     </div>`;
       }
 
       const pctMes  = kpi.pct_ultimo_mes;
-      const pct12m  = kpi.pct_12m;
       const mesColor = pctMes >= 0 ? 'var(--green)' : 'var(--red)';
 
       const pb = kpi.por_plataforma?.peerberry;
       const mi = kpi.por_plataforma?.myinvestor;
 
       return `
-    <div class="card">
-      <div class="card-title">Rentabilidad inversiones · último mes</div>
-      <div style="font-size:22px;font-weight:600;color:${mesColor}">${pctMes !== null ? pctMes + '%' : '—'}</div>
-      <div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">
-        <div style="display:flex;justify-content:space-between"><span>Rentabilidad 12m (compuesta)</span><span style="font-family:'DM Mono'">${pct12m !== null ? pct12m + '%' : '—'}</span></div>
-        <div style="display:flex;justify-content:space-between;margin-top:4px"><span>Generado por intereses (12m)</span><span style="font-family:'DM Mono'">${formatEUR(kpi.ganancia_12m)}</span></div>
-        <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08)">
-          <div style="display:flex;justify-content:space-between"><span>Peerberry · mes</span><span style="font-family:'DM Mono'">${pb?.pct_ultimo_mes !== null && pb?.pct_ultimo_mes !== undefined ? pb.pct_ultimo_mes + '%' : '—'}</span></div>
-          <div style="display:flex;justify-content:space-between;margin-top:4px"><span>MyInvestor · mes</span><span style="font-family:'DM Mono'">${mi?.pct_ultimo_mes !== null && mi?.pct_ultimo_mes !== undefined ? mi.pct_ultimo_mes + '%' : '—'}</span></div>
+    <div class="card">${patrimonioBlock}
+      <div style="padding-top:14px;border-top:1px solid rgba(0,0,0,0.08)">
+        <div class="card-title">Rentabilidad inversiones · último mes</div>
+        <div style="font-size:22px;font-weight:600;color:${mesColor}">${pctMes !== null ? pctMes + '%' : '—'}</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">
+          <div style="display:flex;justify-content:space-between"><span>Generado por intereses (12m)</span><span style="font-family:'DM Mono'">${formatEUR(kpi.ganancia_12m)}</span></div>
+          <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08)">
+            <div style="display:flex;justify-content:space-between"><span>Peerberry · mes</span><span style="font-family:'DM Mono'">${pb?.pct_ultimo_mes !== null && pb?.pct_ultimo_mes !== undefined ? pb.pct_ultimo_mes + '%' : '—'}</span></div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px"><span>MyInvestor · mes</span><span style="font-family:'DM Mono'">${mi?.pct_ultimo_mes !== null && mi?.pct_ultimo_mes !== undefined ? mi.pct_ultimo_mes + '%' : '—'}</span></div>
+          </div>
         </div>
       </div>
     </div>`;
