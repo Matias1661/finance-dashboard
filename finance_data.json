@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-08 10:20",
+  "generated_at": "2026-07-08 11:02",
   "movimientos": [
     {
       "fecha": "2026-07-06",
@@ -18051,6 +18051,122 @@
           "periodo_ultimo_mes": "2026-06"
         }
       }
-    }
+    },
+    "rendimiento_mensual": [
+      {
+        "mes": "2024-12",
+        "peerberry": null,
+        "myinvestor": null,
+        "acumulado": null
+      },
+      {
+        "mes": "2025-01",
+        "peerberry": 0.73,
+        "myinvestor": 0.85,
+        "acumulado": 0.83
+      },
+      {
+        "mes": "2025-02",
+        "peerberry": 0.79,
+        "myinvestor": 0.56,
+        "acumulado": 1.44
+      },
+      {
+        "mes": "2025-03",
+        "peerberry": 0.38,
+        "myinvestor": -2.64,
+        "acumulado": -0.74
+      },
+      {
+        "mes": "2025-04",
+        "peerberry": 1.17,
+        "myinvestor": -1.64,
+        "acumulado": -1.9
+      },
+      {
+        "mes": "2025-05",
+        "peerberry": 0.53,
+        "myinvestor": 2.01,
+        "acumulado": -0.14
+      },
+      {
+        "mes": "2025-06",
+        "peerberry": 0.26,
+        "myinvestor": -0.03,
+        "acumulado": -0.09
+      },
+      {
+        "mes": "2025-07",
+        "peerberry": 0.71,
+        "myinvestor": 1.91,
+        "acumulado": 1.55
+      },
+      {
+        "mes": "2025-08",
+        "peerberry": 0.23,
+        "myinvestor": 0.76,
+        "acumulado": 2.18
+      },
+      {
+        "mes": "2025-09",
+        "peerberry": 0.88,
+        "myinvestor": 2.58,
+        "acumulado": 4.45
+      },
+      {
+        "mes": "2025-10",
+        "peerberry": 0.78,
+        "myinvestor": 3.94,
+        "acumulado": 7.71
+      },
+      {
+        "mes": "2025-11",
+        "peerberry": 0.63,
+        "myinvestor": -0.55,
+        "acumulado": 7.48
+      },
+      {
+        "mes": "2025-12",
+        "peerberry": 0.68,
+        "myinvestor": 1.0,
+        "acumulado": 8.46
+      },
+      {
+        "mes": "2026-01",
+        "peerberry": 0.65,
+        "myinvestor": 3.67,
+        "acumulado": 11.58
+      },
+      {
+        "mes": "2026-02",
+        "peerberry": null,
+        "myinvestor": 2.52,
+        "acumulado": 13.07
+      },
+      {
+        "mes": "2026-03",
+        "peerberry": null,
+        "myinvestor": -7.4,
+        "acumulado": 5.96
+      },
+      {
+        "mes": "2026-04",
+        "peerberry": 0.86,
+        "myinvestor": 8.04,
+        "acumulado": 11.13
+      },
+      {
+        "mes": "2026-05",
+        "peerberry": 0.46,
+        "myinvestor": 5.77,
+        "acumulado": 15.12
+      },
+      {
+        "mes": "2026-06",
+        "peerberry": 0.31,
+        "myinvestor": 1.83,
+        "acumulado": 16.63
+      }
+    ]
   }
 }
