@@ -824,6 +824,7 @@ function renderInvRendimiento(){
   const miData = rendMensual.map(d => d.myinvestor);
   const accData = rendMensual.map(d => d.acumulado);
   const totalData = rendMensual.map(d => d.total);
+  const zeroData = rendMensual.map(() => 0);
 
   const fmtPct = v => v === null || v === undefined ? '' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
 
@@ -838,14 +839,16 @@ function renderInvRendimiento(){
           data: pbData,
           backgroundColor: 'rgba(154,98,0,0.75)',
           borderRadius: 3,
-          yAxisID: 'y'
+          yAxisID: 'y',
+          order: 3
         },
         {
           label: 'MyInvestor',
           data: miData,
           backgroundColor: 'rgba(13,138,82,0.75)',
           borderRadius: 3,
-          yAxisID: 'y'
+          yAxisID: 'y',
+          order: 3
         },
         {
           label: 'Total del mes',
@@ -858,6 +861,18 @@ function renderInvRendimiento(){
           borderColor: '#ffffff',
           borderWidth: 1.5,
           yAxisID: 'y',
+          order: 2
+        },
+        {
+          label: 'Cero (acumulado)',
+          data: zeroData,
+          type: 'line',
+          borderColor: 'rgba(137,135,129,0.7)',
+          borderWidth: 1.5,
+          borderDash: [2, 3],
+          pointRadius: 0,
+          tension: 0,
+          yAxisID: 'y1',
           order: 1
         },
         {
@@ -865,24 +880,28 @@ function renderInvRendimiento(){
           data: accData,
           type: 'line',
           borderColor: 'rgba(37,99,190,0.85)',
-          backgroundColor: 'rgba(37,99,190,0.1)',
           borderWidth: 2,
           pointRadius: 3,
           pointBackgroundColor: 'rgba(37,99,190,0.9)',
-          fill: false,
           tension: 0.3,
-          yAxisID: 'y',
-          order: 0
+          yAxisID: 'y1',
+          order: 0,
+          fill: {
+            target: { value: 0 },
+            above: 'transparent',
+            below: 'rgba(226,74,74,0.15)'
+          }
         }
       ]
     },
     options: {
       responsive: true,
       plugins: {
-        legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 } },
+        legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10, filter: item => item.text !== 'Cero (acumulado)' } },
         tooltip: {
           backgroundColor: '#ffffff', borderColor: 'rgba(0,0,0,0.12)', borderWidth: 1,
           titleColor: '#1a1a18', bodyColor: '#6b6b63',
+          filter: item => item.dataset.label !== 'Cero (acumulado)',
           callbacks: {
             label: ctx => {
               const d = rendMensual[ctx.dataIndex];
@@ -898,7 +917,13 @@ function renderInvRendimiento(){
       scales: {
         x: { grid: { display: false }, ticks: { font: { size: 11 }, maxRotation: 45, autoSkip: true } },
         y: {
+          position: 'left',
           grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { font: { size: 11 }, callback: v => v + '%' }
+        },
+        y1: {
+          position: 'right',
+          grid: { display: false },
           ticks: { font: { size: 11 }, callback: v => v + '%' }
         }
       }
