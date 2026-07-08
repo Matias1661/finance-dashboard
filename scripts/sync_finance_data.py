@@ -387,6 +387,70 @@ def _last_complete_month(by_month, current_month):
     return anteriores[-1]
 
 
+def _calendar_prev_month(mk):
+    y, m = int(mk[:4]), int(mk[5:7])
+    if m == 1:
+        return f"{y-1}-12"
+    return f"{y}-{m-1:02d}"
+
+
+def build_rendimiento_mensual(by_month):
+    """Rentabilidad mensual por plataforma para el grafico de barras agrupadas
+    del tab Inversiones (debajo del de Capital), mas curva de TWR acumulado.
+
+    Un mes se incluye solo si MyInvestor ya reporto ese mes (capital no nulo),
+    igual criterio que 'mes completo' usado en el KPI de Resumen.
+
+    % MyInvestor = Ganancia del mes / Capital total del mes calendario anterior.
+    % Peerberry  = Ganancia del mes / promedio entre capital de cierre del mes
+    anterior y capital de cierre de este mes (aproximacion de 2 puntos: no se
+    conserva el detalle semanal agregado, solo la ultima lectura de capital
+    por mes).
+
+    Acumulado = TWR compuesto del retorno total mensual (ganancia total del
+    mes / capital total del mes anterior), encadenado desde el primer mes
+    incluido.
+    """
+    meses_completos = sorted(
+        mk for mk, v in by_month.items() if v["myinvestor"]["capital"] is not None
+    )
+
+    result = []
+    acc = 1.0
+    for mk in meses_completos:
+        prev_mk = _calendar_prev_month(mk)
+        prev = by_month.get(prev_mk)
+        cur = by_month[mk]
+
+        pct_mi = None
+        if prev is not None and prev["myinvestor"]["capital"]:
+            pct_mi = round(cur["myinvestor"]["ganancia"] / prev["myinvestor"]["capital"] * 100, 2)
+
+        pct_pb = None
+        if prev is not None and prev["peerberry"]["capital"] is not None and cur["peerberry"]["capital"] is not None:
+            avg_capital = (prev["peerberry"]["capital"] + cur["peerberry"]["capital"]) / 2
+            if avg_capital:
+                pct_pb = round(cur["peerberry"]["ganancia"] / avg_capital * 100, 2)
+
+        acumulado = None
+        if prev is not None:
+            prev_capital_total = (prev["peerberry"]["capital"] or 0) + (prev["myinvestor"]["capital"] or 0)
+            if prev_capital_total:
+                ganancia_total = cur["peerberry"]["ganancia"] + cur["myinvestor"]["ganancia"]
+                ret_total = ganancia_total / prev_capital_total
+                acc *= (1 + ret_total)
+                acumulado = round((acc - 1) * 100, 2)
+
+        result.append({
+            "mes":        mk,
+            "peerberry":  pct_pb,
+            "myinvestor": pct_mi,
+            "acumulado":  acumulado
+        })
+
+    return result
+
+
 def build_kpi_inversiones(by_month):
     """KPI de rentabilidad para el tab Resumen: % ultimo mes, % 12m (TWR) y
     descomposicion aportado/generado, a nivel total con desglose por
@@ -573,11 +637,13 @@ if __name__ == "__main__":
             by_month = _aggregate_rendimiento_by_month(rend_pages)
             inversiones["ganancia"] = build_ganancia_inversiones(by_month)
             inversiones["kpi"] = build_kpi_inversiones(by_month)
+            inversiones["rendimiento_mensual"] = build_rendimiento_mensual(by_month)
             print(f"  {len(inversiones['ganancia'])} meses agregados")
         except Exception as rend_err:
             print(f"  AVISO: no se pudo leer Rendimiento Inversiones: {rend_err}")
             inversiones["ganancia"] = []
             inversiones["kpi"] = None
+            inversiones["rendimiento_mensual"] = []
 
         output = {
             "generated_at": datetime.now(ZoneInfo("Europe/Madrid")).strftime("%Y-%m-%d %H:%M"),
