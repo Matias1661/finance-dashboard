@@ -1,3 +1,7 @@
+## 2026-07-08 (8)
+
+- Gráfico de rentabilidad mensual: la línea de Acumulado vuelve a tener eje propio (derecho), mientras que barras y rombo comparten el eje izquierdo. Zona negativa del acumulado sombreada en rojo claro. Línea punteada gris marcando el cero en el eje del acumulado (oculta de leyenda y tooltip). Ver DECISIONS.md.
+
 ## 2026-07-08 (7)
 
 - Nuevo gráfico en tab Inversiones: acumulado por año — una curva de TWR compuesto por año calendario (reinicia en 0% cada enero), en vez de un solo acumulado histórico. Permite comparar visualmente 2025 vs 2026 en el mismo tramo del año.
