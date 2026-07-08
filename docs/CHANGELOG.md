@@ -1,3 +1,10 @@
+## 2026-07-08 (7)
+
+- Nuevo gráfico en tab Inversiones: acumulado por año — una curva de TWR compuesto por año calendario (reinicia en 0% cada enero), en vez de un solo acumulado histórico. Permite comparar visualmente 2025 vs 2026 en el mismo tramo del año.
+- sync_finance_data.py: nuevo campo `acumulado_anio` en `inversiones.rendimiento_mensual`.
+- js/app.js: nueva función `renderInvAcumuladoAnual()`. index.html: nuevo canvas `chart-inv-acumulado-anual`.
+- Workflow sync-finance-data disparado manualmente para regenerar finance_data.json.
+
 ## 2026-07-08 (6)
 
 - Gráfico de rentabilidad mensual (tab Inversiones): barras y curva de Acumulado ahora comparten un solo eje Y (antes eje dual). Eje X ya no muestra diciembre 2024 (arranca en enero 2025).
