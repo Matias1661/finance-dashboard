@@ -737,6 +737,93 @@ function renderInversiones(){
     });
   }
 
+  renderInvRendimiento();
+}
+
+// ── Gráfico 2: rentabilidad mensual por plataforma (barras agrupadas + acumulado) ──
+function renderInvRendimiento(){
+  const inv = window.FINANCE_STATE?.inversiones || {};
+  const rendMensual = inv.rendimiento_mensual || [];
+
+  const ctx = document.getElementById('chart-inv-rendimiento');
+  if(!ctx) return;
+
+  const MESES_LARGO = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  function formatMesLabel(isoMes) {
+    const [y, m] = isoMes.split('-');
+    return MESES_LARGO[parseInt(m,10)-1] + '-' + y;
+  }
+
+  const labels = rendMensual.map(d => formatMesLabel(d.mes));
+  const pbData = rendMensual.map(d => d.peerberry);
+  const miData = rendMensual.map(d => d.myinvestor);
+  const accData = rendMensual.map(d => d.acumulado);
+
+  const fmtPct = v => v === null || v === undefined ? '' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+
+  if(window.invRendChart) window.invRendChart.destroy();
+  window.invRendChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Peerberry',
+          data: pbData,
+          backgroundColor: 'rgba(154,98,0,0.75)',
+          borderRadius: 3,
+          yAxisID: 'y'
+        },
+        {
+          label: 'MyInvestor',
+          data: miData,
+          backgroundColor: 'rgba(13,138,82,0.75)',
+          borderRadius: 3,
+          yAxisID: 'y'
+        },
+        {
+          label: 'Acumulado',
+          data: accData,
+          type: 'line',
+          borderColor: 'rgba(37,99,190,0.85)',
+          backgroundColor: 'rgba(37,99,190,0.1)',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: 'rgba(37,99,190,0.9)',
+          fill: false,
+          tension: 0.3,
+          yAxisID: 'y1',
+          order: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 } },
+        tooltip: {
+          backgroundColor: '#ffffff', borderColor: 'rgba(0,0,0,0.12)', borderWidth: 1,
+          titleColor: '#1a1a18', bodyColor: '#6b6b63',
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}`
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: {
+          position: 'left',
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { font: { size: 11 }, callback: v => v + '%' }
+        },
+        y1: {
+          position: 'right',
+          grid: { display: false },
+          ticks: { font: { size: 11 }, callback: v => v + '%' }
+        }
+      }
+    }
+  });
 }
 
 
