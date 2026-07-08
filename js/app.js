@@ -738,6 +738,67 @@ function renderInversiones(){
   }
 
   renderInvRendimiento();
+  renderInvAcumuladoAnual();
+}
+
+// ── Gráfico 3: acumulado por año (una curva por año calendario, reinicia en enero) ──
+function renderInvAcumuladoAnual(){
+  const inv = window.FINANCE_STATE?.inversiones || {};
+  const rendMensual = (inv.rendimiento_mensual || []).filter(d => d.mes >= '2025-01');
+
+  const ctx = document.getElementById('chart-inv-acumulado-anual');
+  if(!ctx) return;
+
+  const MESES_CORTO = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+  const byYear = {};
+  rendMensual.forEach(d => {
+    const [y, m] = d.mes.split('-');
+    if(!byYear[y]) byYear[y] = Array(12).fill(null);
+    byYear[y][parseInt(m,10)-1] = d.acumulado_anio;
+  });
+
+  const years = Object.keys(byYear).sort();
+  const palette = ['#4a3aa7', '#2a78d6', '#1baf7a', '#eb6834'];
+  const fmtPct = v => v === null || v === undefined ? '' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+
+  const datasets = years.map((y, i) => ({
+    label: y,
+    data: byYear[y],
+    borderColor: palette[i % palette.length],
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderDash: i === years.length - 1 ? [5, 3] : [],
+    pointRadius: 3,
+    pointBackgroundColor: palette[i % palette.length],
+    fill: false,
+    tension: 0.3,
+    spanGaps: false
+  }));
+
+  if(window.invAccAnualChart) window.invAccAnualChart.destroy();
+  window.invAccAnualChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels: MESES_CORTO, datasets },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 } },
+        tooltip: {
+          backgroundColor: '#ffffff', borderColor: 'rgba(0,0,0,0.12)', borderWidth: 1,
+          titleColor: '#1a1a18', bodyColor: '#6b6b63',
+          callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}` }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: {
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { font: { size: 11 }, callback: v => v + '%' }
+        }
+      }
+    }
+  });
 }
 
 // ── Gráfico 2: rentabilidad mensual por plataforma (barras agrupadas + acumulado) ──
