@@ -4,6 +4,11 @@
 - sync_finance_data.py: nuevos campos `sin_aportes_pb` y `sin_aportes_mi` en `inversiones.rendimiento_mensual`.
 - Workflow sync-finance-data disparado manualmente para regenerar finance_data.json.
 
+## 2026-07-08 (4)
+
+- Fix: corregido "Fecha reporte" de la fila Notion "Peerberry febrero 2026" (estaba en 2026-03-02, ahora en 2026-02-23). Causaba que febrero 2026 apareciera vacío en el gráfico de rentabilidad y que marzo tuviera la ganancia de Peerberry duplicada (71,66€ en vez de 24,87€). Ver DECISIONS.md.
+- Workflow sync-finance-data disparado manualmente para regenerar finance_data.json.
+
 ## 2026-07-08 (2)
 
 - Fix: rentabilidad mensual de MyInvestor en el gráfico de Inversiones ahora usa saldo medio (promedio capital mes anterior + capital mes actual) en vez de capital del mes anterior, alineado con la metodología que MyInvestor reporta en sus propios mails. Verificado contra el mail de junio (1,8% reportado vs 1,76% calculado). Ver DECISIONS.md.
