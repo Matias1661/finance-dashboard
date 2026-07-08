@@ -401,15 +401,18 @@ def build_rendimiento_mensual(by_month):
     Un mes se incluye solo si MyInvestor ya reporto ese mes (capital no nulo),
     igual criterio que 'mes completo' usado en el KPI de Resumen.
 
-    % MyInvestor = Ganancia del mes / Capital total del mes calendario anterior.
-    % Peerberry  = Ganancia del mes / promedio entre capital de cierre del mes
-    anterior y capital de cierre de este mes (aproximacion de 2 puntos: no se
-    conserva el detalle semanal agregado, solo la ultima lectura de capital
-    por mes).
+    % MyInvestor = Ganancia del mes / saldo medio del mes, aproximado como
+    promedio entre capital de cierre del mes anterior y capital de cierre de
+    este mes. Esto replica la metodologia que MyInvestor usa en sus propios
+    mails ("Beneficio (€) entre Saldo medio (€)"), en vez de dividir por el
+    capital de cierre del mes anterior (que no es lo que ellos reportan y
+    distorsiona el % cuando hay aportes grandes a mitad de mes). Ver
+    DECISIONS.md 2026-07-08.
+    % Peerberry  = misma logica, ya usaba promedio de 2 puntos.
 
     Acumulado = TWR compuesto del retorno total mensual (ganancia total del
-    mes / capital total del mes anterior), encadenado desde el primer mes
-    incluido.
+    mes / saldo medio total del mes, mismo promedio de 2 puntos), encadenado
+    desde el primer mes incluido.
     """
     meses_completos = sorted(
         mk for mk, v in by_month.items() if v["myinvestor"]["capital"] is not None
@@ -423,8 +426,10 @@ def build_rendimiento_mensual(by_month):
         cur = by_month[mk]
 
         pct_mi = None
-        if prev is not None and prev["myinvestor"]["capital"]:
-            pct_mi = round(cur["myinvestor"]["ganancia"] / prev["myinvestor"]["capital"] * 100, 2)
+        if prev is not None and prev["myinvestor"]["capital"] is not None and cur["myinvestor"]["capital"] is not None:
+            avg_capital_mi = (prev["myinvestor"]["capital"] + cur["myinvestor"]["capital"]) / 2
+            if avg_capital_mi:
+                pct_mi = round(cur["myinvestor"]["ganancia"] / avg_capital_mi * 100, 2)
 
         pct_pb = None
         if prev is not None and prev["peerberry"]["capital"] is not None and cur["peerberry"]["capital"] is not None:
@@ -435,9 +440,11 @@ def build_rendimiento_mensual(by_month):
         acumulado = None
         if prev is not None:
             prev_capital_total = (prev["peerberry"]["capital"] or 0) + (prev["myinvestor"]["capital"] or 0)
-            if prev_capital_total:
+            cur_capital_total = (cur["peerberry"]["capital"] or 0) + (cur["myinvestor"]["capital"] or 0)
+            avg_capital_total = (prev_capital_total + cur_capital_total) / 2
+            if avg_capital_total:
                 ganancia_total = cur["peerberry"]["ganancia"] + cur["myinvestor"]["ganancia"]
-                ret_total = ganancia_total / prev_capital_total
+                ret_total = ganancia_total / avg_capital_total
                 acc *= (1 + ret_total)
                 acumulado = round((acc - 1) * 100, 2)
 
