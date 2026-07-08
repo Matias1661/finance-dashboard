@@ -743,7 +743,7 @@ function renderInversiones(){
 // ── Gráfico 2: rentabilidad mensual por plataforma (barras agrupadas + acumulado) ──
 function renderInvRendimiento(){
   const inv = window.FINANCE_STATE?.inversiones || {};
-  const rendMensual = inv.rendimiento_mensual || [];
+  const rendMensual = (inv.rendimiento_mensual || []).filter(d => d.mes >= '2025-01');
 
   const ctx = document.getElementById('chart-inv-rendimiento');
   if(!ctx) return;
@@ -792,7 +792,7 @@ function renderInvRendimiento(){
           pointBackgroundColor: 'rgba(37,99,190,0.9)',
           fill: false,
           tension: 0.3,
-          yAxisID: 'y1',
+          yAxisID: 'y',
           order: 0
         }
       ]
@@ -817,15 +817,9 @@ function renderInvRendimiento(){
         }
       },
       scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        x: { grid: { display: false }, ticks: { font: { size: 11 }, maxRotation: 45, autoSkip: true } },
         y: {
-          position: 'left',
           grid: { color: 'rgba(0,0,0,0.05)' },
-          ticks: { font: { size: 11 }, callback: v => v + '%' }
-        },
-        y1: {
-          position: 'right',
-          grid: { display: false },
           ticks: { font: { size: 11 }, callback: v => v + '%' }
         }
       }
