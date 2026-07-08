@@ -1,3 +1,13 @@
+## [2026-07-08] Nota "sin aportes ese mes" en tooltip de rentabilidad mensual
+
+**Contexto:** Matias detectó que el acumulado del gráfico de rentabilidad daba negativo en marzo-junio 2025 y preguntó si era un error de cálculo. Verificación: en marzo y abril 2025 el capital de MyInvestor cayó de 14.372€ a 13.763€ sin ningún aporte ni retiro (`aportes = 0` en ambos meses) — es una caída real del valor de los fondos, no un artefacto del cálculo.
+
+**Cambio:** `scripts/sync_finance_data.py`, `build_rendimiento_mensual()` agrega `sin_aportes_pb` y `sin_aportes_mi` (booleanos) a cada mes de `rendimiento_mensual`: `true` cuando `aportes_known` es `True` y `aportes == 0` para esa plataforma ese mes. `js/app.js`, `renderInvRendimiento()`: el tooltip agrega "(sin aportes ese mes)" cuando corresponde, para distinguir a simple vista una variación por rendimiento puro de mercado de una que involucra aportes/retiros.
+
+**Limitación:** el flag depende de que `aportes_known` sea `True` (dato de "Aportes" cargado en Notion); en meses históricos donde ese campo no se cargó, el flag queda en `False` aunque no haya habido aporte real (no se puede distinguir "sin aportes" de "dato no disponible").
+
+---
+
 ## [2026-07-08] Rentabilidad mensual MyInvestor: usar saldo medio en vez de capital mes anterior
 
 **Contexto:** el mail mensual "Rentabilidad de tu cartera" de MyInvestor confirma su propia metodología: "Cuánto dinero has ganado o perdido por cada 100€ invertidos. Beneficio (€) entre Saldo medio (€)". El cálculo original de `build_rendimiento_mensual` usaba Ganancia / Capital del mes calendario anterior, que no coincide con esa metodología y se distorsiona cuando hay aportes grandes a mitad de mes (un depósito de fin de mes cuenta como si hubiera generado rendimiento todo el mes).
