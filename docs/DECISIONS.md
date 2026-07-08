@@ -1,3 +1,15 @@
+## [2026-07-08] Eje unico y rombo de rentabilidad total del mes en el grafico de rentabilidad
+
+**Contexto:** Matias probó una vista previa con eje único (en vez de eje dual) para las barras y el acumulado, y le gustó — decisión de UX confirmada tras comparar ambas versiones. Además pidió un indicador que resuma "cómo fue ese mes en conjunto" (Peerberry + MyInvestor combinados), ya que las dos barras por separado no dejan ver fácil el resultado combinado ponderado por capital.
+
+**Cambio 1 — eje único:** `js/app.js`, `renderInvRendimiento()`: barras y curva de Acumulado comparten `yAxisID: 'y'` (antes la curva usaba un eje secundario `y1`). También se filtró `rendimiento_mensual` para excluir diciembre 2024 (`mes >= '2025-01'`), ya que ese mes no tiene datos (no hay mes anterior para calcular retorno) y no aporta al eje X.
+
+**Cambio 2 — indicador "Total del mes":** `scripts/sync_finance_data.py`, `build_rendimiento_mensual()` expone el campo `total`: el mismo retorno total mensual ponderado por capital (ganancia Peerberry + MyInvestor / saldo medio total del mes) que ya se usaba internamente como paso previo a encadenar el `acumulado`, pero ahora sin encadenar — para mostrar el resultado de ese mes en particular, no el histórico. `js/app.js` lo grafica como un dataset `scatter` con `pointStyle: 'rectRot'` (rombo), mismo lenguaje visual que el rombo de "promedio 3 meses" del gráfico mensual en Resumen.
+
+**Trade-off aceptado:** con eje único, los meses fuertes de MyInvestor (5-7%) hacen que las barras de Peerberry (0.2-1%) se vean chicas en comparación. Matias lo revisó con una vista previa (Visualizer) antes de aplicar el cambio y prefirió la lectura más rápida del eje único a la precisión visual del eje dual.
+
+---
+
 ## [2026-07-08] Nota "sin aportes ese mes" en tooltip de rentabilidad mensual
 
 **Contexto:** Matias detectó que el acumulado del gráfico de rentabilidad daba negativo en marzo-junio 2025 y preguntó si era un error de cálculo. Verificación: en marzo y abril 2025 el capital de MyInvestor cayó de 14.372€ a 13.763€ sin ningún aporte ni retiro (`aportes = 0` en ambos meses) — es una caída real del valor de los fondos, no un artefacto del cálculo.
