@@ -1,3 +1,15 @@
+## [2026-07-08] Nuevo gráfico: acumulado por año (tab Inversiones)
+
+**Contexto:** Matias preguntó cuánto habría rendido cada plataforma si hubiera dejado todo el dinero en una sola desde enero 2025, tanto para el período completo como solo para 2025. La respuesta reveló que la ventaja de MyInvestor se concentra casi enteramente en el rally de mercado de 2026 (2025 estuvo casi empatado: 8.93% MyInvestor vs 8.05% Peerberry). A partir de ahí pidió una forma de comparar visualmente la forma de la curva de un año contra otra, reiniciando en 0% cada enero — en vez de una sola curva de acumulado histórico que arrastra el resultado de años previos.
+
+**Cambio:** `scripts/sync_finance_data.py`, `build_rendimiento_mensual()` agrega el campo `acumulado_anio`: mismo TWR compuesto que `acumulado`, pero la cadena (`acc_year`) se reinicia a 1.0 cada vez que cambia el año calendario de `mk`.
+
+**Dashboard:** `js/app.js`, nueva función `renderInvAcumuladoAnual()` (llamada desde `renderInversiones()`): agrupa `rendimiento_mensual` por año, arma un dataset por año alineado por mes-del-año (Ene-Dic), y grafica una línea por año — el año más reciente en trazo punteado para distinguir el año en curso (incompleto) de los años cerrados. `index.html`: nuevo canvas `chart-inv-acumulado-anual` debajo del gráfico de rentabilidad mensual, tercer gráfico del tab Inversiones.
+
+**Impacto:** ninguno en campos existentes; `acumulado_anio` es un campo nuevo, `acumulado` (histórico sin reiniciar) se mantiene sin cambios para el gráfico de rentabilidad mensual.
+
+---
+
 ## [2026-07-08] Eje unico y rombo de rentabilidad total del mes en el grafico de rentabilidad
 
 **Contexto:** Matias probó una vista previa con eje único (en vez de eje dual) para las barras y el acumulado, y le gustó — decisión de UX confirmada tras comparar ambas versiones. Además pidió un indicador que resuma "cómo fue ese mes en conjunto" (Peerberry + MyInvestor combinados), ya que las dos barras por separado no dejan ver fácil el resultado combinado ponderado por capital.
