@@ -413,6 +413,11 @@ def build_rendimiento_mensual(by_month):
     Acumulado = TWR compuesto del retorno total mensual (ganancia total del
     mes / saldo medio total del mes, mismo promedio de 2 puntos), encadenado
     desde el primer mes incluido.
+
+    total = el mismo retorno total mensual (ganancia Peerberry + MyInvestor
+    / saldo medio total del mes) SIN encadenar, para marcar en el grafico
+    como indicador de "como fue ese mes en conjunto" independiente del
+    acumulado historico.
     """
     meses_completos = sorted(
         mk for mk, v in by_month.items() if v["myinvestor"]["capital"] is not None
@@ -438,6 +443,7 @@ def build_rendimiento_mensual(by_month):
                 pct_pb = round(cur["peerberry"]["ganancia"] / avg_capital * 100, 2)
 
         acumulado = None
+        total_mes = None
         if prev is not None:
             prev_capital_total = (prev["peerberry"]["capital"] or 0) + (prev["myinvestor"]["capital"] or 0)
             cur_capital_total = (cur["peerberry"]["capital"] or 0) + (cur["myinvestor"]["capital"] or 0)
@@ -445,6 +451,7 @@ def build_rendimiento_mensual(by_month):
             if avg_capital_total:
                 ganancia_total = cur["peerberry"]["ganancia"] + cur["myinvestor"]["ganancia"]
                 ret_total = ganancia_total / avg_capital_total
+                total_mes = round(ret_total * 100, 2)
                 acc *= (1 + ret_total)
                 acumulado = round((acc - 1) * 100, 2)
 
@@ -455,6 +462,7 @@ def build_rendimiento_mensual(by_month):
             "mes":               mk,
             "peerberry":         pct_pb,
             "myinvestor":        pct_mi,
+            "total":             total_mes,
             "acumulado":         acumulado,
             "sin_aportes_pb":    sin_aportes_pb,
             "sin_aportes_mi":    sin_aportes_mi
