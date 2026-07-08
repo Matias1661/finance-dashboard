@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-08 11:35",
+  "generated_at": "2026-07-08 11:57",
   "movimientos": [
     {
       "fecha": "2026-07-06",
@@ -18057,6 +18057,7 @@
         "mes": "2024-12",
         "peerberry": null,
         "myinvestor": null,
+        "total": null,
         "acumulado": null,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
@@ -18065,6 +18066,7 @@
         "mes": "2025-01",
         "peerberry": 0.73,
         "myinvestor": 0.85,
+        "total": 0.83,
         "acumulado": 0.83,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
@@ -18073,6 +18075,7 @@
         "mes": "2025-02",
         "peerberry": 0.79,
         "myinvestor": 0.56,
+        "total": 0.6,
         "acumulado": 1.43,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
@@ -18081,6 +18084,7 @@
         "mes": "2025-03",
         "peerberry": 0.38,
         "myinvestor": -2.68,
+        "total": -2.17,
         "acumulado": -0.77,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
@@ -18089,6 +18093,7 @@
         "mes": "2025-04",
         "peerberry": 1.17,
         "myinvestor": -1.65,
+        "total": -1.17,
         "acumulado": -1.93,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
@@ -18097,6 +18102,7 @@
         "mes": "2025-05",
         "peerberry": 0.53,
         "myinvestor": 1.99,
+        "total": 1.66,
         "acumulado": -0.3,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
@@ -18105,6 +18111,7 @@
         "mes": "2025-06",
         "peerberry": 0.26,
         "myinvestor": -0.03,
+        "total": 0.05,
         "acumulado": -0.26,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
@@ -18113,6 +18120,7 @@
         "mes": "2025-07",
         "peerberry": 0.71,
         "myinvestor": 1.85,
+        "total": 1.57,
         "acumulado": 1.31,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
@@ -18121,6 +18129,7 @@
         "mes": "2025-08",
         "peerberry": 0.23,
         "myinvestor": 0.76,
+        "total": 0.63,
         "acumulado": 1.95,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
@@ -18129,6 +18138,7 @@
         "mes": "2025-09",
         "peerberry": 0.88,
         "myinvestor": 2.52,
+        "total": 2.12,
         "acumulado": 4.12,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
@@ -18137,6 +18147,7 @@
         "mes": "2025-10",
         "peerberry": 0.78,
         "myinvestor": 4.14,
+        "total": 3.23,
         "acumulado": 7.49,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
@@ -18145,6 +18156,7 @@
         "mes": "2025-11",
         "peerberry": 0.63,
         "myinvestor": -0.53,
+        "total": -0.21,
         "acumulado": 7.26,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
@@ -18153,6 +18165,7 @@
         "mes": "2025-12",
         "peerberry": 0.68,
         "myinvestor": 0.99,
+        "total": 0.9,
         "acumulado": 8.23,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
@@ -18161,6 +18174,7 @@
         "mes": "2026-01",
         "peerberry": 0.65,
         "myinvestor": 5.22,
+        "total": 3.68,
         "acumulado": 12.21,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
@@ -18169,6 +18183,7 @@
         "mes": "2026-02",
         "peerberry": 0.88,
         "myinvestor": 2.49,
+        "total": 1.76,
         "acumulado": 14.18,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
@@ -18177,6 +18192,7 @@
         "mes": "2026-03",
         "peerberry": 0.49,
         "myinvestor": -7.4,
+        "total": -3.91,
         "acumulado": 9.71,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
@@ -18185,6 +18201,7 @@
         "mes": "2026-04",
         "peerberry": 0.85,
         "myinvestor": 7.48,
+        "total": 4.66,
         "acumulado": 14.83,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
@@ -18193,6 +18210,7 @@
         "mes": "2026-05",
         "peerberry": 0.46,
         "myinvestor": 5.45,
+        "total": 3.47,
         "acumulado": 18.81,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
@@ -18201,6 +18219,7 @@
         "mes": "2026-06",
         "peerberry": 0.31,
         "myinvestor": 1.76,
+        "total": 1.04,
         "acumulado": 20.04,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
