@@ -1,3 +1,8 @@
+## 2026-07-08 (2)
+
+- Fix: rentabilidad mensual de MyInvestor en el gráfico de Inversiones ahora usa saldo medio (promedio capital mes anterior + capital mes actual) en vez de capital del mes anterior, alineado con la metodología que MyInvestor reporta en sus propios mails. Verificado contra el mail de junio (1,8% reportado vs 1,76% calculado). Ver DECISIONS.md.
+- Workflow sync-finance-data disparado manualmente para regenerar finance_data.json.
+
 ## 2026-07-08
 
 - Nuevo gráfico en tab Inversiones: rentabilidad mensual por plataforma (barras agrupadas Peerberry/MyInvestor + curva de acumulado TWR compuesto). Ver DECISIONS.md.
