@@ -448,11 +448,16 @@ def build_rendimiento_mensual(by_month):
                 acc *= (1 + ret_total)
                 acumulado = round((acc - 1) * 100, 2)
 
+        sin_aportes_pb = bool(cur["peerberry"]["aportes_known"]) and cur["peerberry"]["aportes"] == 0
+        sin_aportes_mi = bool(cur["myinvestor"]["aportes_known"]) and cur["myinvestor"]["aportes"] == 0
+
         result.append({
-            "mes":        mk,
-            "peerberry":  pct_pb,
-            "myinvestor": pct_mi,
-            "acumulado":  acumulado
+            "mes":               mk,
+            "peerberry":         pct_pb,
+            "myinvestor":        pct_mi,
+            "acumulado":         acumulado,
+            "sin_aportes_pb":    sin_aportes_pb,
+            "sin_aportes_mi":    sin_aportes_mi
         })
 
     return result
