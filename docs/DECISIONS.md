@@ -1,3 +1,19 @@
+## [2026-07-08] Rentabilidad mensual MyInvestor: usar saldo medio en vez de capital mes anterior
+
+**Contexto:** el mail mensual "Rentabilidad de tu cartera" de MyInvestor confirma su propia metodología: "Cuánto dinero has ganado o perdido por cada 100€ invertidos. Beneficio (€) entre Saldo medio (€)". El cálculo original de `build_rendimiento_mensual` usaba Ganancia / Capital del mes calendario anterior, que no coincide con esa metodología y se distorsiona cuando hay aportes grandes a mitad de mes (un depósito de fin de mes cuenta como si hubiera generado rendimiento todo el mes).
+
+**Verificación:** búsqueda en Gmail (`from:comunicaciones@myinvestor.es`) confirmó que las transferencias/nóminas van directo a la Cartera RED sin paso intermedio por cuenta corriente (confirmado por Matias), y que el mail de junio 2026 reporta 1,8% de rentabilidad mensual.
+
+**Cambio:** `scripts/sync_finance_data.py`, `build_rendimiento_mensual()`:
+- `% MyInvestor` ahora = Ganancia del mes / promedio entre capital de cierre del mes anterior y capital de cierre de este mes (mismo método de 2 puntos que ya usaba Peerberry), en vez de Ganancia / Capital del mes anterior.
+- `acumulado` (curva TWR) actualizado para usar el mismo promedio de 2 puntos a nivel de capital total (Peerberry + MyInvestor), por consistencia.
+
+**Limitación conocida:** el promedio de 2 puntos no es un verdadero saldo medio diario (Modified Dietz completo), que requeriría la fecha exacta de cada aporte dentro del mes. Esa fecha existe en los mails transaccionales de Gmail (`notificaciones@myinvestor.es`, asuntos "TRANSFERENCIA SEPA"/"ABONO NOMINA SEPA"), pero `sync_finance_data.py` corre en GitHub Actions sin credenciales de Gmail, así que no puede leerlos en cada sync automático. Verificado contra el mail de junio: 1,76% calculado vs 1,8% reportado por MyInvestor — diferencia menor, aceptable como aproximación.
+
+**Pendiente evaluado y descartado por ahora:** agregar campo "Fecha aporte" a la DB Notion para permitir Modified Dietz real sin depender de Gmail en el sync. Queda como mejora futura si la diferencia se vuelve significativa.
+
+---
+
 ## [2026-07-08] Nuevo gráfico: rentabilidad mensual por plataforma (tab Inversiones)
 
 **Contexto:** el tab Inversiones solo tenía el gráfico de Capital (barras apiladas en euros). Se pidió un gráfico similar pero de rentabilidad, que no admite apilado porque un % de una plataforma y un % de otra no son aditivos.
