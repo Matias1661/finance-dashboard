@@ -418,6 +418,11 @@ def build_rendimiento_mensual(by_month):
     / saldo medio total del mes) SIN encadenar, para marcar en el grafico
     como indicador de "como fue ese mes en conjunto" independiente del
     acumulado historico.
+
+    acumulado_anio = mismo TWR compuesto que 'acumulado', pero reiniciado a
+    0% en enero de cada anio calendario. Permite comparar la forma de la
+    curva de un anio contra otro (ej. 2025 vs lo que va de 2026) sin que el
+    acumulado historico de anios previos distorsione la comparacion.
     """
     meses_completos = sorted(
         mk for mk, v in by_month.items() if v["myinvestor"]["capital"] is not None
@@ -425,10 +430,17 @@ def build_rendimiento_mensual(by_month):
 
     result = []
     acc = 1.0
+    acc_year = 1.0
+    current_year = None
     for mk in meses_completos:
         prev_mk = _calendar_prev_month(mk)
         prev = by_month.get(prev_mk)
         cur = by_month[mk]
+
+        year = mk[:4]
+        if year != current_year:
+            current_year = year
+            acc_year = 1.0
 
         pct_mi = None
         if prev is not None and prev["myinvestor"]["capital"] is not None and cur["myinvestor"]["capital"] is not None:
@@ -443,6 +455,7 @@ def build_rendimiento_mensual(by_month):
                 pct_pb = round(cur["peerberry"]["ganancia"] / avg_capital * 100, 2)
 
         acumulado = None
+        acumulado_anio = None
         total_mes = None
         if prev is not None:
             prev_capital_total = (prev["peerberry"]["capital"] or 0) + (prev["myinvestor"]["capital"] or 0)
@@ -454,6 +467,10 @@ def build_rendimiento_mensual(by_month):
                 total_mes = round(ret_total * 100, 2)
                 acc *= (1 + ret_total)
                 acumulado = round((acc - 1) * 100, 2)
+                acc_year *= (1 + ret_total)
+                acumulado_anio = round((acc_year - 1) * 100, 2)
+
+
 
         sin_aportes_pb = bool(cur["peerberry"]["aportes_known"]) and cur["peerberry"]["aportes"] == 0
         sin_aportes_mi = bool(cur["myinvestor"]["aportes_known"]) and cur["myinvestor"]["aportes"] == 0
@@ -464,6 +481,7 @@ def build_rendimiento_mensual(by_month):
             "myinvestor":        pct_mi,
             "total":             total_mes,
             "acumulado":         acumulado,
+            "acumulado_anio":    acumulado_anio,
             "sin_aportes_pb":    sin_aportes_pb,
             "sin_aportes_mi":    sin_aportes_mi
         })
