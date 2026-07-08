@@ -771,7 +771,11 @@ function renderInvAcumuladoAnual(){
     borderDash: i === years.length - 1 ? [5, 3] : [],
     pointRadius: 3,
     pointBackgroundColor: palette[i % palette.length],
-    fill: false,
+    fill: {
+      target: { value: 0 },
+      above: 'transparent',
+      below: 'rgba(226,74,74,0.15)'
+    },
     tension: 0.3,
     spanGaps: false
   }));
