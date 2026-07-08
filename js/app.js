@@ -758,6 +758,7 @@ function renderInvRendimiento(){
   const pbData = rendMensual.map(d => d.peerberry);
   const miData = rendMensual.map(d => d.myinvestor);
   const accData = rendMensual.map(d => d.acumulado);
+  const totalData = rendMensual.map(d => d.total);
 
   const fmtPct = v => v === null || v === undefined ? '' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
 
@@ -780,6 +781,19 @@ function renderInvRendimiento(){
           backgroundColor: 'rgba(13,138,82,0.75)',
           borderRadius: 3,
           yAxisID: 'y'
+        },
+        {
+          label: 'Total del mes',
+          data: totalData,
+          type: 'scatter',
+          pointStyle: 'rectRot',
+          pointRadius: 6,
+          pointHoverRadius: 8,
+          backgroundColor: 'rgba(37,99,190,0.9)',
+          borderColor: '#ffffff',
+          borderWidth: 1.5,
+          yAxisID: 'y',
+          order: 1
         },
         {
           label: 'Acumulado',
