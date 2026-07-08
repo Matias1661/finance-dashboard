@@ -24,6 +24,20 @@
 
 ---
 
+## [2026-07-08] Corregida "Fecha reporte" de Peerberry febrero 2026: aparecía como marzo por error de fecha
+
+**Contexto:** Matias reportó que el gráfico de rentabilidad mensual mostraba Peerberry en `null` para febrero 2026, y preguntó si se podía reconstruir desde los mails. Al revisar Gmail (`from:info@peerberry.com`), los 4 reportes semanales de febrero existían y permitían reconstruir el mes (ganancia ≈43,74€, aportes -500€, capital de cierre ≈5.064€). Pero antes de crear una fila nueva se verificó la DB Notion "Rendimiento Inversiones" y se encontró que **los datos de febrero ya estaban cargados**: la fila `"Peerberry febrero 2026"` (Ganancia 46,79€, Aportes -500€, Capital 5.084,73€) tenía su campo **"Fecha reporte" en 2026-03-02** en vez de dentro de febrero.
+
+**Causa raíz:** `_aggregate_rendimiento_by_month()` en `sync_finance_data.py` agrupa por el mes calendario de "Fecha reporte", no por el título "Fecha" de la página. Con "Fecha reporte" = 2026-03-02, esta fila se sumaba al mes de marzo junto con la fila `"Peerberry marzo 2026"` (Ganancia 24,87€, Fecha reporte 2026-03-30), dando una ganancia de marzo inflada (46,79+24,87=71,66€) y febrero vacío.
+
+**Cambio:** corregido el campo "Fecha reporte" de la página `"Peerberry febrero 2026"` (Notion) de 2026-03-02 a 2026-02-23 (fecha del último reporte semanal real dentro de febrero). No se tocó Ganancia/Aportes/Capital total — esos valores ya cargados se mantienen, solo se corrigió la clasificación de mes.
+
+**Impacto:** tras regenerar `finance_data.json`, `rendimiento_mensual` ahora muestra febrero 2026 con datos (`peerberry: 0.88`) y marzo 2026 recalculado sin la duplicación (`peerberry: 0.49` en vez del valor inflado anterior).
+
+**Aprendizaje para el flujo de carga:** al cargar filas Mensuales de Peerberry vía Relay o manualmente, "Fecha reporte" debe caer dentro del mes que la fila representa (usar el último reporte semanal real de ese mes), no la fecha en que se cargó el dato a Notion.
+
+---
+
 ## [2026-07-08] Nuevo gráfico: rentabilidad mensual por plataforma (tab Inversiones)
 
 **Contexto:** el tab Inversiones solo tenía el gráfico de Capital (barras apiladas en euros). Se pidió un gráfico similar pero de rentabilidad, que no admite apilado porque un % de una plataforma y un % de otra no son aditivos.
