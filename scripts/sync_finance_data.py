@@ -336,7 +336,15 @@ def _kpi_from_series(months):
     calcula: % ultimo mes, % 12m compuesto (TWR encadenando retornos
     mensuales), ganancia y aportes acumulados de los ultimos 12 meses.
 
-    Rentabilidad mensual = Ganancia(mes) / Capital al cierre del mes anterior.
+    Rentabilidad mensual = Ganancia(mes) / saldo medio del mes, aproximado
+    como promedio entre capital de cierre del mes anterior y capital de
+    cierre de este mes. Alineado con la metodologia que MyInvestor usa en
+    sus propios mails ("Beneficio (€) entre Saldo medio (€)") y con el
+    mismo calculo ya usado en build_rendimiento_mensual() para el grafico
+    de rentabilidad mensual del tab Inversiones. Antes se dividia por el
+    capital de cierre del mes anterior, lo que generaba valores distintos
+    entre el KPI de Resumen y el grafico para el mismo mes. Ver
+    DECISIONS.md 2026-07-08.
     El primer mes de la serie no tiene mes anterior y queda fuera del calculo
     de rentabilidad (solo aporta a ganancia/aportes si cae en la ventana 12m).
     """
@@ -346,8 +354,10 @@ def _kpi_from_series(months):
     returns = []
     for i in range(1, len(months)):
         prev_capital = months[i - 1]["capital"]
-        if prev_capital:
-            returns.append(months[i]["ganancia"] / prev_capital)
+        cur_capital = months[i]["capital"]
+        avg_capital = (prev_capital + cur_capital) / 2 if (prev_capital or cur_capital) else 0
+        if avg_capital:
+            returns.append(months[i]["ganancia"] / avg_capital)
 
     pct_ultimo_mes = round(returns[-1] * 100, 2) if returns else None
 
