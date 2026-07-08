@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-08 11:57",
+  "generated_at": "2026-07-08 13:02",
   "movimientos": [
     {
       "fecha": "2026-07-06",
@@ -18059,6 +18059,7 @@
         "myinvestor": null,
         "total": null,
         "acumulado": null,
+        "acumulado_anio": null,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       },
@@ -18068,6 +18069,7 @@
         "myinvestor": 0.85,
         "total": 0.83,
         "acumulado": 0.83,
+        "acumulado_anio": 0.83,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
       },
@@ -18077,6 +18079,7 @@
         "myinvestor": 0.56,
         "total": 0.6,
         "acumulado": 1.43,
+        "acumulado_anio": 1.43,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
       },
@@ -18086,6 +18089,7 @@
         "myinvestor": -2.68,
         "total": -2.17,
         "acumulado": -0.77,
+        "acumulado_anio": -0.77,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
       },
@@ -18095,6 +18099,7 @@
         "myinvestor": -1.65,
         "total": -1.17,
         "acumulado": -1.93,
+        "acumulado_anio": -1.93,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
       },
@@ -18104,6 +18109,7 @@
         "myinvestor": 1.99,
         "total": 1.66,
         "acumulado": -0.3,
+        "acumulado_anio": -0.3,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
       },
@@ -18113,6 +18119,7 @@
         "myinvestor": -0.03,
         "total": 0.05,
         "acumulado": -0.26,
+        "acumulado_anio": -0.26,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
       },
@@ -18122,6 +18129,7 @@
         "myinvestor": 1.85,
         "total": 1.57,
         "acumulado": 1.31,
+        "acumulado_anio": 1.31,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       },
@@ -18131,6 +18139,7 @@
         "myinvestor": 0.76,
         "total": 0.63,
         "acumulado": 1.95,
+        "acumulado_anio": 1.95,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
       },
@@ -18140,6 +18149,7 @@
         "myinvestor": 2.52,
         "total": 2.12,
         "acumulado": 4.12,
+        "acumulado_anio": 4.12,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       },
@@ -18149,6 +18159,7 @@
         "myinvestor": 4.14,
         "total": 3.23,
         "acumulado": 7.49,
+        "acumulado_anio": 7.49,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18158,6 +18169,7 @@
         "myinvestor": -0.53,
         "total": -0.21,
         "acumulado": 7.26,
+        "acumulado_anio": 7.26,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       },
@@ -18167,6 +18179,7 @@
         "myinvestor": 0.99,
         "total": 0.9,
         "acumulado": 8.23,
+        "acumulado_anio": 8.23,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18176,6 +18189,7 @@
         "myinvestor": 5.22,
         "total": 3.68,
         "acumulado": 12.21,
+        "acumulado_anio": 3.68,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18185,6 +18199,7 @@
         "myinvestor": 2.49,
         "total": 1.76,
         "acumulado": 14.18,
+        "acumulado_anio": 5.5,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
       },
@@ -18194,6 +18209,7 @@
         "myinvestor": -7.4,
         "total": -3.91,
         "acumulado": 9.71,
+        "acumulado_anio": 1.37,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18203,6 +18219,7 @@
         "myinvestor": 7.48,
         "total": 4.66,
         "acumulado": 14.83,
+        "acumulado_anio": 6.1,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18212,6 +18229,7 @@
         "myinvestor": 5.45,
         "total": 3.47,
         "acumulado": 18.81,
+        "acumulado_anio": 9.78,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18221,6 +18239,7 @@
         "myinvestor": 1.76,
         "total": 1.04,
         "acumulado": 20.04,
+        "acumulado_anio": 10.92,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
