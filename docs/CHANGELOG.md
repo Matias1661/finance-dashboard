@@ -1,3 +1,10 @@
+## 2026-07-08
+
+- Nuevo gráfico en tab Inversiones: rentabilidad mensual por plataforma (barras agrupadas Peerberry/MyInvestor + curva de acumulado TWR compuesto). Ver DECISIONS.md.
+- sync_finance_data.py: nuevo campo `inversiones.rendimiento_mensual` en finance_data.json.
+- js/app.js: nueva función `renderInvRendimiento()`. index.html: nuevo canvas `chart-inv-rendimiento`.
+- Workflow sync-finance-data disparado manualmente para regenerar finance_data.json.
+
 ## 2026-07-07 (6)
 
 - KPI de rentabilidad de inversiones: ahora siempre muestra el último mes calendario completo (no el mes en curso), y espera a que MyInvestor haya reportado ese mes antes de mostrarlo. Ver DECISIONS.md.
