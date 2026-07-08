@@ -1,12 +1,19 @@
-## 2026-07-08 (3)
+## 2026-07-08 (6)
 
-- Tooltip del gráfico de rentabilidad mensual (tab Inversiones) muestra "(sin aportes ese mes)" cuando la variación de capital de esa plataforma en el mes es puramente de mercado (sin depósitos ni retiros). Confirmado que la caída del acumulado en marzo-abril 2025 fue real (pérdida de -380€ y -229€ en MyInvestor sin aportes), no un error de cálculo. Ver DECISIONS.md.
-- sync_finance_data.py: nuevos campos `sin_aportes_pb` y `sin_aportes_mi` en `inversiones.rendimiento_mensual`.
+- Gráfico de rentabilidad mensual (tab Inversiones): barras y curva de Acumulado ahora comparten un solo eje Y (antes eje dual). Eje X ya no muestra diciembre 2024 (arranca en enero 2025).
+- Nuevo indicador: rombo "Total del mes" (rentabilidad combinada Peerberry + MyInvestor, ponderada por capital) sobre cada mes, mismo estilo visual que el rombo de "promedio 3 meses" del gráfico mensual en Resumen.
+- sync_finance_data.py: nuevo campo `total` en `inversiones.rendimiento_mensual`.
+- Workflow sync-finance-data disparado manualmente para regenerar finance_data.json.
+
+## 2026-07-08 (5)
+
+- Fix: corregido "Fecha reporte" de la fila Notion "Peerberry febrero 2026" (estaba en 2026-03-02, ahora en 2026-02-23). Causaba que febrero 2026 apareciera vacío en el gráfico de rentabilidad y que marzo tuviera la ganancia de Peerberry duplicada (71,66€ en vez de 24,87€). Ver DECISIONS.md.
 - Workflow sync-finance-data disparado manualmente para regenerar finance_data.json.
 
 ## 2026-07-08 (4)
 
-- Fix: corregido "Fecha reporte" de la fila Notion "Peerberry febrero 2026" (estaba en 2026-03-02, ahora en 2026-02-23). Causaba que febrero 2026 apareciera vacío en el gráfico de rentabilidad y que marzo tuviera la ganancia de Peerberry duplicada (71,66€ en vez de 24,87€). Ver DECISIONS.md.
+- Tooltip del gráfico de rentabilidad mensual (tab Inversiones) muestra "(sin aportes ese mes)" cuando la variación de capital de esa plataforma en el mes es puramente de mercado (sin depósitos ni retiros). Confirmado que la caída del acumulado en marzo-abril 2025 fue real (pérdida de -380€ y -229€ en MyInvestor sin aportes), no un error de cálculo. Ver DECISIONS.md.
+- sync_finance_data.py: nuevos campos `sin_aportes_pb` y `sin_aportes_mi` en `inversiones.rendimiento_mensual`.
 - Workflow sync-finance-data disparado manualmente para regenerar finance_data.json.
 
 ## 2026-07-08 (2)
