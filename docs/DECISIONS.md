@@ -1,3 +1,16 @@
+## [2026-07-08] Rentabilidad mensual: acumulado vuelve a eje propio, con zona negativa sombreada y linea de cero
+
+**Contexto:** con el eje único (decisión previa del mismo día), el acumulado histórico (hasta +20%) aplastaba visualmente los tramos negativos de marzo-junio 2025 (entre -0.3% y -1.93%) contra el cero, dificultando ver cuándo el acumulado cruzaba a territorio negativo. Matias pidió volver a un eje propio para el acumulado, sombrear la zona negativa, y además resaltar la línea del cero en ese eje para ubicarla aunque la escala llegue a +20%.
+
+**Cambio:** `js/app.js`, `renderInvRendimiento()`:
+- La línea "Acumulado" vuelve a usar `yAxisID: 'y1'` (eje derecho), mientras que las barras de Peerberry/MyInvestor y el rombo "Total del mes" se mantienen en `yAxisID: 'y'` (eje izquierdo). Esto es una excepción puntual a la regla general de "un solo eje" adoptada más temprano — se aplica solo a este gráfico porque el acumulado histórico y los retornos mensuales tienen rangos muy distintos (hasta 20 puntos porcentuales de diferencia).
+- El área bajo la curva de Acumulado se sombrea en rojo claro (`rgba(226,74,74,0.15)`) cuando el valor cae por debajo de 0%, usando `fill: { target: { value: 0 }, above: 'transparent', below: ... }`.
+- Se agrega un dataset auxiliar "Cero (acumulado)" — una línea punteada gris constante en 0, en el eje `y1` — para marcar visualmente dónde está el cero en ese eje. Se excluye de la leyenda y del tooltip (`filter`) para no generar ruido.
+
+**Trade-off:** el gráfico vuelve a tener eje dual únicamente para esta línea; las barras y el rombo comparten el eje único. No es una reversión completa a la versión con eje dual original (esa tenía las barras también en `y1`/`y` separados).
+
+---
+
 ## [2026-07-08] Nuevo gráfico: acumulado por año (tab Inversiones)
 
 **Contexto:** Matias preguntó cuánto habría rendido cada plataforma si hubiera dejado todo el dinero en una sola desde enero 2025, tanto para el período completo como solo para 2025. La respuesta reveló que la ventaja de MyInvestor se concentra casi enteramente en el rally de mercado de 2026 (2025 estuvo casi empatado: 8.93% MyInvestor vs 8.05% Peerberry). A partir de ahí pidió una forma de comparar visualmente la forma de la curva de un año contra otra, reiniciando en 0% cada enero — en vez de una sola curva de acumulado histórico que arrastra el resultado de años previos.
