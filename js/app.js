@@ -805,7 +805,14 @@ function renderInvRendimiento(){
           backgroundColor: '#ffffff', borderColor: 'rgba(0,0,0,0.12)', borderWidth: 1,
           titleColor: '#1a1a18', bodyColor: '#6b6b63',
           callbacks: {
-            label: ctx => ` ${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}`
+            label: ctx => {
+              const d = rendMensual[ctx.dataIndex];
+              let sinAportes = false;
+              if(ctx.dataset.label === 'Peerberry') sinAportes = d && d.sin_aportes_pb;
+              if(ctx.dataset.label === 'MyInvestor') sinAportes = d && d.sin_aportes_mi;
+              const nota = sinAportes ? ' (sin aportes ese mes)' : '';
+              return ` ${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}${nota}`;
+            }
           }
         }
       },
