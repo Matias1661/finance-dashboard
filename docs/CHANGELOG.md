@@ -1,3 +1,9 @@
+## 2026-07-08 (3)
+
+- Tooltip del gráfico de rentabilidad mensual (tab Inversiones) muestra "(sin aportes ese mes)" cuando la variación de capital de esa plataforma en el mes es puramente de mercado (sin depósitos ni retiros). Confirmado que la caída del acumulado en marzo-abril 2025 fue real (pérdida de -380€ y -229€ en MyInvestor sin aportes), no un error de cálculo. Ver DECISIONS.md.
+- sync_finance_data.py: nuevos campos `sin_aportes_pb` y `sin_aportes_mi` en `inversiones.rendimiento_mensual`.
+- Workflow sync-finance-data disparado manualmente para regenerar finance_data.json.
+
 ## 2026-07-08 (2)
 
 - Fix: rentabilidad mensual de MyInvestor en el gráfico de Inversiones ahora usa saldo medio (promedio capital mes anterior + capital mes actual) en vez de capital del mes anterior, alineado con la metodología que MyInvestor reporta en sus propios mails. Verificado contra el mail de junio (1,8% reportado vs 1,76% calculado). Ver DECISIONS.md.
