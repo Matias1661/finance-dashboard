@@ -1,3 +1,19 @@
+## [2026-07-08] Nuevo gráfico: rentabilidad mensual por plataforma (tab Inversiones)
+
+**Contexto:** el tab Inversiones solo tenía el gráfico de Capital (barras apiladas en euros). Se pidió un gráfico similar pero de rentabilidad, que no admite apilado porque un % de una plataforma y un % de otra no son aditivos.
+
+**Cambio:** `scripts/sync_finance_data.py`, nueva función `build_rendimiento_mensual(by_month)` que agrega a `inversiones` el campo `rendimiento_mensual`: lista `{mes, peerberry, myinvestor, acumulado}` por mes calendario.
+- Un mes se incluye solo si MyInvestor ya reportó ese mes (mismo criterio de "mes completo" que usa `build_kpi_inversiones`/`_last_complete_month`).
+- `% MyInvestor` = Ganancia del mes / Capital total del mes calendario anterior.
+- `% Peerberry` = Ganancia del mes / promedio entre capital de cierre del mes anterior y capital de cierre de este mes (aproximación de 2 puntos: no se conserva el detalle semanal agregado dentro del mes, solo la última lectura de capital).
+- `acumulado` = TWR compuesto del retorno total mensual (ganancia total del mes / capital total del mes anterior), encadenado desde el primer mes incluido.
+
+**Dashboard:** `js/app.js`, nueva función `renderInvRendimiento()` (llamada desde `renderInversiones()`), gráfico de barras agrupadas (no apiladas) por plataforma con curva de acumulado en eje secundario. `index.html`: nuevo `<canvas id="chart-inv-rendimiento">` debajo del gráfico de Capital.
+
+**Impacto:** ninguno en campos existentes de `finance_data.json`; `rendimiento_mensual` es un campo nuevo, no reemplaza `rendimiento` (Sheet histórico, sin tocar).
+
+---
+
 ## [2026-07-07] KPI rentabilidad inversiones: usar siempre el último mes calendario completo
 
 **Contexto:** el KPI "% último mes" tomaba directamente el último mes presente en la serie de `Rendimiento Inversiones`. Como Peerberry carga reportes Semanales durante todo el mes en curso, ese mes aparecía en la serie antes de estar cerrado, mostrando rentabilidad parcial del mes actual en vez del último mes completo (ej. 7 de julio mostrando julio en vez de junio).
