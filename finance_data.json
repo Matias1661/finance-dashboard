@@ -1,6 +1,76 @@
 {
-  "generated_at": "2026-07-08 13:22",
+  "generated_at": "2026-07-09 10:26",
   "movimientos": [
+    {
+      "fecha": "2026-07-08",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-08",
+      "concepto": "YOIGO XFERA MOVIL",
+      "monto": -47.55,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-08",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.5,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-08",
+      "concepto": "LA EMPERATRIZ",
+      "monto": -25,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-08",
+      "concepto": "TRASPASO DONATIVO",
+      "monto": -350,
+      "categoria": "Inversion",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-07",
+      "concepto": "CAIXABANK PAYMENT",
+      "monto": -15.18,
+      "categoria": "Tarjeta",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-07",
+      "concepto": "AMAZON.ES",
+      "monto": -20.4,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-07",
+      "concepto": "PULL AND BEAR",
+      "monto": -18.14,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-07",
+      "concepto": "ZARA MADRID PLAZA",
+      "monto": -46,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-07",
+      "concepto": "SANSE I",
+      "monto": -51.63,
+      "categoria": "Combustible",
+      "nota": null
+    },
     {
       "fecha": "2026-07-06",
       "concepto": "RECIBO VIVAGYM",
