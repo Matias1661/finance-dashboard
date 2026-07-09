@@ -1,3 +1,13 @@
+## [2026-07-09] Otros cargos recurrentes: aplicar el mismo corte de 180 dias sin cobro que Suscripciones
+
+**Contexto:** en `js/insights.js`, `RECURRING_HIDE_DAYS` (180 dias) solo se aplicaba a la lista de Suscripciones; la lista "Otros cargos recurrentes" (financiacion, recibos, cuotas) no tenia limite y mostraba cargos inactivos indefinidamente.
+
+**Cambio:** `renderSuscripciones()` ahora filtra `otros` con la misma condicion `diasSinCobro <= RECURRING_HIDE_DAYS` que ya usaba `subs`.
+
+**Impacto:** cargos recurrentes (no suscripcion) sin cobro hace mas de 180 dias dejan de listarse. No se toco el umbral (se evaluo bajarlo a 90 dias pero Matias confirmo mantener 180 para ambas listas).
+
+---
+
 ## [2026-07-09] Prompt de categorizacion Relay migrado de Sheets a base de datos Notion
 
 **Contexto:** el prompt de categorizacion que usa Relay para clasificar movimientos vivia en la hoja "prompt relay" del Google Sheet historico (file ID 1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI). Matias creo una base de datos nueva en Notion para unificar todos los prompts de uso frecuente.
