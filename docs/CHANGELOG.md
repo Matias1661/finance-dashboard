@@ -1,3 +1,7 @@
+## 2026-07-09
+
+- js/insights.js: `renderSuscripciones()` aplica el corte `RECURRING_HIDE_DAYS` (180 días sin cobro) también a "Otros cargos recurrentes", antes solo afectaba a Suscripciones. Ver DECISIONS.md.
+
 ## 2026-07-08 (8)
 
 - Gráfico de rentabilidad mensual: la línea de Acumulado vuelve a tener eje propio (derecho), mientras que barras y rombo comparten el eje izquierdo. Zona negativa del acumulado sombreada en rojo claro. Línea punteada gris marcando el cero en el eje del acumulado (oculta de leyenda y tooltip). Ver DECISIONS.md.
