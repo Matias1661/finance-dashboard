@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09 10:26",
+  "generated_at": "2026-07-09 10:45",
   "movimientos": [
     {
       "fecha": "2026-07-08",
@@ -48,21 +48,21 @@
       "concepto": "AMAZON.ES",
       "monto": -20.4,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Compra Kindle: How to Build a Car (The Autobiography of the World's Greatest Formula 1 Designer)."
     },
     {
       "fecha": "2026-07-07",
       "concepto": "PULL AND BEAR",
       "monto": -18.14,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Regalo Sebo"
     },
     {
       "fecha": "2026-07-07",
       "concepto": "ZARA MADRID PLAZA",
       "monto": -46,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Regalo Joha"
     },
     {
       "fecha": "2026-07-07",
