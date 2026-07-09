@@ -1,3 +1,8 @@
+## 2026-07-09 (3)
+
+- sync_finance_data.py: guard de sanidad antes de escribir finance_data.json (aborta si 0 movimientos, caida >10% del conteo, o ganancia de inversiones vacia teniendo datos previos).
+- sync-finance-data.yml: crea una issue automatica si el workflow falla (permiso issues: write). Ver DECISIONS.md.
+
 ## 2026-07-09 (2)
 
 - docs: corregido el estado de Relay en PROJECT_MEMORY.md — Relay sigue activo escribiendo en Notion (Movimientos y Rendimiento Inversiones); diagrama de pipeline actualizado (Relay→Notion, sin Sheets ni Action de verificacion); parrafos de automatizacion pendiente de Rendimiento Inversiones marcados como operativos. Sin cambios de codigo. Ver DECISIONS.md.
