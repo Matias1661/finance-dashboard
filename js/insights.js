@@ -132,7 +132,7 @@ function renderSuscripciones(){
   el.style.display = '';
 
   const subs        = recs.filter(r => r.esSuscripcion && r.diasSinCobro <= RECURRING_HIDE_DAYS);
-  const otros       = recs.filter(r => !r.esSuscripcion);
+  const otros       = recs.filter(r => !r.esSuscripcion && r.diasSinCobro <= RECURRING_HIDE_DAYS);
   const subsAct     = subs.filter(r => r.activa);
   const subsInact   = subs.filter(r => !r.activa);
   const totalSubsAct  = subsAct.reduce((s, r) => s + r.monto, 0);
