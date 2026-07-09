@@ -655,6 +655,40 @@ def build_inversiones(rows):
     return {"capital": capital, "rendimiento": rendimiento}
 
 
+def sanity_check(movimientos, inversiones):
+    """Guard de sanidad (ver DECISIONS.md 2026-07-09): aborta antes de
+    escribir finance_data.json si el resultado es sospechoso, para no
+    publicar un JSON vacio o degradado. Al abortar, el workflow falla,
+    no se comitea nada y el dashboard conserva el ultimo JSON bueno.
+    Guards:
+      A) 0 movimientos generados.
+      B) el conteo de movimientos cae mas de 10% vs. el JSON anterior
+         (los movimientos historicos solo deberian crecer).
+      C) el JSON anterior tenia inversiones.ganancia con datos y el
+         nuevo viene vacio (antes esto se degradaba en silencio)."""
+    prev = None
+    try:
+        with open("finance_data.json", encoding="utf-8") as f:
+            prev = json.load(f)
+    except Exception:
+        pass  # primera ejecucion o JSON previo ilegible: solo guard A
+
+    if not movimientos:
+        raise RuntimeError("Guard A: 0 movimientos generados — sync abortado.")
+
+    if prev:
+        prev_n = len(prev.get("movimientos", []))
+        if prev_n and len(movimientos) < prev_n * 0.9:
+            raise RuntimeError(
+                f"Guard B: movimientos caen de {prev_n} a {len(movimientos)} "
+                f"(mas de 10%) — sync abortado.")
+        prev_gan = (prev.get("inversiones") or {}).get("ganancia") or []
+        if prev_gan and not inversiones.get("ganancia"):
+            raise RuntimeError(
+                "Guard C: inversiones.ganancia vacia pero el JSON anterior "
+                "tenia datos — sync abortado.")
+
+
 if __name__ == "__main__":
     try:
         print("Leyendo Movimientos (Notion)...")
@@ -692,6 +726,8 @@ if __name__ == "__main__":
             inversiones["ganancia"] = []
             inversiones["kpi"] = None
             inversiones["rendimiento_mensual"] = []
+
+        sanity_check(movimientos, inversiones)
 
         output = {
             "generated_at": datetime.now(ZoneInfo("Europe/Madrid")).strftime("%Y-%m-%d %H:%M"),
