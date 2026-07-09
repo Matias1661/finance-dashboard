@@ -1,3 +1,7 @@
+## 2026-07-09 (2)
+
+- docs: corregido el estado de Relay en PROJECT_MEMORY.md — Relay sigue activo escribiendo en Notion (Movimientos y Rendimiento Inversiones); diagrama de pipeline actualizado (Relay→Notion, sin Sheets ni Action de verificacion); parrafos de automatizacion pendiente de Rendimiento Inversiones marcados como operativos. Sin cambios de codigo. Ver DECISIONS.md.
+
 ## 2026-07-09
 
 - js/insights.js: `renderSuscripciones()` aplica el corte `RECURRING_HIDE_DAYS` (180 días sin cobro) también a "Otros cargos recurrentes", antes solo afectaba a Suscripciones. Ver DECISIONS.md.
