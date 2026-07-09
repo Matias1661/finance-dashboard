@@ -1,3 +1,13 @@
+## [2026-07-09] Correccion documental: Relay.app sigue activo (no fue dado de baja)
+
+**Contexto:** una auditoria del flujo (09/07/2026) detecto que PROJECT_MEMORY.md afirmaba en varias secciones que "Relay.app fue dado de baja", y el diagrama "Pipeline de datos" aun describia Relay→Google Sheets con una GitHub Action de verificacion que ya no existe. Matias confirmo la realidad: Relay sigue activo, escribe Movimientos en la DB Notion y puebla Rendimiento Inversiones automaticamente desde los correos de Peerberry y MyInvestor. Sheets si quedo obsoleto como destino. El prompt de categorizacion vive unicamente en la DB Notion "Prompts para Relay".
+
+**Cambio:** corregidas en PROJECT_MEMORY.md: paso 7 del plan de migracion, seccion "Lo que desaparece al completar la migracion", diagrama "Pipeline de datos" (ahora Relay→Notion→sync diario→dashboard, con la excepcion vigente de la hoja Inversiones de Sheets) y los parrafos de automatizacion pendiente de la migracion de Inversiones (la carga via Relay ya esta operativa).
+
+**Impacto:** solo documentacion, sin cambios de codigo ni datos. Cualquier agente que lea docs/ ya no concluira erroneamente que Relay no existe. Hallazgo registrado en la DB Notion "Auditoria 2026-07 — Mejoras sugeridas" (fila 1).
+
+---
+
 ## [2026-07-09] Otros cargos recurrentes: aplicar el mismo corte de 180 dias sin cobro que Suscripciones
 
 **Contexto:** en `js/insights.js`, `RECURRING_HIDE_DAYS` (180 dias) solo se aplicaba a la lista de Suscripciones; la lista "Otros cargos recurrentes" (financiacion, recibos, cuotas) no tenia limite y mostraba cargos inactivos indefinidamente.
