@@ -1,5 +1,17 @@
 [
   {
+    "fecha": "2026-07-09",
+    "concepto": "Leroy merlin Fijador",
+    "costo": 23.98,
+    "pagado": "Willy"
+  },
+  {
+    "fecha": "2026-07-09",
+    "concepto": "Luces",
+    "costo": 445.75,
+    "pagado": "Willy"
+  },
+  {
     "fecha": "2026-07-08",
     "concepto": "Suelo vinílico SPC click ARTENS Forte 4mm Jaén",
     "costo": 333.83,
