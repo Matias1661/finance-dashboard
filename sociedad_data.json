@@ -1,6 +1,12 @@
 [
   {
     "fecha": "2026-07-09",
+    "concepto": "Pintura reja y muebles ",
+    "costo": 52.73,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-09",
     "concepto": "Leroy merlin Fijador",
     "costo": 23.98,
     "pagado": "Willy"
