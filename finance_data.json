@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-09 10:45",
+  "generated_at": "2026-07-09 12:32",
   "movimientos": [
     {
       "fecha": "2026-07-08",
@@ -145,7 +145,7 @@
       "fecha": "2026-07-06",
       "concepto": "BIZUM ENVIADO",
       "monto": -16.5,
-      "categoria": "Club",
+      "categoria": "Salidas",
       "nota": null
     },
     {
