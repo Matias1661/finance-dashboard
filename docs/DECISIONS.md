@@ -1,3 +1,17 @@
+## [2026-07-09] Guard de sanidad en sync_finance_data.py y alerta de fallo del workflow
+
+**Contexto:** la auditoria del 09/07/2026 (fila 2 de la DB Notion "Auditoria 2026-07 — Mejoras sugeridas") detecto dos riesgos silenciosos: (1) si Notion devolvia un resultado vacio o parcial, el script escribia igualmente finance_data.json y el dashboard quedaba en blanco o degradado; el fallo de Rendimiento Inversiones incluso se tragaba con un AVISO y seguia; (2) un fallo del cron diario de las 07:00 no notificaba a nadie.
+
+**Cambio:**
+- `scripts/sync_finance_data.py`: nueva funcion `sanity_check(movimientos, inversiones)` llamada antes de escribir el JSON. Aborta (exit != 0) si: (A) 0 movimientos; (B) el conteo de movimientos cae mas de 10% respecto al finance_data.json anterior; (C) el JSON anterior tenia `inversiones.ganancia` con datos y el nuevo viene vacio. Al abortar no se comitea nada y el dashboard conserva el ultimo JSON bueno.
+- `.github/workflows/sync-finance-data.yml`: permiso `issues: write` y paso final `Alert on failure` (`if: failure()`) que crea una issue en el repo con el link al run fallido.
+
+**Trade-off:** el umbral del 10% es arbitrario pero conservador (los movimientos historicos solo crecen); un borrado masivo intencional en Notion requerira borrar tambien finance_data.json local en el runner o ajustar el umbral puntualmente.
+
+**Impacto:** un sync roto ahora falla ruidosamente (issue automatica) en vez de publicar datos vacios.
+
+---
+
 ## [2026-07-09] Correccion documental: Relay.app sigue activo (no fue dado de baja)
 
 **Contexto:** una auditoria del flujo (09/07/2026) detecto que PROJECT_MEMORY.md afirmaba en varias secciones que "Relay.app fue dado de baja", y el diagrama "Pipeline de datos" aun describia Relay→Google Sheets con una GitHub Action de verificacion que ya no existe. Matias confirmo la realidad: Relay sigue activo, escribe Movimientos en la DB Notion y puebla Rendimiento Inversiones automaticamente desde los correos de Peerberry y MyInvestor. Sheets si quedo obsoleto como destino. El prompt de categorizacion vive unicamente en la DB Notion "Prompts para Relay".
