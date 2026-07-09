@@ -74,7 +74,7 @@ La hoja `Inversiones` (datos manuales de Peerberry/MyInvestor, no provienen de R
 4. ✅ Desplegado directo a producción (sin fase de comparación en paralelo, ver "Decisión de secuencia" arriba). Workflow `sync-finance-data.yml` actualizado con secrets `NOTION_TOKEN` (ya existía en el repo) y env var `NOTION_MOVIMIENTOS_DATA_SOURCE_ID`. Validado con 3 dispatches manuales: 2 fallos diagnosticados y corregidos, 1 éxito confirmado generando 2473 movimientos.
 5. ✅ Relay configurado para escribir solo en Notion (no en paralelo — el usuario decidió cortar Sheets como destino directamente)
 6. ⬜ (Omitido por decisión del usuario) Validación de 1-2 semanas con ambos destinos activos — no aplica porque Sheets dejó de recibir escrituras de Relay
-7. ✅ Workflows `update-sheet-cells.yml` y `find-update-nota.yml` eliminados del repo (30/06/2026). Relay.app fue dado de baja posteriormente por el usuario: `update-relay-prompt.yml` y `read-relay-prompt.yml` quedaron obsoletos, y el prompt de categorización ya no vive en `prompt_relay_current.txt` — se migró a una base de datos de Notion (https://app.notion.com/p/39833ce50e68801ab5a1fb9d6effa10f) que unifica todos los prompts de uso frecuente (09/07/2026, ver `docs/DECISIONS.md`).
+7. ✅ Workflows `update-sheet-cells.yml` y `find-update-nota.yml` eliminados del repo (30/06/2026). **Relay.app sigue activo** escribiendo en Notion (corrección 09/07/2026: una versión anterior de este documento afirmaba erróneamente que fue dado de baja). `update-relay-prompt.yml` y `read-relay-prompt.yml` quedaron obsoletos porque el prompt de categorización ya no vive en `prompt_relay_current.txt` — se migró a una base de datos de Notion (https://app.notion.com/p/39833ce50e68801ab5a1fb9d6effa10f) que unifica todos los prompts de uso frecuente y es su única fuente activa (09/07/2026, ver `docs/DECISIONS.md`).
 8. ✅ Flujo "Organizar Movimientos" actualizado: la escritura de categoría/nota ahora usa `notion-update-page` vía MCP, localizando la página por fecha+concepto+monto (`notion-query-data-sources`). Detalle completo en la sección "Flujo Organizar Movimientos" más abajo en este documento.
 
 ### Problemas encontrados y resueltos durante el despliegue del paso 4
@@ -82,7 +82,7 @@ La hoja `Inversiones` (datos manuales de Peerberry/MyInvestor, no provienen de R
 2. **404 en la query pese a versión correcta**: la integración de Notion asociada al secret `NOTION_TOKEN` de GitHub (identificada como "Notion Talho", creada 24/06/2026 según fecha de creación del secret) no estaba conectada a la página Finance Tracker / DB Movimientos. Solo Relay.app y Zapier tenían conexión. Se resolvió conectándola manualmente desde Notion: `···` → Conexiones → Añadir conexión → Notion Talho. Lección: cualquier integración nueva que vaya a leer/escribir una DB de Notion debe conectarse explícitamente a esa página, no basta con tener el token.
 
 ### Lo que desaparece al completar la migración
-Workflow `update-sheet-cells.yml` (eliminado), workflow `find-update-nota.yml` (eliminado), el protocolo de pausar Relay antes de cualquier batch de escrituras (ya no aplica — las escrituras directas vía MCP no disparan runs de GitHub Actions). Relay.app fue dado de baja posteriormente por el usuario: `update-relay-prompt.yml` y `read-relay-prompt.yml` quedaron obsoletos. El prompt de categorización se migró a una base de datos de Notion (09/07/2026), dejando de vivir en `prompt_relay_current.txt`.
+Workflow `update-sheet-cells.yml` (eliminado), workflow `find-update-nota.yml` (eliminado), el protocolo de pausar Relay antes de cualquier batch de escrituras (ya no aplica — las escrituras directas vía MCP no disparan runs de GitHub Actions). Relay.app sigue activo (escribe Movimientos y Rendimiento Inversiones directamente en Notion). `update-relay-prompt.yml` y `read-relay-prompt.yml` quedaron obsoletos porque el prompt de categorización se migró a una base de datos de Notion (09/07/2026), dejando de vivir en `prompt_relay_current.txt`.
 
 ### Estado de Sheets tras la migración
 El Google Sheet (`1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI`) deja de recibir movimientos nuevos de Relay desde el 30/06/2026. Queda como archivo histórico de solo lectura para la hoja Movimientos. La hoja Inversiones sigue activa y en uso normal (Peerberry/MyInvestor, actualización manual mensual) — su migración a Notion es una fase futura sin fecha definida, según decisión explícita del usuario.
@@ -101,20 +101,18 @@ El Google Sheet (`1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI`) deja de recibir
 ## Pipeline de datos
 
 ```
-Extracto bancario (banco)
+Extracto bancario (banco) + correos Peerberry/MyInvestor
         ↓
-   Relay (categorización automática)
+   Relay (categorización automática / extracción de reportes)
         ↓
-   Google Sheets (fileId: 1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI)
+   Notion: DB Movimientos (367d58ce...) y DB Rendimiento Inversiones (93eda06b...)
         ↓
-   GitHub Action diario → genera finance_data.json en el repo
-        ↓
-   GitHub Action de verificación:
-     cruza con Google Calendar + Gmail → llama Claude API
-     escribe resultado al Sheet + genera verification_data.json
+   GitHub Action diario (sync-finance-data, 07:00) → genera finance_data.json en el repo
         ↓
    Dashboard (index.html consume finance_data.json en runtime)
 ```
+
+Actualizado 09/07/2026: el pipeline anterior (Relay→Google Sheets, más una GitHub Action de verificación) quedó obsoleto — Sheets ya no es destino de Relay. Excepción vigente: `build_inversiones()` del sync todavía lee capital/rendimiento (%) del tab Inversiones desde la hoja `Inversiones` de Sheets (migración a Notion pendiente, ver sección de migración de Inversiones).
 
 Una sola cuenta bancaria. Relay extrae: concepto, fecha (YYYY-MM-DD), importe (negativo=gasto, positivo=ingreso), categoría.
 
@@ -414,11 +412,11 @@ Patrones CSS establecidos:
 
 **Estado de la integración con el dashboard (04/07/2026):** parcial, alcance acotado. `build_inversiones()` en `scripts/sync_finance_data.py` sigue leyendo `capital` y `rendimiento` (%) de la hoja Sheets sin cambios — la migración completa que describe este apartado (capital + rendimiento ambos desde Notion) no se hizo. En su lugar se agregó un tercer campo, `inversiones.ganancia` (EUR, sourced de esta DB Notion, ver función `build_ganancia_inversiones()`), usado exclusivamente por el KPI "Ahorro real 12m" (`getRendimientoLastMonths` en `js/insights.js`). El tab Inversiones (sus 4 KPIs y los 2 gráficos) sigue 100% sourced de Sheets, sin cambios. Ver DECISIONS.md `[2026-07-04]` para el detalle y una limitación conocida (atribución de mes cuando el informe de Peerberry llega los primeros días del mes siguiente).
 
-**Pendiente:** decidir si migrar también `capital`/`rendimiento` del tab Inversiones a esta DB, y configurar Relay para poblarla automáticamente hacia adelante (hoy sigue siendo carga manual mes a mes).
+**Pendiente:** decidir si migrar también `capital`/`rendimiento` del tab Inversiones a esta DB. La carga automática vía Relay ya está operativa (ver párrafo siguiente).
 
-**Pendiente de automatización:** reglas de Relay para poblar esta DB automáticamente desde ambos correos — no configuradas (requiere UI de Relay.app). Especificación completa en `docs/DECISIONS.md`.
+**Automatización operativa (confirmado 09/07/2026):** Relay puebla esta DB automáticamente desde ambos correos (Peerberry semanal, MyInvestor mensual). La especificación original vive en `docs/DECISIONS.md`.
 
-**Cuando el backfill y Relay estén listos:** reescribir `build_inversiones()` en `scripts/sync_finance_data.py` para leer de esta DB (capital = último valor por plataforma/mes, rendimiento = suma de Ganancia en la ventana) en vez de la hoja Inversiones del Sheet.
+**Siguiente paso posible (backfill y Relay ya operativos):** reescribir `build_inversiones()` en `scripts/sync_finance_data.py` para leer de esta DB (capital = último valor por plataforma/mes, rendimiento = suma de Ganancia en la ventana) en vez de la hoja Inversiones del Sheet.
 
 ---
 
