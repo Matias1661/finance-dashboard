@@ -1,3 +1,13 @@
+## [2026-07-09] Prompt de categorizacion Relay migrado de Sheets a base de datos Notion
+
+**Contexto:** el prompt de categorizacion que usa Relay para clasificar movimientos vivia en la hoja "prompt relay" del Google Sheet historico (file ID 1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI). Matias creo una base de datos nueva en Notion para unificar todos los prompts de uso frecuente.
+
+**Cambio:** el prompt de categorizacion ahora vive en la base de datos de Notion: https://app.notion.com/p/39833ce50e68801ab5a1fb9d6effa10f
+
+**Impacto:** la hoja "prompt relay" de Sheets deja de ser la fuente activa para reglas de categorizacion. Cualquier consulta sobre reglas de categorizacion debe hacerse contra esta DB de Notion en vez de Sheets. El resto del Google Sheet (Movimientos, Inversiones historico) no se ve afectado, sigue como solo lectura.
+
+---
+
 ## [2026-07-08] Rentabilidad mensual: acumulado vuelve a eje propio, con zona negativa sombreada y linea de cero
 
 **Contexto:** con el eje único (decisión previa del mismo día), el acumulado histórico (hasta +20%) aplastaba visualmente los tramos negativos de marzo-junio 2025 (entre -0.3% y -1.93%) contra el cero, dificultando ver cuándo el acumulado cruzaba a territorio negativo. Matias pidió volver a un eje propio para el acumulado, sombrear la zona negativa, y además resaltar la línea del cero en ese eje para ubicarla aunque la escala llegue a +20%.
