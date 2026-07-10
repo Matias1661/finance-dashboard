@@ -1,3 +1,7 @@
+## 2026-07-10 (4)
+
+- Benchmark MSCI World en tab Inversiones (auditoria fila 8): nuevo grafico "Acumulado vs Benchmark" entre rentabilidad mensual y acumulado por año, comparando el TWR de la cartera contra IWDA.AS (iShares Core MSCI World, EUR) desde enero 2025. Dato del benchmark obtenido automaticamente de la API publica de Yahoo Finance en cada sync (sin carga manual, sin dependencias nuevas). Ver DECISIONS.md.
+
 ## 2026-07-10 (3)
 
 - Limpieza de archivos obsoletos (auditoria fila 12): eliminados .github/workflows/read-relay-prompt.yml, update-relay-prompt.yml, prompt_relay_current.txt, scripts/update_sheet_cells.py, scripts/read_relay_prompt.py, scripts/find_and_update_nota.py. El prompt de Relay vive en la DB Notion "Prompts para Relay" desde el 09/07/2026; update-sheet-cells.yml (workflow del que dependian estos scripts) se elimino el 30/06/2026. Verificado: ningun otro workflow los referenciaba. Libera el secret GOOGLE_SERVICE_ACCOUNT para borrado seguro (ya no lo usa nada en el repo).
