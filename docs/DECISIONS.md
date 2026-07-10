@@ -1,3 +1,22 @@
+## [2026-07-10] Plan: migrar capital/rendimiento del tab Inversiones de Sheets a Notion (auditoria fila 4)
+
+**Contexto:** la auditoria del 09/07/2026 (fila 4 de la DB Notion "Auditoria 2026-07 — Mejoras sugeridas") senalaba que `build_inversiones()` en scripts/sync_finance_data.py sigue leyendo capital y rendimiento (%) del tab Inversiones desde la hoja Google Sheets "Inversiones", con parseo fragil (deteccion de cabecera por texto). Verificado contra el codigo real del repo (10/07/2026, no solo la documentacion): confirmado, `build_inversiones(fin_rows)` efectivamente lee `read_range(service, FINANZAS_SHEET)` via Google Sheets API y es la unica fuente de `inversiones.capital` e `inversiones.rendimiento`, que alimentan los 2 graficos y 4 KPIs del tab Inversiones. Esto es independiente de `inversiones.ganancia`/`kpi`/`rendimiento_mensual`, que ya vienen de la DB Notion "Rendimiento Inversiones" desde el 2026-07-06/08 y alimentan otro KPI (Resumen), no el tab Inversiones.
+
+**Hallazgo clave que simplifica la migracion:** `by_month` (ya construido desde Notion en `_aggregate_rendimiento_by_month()`) ya contiene el capital de cierre por plataforma y mes (`by_month[mes]["peerberry"]["capital"]`, `["myinvestor"]["capital"]`), y `build_rendimiento_mensual()` ya calcula el % mensual por plataforma con la metodologia correcta (ganancia del mes / saldo medio, promedio entre capital de cierre del mes anterior y el actual). No hace falta ningun fetch nuevo a Notion: los datos que necesita el tab Inversiones ya estan disponibles en memoria durante la ejecucion del sync.
+
+**Plan:**
+1. Nueva funcion (ej. `build_inversiones_from_notion(by_month)`) que derive:
+   - `capital`: lista `{mes, peerberry, myinvestor}` a partir de `by_month[mes][plataforma]["capital"]` (0 si no hay dato), omitiendo meses sin ningun capital — mismo formato que el actual basado en Sheets.
+   - `rendimiento`: lista `{mes, peerberry, myinvestor}` en %, reusando la misma logica de promedio de capital de `build_rendimiento_mensual()` (evaluar extraer esa logica a un helper compartido en vez de duplicarla).
+2. Generar `finance_data.json` en local con la funcion nueva y comparar campo a campo (capital y rendimiento, mes a mes, ambas plataformas) contra el `finance_data.json` actual (fuente Sheets) antes de tocar produccion. Investigar y documentar cualquier discrepancia — los origenes de capital son distintos (Sheets = carga manual mensual; Notion = capital reportado en cada envio semanal/mensual de Peerberry/MyInvestor) y podrian no coincidir exactamente en meses con varios reportes.
+3. Solo tras validar: reemplazar la llamada a `build_inversiones(fin_rows)` por la nueva funcion, eliminar `get_service()`, `read_range()`, `SHEET_ID`, `FINANZAS_SHEET`, `GOOGLE_SERVICE_ACCOUNT`/`SA_JSON` y el import de `google.oauth2`/`googleapiclient` del script.
+4. Actualizar `.github/workflows/sync-finance-data.yml`: quitar el env var `GOOGLE_SERVICE_ACCOUNT`/`SHEET_ID` y la instalacion de `google-auth google-auth-httplib2 google-api-python-client`. Evaluar borrar el secret `GOOGLE_SERVICE_ACCOUNT_JSON` del repo tras confirmar que ningun otro workflow lo usa.
+5. Actualizar `docs/PROJECT_MEMORY.md` (secciones "Tab Inversiones — especificacion actual" y "Migracion Inversiones: Sheets → Notion") y `docs/ROADMAP.md` si aplica.
+
+**Riesgo aceptado:** ninguno de codigo hasta pasar el paso 2 (validacion). Riesgo de datos: capital via Sheets es una foto manual mensual (un solo numero por mes, cargado a mano); capital via Notion es el ultimo reporte disponible en ese mes (puede variar segun cuando llego el ultimo correo de esa plataforma ese mes). Los valores podrian no ser identicos a los que ya se ven en el dashboard historico — se documentara el criterio final en la entrada que registre la implementacion.
+
+---
+
 ## [2026-07-10] Sincronizar docs/ con la realidad del sistema (auditoria fila 3)
 
 **Contexto:** la auditoria del 09/07/2026 (fila 3 de la DB Notion "Auditoria 2026-07 — Mejoras sugeridas") detecto contradicciones adicionales entre PROJECT_MEMORY.md/ROADMAP.md y el estado real del sistema:
