@@ -344,13 +344,13 @@ La tabla de transacciones individuales siempre muestra los movimientos sin modif
 
 ## Estado actual del sistema
 
-Dashboard sin bugs conocidos. Todos los tabs operativos.
+Dashboard sin bugs conocidos. Todos los tabs operativos, incluido el tab Inversiones (ya implementado, ver especificación de "Tab Inversiones" en este documento).
 
 Próxima fase posible:
-- Insights automáticos vía Claude API (comparación vs mes anterior, alertas)
-- Detección de anomalías
-- Capa de verificación (verification_data.json ya existe en el pipeline)
-- Tab Inversiones
+- Insights automáticos vía Claude API — ya implementado en js/insights.js (2026-07-03)
+- Detección de anomalías — ya implementado (alertas media+2σ, js/insights.js)
+- Capa de verificación (verification_data.json) — pendiente, sin implementar
+- Ver docs/ROADMAP.md para el resto de pendientes
 
 ---
 
@@ -434,7 +434,7 @@ Patrones CSS establecidos:
 - Tipo: `bar` apilado (`stack: 'capital'`)
 - Datasets: Peerberry (ámbar), MyInvestor (verde)
 - Tooltip muestra total apilado en footer
-- Peerberry = 0 desde diciembre 2025 (plataforma liquidada)
+- Peerberry: activa, con reportes semanales vía Notion — capital de 11.720,08 € reportado el 05/07/2026 (corregido 10/07/2026; la afirmación anterior de "liquidada desde diciembre 2025" era incorrecta)
 
 **Gráfico 2 — Rendimiento %:**
 - Tipo: `bar` agrupado
@@ -446,44 +446,7 @@ Patrones CSS establecidos:
 
 ---
 
-## Escritura de notas en columna K — reglas críticas
+## Escritura de notas en Movimientos — obsoleto (migrado a Notion)
 
-**Nunca asumir que el índice de `finance_data.json` + 2 = fila en el Sheet.**
-Relay inserta nuevas filas arriba, por lo que el orden del Sheet cambia con cada sync.
-
-**Método correcto:** usar el modo `FIND_AND_UPDATE` del workflow `update-sheet-cells.yml`.
-El script busca la fila en vivo leyendo el Sheet por coincidencia exacta de fecha + concepto + importe.
-
-**Formato de los campos tal como aparecen en el Sheet (columnas A/B/C):**
-- Fecha (col A): `dd/MM/yyyy` con ceros — ej: `19/06/2026` (no `19/6/2026`)
-- Concepto (col B): texto exacto — ej: `WWW.AMAZON`, `Amazon.es`, `AMAZON.ES`
-- Importe (col C): formato español con coma decimal y símbolo € — ej: `-65,58 €`
-  El script parsea este formato automáticamente; pasar el importe como float al workflow — ej: `-65.58`
-
-**Llamada al workflow:**
-```json
-{
-  "ref": "main",
-  "inputs": {
-    "find_fecha": "19/06/2026",
-    "find_concepto": "WWW.AMAZON",
-    "find_importe": "-65.58",
-    "find_column": "K",
-    "find_value": "texto de la nota"
-  }
-}
-```
-
-**Cuotas / pagos fraccionados:**
-Cuando un movimiento es una cuota de una compra fraccionada, la nota debe incluir el número de cuota:
-- Formato: `<Descripción del producto> - Pago X de N`
-- Ejemplo: `Cepillo Rowenta Pure Pop - Pago 1 de 4`
-- Aplicar la nota a todas las cuotas ya presentes en el Sheet.
-- Las cuotas futuras (aún no en el Sheet) se anotarán cuando aparezcan.
-
-**Identificación de compras Amazon:**
-- Buscar en Gmail con `from:auto-confirm@amazon.es` filtrando por fecha cercana al cargo.
-- El cargo bancario aparece 1–3 días después del envío del email de confirmación.
-- Si hay varias cuotas del mismo producto, verificar que el concepto coincida exactamente
-  (`Amazon.es`, `WWW.AMAZON`, etc. son conceptos distintos en el Sheet).
+Esta sección describía el flujo antiguo por Google Sheets (`update-sheet-cells.yml`, modo `FIND_AND_UPDATE`, columna K). Ese workflow se eliminó el 30/06/2026. El flujo vigente escribe directo en la DB Notion "Movimientos" vía `notion-update-page` (propiedad Nota, rich text), localizando la página por Fecha+Concepto+Monto exactos. Ver sección "Flujo Organizar Movimientos" más arriba para el detalle completo, incluida la identificación de compras Amazon vía Gmail y el criterio de nota para cuotas/pagos fraccionados.
 
