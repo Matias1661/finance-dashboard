@@ -1,3 +1,26 @@
+## [2026-07-10] Implementado: benchmark MSCI World en tab Inversiones (auditoria fila 8)
+
+**Contexto:** la auditoria del 09/07/2026 (fila 8) senalaba que el TWR de la cartera no tenia referencia de mercado para saber si el rendimiento es bueno o malo.
+
+**Decision del usuario (confirmada explicitamente antes de implementar):**
+- Fuente automatica (no carga manual en Notion) via fetch directo a la API publica de Yahoo Finance, sin libreria nueva (`requests`, ya usado en el script).
+- Benchmark: iShares Core MSCI World UCITS ETF, ticker `IWDA.AS` (Euronext Amsterdam, cotiza en EUR — coherente con que las inversiones son en euros). Verificado que la API devuelve precios reales antes de implementar.
+- Base de comparacion fija en enero 2025 (no se mueve con filtros de fecha del dashboard).
+- Grafico nuevo y separado (no se mezcla con el grafico de rentabilidad mensual por plataforma ni con el de acumulado por año), posicionado entre ambos en el tab Inversiones.
+
+**Cambio implementado:**
+- `scripts/sync_finance_data.py`: nueva funcion `fetch_benchmark_monthly()` — pide a `query1.finance.yahoo.com/v8/finance/chart/IWDA.AS` el cierre ajustado mensual desde diciembre 2024 (mes base). Si el fetch falla, devuelve `{}` sin abortar el resto del sync (Yahoo no tiene API oficial documentada, puede cambiar sin aviso).
+- `build_rendimiento_mensual()`: nueva firma `(by_month, benchmark_prices=None)`. Agrega `benchmark` (% mensual del ETF) y `benchmark_acumulado` (TWR compuesto encadenado desde enero 2025, base independiente del `acumulado` de la cartera) a cada entrada de `rendimiento_mensual`.
+- Bloque `__main__`: llama `fetch_benchmark_monthly()` y lo pasa a `build_rendimiento_mensual()`.
+- `index.html`: nueva card "Acumulado vs Benchmark (MSCI World, desde ene-2025)" con `<canvas id="chart-inv-benchmark">`, entre la card de rentabilidad mensual y la de acumulado por año.
+- `js/app.js`: nueva funcion `renderInvBenchmark()` — grafico de lineas, "Cartera" (`acumulado`) vs "MSCI World (IWDA.AS, EUR)" (`benchmark_acumulado`), llamada entre `renderInvRendimiento()` y `renderInvAcumuladoAnual()`.
+
+**Riesgo aceptado:** dependencia de un endpoint no documentado de Yahoo Finance. Si deja de responder o cambia de formato, el benchmark queda en `None` (el resto del dashboard sigue funcionando) hasta que se detecte y corrija.
+
+**Pendiente de validacion:** correr `sync-finance-data.yml` manualmente contra produccion y confirmar visualmente el grafico antes de darlo por cerrado en `ROADMAP.md`.
+
+---
+
 ## [2026-07-10] Implementado: migración capital/rendimiento Inversiones de Sheets a Notion (auditoria fila 4)
 
 **Contexto:** continuación de la entrada "Plan: migrar capital/rendimiento..." de hoy mismo, tras validar los números.
