@@ -1,3 +1,23 @@
+## [2026-07-10] Sincronizar docs/ con la realidad del sistema (auditoria fila 3)
+
+**Contexto:** la auditoria del 09/07/2026 (fila 3 de la DB Notion "Auditoria 2026-07 — Mejoras sugeridas") detecto contradicciones adicionales entre PROJECT_MEMORY.md/ROADMAP.md y el estado real del sistema:
+1. Seccion "Escritura de notas en columna K" seguia describiendo el flujo por `update-sheet-cells.yml`, eliminado el 30/06/2026; el flujo real (escritura directa en Notion via `notion-update-page`) ya estaba documentado aparte en "Flujo Organizar Movimientos".
+2. ROADMAP.md tenia una tarea de Alta prioridad ("Panel de revision de transacciones") que dependia explicitamente del mismo workflow eliminado.
+3. "Estado actual del sistema" listaba "Tab Inversiones" como fase futura cuando ya esta implementado desde julio 2026, y listaba como pendientes dos items (insights automaticos, deteccion de anomalias) que ya estaban hechos (js/insights.js, 2026-07-03).
+4. La especificacion del tab Inversiones afirmaba "Peerberry = 0 desde diciembre 2025 (liquidada)". Verificado contra la DB Notion "Rendimiento Inversiones": Peerberry esta activa, con capital de 11.720,08 EUR reportado el 05/07/2026 y reportes semanales continuos.
+
+(El punto de pipeline Relay/Sheets de esta misma fila ya habia sido corregido el 09/07/2026, ver entrada de esa fecha mas abajo — no requirio cambios adicionales.)
+
+**Cambio:**
+- `docs/PROJECT_MEMORY.md`: seccion "Escritura de notas en columna K" reemplazada por un puntero corto a "Flujo Organizar Movimientos"; "Estado actual del sistema" actualizado (Inversiones ya no es fase futura, insights/anomalias marcados como hechos); linea de Peerberry corregida con la cifra verificada.
+- `docs/ROADMAP.md`: la tarea "Panel de revision de transacciones" ya no referencia `update-sheet-cells.yml` como mecanismo; se marca que el mecanismo de escritura debe replantearse (no hay endpoint HTTP directo del navegador a Notion) y se remite a evaluarlo en DECISIONS.md antes de implementar.
+
+**Verificacion:** cifra de capital Peerberry confirmada por query SQL directa a la DB Notion "Rendimiento Inversiones" (data source 93eda06b-9207-4589-b3f0-66be10ab9caf) antes de escribir la correccion.
+
+**Impacto:** solo documentacion, sin cambios de codigo ni datos. Hallazgo registrado en la DB Notion "Auditoria 2026-07 — Mejoras sugeridas" (fila 3, marcada Hecho tras este cambio).
+
+---
+
 ## [2026-07-09] Guard de sanidad en sync_finance_data.py y alerta de fallo del workflow
 
 **Contexto:** la auditoria del 09/07/2026 (fila 2 de la DB Notion "Auditoria 2026-07 — Mejoras sugeridas") detecto dos riesgos silenciosos: (1) si Notion devolvia un resultado vacio o parcial, el script escribia igualmente finance_data.json y el dashboard quedaba en blanco o degradado; el fallo de Rendimiento Inversiones incluso se tragaba con un AVISO y seguia; (2) un fallo del cron diario de las 07:00 no notificaba a nadie.
