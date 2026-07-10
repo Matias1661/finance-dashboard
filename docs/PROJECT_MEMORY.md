@@ -54,7 +54,7 @@ También se saltó la validación de 1-2 semanas con ambos destinos activos (pas
 El frontend completo (`app.js`, `charts.js`, `filters.js`, `state.js`, `index.html`) no requiere ningún cambio. `finance_data.json` sigue siendo el contrato único: `{ movimientos: [{fecha, concepto, monto, categoria, nota}], inversiones: {...} }`. Las columnas E–J del Sheet (Ingreso, Gastos, Módulo monto, Ingreso/Gasto, Mes, Año) son ornamentales — nunca se exportaron al JSON, el dashboard siempre las recalculó desde `monto`/`fecha`.
 
 ### Decisión sobre Inversiones
-La hoja `Inversiones` (datos manuales de Peerberry/MyInvestor, no provienen de Relay) **se mantiene en Google Sheets** en esta fase. El sync futuro lee Movimientos de Notion e Inversiones de Sheets simultáneamente. Migrar Inversiones es una fase opcional posterior, sin urgencia.
+La hoja `Inversiones` de Google Sheets quedó obsoleta el 10/07/2026: `build_inversiones()` ahora deriva capital y rendimiento (%) de la DB Notion "Rendimiento Inversiones", igual que el resto de Inversiones. Ver sección "Migración Inversiones: Sheets → Notion" más abajo (estado: COMPLETA).
 
 ### DB Movimientos en Notion — ya creada
 
@@ -70,7 +70,7 @@ La hoja `Inversiones` (datos manuales de Peerberry/MyInvestor, no provienen de R
 
 1. ✅ Crear DB Movimientos en Notion
 2. ✅ Importar 2.465 movimientos históricos (vía CSV manual, no por MCP batch — más confiable para este volumen)
-3. ✅ Reescribir `sync_finance_data.py`: Movimientos se lee de Notion vía API REST (`POST /v1/data_sources/{id}/query`, paginado por `start_cursor`/`has_more`), Inversiones sigue leyendo de Sheets sin cambios (misma función `build_inversiones`, intacta). Output JSON verificado con la misma estructura: `{fecha, concepto, monto, categoria, nota}`.
+3. ✅ Reescribir `sync_finance_data.py`: Movimientos se lee de Notion vía API REST (`POST /v1/data_sources/{id}/query`, paginado por `start_cursor`/`has_more`). Output JSON verificado con la misma estructura: `{fecha, concepto, monto, categoria, nota}`. (Inversiones migró de Sheets a Notion por separado el 10/07/2026, ver sección "Migración Inversiones".)
 4. ✅ Desplegado directo a producción (sin fase de comparación en paralelo, ver "Decisión de secuencia" arriba). Workflow `sync-finance-data.yml` actualizado con secrets `NOTION_TOKEN` (ya existía en el repo) y env var `NOTION_MOVIMIENTOS_DATA_SOURCE_ID`. Validado con 3 dispatches manuales: 2 fallos diagnosticados y corregidos, 1 éxito confirmado generando 2473 movimientos.
 5. ✅ Relay configurado para escribir solo en Notion (no en paralelo — el usuario decidió cortar Sheets como destino directamente)
 6. ⬜ (Omitido por decisión del usuario) Validación de 1-2 semanas con ambos destinos activos — no aplica porque Sheets dejó de recibir escrituras de Relay
@@ -112,7 +112,7 @@ Extracto bancario (banco) + correos Peerberry/MyInvestor
    Dashboard (index.html consume finance_data.json en runtime)
 ```
 
-Actualizado 09/07/2026: el pipeline anterior (Relay→Google Sheets, más una GitHub Action de verificación) quedó obsoleto — Sheets ya no es destino de Relay. Excepción vigente: `build_inversiones()` del sync todavía lee capital/rendimiento (%) del tab Inversiones desde la hoja `Inversiones` de Sheets (migración a Notion pendiente, ver sección de migración de Inversiones).
+Actualizado 10/07/2026: el pipeline anterior (Relay→Google Sheets, más una GitHub Action de verificación) quedó obsoleto — Sheets ya no es destino de Relay ni fuente de ningún dato del sync. `build_inversiones()` lee capital/rendimiento (%) de la DB Notion "Rendimiento Inversiones" desde el 10/07/2026 (ver sección "Migración Inversiones"). El script ya no depende de Google Sheets API ni del secret GOOGLE_SERVICE_ACCOUNT.
 
 Una sola cuenta bancaria. Relay extrae: concepto, fecha (YYYY-MM-DD), importe (negativo=gasto, positivo=ingreso), categoría.
 
@@ -396,27 +396,29 @@ Patrones CSS establecidos:
 
 ---
 
-## Migración Inversiones: Sheets → Notion (EN CURSO, iniciada 2026-07-03)
+## Migración Inversiones: Sheets → Notion (COMPLETA, 10/07/2026)
 
-**Objetivo:** reemplazar la hoja `Inversiones` del Sheet por la DB Notion `Rendimiento Inversiones` (data source `93eda06b-9207-4589-b3f0-66be10ab9caf`, dentro de Finance Tracker), para capital y rendimiento.
+**Objetivo (cumplido):** reemplazar la hoja `Inversiones` del Sheet por la DB Notion `Rendimiento Inversiones` (data source `93eda06b-9207-4589-b3f0-66be10ab9caf`, dentro de Finance Tracker), como única fuente de capital y rendimiento del tab Inversiones.
 
 **Schema:** Fecha (título), Plataforma (select: Peerberry/MyInvestor), Periodo (select: Semanal/Mensual), Ganancia (number, €), Capital total (number, € — capital de esa plataforma específica, no combinado), Fecha reporte (date).
 
-**Fuente de los datos — correos, NO la columna "Rendimiento %" del Sheet actual:**
-- Peerberry: `info@peerberry.com`, asunto "Account summary overview", semanal. Campo "Interest income" = rendimiento de esa semana en €. Campo "Profit" (bloque Portfolio) = acumulado desde el origen de la cuenta — permite calcular rendimiento de cualquier período como delta, inmune a huecos en el envío semanal. Capital de Peerberry en un momento = Invested funds + Available balance.
+**Fuente de los datos — correos, NO la antigua columna "Rendimiento %" del Sheet:**
+- Peerberry: `info@peerberry.com`, asunto "Account summary overview", semanal. Campo "Interest income" = rendimiento de esa semana en €. Campo "Profit" (bloque Portfolio) = acumulado desde el origen de la cuenta. Capital de Peerberry en un momento = Invested funds + Available balance.
 - MyInvestor: `comunicaciones@myinvestor.es`, asunto "Rentabilidad de tu cartera en [mes]", mensual. Campo "GANANCIAS ... En [mes]" = rendimiento neto de aportaciones de ese mes en €, directo, sin cálculo. Campo "VALOR DE TU CARTERA" = capital.
 
-**Por qué no la columna "Rendimiento %" del Sheet:** mezcla depósitos y rentabilidad real (confirmado con el usuario — el valor mensual que hoy carga en Sheets es el balance total de la cartera, no un % de retorno puro).
+**Por qué no la columna "Rendimiento %" del Sheet:** mezclaba depósitos y rentabilidad real — el valor mensual que cargaba era el balance total de la cartera, no un % de retorno puro. Verificado empíricamente el 10/07/2026 comparando ambos cálculos mes a mes: diferencias de decenas de puntos porcentuales en varios meses (ej. junio 2026 Peerberry: 126,42% en el Sheet vs. 0,31% con la fórmula correcta).
 
-**Estado del backfill:** COMPLETO. MyInvestor 19 meses (dic 2024–jun 2026), Peerberry 18 meses (dic 2024–may 2026), ambos sin huecos. Detalle mes a mes y verificación de consistencia en `docs/DECISIONS.md`.
+**Backfill:** MyInvestor 19 meses (dic 2024–jun 2026), Peerberry 18 meses (dic 2024–may 2026), ambos sin huecos, sin cambios respecto a la carga inicial.
 
-**Estado de la integración con el dashboard (04/07/2026):** parcial, alcance acotado. `build_inversiones()` en `scripts/sync_finance_data.py` sigue leyendo `capital` y `rendimiento` (%) de la hoja Sheets sin cambios — la migración completa que describe este apartado (capital + rendimiento ambos desde Notion) no se hizo. En su lugar se agregó un tercer campo, `inversiones.ganancia` (EUR, sourced de esta DB Notion, ver función `build_ganancia_inversiones()`), usado exclusivamente por el KPI "Ahorro real 12m" (`getRendimientoLastMonths` en `js/insights.js`). El tab Inversiones (sus 4 KPIs y los 2 gráficos) sigue 100% sourced de Sheets, sin cambios. Ver DECISIONS.md `[2026-07-04]` para el detalle y una limitación conocida (atribución de mes cuando el informe de Peerberry llega los primeros días del mes siguiente).
+**Migración de `build_inversiones()` (10/07/2026, auditoría fila 4):** reescrita para derivar `capital` y `rendimiento` de `by_month` (la misma estructura que ya construye `_aggregate_rendimiento_by_month()` para `ganancia`/`kpi`/`rendimiento_mensual`), en vez de leer la hoja Sheets. Eliminados del script: `get_service()`, `read_range()`, `SHEET_ID`, `FINANZAS_SHEET`, `GOOGLE_SERVICE_ACCOUNT`/`SA_JSON`, los imports `google.oauth2`/`googleapiclient`, y las funciones de parseo posicional (`parse_amount`, `parse_pct`, `parse_mes_label`, `parse_date`) que solo servían para leer el Sheet. El workflow `sync-finance-data.yml` ya no instala `google-auth`/`google-api-python-client` ni pasa `GOOGLE_SERVICE_ACCOUNT`/`SHEET_ID`.
 
-**Pendiente:** decidir si migrar también `capital`/`rendimiento` del tab Inversiones a esta DB. La carga automática vía Relay ya está operativa (ver párrafo siguiente).
+**Rendimiento %:** ahora usa la misma fórmula que `build_rendimiento_mensual()` (ganancia del mes / saldo medio, promedio entre capital de cierre del mes anterior y el actual) — metodología de MyInvestor, ya usada en el KPI de Resumen. Los valores históricos cambiaron respecto a la versión anterior por el motivo explicado arriba.
 
-**Automatización operativa (confirmado 09/07/2026):** Relay puebla esta DB automáticamente desde ambos correos (Peerberry semanal, MyInvestor mensual). La especificación original vive en `docs/DECISIONS.md`.
+**Limitación aceptada (decisión explícita del usuario, 10/07/2026):** el backfill de Notion solo llega hasta diciembre 2024; el Sheet tenía historial de capital desde marzo 2024. El gráfico de Capital del tab Inversiones ahora arranca en diciembre 2024 (9 meses menos de historial). No se hizo backfill adicional a Notion para esos 9 meses.
 
-**Siguiente paso posible (backfill y Relay ya operativos):** reescribir `build_inversiones()` en `scripts/sync_finance_data.py` para leer de esta DB (capital = último valor por plataforma/mes, rendimiento = suma de Ganancia en la ventana) en vez de la hoja Inversiones del Sheet.
+**Validación pre-despliegue:** capital y rendimiento generados por la nueva función se compararon mes a mes contra el `finance_data.json` de producción (fuente Sheets) antes de desplegar. Detalle completo en `docs/DECISIONS.md`, entrada `[2026-07-10]`.
+
+**Secret `GOOGLE_SERVICE_ACCOUNT_JSON`:** ya no se usa en ningún workflow del repo (verificado). Pendiente de borrado manual por el usuario desde GitHub → Settings → Secrets (acción de configuración de seguridad, no delegable).
 
 ---
 
@@ -434,15 +436,16 @@ Patrones CSS establecidos:
 - Tipo: `bar` apilado (`stack: 'capital'`)
 - Datasets: Peerberry (ámbar), MyInvestor (verde)
 - Tooltip muestra total apilado en footer
-- Peerberry: activa, con reportes semanales vía Notion — capital de 11.720,08 € reportado el 05/07/2026 (corregido 10/07/2026; la afirmación anterior de "liquidada desde diciembre 2025" era incorrecta)
+- Peerberry: activa, con reportes semanales vía Notion — capital de 11.720,08 € reportado el 05/07/2026 (no liquidada; corregido 10/07/2026)
 
 **Gráfico 2 — Rendimiento %:**
 - Tipo: `bar` agrupado
 - MyInvestor negativo → rojo; MyInvestor positivo → verde
 - Peerberry negativo → ámbar tenue; positivo → ámbar sólido
 - Eje Y formateado con signo (+/-)
+- Desde 10/07/2026: % = ganancia del mes / saldo medio (promedio capital mes anterior/actual), fuente DB Notion "Rendimiento Inversiones". Antes venía de la columna "Rendimiento %" del Sheet (mezclaba depósitos con rentabilidad real).
 
-**Ventana temporal:** dinámica — todos los meses disponibles en la hoja `Inversiones` del sheet. Se extiende automáticamente con cada sync.
+**Ventana temporal:** dinámica — todos los meses disponibles en la DB Notion "Rendimiento Inversiones" (desde diciembre 2024). Se extiende automáticamente con cada sync.
 
 ---
 
