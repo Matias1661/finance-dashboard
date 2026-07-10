@@ -1,27 +1,33 @@
 [
   {
+    "fecha": "2026-07-10",
+    "concepto": "Transporte placa durlock",
+    "costo": 60,
+    "pagado": "Willy"
+  },
+  {
     "fecha": "2026-07-02",
     "concepto": "Compra de herramientas y materiales en Obramat",
     "costo": 33.44,
-    "pagado": null
+    "pagado": "Willy"
   },
   {
     "fecha": "2026-07-02",
     "concepto": "Materiales de construcción y bricolaje",
     "costo": 52.76,
-    "pagado": null
+    "pagado": "Willy"
   },
   {
-    "fecha": null,
+    "fecha": "2026-07-10",
     "concepto": "PLACA DE YESO LAMINADO FK PPM 2600X1200X13MM",
     "costo": 272.8,
-    "pagado": null
+    "pagado": "Willy"
   },
   {
     "fecha": "2026-07-02",
     "concepto": "Materiales de construcción",
     "costo": 236.73,
-    "pagado": null
+    "pagado": "Willy"
   },
   {
     "fecha": "2026-07-09",
