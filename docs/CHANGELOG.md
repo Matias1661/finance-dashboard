@@ -1,3 +1,7 @@
+## 2026-07-10 (3)
+
+- Limpieza de archivos obsoletos (auditoria fila 12): eliminados .github/workflows/read-relay-prompt.yml, update-relay-prompt.yml, prompt_relay_current.txt, scripts/update_sheet_cells.py, scripts/read_relay_prompt.py, scripts/find_and_update_nota.py. El prompt de Relay vive en la DB Notion "Prompts para Relay" desde el 09/07/2026; update-sheet-cells.yml (workflow del que dependian estos scripts) se elimino el 30/06/2026. Verificado: ningun otro workflow los referenciaba. Libera el secret GOOGLE_SERVICE_ACCOUNT para borrado seguro (ya no lo usa nada en el repo).
+
 ## 2026-07-10 (2)
 
 - scripts/sync_finance_data.py: `build_inversiones()` migrada de Google Sheets a Notion (DB "Rendimiento Inversiones") — capital y rendimiento (%) del tab Inversiones ya no dependen de Sheets ni de GOOGLE_SERVICE_ACCOUNT. Eliminadas funciones de parseo del Sheet (parse_amount, parse_pct, parse_mes_label, parse_date) y credenciales de Google. Nuevo Guard D en sanity_check(). sync-finance-data.yml simplificado (sin instalar librerias de Google). Validado mes a mes antes de desplegar y ejecutado en produccion con exito (20 meses de capital, dic-2024 a jul-2026). El grafico de Rendimiento % cambia de valores respecto al historico (la columna del Sheet mezclaba depositos con rentabilidad real). El grafico de Capital ahora arranca en dic-2024 en vez de marzo-2024 (decision aceptada por el usuario). Ver DECISIONS.md.
