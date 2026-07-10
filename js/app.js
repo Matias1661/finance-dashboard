@@ -773,6 +773,9 @@ function renderInvBenchmark(){
     { hasta: '2025-06', nombre: 'GREY', color: 'rgba(137,135,129,0.10)' },
     { desde: '2025-07', nombre: 'RED',  color: 'rgba(226,74,74,0.07)' }
   ];
+  // Nota: la etiqueta en pantalla agrega "+ Peerberry" porque la linea
+  // "Cartera" de este grafico es el acumulado total (MyInvestor + Peerberry),
+  // no solo la parte MyInvestor a la que corresponde el nombre GREY/RED.
 
   const carteraBandsPlugin = {
     id: 'carteraBands',
@@ -806,7 +809,7 @@ function renderInvBenchmark(){
         c.fillStyle = 'rgba(60,60,55,0.55)';
         c.font = '11px sans-serif';
         c.textAlign = 'center';
-        c.fillText(`Cartera ${period.nombre}`, (xStart + xEnd) / 2, chartArea.top + 14);
+        c.fillText(`Cartera ${period.nombre} + Peerberry`, (xStart + xEnd) / 2, chartArea.top + 14);
       });
       c.restore();
     }
