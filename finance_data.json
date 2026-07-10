@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-10 10:29",
+  "generated_at": "2026-07-10 10:49",
   "movimientos": [
     {
       "fecha": "2026-07-08",
@@ -17715,144 +17715,99 @@
   "inversiones": {
     "capital": [
       {
-        "mes": "2024-03",
-        "peerberry": 2000.0,
-        "myinvestor": 17491.0
-      },
-      {
-        "mes": "2024-04",
-        "peerberry": 2015.0,
-        "myinvestor": 17491.0
-      },
-      {
-        "mes": "2024-05",
-        "peerberry": 2332.0,
-        "myinvestor": 15546.0
-      },
-      {
-        "mes": "2024-06",
-        "peerberry": 2351.0,
-        "myinvestor": 12885.0
-      },
-      {
-        "mes": "2024-07",
-        "peerberry": 2369.0,
-        "myinvestor": 12885.0
-      },
-      {
-        "mes": "2024-08",
-        "peerberry": 2687.0,
-        "myinvestor": 12885.0
-      },
-      {
-        "mes": "2024-09",
-        "peerberry": 2707.0,
-        "myinvestor": 13148.0
-      },
-      {
-        "mes": "2024-10",
-        "peerberry": 2728.0,
-        "myinvestor": 13156.0
-      },
-      {
-        "mes": "2024-11",
-        "peerberry": 2750.0,
-        "myinvestor": 13456.0
-      },
-      {
         "mes": "2024-12",
-        "peerberry": 2770.0,
-        "myinvestor": 14174.0
+        "peerberry": 2779.4,
+        "myinvestor": 14174
       },
       {
         "mes": "2025-01",
-        "peerberry": 2793.0,
-        "myinvestor": 14292.0
+        "peerberry": 2799.64,
+        "myinvestor": 14292
       },
       {
         "mes": "2025-02",
-        "peerberry": 2820.0,
-        "myinvestor": 14409.0
+        "peerberry": 2821.84,
+        "myinvestor": 14372
       },
       {
         "mes": "2025-03",
-        "peerberry": 2835.0,
-        "myinvestor": 13993.0
+        "peerberry": 2832.55,
+        "myinvestor": 13993
       },
       {
         "mes": "2025-04",
-        "peerberry": 2859.0,
-        "myinvestor": 14017.0
+        "peerberry": 2865.92,
+        "myinvestor": 13763
       },
       {
         "mes": "2025-05",
-        "peerberry": 4879.0,
-        "myinvestor": 14040.0
+        "peerberry": 5287.39,
+        "myinvestor": 14040
       },
       {
         "mes": "2025-06",
-        "peerberry": 4908.0,
-        "myinvestor": 14037.0
+        "peerberry": 4300.01,
+        "myinvestor": 14037
       },
       {
         "mes": "2025-07",
-        "peerberry": 4926.45,
-        "myinvestor": 14961.0
+        "peerberry": 4932.59,
+        "myinvestor": 14961
       },
       {
         "mes": "2025-08",
         "peerberry": 4443.58,
-        "myinvestor": 15075.0
+        "myinvestor": 15075
       },
       {
         "mes": "2025-09",
         "peerberry": 5487.21,
-        "myinvestor": 15746.0
+        "myinvestor": 15746
       },
       {
         "mes": "2025-10",
-        "peerberry": 5513.23,
-        "myinvestor": 14227.0
+        "peerberry": 5530.07,
+        "myinvestor": 14227
       },
       {
         "mes": "2025-11",
-        "peerberry": 5449.35,
-        "myinvestor": 15140.0
+        "peerberry": 5464.97,
+        "myinvestor": 15140
       },
       {
         "mes": "2025-12",
-        "peerberry": 5495.0,
-        "myinvestor": 15491.0
+        "peerberry": 5502.08,
+        "myinvestor": 15491
       },
       {
         "mes": "2026-01",
-        "peerberry": 5520.38,
-        "myinvestor": 6276.0
+        "peerberry": 5537.94,
+        "myinvestor": 6276
       },
       {
         "mes": "2026-02",
-        "peerberry": 5064.12,
-        "myinvestor": 6434.0
+        "peerberry": 5084.73,
+        "myinvestor": 6434
       },
       {
         "mes": "2026-03",
-        "peerberry": 5104.94,
-        "myinvestor": 6439.0
+        "peerberry": 5109.6,
+        "myinvestor": 6439
       },
       {
         "mes": "2026-04",
-        "peerberry": 5137.69,
-        "myinvestor": 7404.0
+        "peerberry": 5153.46,
+        "myinvestor": 7404
       },
       {
         "mes": "2026-05",
-        "peerberry": 5168.78,
-        "myinvestor": 8269.0
+        "peerberry": 5177.09,
+        "myinvestor": 8269
       },
       {
         "mes": "2026-06",
         "peerberry": 11702.99,
-        "myinvestor": 8864.0
+        "myinvestor": 8864
       },
       {
         "mes": "2026-07",
@@ -17862,59 +17817,99 @@
     ],
     "rendimiento": [
       {
+        "mes": "2025-01",
+        "peerberry": 0.73,
+        "myinvestor": 0.85
+      },
+      {
+        "mes": "2025-02",
+        "peerberry": 0.79,
+        "myinvestor": 0.56
+      },
+      {
+        "mes": "2025-03",
+        "peerberry": 0.38,
+        "myinvestor": -2.68
+      },
+      {
+        "mes": "2025-04",
+        "peerberry": 1.17,
+        "myinvestor": -1.65
+      },
+      {
+        "mes": "2025-05",
+        "peerberry": 0.53,
+        "myinvestor": 1.99
+      },
+      {
+        "mes": "2025-06",
+        "peerberry": 0.26,
+        "myinvestor": -0.03
+      },
+      {
+        "mes": "2025-07",
+        "peerberry": 0.71,
+        "myinvestor": 1.85
+      },
+      {
+        "mes": "2025-08",
+        "peerberry": 0.23,
+        "myinvestor": 0.76
+      },
+      {
         "mes": "2025-09",
-        "peerberry": 23.49,
-        "myinvestor": 4.45
-      },
-      {
-        "mes": "2025-10",
-        "peerberry": 0.47,
-        "myinvestor": -9.65
-      },
-      {
-        "mes": "2025-11",
-        "peerberry": -1.16,
-        "myinvestor": 6.42
-      },
-      {
-        "mes": "2025-12",
-        "peerberry": 0.84,
-        "myinvestor": 2.32
-      },
-      {
-        "mes": "2026-01",
-        "peerberry": 0.46,
-        "myinvestor": -59.49
-      },
-      {
-        "mes": "2026-02",
-        "peerberry": -8.27,
+        "peerberry": 0.88,
         "myinvestor": 2.52
       },
       {
+        "mes": "2025-10",
+        "peerberry": 0.78,
+        "myinvestor": 4.14
+      },
+      {
+        "mes": "2025-11",
+        "peerberry": 0.63,
+        "myinvestor": -0.53
+      },
+      {
+        "mes": "2025-12",
+        "peerberry": 0.68,
+        "myinvestor": 0.99
+      },
+      {
+        "mes": "2026-01",
+        "peerberry": 0.65,
+        "myinvestor": 5.22
+      },
+      {
+        "mes": "2026-02",
+        "peerberry": 0.88,
+        "myinvestor": 2.49
+      },
+      {
         "mes": "2026-03",
-        "peerberry": 0.81,
-        "myinvestor": 0.08
+        "peerberry": 0.49,
+        "myinvestor": -7.4
       },
       {
         "mes": "2026-04",
-        "peerberry": 0.64,
-        "myinvestor": 14.99
+        "peerberry": 0.85,
+        "myinvestor": 7.48
       },
       {
         "mes": "2026-05",
-        "peerberry": 0.61,
-        "myinvestor": 11.68
+        "peerberry": 0.46,
+        "myinvestor": 5.45
       },
       {
         "mes": "2026-06",
-        "peerberry": 126.42,
-        "myinvestor": 7.2
+        "peerberry": 0.31,
+        "myinvestor": 1.76
       },
       {
         "mes": "2026-07",
         "peerberry": 0.15,
-        "myinvestor": 0.0
+        "myinvestor": 0
       }
     ],
     "ganancia": [
