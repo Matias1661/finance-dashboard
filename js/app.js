@@ -738,7 +738,79 @@ function renderInversiones(){
   }
 
   renderInvRendimiento();
+  renderInvBenchmark();
   renderInvAcumuladoAnual();
+}
+
+// ── Gráfico entre 2 y 3: acumulado de la cartera vs benchmark (MSCI World, IWDA.AS) desde enero-25 ──
+// Auditoria 2026-07, fila 8. Base fija en enero 2025 (no se mueve con filtros del dashboard).
+function renderInvBenchmark(){
+  const inv = window.FINANCE_STATE?.inversiones || {};
+  const rendMensual = (inv.rendimiento_mensual || []).filter(d => d.mes >= '2025-01');
+
+  const ctx = document.getElementById('chart-inv-benchmark');
+  if(!ctx) return;
+
+  const MESES_LARGO = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  function formatMesLabel(isoMes) {
+    const [y, m] = isoMes.split('-');
+    return MESES_LARGO[parseInt(m,10)-1] + '-' + y;
+  }
+
+  const labels  = rendMensual.map(d => formatMesLabel(d.mes));
+  const accData = rendMensual.map(d => d.acumulado);
+  const bmData  = rendMensual.map(d => d.benchmark_acumulado);
+
+  const fmtPct = v => v === null || v === undefined ? '—' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+
+  if(window.invBenchmarkChart) window.invBenchmarkChart.destroy();
+  window.invBenchmarkChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Cartera',
+          data: accData,
+          borderColor: 'rgba(37,99,190,0.9)',
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          pointRadius: 3,
+          tension: 0.3,
+          spanGaps: false
+        },
+        {
+          label: 'MSCI World (IWDA.AS, EUR)',
+          data: bmData,
+          borderColor: 'rgba(137,135,129,0.9)',
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          borderDash: [5, 3],
+          pointRadius: 3,
+          tension: 0.3,
+          spanGaps: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 } },
+        tooltip: {
+          backgroundColor: '#ffffff', borderColor: 'rgba(0,0,0,0.12)', borderWidth: 1,
+          titleColor: '#1a1a18', bodyColor: '#6b6b63',
+          callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmtPct(ctx.parsed.y)}` }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: {
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { font: { size: 11 }, callback: v => v + '%' }
+        }
+      }
+    }
+  });
 }
 
 // ── Gráfico 3: acumulado por año (una curva por año calendario, reinicia en enero) ──
