@@ -1,3 +1,7 @@
+## 2026-07-10 (6)
+
+- Grafico "Acumulado vs Benchmark": sombreado por periodo de cartera MyInvestor (GREY hasta jun-2025, RED desde jul-2025, confirmado por email de rentabilidad mensual). Rangos hardcodeados en js/app.js (no hay campo de cartera en finance_data.json); actualizar manualmente si cambia de nuevo.
+
 ## 2026-07-10 (5)
 
 - Grafico "Rentabilidad mensual por plataforma": eliminada la linea "Acumulado" (y su serie auxiliar "Cero (acumulado)") — ahora vive sola en el grafico nuevo "Acumulado vs Benchmark". El grafico mensual queda solo con Peerberry, MyInvestor y el punto "Total del mes".
