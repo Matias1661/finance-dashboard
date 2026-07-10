@@ -1,3 +1,8 @@
+## 2026-07-10
+
+- docs: sincronizada PROJECT_MEMORY.md con el estado real del sistema — seccion obsoleta de notas por columna K reemplazada por puntero a "Flujo Organizar Movimientos"; "Estado actual del sistema" ya no lista Inversiones/insights/anomalias como pendientes (estan implementados); corregida la afirmacion de que Peerberry esta liquidada (activa, capital 11.720,08€ al 05/07/2026). Sin cambios de codigo. Ver DECISIONS.md.
+- docs: ROADMAP.md — la tarea "Panel de revision de transacciones" ya no depende del workflow eliminado `update-sheet-cells.yml`; queda marcada para replantear el mecanismo de escritura antes de implementar.
+
 ## 2026-07-09 (3)
 
 - sync_finance_data.py: guard de sanidad antes de escribir finance_data.json (aborta si 0 movimientos, caida >10% del conteo, o ganancia de inversiones vacia teniendo datos previos).
