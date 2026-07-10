@@ -1,3 +1,27 @@
+## [2026-07-10] Implementado: migración capital/rendimiento Inversiones de Sheets a Notion (auditoria fila 4)
+
+**Contexto:** continuación de la entrada "Plan: migrar capital/rendimiento..." de hoy mismo, tras validar los números.
+
+**Cambio implementado:**
+- `scripts/sync_finance_data.py`: `build_inversiones()` reescrita, ahora recibe `by_month` (agregado de la DB Notion "Rendimiento Inversiones") en vez de `rows` (filas del Sheet). Eliminados `get_service()`, `read_range()`, `SHEET_ID`, `FINANZAS_SHEET`, `SA_JSON`/`GOOGLE_SERVICE_ACCOUNT`, imports `google.oauth2`/`googleapiclient`, y las funciones `parse_amount`/`parse_pct`/`parse_mes_label`/`parse_date` (solo usadas para parsear el Sheet). El bloque `__main__` ahora hace una sola lectura a Notion Rendimiento Inversiones que alimenta `capital`, `rendimiento`, `ganancia`, `kpi` y `rendimiento_mensual`.
+- `sanity_check()`: nuevo Guard D — aborta si el JSON anterior tenia `inversiones.capital` con datos y el nuevo viene vacio. Necesario porque capital y ganancia ahora comparten la misma fuente/lectura; antes un fallo de Sheets no afectaba a `ganancia` (Notion) y viceversa.
+- `.github/workflows/sync-finance-data.yml`: quitados `GOOGLE_SERVICE_ACCOUNT`/`SHEET_ID` del step de env vars y la instalacion de `google-auth google-auth-httplib2 google-api-python-client` (queda solo `requests`).
+
+**Validacion realizada antes de desplegar:**
+1. Replique la logica de agregacion (`_aggregate_rendimiento_by_month`) en un script standalone contra las 43 filas reales de la DB Notion (fetch via MCP), comparando capital y rendimiento mes a mes contra el `finance_data.json` de produccion (fuente Sheets, generado 10/07/2026 10:29). Capital: coincide dentro de pocos euros en todos los meses desde dic-2024 (diferencia esperada por fecha de carga distinta). Rendimiento %: difiere sustancialmente en varios meses porque la columna del Sheet mezclaba depositos con rentabilidad real (confirmado, no es un bug de calculo) — ej. jun-2026 Peerberry 126.42% (Sheet) vs 0.31% (formula correcta).
+2. Cargue el modulo real `sync_finance_data.py` con datos de prueba (mismas 43 filas simuladas como paginas de Notion) y confirme que `build_inversiones()` produce el mismo resultado que la replica manual (una sola diferencia esperada: `0` vs `None` para un mes sin dato de MyInvestor, comportamiento correcto y consistente con la convencion previa).
+3. Con el codigo ya commiteado, dispare `sync-finance-data.yml` manualmente (`gh workflow run` via API) contra produccion real: exito, 2530 movimientos, 20 meses de capital (dic-2024 a jul-2026), 19 meses de rendimiento, KPI generado correctamente (pct_12m 20.35%, capital_actual 20.566,99€). `deploy-pages.yml` se disparo automaticamente y publico el dashboard actualizado.
+
+**Decisiones del usuario (confirmadas explicitamente antes de implementar):**
+- Historial de capital: se acepta el corte en diciembre 2024 (el Sheet tenia desde marzo 2024, 9 meses menos de historial en el grafico de Capital). Sin backfill adicional a Notion.
+- Rendimiento %: se usa el valor correcto (formula ganancia/saldo medio) en vez de mantener el valor historico del Sheet, aunque cambie visualmente todo el grafico historico.
+
+**Pendiente de accion manual del usuario:** borrar el secret `GOOGLE_SERVICE_ACCOUNT_JSON` del repo (Settings → Secrets) — confirmado que ya no lo usa ningun workflow, pero es una accion de configuracion de seguridad que no se realiza automaticamente.
+
+**Impacto:** el tab Inversiones ya no depende de Google Sheets ni de ningun secret de Google. Rendimiento % del grafico historico cambia de valor respecto a lo publicado antes del 10/07/2026 (era incorrecto). Capital: sin cambios de fondo salvo el recorte de 9 meses al inicio del historial.
+
+---
+
 ## [2026-07-10] Plan: migrar capital/rendimiento del tab Inversiones de Sheets a Notion (auditoria fila 4)
 
 **Contexto:** la auditoria del 09/07/2026 (fila 4 de la DB Notion "Auditoria 2026-07 — Mejoras sugeridas") senalaba que `build_inversiones()` en scripts/sync_finance_data.py sigue leyendo capital y rendimiento (%) del tab Inversiones desde la hoja Google Sheets "Inversiones", con parseo fragil (deteccion de cabecera por texto). Verificado contra el codigo real del repo (10/07/2026, no solo la documentacion): confirmado, `build_inversiones(fin_rows)` efectivamente lee `read_range(service, FINANZAS_SHEET)` via Google Sheets API y es la unica fuente de `inversiones.capital` e `inversiones.rendimiento`, que alimentan los 2 graficos y 4 KPIs del tab Inversiones. Esto es independiente de `inversiones.ganancia`/`kpi`/`rendimiento_mensual`, que ya vienen de la DB Notion "Rendimiento Inversiones" desde el 2026-07-06/08 y alimentan otro KPI (Resumen), no el tab Inversiones.
