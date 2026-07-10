@@ -1,5 +1,29 @@
 [
   {
+    "fecha": "2026-07-02",
+    "concepto": "Compra de herramientas y materiales en Obramat",
+    "costo": 33.44,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-02",
+    "concepto": "Materiales de construcción y bricolaje",
+    "costo": 52.76,
+    "pagado": null
+  },
+  {
+    "fecha": null,
+    "concepto": "PLACA DE YESO LAMINADO FK PPM 2600X1200X13MM",
+    "costo": 272.8,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-02",
+    "concepto": "Materiales de construcción",
+    "costo": 236.73,
+    "pagado": null
+  },
+  {
     "fecha": "2026-07-09",
     "concepto": "Pintura reja y muebles ",
     "costo": 52.73,
