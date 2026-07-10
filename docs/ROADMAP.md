@@ -16,7 +16,7 @@
 
 ## Alta prioridad
 - [x] Flujo "Organizar Movimientos": PayPal+Gmail, Uber, Amazon, Viajes — trigger en chat, registro en reviewed_movements.json, KPI en dashboard
-- [ ] Panel de revisión de transacciones: vista filtrable de movimientos con categoría "A revisar" o baja confianza, con acción de reclasificación directa desde el dashboard que dispara el workflow `update-sheet-cells.yml`
+- [ ] Panel de revisión de transacciones: vista filtrable de movimientos con categoría "A revisar" o baja confianza, con acción de reclasificación directa desde el dashboard que escriba en Notion vía `notion-update-page` (el workflow `update-sheet-cells.yml` del que dependía esta tarea fue eliminado el 30/06/2026; replantear el mecanismo de escritura, no hay endpoint HTTP directo desde el navegador a Notion — evaluar en DECISIONS.md antes de implementar)
 - [x] Vista ampliada de Viajes en tab Categorías (desglose por viaje, subcategorías, transacciones colapsables)
 - [x] Campo Nota (col K) por movimiento + enriquecimiento automático de Compras (Amazon/Gmail/web); backfill últimos 3 meses
 - [x] Insights automáticos: comparación vs mes anterior, alertas de gasto por categoría (js/insights.js, 2026-07-03)
