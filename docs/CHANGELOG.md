@@ -1,3 +1,8 @@
+## 2026-07-10 (2)
+
+- scripts/sync_finance_data.py: `build_inversiones()` migrada de Google Sheets a Notion (DB "Rendimiento Inversiones") — capital y rendimiento (%) del tab Inversiones ya no dependen de Sheets ni de GOOGLE_SERVICE_ACCOUNT. Eliminadas funciones de parseo del Sheet (parse_amount, parse_pct, parse_mes_label, parse_date) y credenciales de Google. Nuevo Guard D en sanity_check(). sync-finance-data.yml simplificado (sin instalar librerias de Google). Validado mes a mes antes de desplegar y ejecutado en produccion con exito (20 meses de capital, dic-2024 a jul-2026). El grafico de Rendimiento % cambia de valores respecto al historico (la columna del Sheet mezclaba depositos con rentabilidad real). El grafico de Capital ahora arranca en dic-2024 en vez de marzo-2024 (decision aceptada por el usuario). Ver DECISIONS.md.
+- Pendiente accion manual: borrar secret GOOGLE_SERVICE_ACCOUNT_JSON del repo (ya no se usa).
+
 ## 2026-07-10
 
 - docs: sincronizada PROJECT_MEMORY.md con el estado real del sistema — seccion obsoleta de notas por columna K reemplazada por puntero a "Flujo Organizar Movimientos"; "Estado actual del sistema" ya no lista Inversiones/insights/anomalias como pendientes (estan implementados); corregida la afirmacion de que Peerberry esta liquidada (activa, capital 11.720,08€ al 05/07/2026). Sin cambios de codigo. Ver DECISIONS.md.
