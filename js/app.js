@@ -763,6 +763,55 @@ function renderInvBenchmark(){
 
   const fmtPct = v => v === null || v === undefined ? '—' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
 
+  // Periodos de cartera MyInvestor (roboadvisor), confirmado por email
+  // (asunto "Rentabilidad de tu cartera en <mes>"): GREY hasta jun-2025,
+  // cambio a RED el 01/07/2025 (traspaso interno ese dia). No hay campo
+  // de cartera en Notion/finance_data.json, por eso el rango va hardcodeado
+  // aca en vez de leerse de un dato. Actualizar manualmente si vuelve a
+  // cambiar de cartera.
+  const CARTERA_PERIODS = [
+    { hasta: '2025-06', nombre: 'GREY', color: 'rgba(137,135,129,0.10)' },
+    { desde: '2025-07', nombre: 'RED',  color: 'rgba(226,74,74,0.07)' }
+  ];
+
+  const carteraBandsPlugin = {
+    id: 'carteraBands',
+    beforeDraw(chart) {
+      const { ctx: c, chartArea, scales } = chart;
+      if (!chartArea) return;
+      const xScale = scales.x;
+
+      c.save();
+      CARTERA_PERIODS.forEach(period => {
+        let startIdx = 0;
+        let endIdx = rendMensual.length - 1;
+        if (period.desde) {
+          const i = rendMensual.findIndex(d => d.mes >= period.desde);
+          if (i === -1) return;
+          startIdx = i;
+        }
+        if (period.hasta) {
+          let last = -1;
+          rendMensual.forEach((d, i) => { if (d.mes <= period.hasta) last = i; });
+          if (last === -1) return;
+          endIdx = last;
+        }
+
+        const xStart = startIdx === 0 ? chartArea.left : xScale.getPixelForValue(startIdx - 0.5);
+        const xEnd = endIdx === rendMensual.length - 1 ? chartArea.right : xScale.getPixelForValue(endIdx + 0.5);
+
+        c.fillStyle = period.color;
+        c.fillRect(xStart, chartArea.top, xEnd - xStart, chartArea.height);
+
+        c.fillStyle = 'rgba(60,60,55,0.55)';
+        c.font = '11px sans-serif';
+        c.textAlign = 'center';
+        c.fillText(`Cartera ${period.nombre}`, (xStart + xEnd) / 2, chartArea.top + 14);
+      });
+      c.restore();
+    }
+  };
+
   if(window.invBenchmarkChart) window.invBenchmarkChart.destroy();
   window.invBenchmarkChart = new Chart(ctx, {
     type: 'line',
@@ -792,6 +841,7 @@ function renderInvBenchmark(){
         }
       ]
     },
+    plugins: [carteraBandsPlugin],
     options: {
       responsive: true,
       plugins: {
@@ -894,7 +944,9 @@ function renderInvRendimiento(){
   const labels = rendMensual.map(d => formatMesLabel(d.mes));
   const pbData = rendMensual.map(d => d.peerberry);
   const miData = rendMensual.map(d => d.myinvestor);
+  const accData = rendMensual.map(d => d.acumulado);
   const totalData = rendMensual.map(d => d.total);
+  const zeroData = rendMensual.map(() => 0);
 
   const fmtPct = v => v === null || v === undefined ? '' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
 
@@ -932,16 +984,46 @@ function renderInvRendimiento(){
           borderWidth: 1.5,
           yAxisID: 'y',
           order: 2
+        },
+        {
+          label: 'Cero (acumulado)',
+          data: zeroData,
+          type: 'line',
+          borderColor: 'rgba(137,135,129,0.7)',
+          borderWidth: 1.5,
+          borderDash: [2, 3],
+          pointRadius: 0,
+          tension: 0,
+          yAxisID: 'y1',
+          order: 1
+        },
+        {
+          label: 'Acumulado',
+          data: accData,
+          type: 'line',
+          borderColor: 'rgba(37,99,190,0.85)',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: 'rgba(37,99,190,0.9)',
+          tension: 0.3,
+          yAxisID: 'y1',
+          order: 0,
+          fill: {
+            target: { value: 0 },
+            above: 'transparent',
+            below: 'rgba(226,74,74,0.15)'
+          }
         }
       ]
     },
     options: {
       responsive: true,
       plugins: {
-        legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10 } },
+        legend: { display: true, labels: { font: { size: 12 }, usePointStyle: true, pointStyleWidth: 10, filter: item => item.text !== 'Cero (acumulado)' } },
         tooltip: {
           backgroundColor: '#ffffff', borderColor: 'rgba(0,0,0,0.12)', borderWidth: 1,
           titleColor: '#1a1a18', bodyColor: '#6b6b63',
+          filter: item => item.dataset.label !== 'Cero (acumulado)',
           callbacks: {
             label: ctx => {
               const d = rendMensual[ctx.dataIndex];
@@ -959,6 +1041,11 @@ function renderInvRendimiento(){
         y: {
           position: 'left',
           grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { font: { size: 11 }, callback: v => v + '%' }
+        },
+        y1: {
+          position: 'right',
+          grid: { display: false },
           ticks: { font: { size: 11 }, callback: v => v + '%' }
         }
       }
