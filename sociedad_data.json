@@ -1,5 +1,17 @@
 [
   {
+    "fecha": "2026-07-09",
+    "concepto": "Herramientas y materiales de ferretería (Obramat)",
+    "costo": 16.93,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-09",
+    "concepto": "Compra en OBRAMAT",
+    "costo": 75.4,
+    "pagado": null
+  },
+  {
     "fecha": "2026-07-10",
     "concepto": "Transporte placa durlock",
     "costo": 60,
