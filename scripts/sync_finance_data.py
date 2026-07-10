@@ -3,9 +3,13 @@ Sync finance data to finance_data.json
 
 Fuentes:
   - Movimientos: Notion (DB "Movimientos", via API REST)
-  - Inversiones: Google Sheets (col A=fecha, D=Peerberry, E=MyInvestor, F=CaixaBank)
-    Cada fuente puede estar en filas separadas del mismo mes.
-    Toma el ultimo valor no-nulo de cada columna por mes.
+  - Inversiones (capital, rendimiento %, ganancia, kpi): Notion (DB "Rendimiento
+    Inversiones", via API REST). Migrado desde Google Sheets el 2026-07-10
+    (auditoria 2026-07, fila 4) — ver docs/DECISIONS.md para el detalle y las
+    limitaciones aceptadas (historial de capital arranca en diciembre 2024,
+    el Sheet tenia desde marzo 2024; el % de rendimiento cambia respecto al
+    valor historico del Sheet porque esa columna mezclaba depositos y
+    rentabilidad real).
 
 Output finance_data.json:
   {
@@ -33,109 +37,23 @@ Output finance_data.json:
     }
   }
 
-"ganancia" y "kpi" vienen de la DB Notion "Rendimiento Inversiones", agregando
-por mes calendario (fila Mensual si existe; si no, suma de filas Semanales de
-Peerberry). "kpi" reemplaza el antiguo "Ahorro real 12m": solo rentabilidad
-porcentual (ultimo mes y TWR 12m compuesto) y ganancia en EUR — sin descomponer
-aportado, que requeria reconciliar Movimientos y no era confiable (ver
-DECISIONS.md 2026-07-06). "capital" y "rendimiento" (%) siguen viniendo del
-Sheet sin cambios (tab Inversiones, no tocado).
+"ganancia", "kpi", "capital" y "rendimiento" vienen todos de la DB Notion
+"Rendimiento Inversiones", agregando por mes calendario (fila Mensual si
+existe; si no, suma de filas Semanales de Peerberry). "kpi" reemplaza el
+antiguo "Ahorro real 12m": solo rentabilidad porcentual (ultimo mes y TWR 12m
+compuesto) y ganancia en EUR — sin descomponer aportado, que requeria
+reconciliar Movimientos y no era confiable (ver DECISIONS.md 2026-07-06).
 """
 
 import os, json, re
 import requests
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-
-SHEET_ID          = os.environ["SHEET_ID"]
-FINANZAS_SHEET    = "Inversiones"
-SA_JSON           = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
 
 NOTION_TOKEN               = os.environ["NOTION_TOKEN"]
 NOTION_DATA_SOURCE_ID      = os.environ["NOTION_MOVIMIENTOS_DATA_SOURCE_ID"]
 NOTION_RENDIMIENTO_DS_ID   = os.environ.get("NOTION_RENDIMIENTO_DATA_SOURCE_ID")
 NOTION_VERSION             = "2025-09-03"
-
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
-
-MESES_ES = {
-    "enero": "01", "febrero": "02", "marzo": "03", "abril": "04",
-    "mayo": "05", "junio": "06", "julio": "07", "agosto": "08",
-    "septiembre": "09", "octubre": "10", "noviembre": "11", "diciembre": "12"
-}
-
-
-def get_service():
-    creds = service_account.Credentials.from_service_account_info(SA_JSON, scopes=SCOPES)
-    return build("sheets", "v4", credentials=creds)
-
-
-def read_range(service, sheet_name, cell_range="A:Z"):
-    result = service.spreadsheets().values().get(
-        spreadsheetId=SHEET_ID,
-        range=f"{sheet_name}!{cell_range}"
-    ).execute()
-    return result.get("values", [])
-
-
-def parse_date(raw):
-    if not raw:
-        return None
-    raw = raw.strip()
-    m = re.match(r"^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$", raw)
-    if m:
-        return f"{m.group(3)}-{m.group(2).zfill(2)}-{m.group(1).zfill(2)}"
-    m = re.match(r"^(\d{4})-(\d{2})-(\d{2})$", raw)
-    if m:
-        return raw
-    return None
-
-
-def parse_amount(raw):
-    if raw is None or str(raw).strip() == "":
-        return None
-    raw = str(raw).strip().replace("€", "").replace("$", "").replace(" ", "")
-    raw = raw.replace(".", "").replace(",", ".")
-    try:
-        return float(raw)
-    except ValueError:
-        return None
-
-
-def parse_pct(raw):
-    if raw is None or str(raw).strip() in ("", "-", "0"):
-        return None
-    raw = str(raw).strip().replace("%", "").replace(",", ".").replace(" ", "")
-    try:
-        return round(float(raw), 4)
-    except ValueError:
-        return None
-
-
-def parse_mes_label(raw):
-    """-agosto-25 o ago-25 -> 2025-08"""
-    raw = raw.strip().lower()
-    raw = re.sub(r"[^a-z0-9 ]", " ", raw).strip()
-    parts = raw.split()
-    mes_num = None
-    year_2d = None
-    for p in parts:
-        if p in MESES_ES:
-            mes_num = MESES_ES[p]
-            continue
-        for k, v in MESES_ES.items():
-            if len(p) >= 3 and k.startswith(p):
-                mes_num = v
-                break
-        if re.match(r"^\d{2}$", p):
-            year_2d = p
-        if re.match(r"^\d{4}$", p):
-            return f"{p}-{mes_num}" if mes_num else None
-    if mes_num and year_2d:
-        return f"20{year_2d}-{mes_num}"
-    return None
 
 
 def fetch_movimientos_notion():
@@ -561,111 +479,85 @@ def build_movimientos(pages):
     return records
 
 
-def build_inversiones(rows):
+def build_inversiones(by_month):
     """
-    Capital: col A=fecha, D=Peerberry (idx 3), E=MyInvestor (idx 4).
-    Cada fuente puede estar en filas separadas dentro del mismo mes.
-    Se acumula el ultimo valor no-nulo de cada columna por mes.
+    Migrado de Google Sheets a Notion el 2026-07-10 (auditoria 2026-07, fila 4).
+    Antes leia la hoja "Inversiones" del Sheet con parseo posicional fragil.
+    Ahora deriva capital y rendimiento (%) de `by_month`, la misma estructura
+    que ya construye `_aggregate_rendimiento_by_month()` desde la DB Notion
+    "Rendimiento Inversiones" para `ganancia`/`kpi`/`rendimiento_mensual`.
 
-    Rendimiento %: busca fila cabecera con 'peerberry' y '%',
-    lee columnas Mes / Peerberry% / MyInvestor%.
+    Capital: ultimo valor de "Capital total" reportado por plataforma en cada
+    mes calendario (ya resuelto en by_month[mes][plataforma]["capital"]).
+
+    Rendimiento %: ganancia del mes / saldo medio (promedio entre capital de
+    cierre del mes anterior y el actual) — misma metodologia que
+    `build_rendimiento_mensual()` y que MyInvestor usa en sus propios mails.
+    Reemplaza la columna "Rendimiento %" del Sheet, que mezclaba depositos y
+    retiros con la rentabilidad real (ver docs/PROJECT_MEMORY.md, seccion
+    "Migracion Inversiones"). Los valores historicos cambian respecto a la
+    version anterior porque esa columna nunca fue un % de retorno puro.
+
+    Limitacion aceptada (ver DECISIONS.md 2026-07-10): el backfill de Notion
+    solo llega hasta diciembre 2024 (el Sheet tenia historial desde marzo
+    2024); el grafico de Capital arranca en diciembre 2024, 9 meses mas tarde
+    que antes. Decision explicita del usuario, sin backfill adicional.
     """
-    if not rows:
+    if not by_month:
         return {"capital": [], "rendimiento": []}
 
-    # Capital: acumular el ultimo valor no-nulo de cada columna por mes
-    # estructura: { "2025-07": {"pb_fecha": "2025-07-31", "pb": 13011, "mi_fecha": "2025-07-31", "mi": 4926} }
-    month_data = {}
-
-    for row in rows:
-        fecha = parse_date(row[0]) if len(row) > 0 else None
-        if not fecha:
-            continue
-        mk = fecha[:7]
-
-        pb = parse_amount(row[3]) if len(row) > 3 else None
-        mi = parse_amount(row[4]) if len(row) > 4 else None
-
-        if pb is None and mi is None:
-            continue
-
-        if mk not in month_data:
-            month_data[mk] = {"pb": None, "pb_fecha": None, "mi": None, "mi_fecha": None}
-
-        # Actualizar Peerberry si esta fila tiene valor y es mas reciente
-        if pb is not None:
-            if month_data[mk]["pb_fecha"] is None or fecha >= month_data[mk]["pb_fecha"]:
-                month_data[mk]["pb"] = pb
-                month_data[mk]["pb_fecha"] = fecha
-
-        # Actualizar MyInvestor si esta fila tiene valor y es mas reciente
-        if mi is not None:
-            if month_data[mk]["mi_fecha"] is None or fecha >= month_data[mk]["mi_fecha"]:
-                month_data[mk]["mi"] = mi
-                month_data[mk]["mi_fecha"] = fecha
-
     capital = []
-    for mk in sorted(month_data.keys()):
-        e = month_data[mk]
-        pb_val = e["pb"] if e["pb"] is not None else 0
-        mi_val = e["mi"] if e["mi"] is not None else 0
+    for mk in sorted(by_month.keys()):
+        pb_val = by_month[mk]["peerberry"]["capital"] or 0
+        mi_val = by_month[mk]["myinvestor"]["capital"] or 0
         if pb_val == 0 and mi_val == 0:
             continue
-        capital.append({"mes": mk, "peerberry": pb_val, "myinvestor": mi_val})
-
-    # Rendimiento %: detectar fila cabecera
-    pct_header_idx = None
-    pct_mes_col = pct_pb_col = pct_mi_col = None
-
-    for i, row in enumerate(rows):
-        row_lower = [str(c).lower().strip() for c in row]
-        if any("peerberry" in c and "%" in c for c in row_lower):
-            pct_header_idx = i
-            for j, c in enumerate(row_lower):
-                if c == "mes":
-                    pct_mes_col = j
-                elif "peerberry" in c and "%" in c:
-                    pct_pb_col = j
-                elif ("myinvestor" in c or ("my" in c and "investor" in c)) and "%" in c:
-                    pct_mi_col = j
-            break
+        capital.append({"mes": mk, "peerberry": round(pb_val, 2), "myinvestor": round(mi_val, 2)})
 
     rendimiento = []
-    if pct_header_idx is not None and pct_mes_col is not None:
-        for row in rows[pct_header_idx + 1:]:
-            if pct_mes_col >= len(row):
-                continue
-            mes_raw = str(row[pct_mes_col]).strip()
-            if not mes_raw:
-                continue
-            mes_iso = parse_mes_label(mes_raw)
-            if not mes_iso:
-                continue
-            pb_pct = parse_pct(row[pct_pb_col] if pct_pb_col is not None and pct_pb_col < len(row) else None)
-            mi_pct = parse_pct(row[pct_mi_col] if pct_mi_col is not None and pct_mi_col < len(row) else None)
-            if pb_pct is None and mi_pct is None:
-                continue
-            rendimiento.append({
-                "mes":        mes_iso,
-                "peerberry":  pb_pct if pb_pct is not None else 0,
-                "myinvestor": mi_pct if mi_pct is not None else 0
-            })
+    for mk in sorted(by_month.keys()):
+        prev_mk = _calendar_prev_month(mk)
+        prev = by_month.get(prev_mk)
+        cur = by_month[mk]
 
-    rendimiento.sort(key=lambda r: r["mes"])
+        pct_pb = None
+        if prev and prev["peerberry"]["capital"] is not None and cur["peerberry"]["capital"] is not None:
+            avg = (prev["peerberry"]["capital"] + cur["peerberry"]["capital"]) / 2
+            if avg:
+                pct_pb = round(cur["peerberry"]["ganancia"] / avg * 100, 2)
+
+        pct_mi = None
+        if prev and prev["myinvestor"]["capital"] is not None and cur["myinvestor"]["capital"] is not None:
+            avg = (prev["myinvestor"]["capital"] + cur["myinvestor"]["capital"]) / 2
+            if avg:
+                pct_mi = round(cur["myinvestor"]["ganancia"] / avg * 100, 2)
+
+        if pct_pb is None and pct_mi is None:
+            continue
+        rendimiento.append({
+            "mes":        mk,
+            "peerberry":  pct_pb if pct_pb is not None else 0,
+            "myinvestor": pct_mi if pct_mi is not None else 0
+        })
+
     return {"capital": capital, "rendimiento": rendimiento}
 
 
 def sanity_check(movimientos, inversiones):
-    """Guard de sanidad (ver DECISIONS.md 2026-07-09): aborta antes de
-    escribir finance_data.json si el resultado es sospechoso, para no
-    publicar un JSON vacio o degradado. Al abortar, el workflow falla,
+    """Guard de sanidad (ver DECISIONS.md 2026-07-09 y 2026-07-10): aborta
+    antes de escribir finance_data.json si el resultado es sospechoso, para
+    no publicar un JSON vacio o degradado. Al abortar, el workflow falla,
     no se comitea nada y el dashboard conserva el ultimo JSON bueno.
     Guards:
       A) 0 movimientos generados.
       B) el conteo de movimientos cae mas de 10% vs. el JSON anterior
          (los movimientos historicos solo deberian crecer).
       C) el JSON anterior tenia inversiones.ganancia con datos y el
-         nuevo viene vacio (antes esto se degradaba en silencio)."""
+         nuevo viene vacio (antes esto se degradaba en silencio).
+      D) el JSON anterior tenia inversiones.capital con datos y el nuevo
+         viene vacio — capital y ganancia comparten fuente (Notion
+         Rendimiento Inversiones) desde 2026-07-10, asi que un fallo de
+         lectura de esa DB ahora afectaria a ambos a la vez."""
     prev = None
     try:
         with open("finance_data.json", encoding="utf-8") as f:
@@ -687,6 +579,11 @@ def sanity_check(movimientos, inversiones):
             raise RuntimeError(
                 "Guard C: inversiones.ganancia vacia pero el JSON anterior "
                 "tenia datos — sync abortado.")
+        prev_cap = (prev.get("inversiones") or {}).get("capital") or []
+        if prev_cap and not inversiones.get("capital"):
+            raise RuntimeError(
+                "Guard D: inversiones.capital vacio pero el JSON anterior "
+                "tenia datos — sync abortado.")
 
 
 if __name__ == "__main__":
@@ -697,35 +594,23 @@ if __name__ == "__main__":
         movimientos = build_movimientos(mov_pages)
         print(f"  {len(movimientos)} registros validos")
 
-        service = get_service()
-
-        print("Leyendo Inversiones (Sheets)...")
-        try:
-            fin_rows = read_range(service, FINANZAS_SHEET)
-            print(f"  {len(fin_rows)} filas")
-            inversiones = build_inversiones(fin_rows)
-            print(f"  {len(inversiones['capital'])} meses de capital")
-            print(f"  {len(inversiones['rendimiento'])} meses de rendimiento")
-        except Exception as fin_err:
-            print(f"  AVISO: no se pudo leer hoja Inversiones: {fin_err}")
-            inversiones = {"capital": [], "rendimiento": []}
-
-        print("Leyendo Rendimiento Inversiones (Notion, Ganancia/Aportes/Capital)...")
+        print("Leyendo Rendimiento Inversiones (Notion: capital, rendimiento, ganancia, kpi)...")
         try:
             if not NOTION_RENDIMIENTO_DS_ID:
                 raise RuntimeError("falta env var NOTION_RENDIMIENTO_DATA_SOURCE_ID")
             rend_pages = fetch_rendimiento_inversiones_notion()
             print(f"  {len(rend_pages)} paginas (Semanal + Mensual)")
             by_month = _aggregate_rendimiento_by_month(rend_pages)
+            inversiones = build_inversiones(by_month)
             inversiones["ganancia"] = build_ganancia_inversiones(by_month)
             inversiones["kpi"] = build_kpi_inversiones(by_month)
             inversiones["rendimiento_mensual"] = build_rendimiento_mensual(by_month)
+            print(f"  {len(inversiones['capital'])} meses de capital")
+            print(f"  {len(inversiones['rendimiento'])} meses de rendimiento")
             print(f"  {len(inversiones['ganancia'])} meses agregados")
         except Exception as rend_err:
             print(f"  AVISO: no se pudo leer Rendimiento Inversiones: {rend_err}")
-            inversiones["ganancia"] = []
-            inversiones["kpi"] = None
-            inversiones["rendimiento_mensual"] = []
+            inversiones = {"capital": [], "rendimiento": [], "ganancia": [], "kpi": None, "rendimiento_mensual": []}
 
         sanity_check(movimientos, inversiones)
 
