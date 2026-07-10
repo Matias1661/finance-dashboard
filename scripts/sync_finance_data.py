@@ -10,6 +10,10 @@ Fuentes:
     el Sheet tenia desde marzo 2024; el % de rendimiento cambia respecto al
     valor historico del Sheet porque esa columna mezclaba depositos y
     rentabilidad real).
+  - Benchmark (rendimiento_mensual.benchmark / .benchmark_acumulado):
+    Yahoo Finance API publica (sin token), ticker IWDA.AS (iShares Core
+    MSCI World UCITS ETF, EUR). Agregado 2026-07-10 (auditoria 2026-07,
+    fila 8) — ver docs/DECISIONS.md.
 
 Output finance_data.json:
   {
@@ -322,7 +326,44 @@ def _calendar_prev_month(mk):
     return f"{y}-{m-1:02d}"
 
 
-def build_rendimiento_mensual(by_month):
+def fetch_benchmark_monthly():
+    """Precios de cierre mensuales de IWDA.AS (iShares Core MSCI World UCITS
+    ETF, Euronext Amsterdam, cotiza en EUR) via API publica de Yahoo Finance,
+    para el benchmark del grafico "Acumulado vs Benchmark" del tab
+    Inversiones (auditoria 2026-07, fila 8). Ver DECISIONS.md 2026-07-10.
+
+    Devuelve {mes (YYYY-MM): cierre_ajustado} desde diciembre 2024 (mes base
+    para calcular el retorno de enero 2025 en adelante). Si el fetch falla
+    (Yahoo no publica API oficial, puede cambiar sin aviso), devuelve {} y
+    el benchmark queda en None para todos los meses sin romper el resto del
+    sync.
+    """
+    url = "https://query1.finance.yahoo.com/v8/finance/chart/IWDA.AS"
+    params = {
+        "period1": int(datetime(2024, 12, 1, tzinfo=timezone.utc).timestamp()),
+        "period2": int(datetime.now(timezone.utc).timestamp()),
+        "interval": "1mo",
+    }
+    headers = {"User-Agent": "Mozilla/5.0"}
+    try:
+        resp = requests.get(url, params=params, headers=headers, timeout=15)
+        resp.raise_for_status()
+        result = resp.json()["chart"]["result"][0]
+        timestamps = result["timestamp"]
+        adjclose = result["indicators"]["adjclose"][0]["adjclose"]
+        prices = {}
+        for ts, price in zip(timestamps, adjclose):
+            if price is None:
+                continue
+            mk = datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m")
+            prices[mk] = price
+        return prices
+    except Exception as e:
+        print(f"  AVISO: no se pudo leer benchmark IWDA.AS de Yahoo Finance: {e}")
+        return {}
+
+
+def build_rendimiento_mensual(by_month, benchmark_prices=None):
     """Rentabilidad mensual por plataforma para el grafico de barras agrupadas
     del tab Inversiones (debajo del de Capital), mas curva de TWR acumulado.
 
@@ -351,7 +392,17 @@ def build_rendimiento_mensual(by_month):
     0% en enero de cada anio calendario. Permite comparar la forma de la
     curva de un anio contra otro (ej. 2025 vs lo que va de 2026) sin que el
     acumulado historico de anios previos distorsione la comparacion.
+
+    benchmark / benchmark_acumulado (auditoria 2026-07, fila 8): retorno
+    mensual y TWR acumulado de IWDA.AS (iShares Core MSCI World, EUR), como
+    referencia de mercado para el grafico "Acumulado vs Benchmark". La base
+    del acumulado es fija en enero 2025 (no el primer mes de meses_completos,
+    para que la comparacion no se mueva si cambia el historial de capital).
+    Si `benchmark_prices` no tiene el precio de un mes o de su mes anterior,
+    ambos campos quedan en None para ese mes.
     """
+    benchmark_prices = benchmark_prices or {}
+
     meses_completos = sorted(
         mk for mk, v in by_month.items() if v["myinvestor"]["capital"] is not None
     )
@@ -359,6 +410,7 @@ def build_rendimiento_mensual(by_month):
     result = []
     acc = 1.0
     acc_year = 1.0
+    acc_bm = 1.0
     current_year = None
     for mk in meses_completos:
         prev_mk = _calendar_prev_month(mk)
@@ -398,7 +450,16 @@ def build_rendimiento_mensual(by_month):
                 acc_year *= (1 + ret_total)
                 acumulado_anio = round((acc_year - 1) * 100, 2)
 
-
+        pct_bm = None
+        benchmark_acumulado = None
+        if mk >= "2025-01":
+            bm_cur = benchmark_prices.get(mk)
+            bm_prev = benchmark_prices.get(prev_mk)
+            if bm_cur is not None and bm_prev:
+                ret_bm = bm_cur / bm_prev - 1
+                pct_bm = round(ret_bm * 100, 2)
+                acc_bm *= (1 + ret_bm)
+                benchmark_acumulado = round((acc_bm - 1) * 100, 2)
 
         sin_aportes_pb = bool(cur["peerberry"]["aportes_known"]) and cur["peerberry"]["aportes"] == 0
         sin_aportes_mi = bool(cur["myinvestor"]["aportes_known"]) and cur["myinvestor"]["aportes"] == 0
@@ -410,6 +471,8 @@ def build_rendimiento_mensual(by_month):
             "total":             total_mes,
             "acumulado":         acumulado,
             "acumulado_anio":    acumulado_anio,
+            "benchmark":         pct_bm,
+            "benchmark_acumulado": benchmark_acumulado,
             "sin_aportes_pb":    sin_aportes_pb,
             "sin_aportes_mi":    sin_aportes_mi
         })
@@ -604,7 +667,10 @@ if __name__ == "__main__":
             inversiones = build_inversiones(by_month)
             inversiones["ganancia"] = build_ganancia_inversiones(by_month)
             inversiones["kpi"] = build_kpi_inversiones(by_month)
-            inversiones["rendimiento_mensual"] = build_rendimiento_mensual(by_month)
+            print("Leyendo benchmark IWDA.AS (Yahoo Finance)...")
+            benchmark_prices = fetch_benchmark_monthly()
+            print(f"  {len(benchmark_prices)} meses de precio")
+            inversiones["rendimiento_mensual"] = build_rendimiento_mensual(by_month, benchmark_prices)
             print(f"  {len(inversiones['capital'])} meses de capital")
             print(f"  {len(inversiones['rendimiento'])} meses de rendimiento")
             print(f"  {len(inversiones['ganancia'])} meses agregados")
