@@ -12,6 +12,7 @@ concurrency:
 permissions:
   contents: write
   actions: write
+  issues: write
 
 jobs:
   sync:
@@ -62,3 +63,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh workflow run deploy-pages.yml --ref main
+
+      - name: Alert on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --repo "${{ github.repository }}" \
+            --title "sync-finance-data fallo el $(date +'%Y-%m-%d')" \
+            --body "Run fallido: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} — revisar logs (posible guard de sanidad o error de API)."
