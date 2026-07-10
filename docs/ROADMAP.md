@@ -13,6 +13,7 @@
 - [x] KPI grid responsive (mobile 2 columnas)
 - [x] Eje Y del gráfico mensual en EUR
 - [x] Gráfico de rentabilidad mensual por plataforma en tab Inversiones (barras agrupadas + acumulado TWR, 2026-07-08)
+- [x] Migración de capital/rendimiento del tab Inversiones de Google Sheets a Notion (elimina dependencia de GOOGLE_SERVICE_ACCOUNT, 2026-07-10)
 
 ## Alta prioridad
 - [x] Flujo "Organizar Movimientos": PayPal+Gmail, Uber, Amazon, Viajes — trigger en chat, registro en reviewed_movements.json, KPI en dashboard
