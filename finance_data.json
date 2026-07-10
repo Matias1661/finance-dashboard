@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-10 10:49",
+  "generated_at": "2026-07-10 11:27",
   "movimientos": [
     {
       "fecha": "2026-07-08",
@@ -18125,6 +18125,8 @@
         "total": null,
         "acumulado": null,
         "acumulado_anio": null,
+        "benchmark": null,
+        "benchmark_acumulado": null,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       },
@@ -18135,6 +18137,8 @@
         "total": 0.83,
         "acumulado": 0.83,
         "acumulado_anio": 0.83,
+        "benchmark": -2.53,
+        "benchmark_acumulado": -2.53,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
       },
@@ -18145,6 +18149,8 @@
         "total": 0.6,
         "acumulado": 1.43,
         "acumulado_anio": 1.43,
+        "benchmark": -7.89,
+        "benchmark_acumulado": -10.22,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
       },
@@ -18155,6 +18161,8 @@
         "total": -2.17,
         "acumulado": -0.77,
         "acumulado_anio": -0.77,
+        "benchmark": -3.91,
+        "benchmark_acumulado": -13.73,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
       },
@@ -18165,6 +18173,8 @@
         "total": -1.17,
         "acumulado": -1.93,
         "acumulado_anio": -1.93,
+        "benchmark": 6.37,
+        "benchmark_acumulado": -8.23,
         "sin_aportes_pb": true,
         "sin_aportes_mi": true
       },
@@ -18175,6 +18185,8 @@
         "total": 1.66,
         "acumulado": -0.3,
         "acumulado_anio": -0.3,
+        "benchmark": 0.88,
+        "benchmark_acumulado": -7.43,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
       },
@@ -18185,6 +18197,8 @@
         "total": 0.05,
         "acumulado": -0.26,
         "acumulado_anio": -0.26,
+        "benchmark": 4.78,
+        "benchmark_acumulado": -3.0,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
       },
@@ -18195,6 +18209,8 @@
         "total": 1.57,
         "acumulado": 1.31,
         "acumulado_anio": 1.31,
+        "benchmark": -0.33,
+        "benchmark_acumulado": -3.32,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       },
@@ -18205,6 +18221,8 @@
         "total": 0.63,
         "acumulado": 1.95,
         "acumulado_anio": 1.95,
+        "benchmark": 2.51,
+        "benchmark_acumulado": -0.89,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
       },
@@ -18215,6 +18233,8 @@
         "total": 2.12,
         "acumulado": 4.12,
         "acumulado_anio": 4.12,
+        "benchmark": 4.26,
+        "benchmark_acumulado": 3.33,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       },
@@ -18225,6 +18245,8 @@
         "total": 3.23,
         "acumulado": 7.49,
         "acumulado_anio": 7.49,
+        "benchmark": -0.34,
+        "benchmark_acumulado": 2.98,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18235,6 +18257,8 @@
         "total": -0.21,
         "acumulado": 7.26,
         "acumulado_anio": 7.26,
+        "benchmark": 0.12,
+        "benchmark_acumulado": 3.1,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       },
@@ -18245,6 +18269,8 @@
         "total": 0.9,
         "acumulado": 8.23,
         "acumulado_anio": 8.23,
+        "benchmark": 0.59,
+        "benchmark_acumulado": 3.71,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18255,6 +18281,8 @@
         "total": 3.68,
         "acumulado": 12.21,
         "acumulado_anio": 3.68,
+        "benchmark": 1.23,
+        "benchmark_acumulado": 4.99,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18265,6 +18293,8 @@
         "total": 1.76,
         "acumulado": 14.18,
         "acumulado_anio": 5.5,
+        "benchmark": -4.86,
+        "benchmark_acumulado": -0.12,
         "sin_aportes_pb": false,
         "sin_aportes_mi": true
       },
@@ -18275,6 +18305,8 @@
         "total": -3.91,
         "acumulado": 9.71,
         "acumulado_anio": 1.37,
+        "benchmark": 8.33,
+        "benchmark_acumulado": 8.2,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18285,6 +18317,8 @@
         "total": 4.66,
         "acumulado": 14.83,
         "acumulado_anio": 6.1,
+        "benchmark": 5.4,
+        "benchmark_acumulado": 14.05,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18295,6 +18329,8 @@
         "total": 3.47,
         "acumulado": 18.81,
         "acumulado_anio": 9.78,
+        "benchmark": 1.42,
+        "benchmark_acumulado": 15.67,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -18305,6 +18341,8 @@
         "total": 1.04,
         "acumulado": 20.04,
         "acumulado_anio": 10.92,
+        "benchmark": -0.53,
+        "benchmark_acumulado": 15.06,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
