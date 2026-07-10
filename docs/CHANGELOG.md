@@ -1,3 +1,7 @@
+## 2026-07-10 (5)
+
+- Grafico "Rentabilidad mensual por plataforma": eliminada la linea "Acumulado" (y su serie auxiliar "Cero (acumulado)") — ahora vive sola en el grafico nuevo "Acumulado vs Benchmark". El grafico mensual queda solo con Peerberry, MyInvestor y el punto "Total del mes".
+
 ## 2026-07-10 (4)
 
 - Benchmark MSCI World en tab Inversiones (auditoria fila 8): nuevo grafico "Acumulado vs Benchmark" entre rentabilidad mensual y acumulado por año, comparando el TWR de la cartera contra IWDA.AS (iShares Core MSCI World, EUR) desde enero 2025. Dato del benchmark obtenido automaticamente de la API publica de Yahoo Finance en cada sync (sin carga manual, sin dependencias nuevas). Ver DECISIONS.md.
