@@ -1,3 +1,7 @@
+## 2026-07-13 (2)
+
+- `scripts/sync_finance_data.py`: nueva función `check_relay_gaps()` — aborta el sync (exit code distinto de 0) si detecta huecos en la carga de Relay: sin fila Semanal de Peerberry en 10 dias, sin fila Mensual de MyInvestor del mes anterior pasado el dia 10, o sin movimientos nuevos en Movimientos en más de 5 dias. Mensajes con prefijo "HUECO RELAY:" para distinguirlos de un fallo de sync. Ver `DECISIONS.md` 2026-07-13 (auditoria 2026-07, fila 2).
+
 ## 2026-07-13
 
 - Flujo "Organizar Movimientos": nuevo paso 2 verifica si hay ediciones manuales en Notion (columna nativa `Last edited time`, agregada a la DB Movimientos) más recientes que el `generated_at` de `finance_data.json`; si las hay, dispara `sync-finance-data` antes de continuar. Ver `DECISIONS.md` 2026-07-13 (auditoria 2026-07, fila 1).
