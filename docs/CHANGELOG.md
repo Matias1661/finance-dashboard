@@ -1,3 +1,7 @@
+## 2026-07-13
+
+- Flujo "Organizar Movimientos": nuevo paso 2 verifica si hay ediciones manuales en Notion (columna nativa `Last edited time`, agregada a la DB Movimientos) más recientes que el `generated_at` de `finance_data.json`; si las hay, dispara `sync-finance-data` antes de continuar. Ver `DECISIONS.md` 2026-07-13 (auditoria 2026-07, fila 1).
+
 ## 2026-07-10 (6)
 
 - Grafico "Acumulado vs Benchmark": sombreado por periodo de cartera MyInvestor (GREY hasta jun-2025, RED desde jul-2025, confirmado por email de rentabilidad mensual). Rangos hardcodeados en js/app.js (no hay campo de cartera en finance_data.json); actualizar manualmente si cambia de nuevo.
