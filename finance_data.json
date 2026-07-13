@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13 13:10",
+  "generated_at": "2026-07-13 14:03",
   "movimientos": [
     {
       "fecha": "2026-07-12",
@@ -1988,6 +1988,13 @@
       "monto": 50,
       "categoria": "Guille",
       "nota": null
+    },
+    {
+      "fecha": "2026-05-05",
+      "concepto": "Sabadell Consumer",
+      "monto": -218.12,
+      "categoria": "Gastos coche",
+      "nota": "cargado manualmente"
     },
     {
       "fecha": "2026-05-03",
