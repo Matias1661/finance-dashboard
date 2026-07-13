@@ -606,6 +606,72 @@ def build_inversiones(by_month):
     return {"capital": capital, "rendimiento": rendimiento}
 
 
+def check_relay_gaps(movimientos, rend_pages, now, n_dias_movimientos=5):
+    """Monitoreo de huecos en la carga automática de Relay (auditoria 2026-07,
+    fila 2, agregado 2026-07-13). Relay carga Movimientos y Rendimiento
+    Inversiones en Notion automaticamente; sin este chequeo, un lunes sin fila
+    Semanal de Peerberry o un mes sin reporte Mensual de MyInvestor pasa
+    desapercibido hasta que alguien mira el dashboard.
+
+    Guards (distintos de sanity_check: aqui el problema es un hueco de datos
+    de origen, no una caida del propio sync):
+      E) no hay fila Peerberry Semanal con "Fecha reporte" en los ultimos 10
+         dias.
+      F) si hoy es dia >=10 del mes, no hay fila MyInvestor Mensual para el
+         mes calendario anterior.
+      G) el movimiento mas reciente en Movimientos tiene mas de
+         n_dias_movimientos dias (default 5, confirmado por el usuario
+         2026-07-13).
+
+    Cada guard levanta RuntimeError con prefijo "HUECO RELAY:" para
+    distinguirlo en el mensaje de fallo de un error de sync propiamente dicho
+    (ver sanity_check, que usa prefijo "Guard <letra>:" sin ese prefijo)."""
+    rows = [r for r in (_extract_rendimiento_row(p) for p in rend_pages) if r]
+    hoy = now.date()
+
+    # Guard E: Peerberry Semanal reciente
+    peerberry_semanal_fechas = [
+        r["fecha"] for r in rows
+        if r["plataforma"] == "Peerberry" and r["periodo"] == "Semanal"
+    ]
+    if peerberry_semanal_fechas:
+        ultima_pb = max(peerberry_semanal_fechas)
+        dias_pb = (hoy - datetime.strptime(ultima_pb, "%Y-%m-%d").date()).days
+        if dias_pb > 10:
+            raise RuntimeError(
+                f"HUECO RELAY (Guard E): la fila Semanal de Peerberry mas "
+                f"reciente es del {ultima_pb} ({dias_pb} dias) — Relay puede "
+                f"haber dejado de cargar el reporte semanal.")
+    else:
+        raise RuntimeError(
+            "HUECO RELAY (Guard E): no hay ninguna fila Semanal de Peerberry "
+            "en Rendimiento Inversiones.")
+
+    # Guard F: MyInvestor Mensual del mes anterior, solo aplica desde el dia 10
+    if hoy.day >= 10:
+        mes_anterior = _calendar_prev_month(hoy.strftime("%Y-%m"))
+        myinvestor_mensual_meses = {
+            r["fecha"][:7] for r in rows
+            if r["plataforma"] == "MyInvestor" and r["periodo"] == "Mensual"
+        }
+        if mes_anterior not in myinvestor_mensual_meses:
+            raise RuntimeError(
+                f"HUECO RELAY (Guard F): no hay fila Mensual de MyInvestor "
+                f"para {mes_anterior} y ya estamos a dia {hoy.day} del mes "
+                f"actual.")
+
+    # Guard G: movimiento mas reciente
+    if movimientos:
+        ultima_fecha_mov = movimientos[0]["fecha"]  # movimientos viene ordenado desc
+        dias_mov = (hoy - datetime.strptime(ultima_fecha_mov, "%Y-%m-%d").date()).days
+        if dias_mov > n_dias_movimientos:
+            raise RuntimeError(
+                f"HUECO RELAY (Guard G): el movimiento mas reciente en "
+                f"Movimientos es del {ultima_fecha_mov} ({dias_mov} dias, "
+                f"limite {n_dias_movimientos}) — Relay puede haber dejado de "
+                f"cargar movimientos bancarios.")
+
+
 def sanity_check(movimientos, inversiones):
     """Guard de sanidad (ver DECISIONS.md 2026-07-09 y 2026-07-10): aborta
     antes de escribir finance_data.json si el resultado es sospechoso, para
@@ -658,6 +724,7 @@ if __name__ == "__main__":
         print(f"  {len(movimientos)} registros validos")
 
         print("Leyendo Rendimiento Inversiones (Notion: capital, rendimiento, ganancia, kpi)...")
+        rend_read_ok = False
         try:
             if not NOTION_RENDIMIENTO_DS_ID:
                 raise RuntimeError("falta env var NOTION_RENDIMIENTO_DATA_SOURCE_ID")
@@ -674,11 +741,20 @@ if __name__ == "__main__":
             print(f"  {len(inversiones['capital'])} meses de capital")
             print(f"  {len(inversiones['rendimiento'])} meses de rendimiento")
             print(f"  {len(inversiones['ganancia'])} meses agregados")
+            rend_read_ok = True
         except Exception as rend_err:
             print(f"  AVISO: no se pudo leer Rendimiento Inversiones: {rend_err}")
             inversiones = {"capital": [], "rendimiento": [], "ganancia": [], "kpi": None, "rendimiento_mensual": []}
+            rend_pages = []
 
         sanity_check(movimientos, inversiones)
+
+        if rend_read_ok:
+            print("Verificando huecos en la carga de Relay...")
+            check_relay_gaps(movimientos, rend_pages, datetime.now(ZoneInfo("Europe/Madrid")))
+            print("  sin huecos detectados")
+        else:
+            print("Se omite verificacion de huecos de Relay: la lectura de Rendimiento Inversiones fallo (fallo de sync, no hueco de datos).")
 
         output = {
             "generated_at": datetime.now(ZoneInfo("Europe/Madrid")).strftime("%Y-%m-%d %H:%M"),
