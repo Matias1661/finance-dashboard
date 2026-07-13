@@ -1,6 +1,97 @@
 {
-  "generated_at": "2026-07-12 11:06",
+  "generated_at": "2026-07-13 10:38",
   "movimientos": [
+    {
+      "fecha": "2026-07-12",
+      "concepto": "LA REMOLONA",
+      "monto": -8,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-11",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 7.12,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-11",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -2.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-11",
+      "concepto": "FLORISTERIA CIPIT",
+      "monto": -38,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-11",
+      "concepto": "EUROSTARS MADRID",
+      "monto": -293,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-10",
+      "concepto": "PAYPAL *PLACASDEH",
+      "monto": -95.82,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-10",
+      "concepto": "SAN SESFARONG SL",
+      "monto": -4.8,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-10",
+      "concepto": "Ssrr",
+      "monto": -8.4,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-09",
+      "concepto": "ANTHROPIC",
+      "monto": -12.1,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-09",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 90,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-09",
+      "concepto": "Cuota club",
+      "monto": -300,
+      "categoria": "Club",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-09",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-09",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-07-08",
       "concepto": "TRANSF. A SU FAVOR",
@@ -17811,7 +17902,7 @@
       },
       {
         "mes": "2026-07",
-        "peerberry": 11720.08,
+        "peerberry": 11728.16,
         "myinvestor": 0
       }
     ],
@@ -17908,7 +17999,7 @@
       },
       {
         "mes": "2026-07",
-        "peerberry": 0.15,
+        "peerberry": 0.21,
         "myinvestor": 0
       }
     ],
@@ -18086,11 +18177,11 @@
       },
       {
         "mes": "2026-07",
-        "peerberry": 17.09,
+        "peerberry": 25.17,
         "myinvestor": 0.0,
         "peerberry_aportes": 0.0,
         "myinvestor_aportes": null,
-        "peerberry_capital": 11720.08,
+        "peerberry_capital": 11728.16,
         "myinvestor_capital": null
       }
     ],
