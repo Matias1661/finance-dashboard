@@ -257,17 +257,18 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 
 **Qué hace Claude al recibir el trigger:**
 1. Lee `finance_data.json` del repo (GitHub API) — ya generado desde Notion por `sync_finance_data.py`
-2. Lee `reviewed_movements.json` del repo — lista de claves `fecha|concepto|monto` ya revisadas
-3. Filtra candidatos no revisados por fase (PayPal, Uber, Amazon, Viajes)
-4. Para PayPal/Uber/Amazon: busca en Gmail el recibo por fecha y remitente
-5. Presenta propuestas al usuario fase a fase, una por una en el chat
-6. Aplica aprobados escribiendo directo en Notion vía MCP (`notion-update-page`): localizar la página en la data source Movimientos (`367d58ce-928b-4e31-832d-07707f876365`) filtrando por Fecha+Concepto+Monto exactos (`notion-query-data-sources`, SQL), luego `notion-update-page` sobre la propiedad Categoria (select).
-7. **Enriquecimiento de Nota** — para los movimientos procesados (prioridad *Compras*), genera la nota descriptiva y la escribe en la propiedad Nota (rich text) de la misma página:
+2. **Verifica ediciones manuales pendientes de sync** (auditoría 2026-07, fila 1, agregado 2026-07-13): consulta `MAX("Last edited time")` de la DB Notion Movimientos (`367d58ce-928b-4e31-832d-07707f876365`, columna nativa `Last edited time` añadida a tal efecto) y la compara contra el campo `generated_at` de `finance_data.json`. Si Notion tiene ediciones más recientes que `generated_at`, dispara el workflow `sync-finance-data` (`POST .../actions/workflows/286832931/dispatches` con `{"ref":"main"}`) y espera a que termine antes de continuar, para no operar sobre un `finance_data.json` desactualizado.
+3. Lee `reviewed_movements.json` del repo — lista de claves `fecha|concepto|monto` ya revisadas
+4. Filtra candidatos no revisados por fase (PayPal, Uber, Amazon, Viajes)
+5. Para PayPal/Uber/Amazon: busca en Gmail el recibo por fecha y remitente
+6. Presenta propuestas al usuario fase a fase, una por una en el chat
+7. Aplica aprobados escribiendo directo en Notion vía MCP (`notion-update-page`): localizar la página en la data source Movimientos (`367d58ce-928b-4e31-832d-07707f876365`) filtrando por Fecha+Concepto+Monto exactos (`notion-query-data-sources`, SQL), luego `notion-update-page` sobre la propiedad Categoria (select).
+8. **Enriquecimiento de Nota** — para los movimientos procesados (prioridad *Compras*), genera la nota descriptiva y la escribe en la propiedad Nota (rich text) de la misma página:
    a. Si es Amazon → buscar el producto en Gmail (`auto-confirm@amazon.es`, `confirmar-envio@amazon.es`, `order-update@amazon.es`, `digital-no-reply@amazon.es` para Kindle) y casar por fecha/importe.
    b. Si no es Amazon → buscar recibo del comercio en Gmail por ventana de fecha (±pocos días).
    c. Si no hay nada en Gmail → búsqueda web para identificar la tienda/marca.
    d. Si nada concluyente → dejar la nota en blanco (no inventar).
-8. Actualiza `reviewed_movements.json` con todos los presentados (aprobados y rechazados)
+9. Actualiza `reviewed_movements.json` con todos los presentados (aprobados y rechazados)
 
 **Cambio respecto al flujo anterior (basado en Sheets):** ya no hay concepto de "row" ni rango A1. La página de Notion se localiza por fecha+concepto+monto (misma clave que `reviewed_movements.json`, sin cambios en su formato) y se edita directo con `notion-update-page`, sin GitHub Actions ni `update-sheet-cells.yml` (eliminado el 30/06/2026). Esto elimina el espaciado de 30s entre dispatches y el protocolo de pausar Relay antes de escrituras batch — las escrituras MCP son inmediatas y no disparan workflows.
 
