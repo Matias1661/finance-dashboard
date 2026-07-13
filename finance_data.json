@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13 10:38",
+  "generated_at": "2026-07-13 11:58",
   "movimientos": [
     {
       "fecha": "2026-07-12",
@@ -12,7 +12,7 @@
       "fecha": "2026-07-11",
       "concepto": "TRANSF. A SU FAVOR",
       "monto": 7.12,
-      "categoria": "Guille",
+      "categoria": "Gastos moto",
       "nota": null
     },
     {
@@ -27,34 +27,34 @@
       "concepto": "FLORISTERIA CIPIT",
       "monto": -38,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Regalo Joha"
     },
     {
       "fecha": "2026-07-11",
       "concepto": "EUROSTARS MADRID",
       "monto": -293,
-      "categoria": "Viajes",
-      "nota": null
+      "categoria": "Compras",
+      "nota": "Regalo Joha"
     },
     {
       "fecha": "2026-07-10",
       "concepto": "PAYPAL *PLACASDEH",
       "monto": -95.82,
-      "categoria": "Compras",
-      "nota": null
+      "categoria": "Club",
+      "nota": "Trofeos Burgos SL - Placas de Homenaje (pedido 5706). Regalos club, pendiente reintegro de tesorería."
     },
     {
       "fecha": "2026-07-10",
       "concepto": "SAN SESFARONG SL",
       "monto": -4.8,
-      "categoria": "A revisar",
-      "nota": null
+      "categoria": "Compras",
+      "nota": "Regalo Joha"
     },
     {
       "fecha": "2026-07-10",
       "concepto": "Ssrr",
       "monto": -8.4,
-      "categoria": "A revisar",
+      "categoria": "Otros",
       "nota": null
     },
     {
@@ -258,7 +258,7 @@
       "concepto": "Amazon Prime",
       "monto": -4.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Amazon Prime, cuota mensual recurrente"
     },
     {
       "fecha": "2026-07-05",
