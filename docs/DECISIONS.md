@@ -1,3 +1,13 @@
+## [2026-07-13] Implementado: verificación de ediciones manuales antes de Organizar Movimientos (auditoria 2026-07, fila 1)
+
+**Contexto:** el flujo "Organizar Movimientos" opera sobre `finance_data.json`, que puede estar desactualizado si hubo correcciones manuales en Notion después del último sync diario (07:00).
+
+**Decision:** agregar la columna nativa `Last edited time` a la DB Notion Movimientos y comparar su MAX contra el `generated_at` de `finance_data.json` como paso 2 del flujo. Si Notion tiene ediciones más recientes, disparar `sync-finance-data` (workflow 286832931) y esperar a que termine antes de continuar. No se requiere ningun valor de configuracion adicional: `Last edited time` es una propiedad nativa de Notion, se calcula sola.
+
+**Estado:** Hecho. Columna agregada vía `notion-update-data-source`. Flujo actualizado en `docs/PROJECT_MEMORY.md`, sección "Flujo Organizar Movimientos".
+
+---
+
 ## [2026-07-10] Implementado: benchmark MSCI World en tab Inversiones (auditoria fila 8)
 
 **Contexto:** la auditoria del 09/07/2026 (fila 8) senalaba que el TWR de la cartera no tenia referencia de mercado para saber si el rendimiento es bueno o malo.
