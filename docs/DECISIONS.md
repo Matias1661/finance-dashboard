@@ -1,3 +1,13 @@
+## [2026-07-13] Implementado: monitoreo de huecos en la carga automática de Relay (auditoria 2026-07, fila 2)
+
+**Contexto:** Relay carga Movimientos y Rendimiento Inversiones en Notion automaticamente, pero un fallo silencioso (lunes sin fila Semanal de Peerberry, mes sin Mensual de MyInvestor, o Movimientos sin altas nuevas) pasaba desapercibido hasta que alguien miraba el dashboard.
+
+**Decision:** agregar `check_relay_gaps()` en `sync_finance_data.py` con tres guards (E, F, G): Peerberry Semanal con "Fecha reporte" de los ultimos 10 dias; si el dia del mes es >=10, MyInvestor Mensual del mes calendario anterior; movimiento mas reciente en Movimientos con menos de N=5 dias (confirmado por el usuario 2026-07-13). Cualquier guard que falle levanta `RuntimeError` con prefijo "HUECO RELAY:", saliendo con codigo de error para que el workflow `sync-finance-data.yml` falle y dispare la alerta existente (guard de sanidad, auditoria fila 2 previa). El chequeo se omite si la lectura de Rendimiento Inversiones fallo por otro motivo (fallo de sync propiamente dicho, ya reportado como AVISO), para no confundir ambos casos.
+
+**Estado:** Hecho.
+
+---
+
 ## [2026-07-13] Implementado: verificación de ediciones manuales antes de Organizar Movimientos (auditoria 2026-07, fila 1)
 
 **Contexto:** el flujo "Organizar Movimientos" opera sobre `finance_data.json`, que puede estar desactualizado si hubo correcciones manuales en Notion después del último sync diario (07:00).
