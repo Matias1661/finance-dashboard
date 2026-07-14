@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14 11:08",
+  "generated_at": "2026-07-14 12:41",
   "movimientos": [
     {
       "fecha": "2026-07-12",
@@ -18445,5 +18445,199 @@
         "sin_aportes_mi": false
       }
     ]
-  }
+  },
+  "nominas": [
+    {
+      "mes": "2022-01",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 754.36,
+      "estimado": true
+    },
+    {
+      "mes": "2022-02",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 754.98,
+      "estimado": true
+    },
+    {
+      "mes": "2022-03",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1981.26,
+      "estimado": true
+    },
+    {
+      "mes": "2022-04",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 936.71,
+      "estimado": true
+    },
+    {
+      "mes": "2022-05",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 958.66,
+      "estimado": true
+    },
+    {
+      "mes": "2022-06",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1298.36,
+      "estimado": true
+    },
+    {
+      "mes": "2022-07",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 845.57,
+      "estimado": true
+    },
+    {
+      "mes": "2022-08",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 843.88,
+      "estimado": true
+    },
+    {
+      "mes": "2022-09",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 852.6,
+      "estimado": true
+    },
+    {
+      "mes": "2022-10",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1928.36,
+      "estimado": true
+    },
+    {
+      "mes": "2024-02",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1679.19,
+      "estimado": false
+    },
+    {
+      "mes": "2024-04",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1683.77,
+      "estimado": false
+    },
+    {
+      "mes": "2024-05",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1679.63,
+      "estimado": false
+    },
+    {
+      "mes": "2024-06",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1679.63,
+      "estimado": false
+    },
+    {
+      "mes": "2024-07",
+      "empresa": "VALEO ESPAÑA, S.A.U.",
+      "monto": 3584.1,
+      "estimado": false
+    },
+    {
+      "mes": "2024-08",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 795.7,
+      "estimado": false
+    },
+    {
+      "mes": "2025-03",
+      "empresa": "Between Technology S.L",
+      "monto": 539.8,
+      "estimado": false
+    },
+    {
+      "mes": "2025-04",
+      "empresa": "Between Technology S.L",
+      "monto": 2024.39,
+      "estimado": false
+    },
+    {
+      "mes": "2025-05",
+      "empresa": "Between Technology S.L",
+      "monto": 1950.55,
+      "estimado": false
+    },
+    {
+      "mes": "2025-06",
+      "empresa": "Between Technology S.L",
+      "monto": 3234.55,
+      "estimado": false
+    },
+    {
+      "mes": "2025-07",
+      "empresa": "Between Technology S.L",
+      "monto": 2394.13,
+      "estimado": false
+    },
+    {
+      "mes": "2025-08",
+      "empresa": "Between Technology S.L",
+      "monto": 2394.13,
+      "estimado": false
+    },
+    {
+      "mes": "2025-09",
+      "empresa": "Between Technology S.L",
+      "monto": 2394.13,
+      "estimado": false
+    },
+    {
+      "mes": "2025-10",
+      "empresa": "Between Technology S.L",
+      "monto": 2394.13,
+      "estimado": false
+    },
+    {
+      "mes": "2025-11",
+      "empresa": "Between Technology S.L",
+      "monto": 2393.52,
+      "estimado": false
+    },
+    {
+      "mes": "2025-12",
+      "empresa": "Between Technology S.L",
+      "monto": 2393.52,
+      "estimado": false
+    },
+    {
+      "mes": "2026-01",
+      "empresa": "Between Technology S.L",
+      "monto": 2307.43,
+      "estimado": false
+    },
+    {
+      "mes": "2026-02",
+      "empresa": "Between Technology S.L",
+      "monto": 2307.43,
+      "estimado": false
+    },
+    {
+      "mes": "2026-03",
+      "empresa": "Between Technology S.L",
+      "monto": 2307.43,
+      "estimado": false
+    },
+    {
+      "mes": "2026-04",
+      "empresa": "Between Technology S.L",
+      "monto": 2307.43,
+      "estimado": false
+    },
+    {
+      "mes": "2026-05",
+      "empresa": "Between Technology S.L",
+      "monto": 3248.79,
+      "estimado": false
+    },
+    {
+      "mes": "2026-06",
+      "empresa": "Luzutania Group SLU",
+      "monto": 2648.99,
+      "estimado": false
+    }
+  ]
 }
