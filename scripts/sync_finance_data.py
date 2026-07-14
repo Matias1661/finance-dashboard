@@ -83,13 +83,52 @@ def _normalizar_empresa(nombre):
     return _EMPRESA_NORMALIZADA.get(key, nombre.strip())
 
 
-# Corte del grafico de nomina: empieza en abril 2025 (primer mes con datos
-# limpios y continuos, un solo empleador por entonces). Se descartó traer
-# historico previo (Ford Argentina 2022 en pesos convertido, y el hueco de 15
-# meses entre esa etapa y Valeo/Between) por decision del usuario 2026-07-14:
-# con tantos huecos y una conversion de moneda de por medio, el grafico no
-# aportaba una lectura clara. Ver docs/DECISIONS.md.
-NOMINA_INICIO = "2025-04"
+# Historico de nomina anterior a lo que cubren las fuentes vivas (DB Nominas
+# arranca en 2024-02, Movimientos en 2024-12-01). Decision del usuario
+# 2026-07-14 (ver docs/DECISIONS.md): reconstruir el historico completo
+# desde enero 2022 combinando datos reales donde existen con valores
+# hardcodeados confirmados por el usuario donde no hay recibo cargado.
+# Cada entrada reemplaza por completo el mes correspondiente.
+# - estimado=True: valor de memoria, no verificable contra un recibo.
+# - estimado=False: hecho real confirmado (ingreso 0 durante mudanza/paro
+#   sin cobrar aun, o el total combinado de un mes con dos cobros reales).
+FORD_VALOR_ESTIMADO = 1115.47   # promedio de las 10 nominas Ford convertidas (blue->EUR)
+VALEO_VALOR_ESTIMADO = 1680.56  # promedio de las nominas reales conocidas de Valeo 2024
+
+HISTORICO_MANUAL = {}
+for _m in range(1, 11):
+    HISTORICO_MANUAL[f"2022-{_m:02d}"] = {
+        "monto": FORD_VALOR_ESTIMADO, "empresa": "Ford Argentina S.C.A.", "estimado": True}
+HISTORICO_MANUAL["2022-11"] = {"monto": 0.0, "empresa": None, "estimado": False}
+HISTORICO_MANUAL["2022-12"] = {"monto": 0.0, "empresa": None, "estimado": False}
+for _m in range(1, 13):
+    HISTORICO_MANUAL[f"2023-{_m:02d}"] = {
+        "monto": VALEO_VALOR_ESTIMADO, "empresa": "Valeo España, S.A.U.", "estimado": True}
+HISTORICO_MANUAL["2024-01"] = {"monto": VALEO_VALOR_ESTIMADO, "empresa": "Valeo España, S.A.U.", "estimado": True}
+HISTORICO_MANUAL["2024-03"] = {"monto": VALEO_VALOR_ESTIMADO, "empresa": "Valeo España, S.A.U.", "estimado": True}
+HISTORICO_MANUAL["2024-09"] = {"monto": 0.0, "empresa": None, "estimado": False}
+HISTORICO_MANUAL["2024-10"] = {"monto": 0.0, "empresa": None, "estimado": False}
+HISTORICO_MANUAL["2024-11"] = {"monto": 0.0, "empresa": None, "estimado": False}
+# 2025-03: ultimo pago de paro (477.14) + primer pago parcial de Between
+# Technology (539.80), verificados en Movimientos. Se reemplaza el total
+# para no perder el componente de paro que la DB Nominas no registra.
+HISTORICO_MANUAL["2025-03"] = {"monto": round(477.14 + 539.80, 2), "empresa": "Between Technology S.L", "estimado": False}
+
+
+def etapa_for_month(mes, empresa):
+    """Banda/etapa de vida para el sombreado de fondo del grafico de nomina.
+    Se calcula por rango de fechas fijo (eventos historicos ya cerrados) y,
+    fuera de esos rangos, por la empresa real del mes. Ver docs/DECISIONS.md,
+    auditoria orden 9 (2026-07-14)."""
+    if mes <= "2022-10":
+        return "Ford Argentina S.C.A."
+    if mes in ("2022-11", "2022-12"):
+        return "Mudanza"
+    if "2023-01" <= mes <= "2024-08":
+        return "Valeo España, S.A.U."
+    if "2024-09" <= mes <= "2025-02":
+        return "Paro"
+    return empresa or "Sin nómina"
 
 
 def fetch_movimientos_notion():
@@ -167,15 +206,24 @@ def fetch_nominas_notion():
 
 def build_nominas(pages, movimientos=None):
     """Agrega la DB Nominas por mes calendario (Empresa + suma de Total),
-    excluye las filas de Ford Argentina (pesos, sin convertir) -- fuera de
-    alcance, ver NOMINA_INICIO. Guarda "pagos" (cantidad) y "detalle"
+    excluye las filas de Ford Argentina (pesos, sin convertir -- se
+    reemplazan por HISTORICO_MANUAL). Guarda "pagos" (cantidad) y "detalle"
     (lista de {empresa, monto} por cada pago del mes) para poder explicar
     meses con mas de un cobro (ej. cambio de empleador con solape) mostrando
-    la descomposicion real, no solo un conteo. Ademas suma las devoluciones
-    de Hacienda (IRPF) detectadas en Movimientos (categoria Nomina, Nota ==
-    "IRPF") al mes en que se cobraron, marcando ese mes con irpf=True. Ver
-    docs/DECISIONS.md, auditoria orden 9 (2026-07-14) y correcciones del
-    mismo dia."""
+    la descomposicion real, no solo un conteo.
+
+    Para meses sin cobertura en la DB Nominas (Movimientos arranca antes,
+    2024-12-01), se usa un fallback: sumar los movimientos de categoria
+    Nomina de ese mes (cubre el paro real dic 2024-feb 2025, sin necesidad
+    de hardcodear esos valores).
+
+    Devoluciones de Hacienda (IRPF): Movimientos, categoria Nomina, Nota ==
+    "IRPF", se suman al mes en que se cobraron, marcando irpf=True.
+
+    Finalmente, HISTORICO_MANUAL reemplaza por completo los meses que no
+    tienen ninguna fuente viva (Ford, mudanza, Valeo sin recibo, huecos de
+    paro sin cobrar, marzo 2025 combinado) -- ver docs/DECISIONS.md,
+    auditoria orden 9 (2026-07-14) y correcciones del mismo dia."""
     by_month = {}
 
     for page in pages:
@@ -190,15 +238,13 @@ def build_nominas(pages, movimientos=None):
         empresa = _normalizar_empresa(empresa_raw)
 
         if empresa == "Ford Argentina S.C.A.":
-            continue  # etapa en pesos, fuera de alcance (ver NOMINA_INICIO)
+            continue  # pesos, sin convertir -- ver HISTORICO_MANUAL
 
         total = props.get("Total", {}).get("number")
         if total is None:
             continue
 
         mes = fecha[:7]
-        if mes < NOMINA_INICIO:
-            continue
         if mes not in by_month:
             by_month[mes] = {"monto": 0.0, "empresa": empresa, "irpf": False, "pagos": 0, "detalle": []}
         by_month[mes]["monto"] += total
@@ -206,9 +252,32 @@ def build_nominas(pages, movimientos=None):
         by_month[mes]["pagos"] += 1
         by_month[mes]["detalle"].append({"empresa": empresa, "monto": round(total, 2)})
 
-    # Devoluciones de Hacienda (IRPF): vienen de Movimientos, categoria
-    # Nomina, Nota == "IRPF" (marcado manual, una vez al ano). Se suman al
-    # ingreso del mes en que se cobraron.
+    # Fallback: meses sin cobertura en la DB Nominas, sumar Movimientos
+    # categoria=Nomina (cubre el paro real dic 2024-feb 2025 sin hardcodear).
+    movimientos_por_mes = {}
+    for mov in (movimientos or []):
+        if mov.get("categoria") != "Nomina":
+            continue
+        fecha = mov.get("fecha")
+        if not fecha:
+            continue
+        mes = fecha[:7]
+        movimientos_por_mes.setdefault(mes, []).append(mov)
+
+    for mes, movs in movimientos_por_mes.items():
+        if mes in by_month:
+            continue  # ya cubierto por la DB Nominas, evitar doble conteo
+        no_irpf = [m for m in movs if (m.get("nota") or "").strip().upper() != "IRPF"]
+        if not no_irpf:
+            continue
+        total = sum(m.get("monto") or 0 for m in no_irpf)
+        by_month[mes] = {
+            "monto": total, "empresa": None, "irpf": False,
+            "pagos": len(no_irpf),
+            "detalle": [{"empresa": None, "monto": round(m.get("monto") or 0, 2)} for m in no_irpf]
+        }
+
+    # Devoluciones de Hacienda (IRPF): se suman al mes en que se cobraron.
     for mov in (movimientos or []):
         if mov.get("categoria") != "Nomina":
             continue
@@ -219,23 +288,35 @@ def build_nominas(pages, movimientos=None):
         if not fecha:
             continue
         mes = fecha[:7]
-        if mes < NOMINA_INICIO:
-            continue
         monto = mov.get("monto") or 0
         if mes not in by_month:
             by_month[mes] = {"monto": 0.0, "empresa": None, "irpf": False, "pagos": 0, "detalle": []}
         by_month[mes]["monto"] += monto
         by_month[mes]["irpf"] = True
 
+    # Overrides manuales: reemplazan por completo el mes (ver HISTORICO_MANUAL)
+    for mes, override in HISTORICO_MANUAL.items():
+        by_month[mes] = {
+            "monto": override["monto"],
+            "empresa": override["empresa"],
+            "irpf": False,
+            "pagos": 0,
+            "detalle": [],
+            "estimado": override["estimado"]
+        }
+
     nominas = []
     for mes in sorted(by_month.keys()):
+        registro = by_month[mes]
         nominas.append({
             "mes": mes,
-            "empresa": by_month[mes]["empresa"],
-            "monto": round(by_month[mes]["monto"], 2),
-            "irpf": by_month[mes]["irpf"],
-            "pagos": by_month[mes]["pagos"],
-            "detalle": by_month[mes]["detalle"]
+            "empresa": registro["empresa"],
+            "monto": round(registro["monto"], 2),
+            "irpf": registro["irpf"],
+            "pagos": registro["pagos"],
+            "detalle": registro["detalle"],
+            "estimado": registro.get("estimado", False),
+            "etapa": etapa_for_month(mes, registro["empresa"])
         })
 
     return nominas
@@ -883,7 +964,7 @@ if __name__ == "__main__":
             nominas_pages = fetch_nominas_notion()
             print(f"  {len(nominas_pages)} paginas")
             nominas = build_nominas(nominas_pages, movimientos)
-            print(f"  {len(nominas)} meses desde {NOMINA_INICIO}")
+            print(f"  {len(nominas)} meses (histórico completo desde 2022-01)")
         except Exception as nom_err:
             print(f"  AVISO: no se pudo leer Nominas: {nom_err}")
             nominas = []
