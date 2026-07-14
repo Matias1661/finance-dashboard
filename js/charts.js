@@ -678,6 +678,33 @@ function renderNominaTrend(){
       : '';
   }
 
+  // Panel lateral: meses más de 15% por encima del promedio móvil 12m
+  const outliersEl = document.getElementById('nomina-outliers');
+  if(outliersEl){
+    const outliers = [];
+    labels.forEach((mes, i) => {
+      if(movingAvg[i] <= 0 || montos[i] <= 0) return;
+      const delta = (montos[i] - movingAvg[i]) / movingAvg[i];
+      if(delta > 0.15){
+        outliers.push({ mes, monto: montos[i], delta, irpf: irpfFlags[i] });
+      }
+    });
+
+    if(outliers.length === 0){
+      outliersEl.innerHTML = '<div style="color:var(--text-secondary)">Ningún mes supera el 15% por encima del promedio.</div>';
+    } else {
+      outliersEl.innerHTML = outliers.map(o => {
+        const motivo = o.irpf
+          ? 'incluye devolución de Hacienda (IRPF)'
+          : 'pago adicional (revisar Nota en Notion)';
+        return `<div style="margin-bottom:8px">
+          <div style="font-weight:500">${o.mes} · +${(o.delta*100).toFixed(0)}%</div>
+          <div style="color:var(--text-secondary)">${formatEUR(o.monto)} — ${motivo}</div>
+        </div>`;
+      }).join('');
+    }
+  }
+
   // Bandas de fondo por empresa (Between Technology / Luzutania), calculadas
   // a partir de los mismos segmentos que la nota de texto
   const bandColors = {
@@ -749,6 +776,7 @@ function renderNominaTrend(){
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: { display: true },
         datalabels: { display: false },
