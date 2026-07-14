@@ -11,6 +11,7 @@ function renderResumen(){
   if(typeof renderKPIs === 'function') renderKPIs();
   if(typeof renderInsights === 'function') renderInsights();
   if(typeof renderMonthly === 'function') renderMonthly();
+  if(typeof renderNominaTrend === 'function') renderNominaTrend();
   if(typeof renderSuscripciones === 'function') renderSuscripciones();
   if(typeof renderCategoryTrend === 'function') renderCategoryTrend();
 }
@@ -1661,6 +1662,7 @@ async function init(){
     RAW = rawData.movimientos || [];
     if(window.FINANCE_STATE){
       window.FINANCE_STATE.inversiones  = rawData.inversiones  || { capital: [], rendimiento: [], ganancia: [], kpi: null };
+      window.FINANCE_STATE.nominas      = rawData.nominas      || [];
       window.FINANCE_STATE.generatedAt  = rawData.generated_at || '—';
     }
   }
