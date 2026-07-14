@@ -168,10 +168,11 @@ def fetch_nominas_notion():
 def build_nominas(pages, movimientos=None):
     """Agrega la DB Nominas por mes calendario (Empresa + suma de Total),
     excluye las filas de Ford Argentina (pesos, sin convertir) -- fuera de
-    alcance, ver NOMINA_INICIO. Cuenta cuantos pagos distintos hay por mes
-    (campo "pagos") para poder explicar meses con mas de un cobro (ej.
-    cambio de empleador con solape). Ademas suma las devoluciones de
-    Hacienda (IRPF) detectadas en Movimientos (categoria Nomina, Nota ==
+    alcance, ver NOMINA_INICIO. Guarda "pagos" (cantidad) y "detalle"
+    (lista de {empresa, monto} por cada pago del mes) para poder explicar
+    meses con mas de un cobro (ej. cambio de empleador con solape) mostrando
+    la descomposicion real, no solo un conteo. Ademas suma las devoluciones
+    de Hacienda (IRPF) detectadas en Movimientos (categoria Nomina, Nota ==
     "IRPF") al mes en que se cobraron, marcando ese mes con irpf=True. Ver
     docs/DECISIONS.md, auditoria orden 9 (2026-07-14) y correcciones del
     mismo dia."""
@@ -199,10 +200,11 @@ def build_nominas(pages, movimientos=None):
         if mes < NOMINA_INICIO:
             continue
         if mes not in by_month:
-            by_month[mes] = {"monto": 0.0, "empresa": empresa, "irpf": False, "pagos": 0}
+            by_month[mes] = {"monto": 0.0, "empresa": empresa, "irpf": False, "pagos": 0, "detalle": []}
         by_month[mes]["monto"] += total
         by_month[mes]["empresa"] = empresa  # ultima empresa vista en el mes
         by_month[mes]["pagos"] += 1
+        by_month[mes]["detalle"].append({"empresa": empresa, "monto": round(total, 2)})
 
     # Devoluciones de Hacienda (IRPF): vienen de Movimientos, categoria
     # Nomina, Nota == "IRPF" (marcado manual, una vez al ano). Se suman al
@@ -221,7 +223,7 @@ def build_nominas(pages, movimientos=None):
             continue
         monto = mov.get("monto") or 0
         if mes not in by_month:
-            by_month[mes] = {"monto": 0.0, "empresa": None, "irpf": False, "pagos": 0}
+            by_month[mes] = {"monto": 0.0, "empresa": None, "irpf": False, "pagos": 0, "detalle": []}
         by_month[mes]["monto"] += monto
         by_month[mes]["irpf"] = True
 
@@ -232,7 +234,8 @@ def build_nominas(pages, movimientos=None):
             "empresa": by_month[mes]["empresa"],
             "monto": round(by_month[mes]["monto"], 2),
             "irpf": by_month[mes]["irpf"],
-            "pagos": by_month[mes]["pagos"]
+            "pagos": by_month[mes]["pagos"],
+            "detalle": by_month[mes]["detalle"]
         })
 
     return nominas
