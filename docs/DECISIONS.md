@@ -1,3 +1,17 @@
+## [2026-07-14] Implementado: layout de dos columnas en gráfico de nómina + panel de meses atípicos (auditoria 2026-07, orden 9)
+
+**Contexto:** el usuario pidió que el gráfico de nómina no use el 100% del ancho del card, sino que deje espacio para un panel con explicación de los meses que están muy por encima del promedio (dio como ejemplo junio y julio). Umbral acordado: más de 15% por encima del promedio móvil 12m.
+
+**Cambio implementado:**
+- `index.html`: la card de nómina pasa a un layout flex de dos columnas — `chart-wrap` (flex 7, min 480px) a la izquierda, panel `#nomina-outliers` (flex 2, min 170px/max 260px) a la derecha. Se apila en una columna en pantallas angostas por el `flex-wrap`.
+- `js/charts.js`: `renderNominaTrend()` agrega `maintainAspectRatio: false` (el canvas ahora sí llena el 100% de su columna en vez de quedar limitado por el aspect ratio por defecto de Chart.js). Nueva lógica: para cada mes con `monto > promedio móvil 12m × 1.15`, se lista en el panel lateral con el % de exceso y un motivo — "incluye devolución de Hacienda (IRPF)" si el mes tiene `irpf:true`, o "pago adicional (revisar Nota en Notion)" como motivo genérico si no hay explicación automática disponible.
+
+**Limitación aceptada:** el motivo genérico no distingue automáticamente entre bono, finiquito, pago doble u otro ajuste — solo el caso IRPF está identificado con certeza. Si se quiere detalle mayor a futuro, haría falta un criterio de Nota adicional en Movimientos (similar al de IRPF) para otros tipos de pago extra.
+
+**Estado:** Hecho.
+
+---
+
 ## [2026-07-14] Implementado: devoluciones de Hacienda (IRPF) en el gráfico de nómina (auditoria 2026-07, orden 9)
 
 **Contexto:** el usuario pidió incluir en el gráfico de nómina las devoluciones anuales de Hacienda (IRPF), que hoy están cargadas en Movimientos bajo la categoría "Nomina" mezcladas con el sueldo, sin ninguna marca que las distinga.
