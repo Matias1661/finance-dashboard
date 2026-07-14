@@ -270,8 +270,16 @@
 <div class="card">
   <div class="card-title">Evolución de ingresos (nómina) · interanual</div>
   <div id="nomina-yoy-label" style="font-size:14px;color:var(--text-secondary);margin-bottom:8px"></div>
-  <div class="chart-wrap-tall">
-    <canvas id="chart-nomina"></canvas>
+  <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+    <div style="flex:7 1 480px;min-width:0">
+      <div class="chart-wrap" style="height:280px">
+        <canvas id="chart-nomina"></canvas>
+      </div>
+    </div>
+    <div style="flex:2 1 200px;min-width:170px;max-width:260px">
+      <div style="font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:6px">Meses por encima de la media</div>
+      <div id="nomina-outliers" style="font-size:12.5px;line-height:1.5"></div>
+    </div>
   </div>
   <div id="nomina-empresa-note" style="font-size:12px;color:var(--text-secondary);margin-top:8px"></div>
   <div id="nomina-irpf-note" style="font-size:12px;color:var(--text-secondary);margin-top:4px"></div>
