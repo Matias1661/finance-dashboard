@@ -1,3 +1,7 @@
+## 2026-07-14 (7)
+
+- Gráfico de nómina: histórico completo 2022-01 a 2026-06 (54 meses), reemplaza el corte de abril 2025. `scripts/sync_finance_data.py`: `HISTORICO_MANUAL` (Ford, Valeo estimado, mudanza, paro sin cobrar, marzo 2025 combinado) + fallback real de Movimientos para paro dic 2024-feb 2025 (filtrado por Concepto, fix de un bug de contaminación de categoría en dic 2024) + nuevos campos `etapa` y `estimado` por mes. `js/charts.js`: sombreado por etapa, puntos huecos para estimado, nueva leyenda `#nomina-etapas-legend`. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
+
 ## 2026-07-14 (6)
 
 - Card de nómina (tab Resumen): layout de dos columnas, gráfico + panel lateral `#nomina-outliers` con los meses que superan en más de 15% el promedio móvil 12m (motivo: IRPF si aplica, o "pago adicional" genérico). `js/charts.js`: `maintainAspectRatio:false` para que el canvas llene su columna. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
