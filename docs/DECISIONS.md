@@ -1,3 +1,35 @@
+## [2026-07-14] Implementado: evolución de ingresos (nómina YoY) combinando DB Nominas + Movimientos (auditoria 2026-07, orden 9)
+
+**Contexto:** el orden 9 de la auditoría pedía un indicador de tendencia de ingresos (variación interanual, promedio móvil 12m) sobre la categoría "Nomina" de Movimientos. El usuario señaló que existe una DB Notion separada "Nominas" (`19833ce5-0e68-8121-8f95-000bddffaaea`, 39 registros) con detalle de Empresa y archivo del recibo por cada pago, y pidió combinarla con Movimientos para dar más contexto (empresa, períodos sin nómina) al gráfico.
+
+**Hallazgo:** la DB Nominas mezcla dos eras incompatibles: 13 registros de Ford Argentina S.C.A. (2022, en pesos argentinos, ~178k-323k ARS/pago) y 26 registros desde 2024-02 en adelante (ya en euros, empresas Valeo España → Between Technology → Luzutania Group, con un hueco real de 7 meses entre Valeo y Between por cambio de empleo).
+
+**Decisión del usuario:**
+1. Incluir el último año de Ford (ene-oct 2022) convertido a euros.
+2. Conversión en dos pasos: ARS → USD con el dólar **blue** del día exacto de cada pago (no el oficial, por la brecha cambiaria de esa época), luego USD → EUR con la cotización del mismo día.
+3. No hace falta aclaración visual especial para el tramo Ford — alcanza con que el nombre de la empresa quede identificado en el gráfico/tooltip.
+4. Empresa nueva (cambio de trabajo) se considera comparable para el cálculo de YoY — no se corta la serie histórica en cada cambio de empresa.
+5. Gráfico en el tab Resumen.
+
+**Fuentes de conversión usadas (2026-07-14):**
+- Dólar blue histórico diario: `api.argentinadatos.com/v1/cotizaciones/dolares/blue/{yyyy}/{mm}/{dd}` (venta).
+- EUR/USD histórico diario: Yahoo Finance `EURUSD=X` (mismo patrón que el benchmark IWDA.AS del tab Inversiones).
+- Los 12 pagos de Ford (2022-01 a 2022-10, agregados por mes calendario — marzo y octubre tuvieron 2 pagos cada uno) se convirtieron una única vez y quedaron hardcodeados como `FORD_HISTORICO_EUR` en `scripts/sync_finance_data.py` — son datos históricos fijos, no se recalculan en cada sync. Total convertido: ~11.155€ en los 10 meses.
+
+**Cambio implementado:**
+- `scripts/sync_finance_data.py`: nueva función `fetch_nominas_notion()` (mismo patrón REST que Movimientos/Rendimiento) + `build_nominas()`, que agrega la DB Nominas por mes calendario (suma de Total, última Empresa vista en el mes), normaliza variantes de nombre de empresa (mayúsculas/tipeo: "VALEO ESPAÑA..." vs "Valeo España...", "LUZUTANIAESP..." vs "LUZUTANIAES..."), excluye las filas de Ford (pesos) y las reemplaza por `FORD_HISTORICO_EUR`. Nuevo campo `nominas` en `finance_data.json`: `[{mes, empresa, monto, estimado}]`.
+- ID de la data source Nominas hardcodeado con fallback (`NOTION_NOMINAS_DATA_SOURCE_ID` opcional) en vez de agregar un secret nuevo de GitHub Actions — no es información sensible, es solo el identificador de la data source.
+- `js/state.js`: `FINANCE_STATE.nominas` (default `[]`).
+- `js/app.js`: carga `rawData.nominas` en `init()`; `renderResumen()` llama a `renderNominaTrend()`.
+- `js/charts.js`: nueva función `renderNominaTrend()`. Construye un eje mensual continuo (sin huecos) entre el primer y último mes con datos; los meses sin registro se tratan como ingreso real 0 (período sin nómina, ej. cambio de empleo), no como hueco de datos a excluir — se incluyen en el promedio móvil 12m según el criterio ya definido en la ficha de la auditoría. Line chart: ingreso mensual (puntos coloreados por empresa, gris para meses sin nómina) + promedio móvil 12m (línea punteada). Debajo del gráfico, nota de texto autogenerada con los períodos por empresa. Encima, label con el último mes y su variación interanual (o "N/D" si hace 12 meses no hubo nómina).
+- `index.html`: nueva card "Evolución de ingresos (nómina) · interanual" en el tab Resumen, con `#chart-nomina`, `#nomina-yoy-label` y `#nomina-empresa-note`.
+
+**Limitación aceptada:** la conversión de Ford usa el dólar blue como aproximación de poder adquisitivo real; no es una cifra oficial ni auditable con precisión centavo a centavo, y el usuario lo confirmó explícitamente como aceptable para este uso (contexto de tendencia, no contabilidad formal).
+
+**Estado:** Hecho. Marcar orden 9 de la DB "Auditoría 2026-07 — Mejoras sugeridas" como Estado=Hecho.
+
+---
+
 ## [2026-07-14] Implementado: separar aportes brutos de retiros en la categoría Inversion (auditoria 2026-07, fila 7)
 
 **Contexto:** la categoría Inversion mezclaba depósitos y retiros (liquidación parcial de Peerberry), con un neto positivo (+398€) que no sirve como medida de aporte real al mes.
