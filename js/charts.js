@@ -582,7 +582,6 @@ function renderCategoryAvgTable(){
 // Paleta fija por empresa: mismo color siempre para la misma empresa entre
 // renders. Gris para meses sin nómina (huecos reales, ej. cambio de empleo).
 const _NOMINA_EMPRESA_COLORS = {
-  'Ford Argentina S.C.A.':   'rgba(180,120,60,0.9)',
   'Valeo España, S.A.U.':    'rgba(66,133,180,0.9)',
   'Between Technology S.L':  'rgba(13,138,82,0.9)',
   'Luzutania Group SLU':     'rgba(160,80,190,0.9)'
@@ -617,7 +616,6 @@ function renderNominaTrend(){
 
   const montos = labels.map(mes => byMonth[mes] ? byMonth[mes].monto : 0);
   const empresas = labels.map(mes => byMonth[mes] ? byMonth[mes].empresa : null);
-  const estimados = labels.map(mes => byMonth[mes] ? !!byMonth[mes].estimado : false);
 
   // Promedio móvil 12 meses (incluye los meses en 0 como ingreso real, según
   // decisión: solo se excluyen huecos de DATOS, no meses reales sin ingreso)
@@ -659,8 +657,7 @@ function renderNominaTrend(){
     const partes = periodos.map(p => {
       const nombre = p.empresa || 'Sin nómina';
       const rango = p.start === p.end ? p.start : `${p.start} – ${p.end}`;
-      const esFord = p.empresa === 'Ford Argentina S.C.A.';
-      return `${nombre} (${rango})${esFord ? ' [conversión aproximada, dólar blue]' : ''}`;
+      return `${nombre} (${rango})`;
     });
     noteEl.textContent = partes.join(' · ');
   }
@@ -709,8 +706,7 @@ function renderNominaTrend(){
                 return `Promedio 12m: ${formatEUR(ctxPoint.parsed.y)}`;
               }
               const emp = empresas[i];
-              const estStr = estimados[i] ? ' (conversión aprox.)' : '';
-              return `${emp || 'Sin nómina'}${estStr}: ${formatEUR(ctxPoint.parsed.y)}`;
+              return `${emp || 'Sin nómina'}: ${formatEUR(ctxPoint.parsed.y)}`;
             }
           }
         }
