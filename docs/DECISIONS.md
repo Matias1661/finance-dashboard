@@ -1,3 +1,22 @@
+## [2026-07-14] Implementado: promedio móvil "consciente de etapa" + excepción IRPF en panel de outliers (auditoria 2026-07, orden 9)
+
+**Problema detectado por el usuario:** el promedio móvil de 12 meses arrastraba meses de la etapa anterior tras un cambio de ingresos (paro→Between, Between→Luzutania), marcando como "anómalo" el salto normal de nivel de sueldo en los primeros meses de la etapa nueva, en vez de detectar solo anomalías reales.
+
+**Solución implementada:** el promedio móvil se reinicia en cada cambio de `etapa` — para el mes `i`, la ventana retrocede como máximo hasta el inicio de la etapa actual (o 12 meses, lo que sea menor). Esto elimina el falso positivo del cambio de etapa, y sigue detectando anomalías reales dentro de la misma etapa (IRPF, dobles pagos).
+
+**Efecto secundario identificado y resuelto:** el primer mes de una etapa nueva siempre tiene desvío 0% contra sí mismo (es su propio promedio) — si ese mes además tiene una devolución IRPF (como junio 2026, primer mes de Luzutania), el criterio estadístico por sí solo nunca lo iba a marcar como atípico, ni ahora ni en sync futuros (el promedio de ese mes específico no se recalcula retroactivamente cuando se agregan meses posteriores a la misma etapa).
+
+**Fix:** los meses con `irpf:true` se incluyen siempre en el panel de outliers, independientemente del umbral de 15% — se detectan con certeza vía la Nota "IRPF" en Movimientos, no hace falta inferirlos por desvío estadístico. Cuando el desvío es ~0 (coincide con el inicio de etapa), no se muestra el "+X%" para no mostrar un dato engañoso.
+
+**Cambio implementado (`js/charts.js`):**
+- `movingAvg`: ventana retrocede solo dentro de la misma etapa (`etapas[start-1] === etapas[i]`), máximo 12 meses.
+- Dataset renombrado a "Promedio móvil (por etapa)"; tooltip actualizado.
+- Panel de outliers: condición `irpfFlags[i] || delta > 0.15` en vez de solo el umbral; oculta el porcentaje cuando es ~0.
+
+**Estado:** Hecho.
+
+---
+
 ## [2026-07-14] Corrección: gráfico de nómina vuelve a un corte (enero 2025), Ford/Valeo pasan a ser referencia textual (auditoria 2026-07, orden 9)
 
 **Contexto:** el histórico completo 2022-2026 implementado antes no convenció al usuario. Solución intermedia: cortar en enero 2025 (paro real ene-feb, marzo combinado paro+primer Between, resto 100% real desde fuentes vivas) y sacar del gráfico los tramos 100% estimados de memoria (Ford, mudanza, Valeo, paro sin cobrar sep-nov 2024).
