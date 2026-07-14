@@ -579,7 +579,152 @@ function renderCategoryAvgTable(){
   if(el) el.innerHTML = html;
 }
 
+// Paleta fija por empresa: mismo color siempre para la misma empresa entre
+// renders. Gris para meses sin nómina (huecos reales, ej. cambio de empleo).
+const _NOMINA_EMPRESA_COLORS = {
+  'Ford Argentina S.C.A.':   'rgba(180,120,60,0.9)',
+  'Valeo España, S.A.U.':    'rgba(66,133,180,0.9)',
+  'Between Technology S.L':  'rgba(13,138,82,0.9)',
+  'Luzutania Group SLU':     'rgba(160,80,190,0.9)'
+};
+const _NOMINA_GAP_COLOR = 'rgba(160,160,160,0.6)';
 
+function _nominaColorFor(empresa){
+  return empresa ? (_NOMINA_EMPRESA_COLORS[empresa] || 'rgba(120,120,120,0.9)') : _NOMINA_GAP_COLOR;
+}
 
+function renderNominaTrend(){
+  const raw = window.FINANCE_STATE?.nominas || [];
+  const ctx = document.getElementById('chart-nomina');
+  if(!ctx || raw.length === 0) return;
 
+  // Serie ordenada y mapa mes -> {monto, empresa}
+  const sorted = [...raw].sort((a,b) => a.mes.localeCompare(b.mes));
+  const byMonth = {};
+  sorted.forEach(r => byMonth[r.mes] = r);
+
+  // Eje continuo de meses (sin huecos): del primer al último mes disponible.
+  // Los meses sin registro son período real sin nómina (ej. cambio de
+  // empleo) -> monto 0, no un hueco de datos a excluir.
+  const [minY, minM] = sorted[0].mes.split('-').map(Number);
+  const [maxY, maxM] = sorted[sorted.length-1].mes.split('-').map(Number);
+  const labels = [];
+  let y = minY, m = minM;
+  while(y < maxY || (y === maxY && m <= maxM)){
+    labels.push(`${y}-${String(m).padStart(2,'0')}`);
+    m++; if(m > 12){ m = 1; y++; }
+  }
+
+  const montos = labels.map(mes => byMonth[mes] ? byMonth[mes].monto : 0);
+  const empresas = labels.map(mes => byMonth[mes] ? byMonth[mes].empresa : null);
+  const estimados = labels.map(mes => byMonth[mes] ? !!byMonth[mes].estimado : false);
+
+  // Promedio móvil 12 meses (incluye los meses en 0 como ingreso real, según
+  // decisión: solo se excluyen huecos de DATOS, no meses reales sin ingreso)
+  const movingAvg = labels.map((_, i) => {
+    const start = Math.max(0, i - 11);
+    const window_ = montos.slice(start, i+1);
+    return window_.reduce((a,b) => a+b, 0) / window_.length;
+  });
+
+  // Variación interanual del último mes disponible
+  const lastIdx = labels.length - 1;
+  const yoyIdx = lastIdx - 12;
+  const lastVal = montos[lastIdx];
+  const yoyLabelEl = document.getElementById('nomina-yoy-label');
+  if(yoyLabelEl){
+    if(yoyIdx >= 0 && montos[yoyIdx] > 0){
+      const pct = ((lastVal - montos[yoyIdx]) / montos[yoyIdx]) * 100;
+      const signo = pct >= 0 ? '+' : '';
+      yoyLabelEl.textContent = `${labels[lastIdx]}: ${formatEUR(lastVal)} · variación interanual: ${signo}${pct.toFixed(1)}%`;
+    } else {
+      yoyLabelEl.textContent = `${labels[lastIdx]}: ${formatEUR(lastVal)} · variación interanual: N/D (sin nómina hace 12 meses)`;
+    }
+  }
+
+  // Nota de períodos por empresa (auto-generada a partir de los datos)
+  const noteEl = document.getElementById('nomina-empresa-note');
+  if(noteEl){
+    const periodos = [];
+    let curEmpresa = undefined, curStart = null;
+    labels.forEach((mes, i) => {
+      const emp = empresas[i];
+      if(emp !== curEmpresa){
+        if(curEmpresa !== undefined) periodos.push({empresa: curEmpresa, start: curStart, end: labels[i-1]});
+        curEmpresa = emp; curStart = mes;
+      }
+    });
+    periodos.push({empresa: curEmpresa, start: curStart, end: labels[labels.length-1]});
+
+    const partes = periodos.map(p => {
+      const nombre = p.empresa || 'Sin nómina';
+      const rango = p.start === p.end ? p.start : `${p.start} – ${p.end}`;
+      const esFord = p.empresa === 'Ford Argentina S.C.A.';
+      return `${nombre} (${rango})${esFord ? ' [conversión aproximada, dólar blue]' : ''}`;
+    });
+    noteEl.textContent = partes.join(' · ');
+  }
+
+  if(window.nominaChart) window.nominaChart.destroy();
+
+  window.nominaChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Ingreso mensual (nómina)',
+          data: montos,
+          borderColor: 'rgba(66,133,180,0.9)',
+          backgroundColor: 'rgba(66,133,180,0.15)',
+          pointBackgroundColor: labels.map((_, i) => _nominaColorFor(empresas[i])),
+          pointBorderColor: labels.map((_, i) => _nominaColorFor(empresas[i])),
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          spanGaps: false,
+          tension: 0.15,
+          fill: true
+        },
+        {
+          label: 'Promedio móvil 12m',
+          data: movingAvg,
+          borderColor: 'rgba(201,74,48,0.9)',
+          borderDash: [5,4],
+          pointRadius: 0,
+          fill: false,
+          tension: 0.2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true },
+        datalabels: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctxPoint){
+              const i = ctxPoint.dataIndex;
+              if(ctxPoint.dataset.label.startsWith('Promedio')){
+                return `Promedio 12m: ${formatEUR(ctxPoint.parsed.y)}`;
+              }
+              const emp = empresas[i];
+              const estStr = estimados[i] ? ' (conversión aprox.)' : '';
+              return `${emp || 'Sin nómina'}${estStr}: ${formatEUR(ctxPoint.parsed.y)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { type: 'category' },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v)
+          }
+        }
+      }
+    }
+  });
+}
 
