@@ -696,14 +696,16 @@ function renderNominaTrend(){
     legendEl.innerHTML = html;
   }
 
-  // Panel lateral: meses más de 15% por encima del promedio móvil por etapa
+  // Panel lateral: meses más de 15% por encima del promedio móvil por etapa,
+  // más los meses con devolución IRPF siempre (se detectan con certeza vía
+  // Nota="IRPF", no dependen del cálculo estadístico -- ver DECISIONS.md)
   const outliersEl = document.getElementById('nomina-outliers');
   if(outliersEl){
     const outliers = [];
     labels.forEach((mes, i) => {
-      if(movingAvg[i] <= 0 || montos[i] <= 0) return;
-      const delta = (montos[i] - movingAvg[i]) / movingAvg[i];
-      if(delta > 0.15){
+      if(montos[i] <= 0) return;
+      const delta = movingAvg[i] > 0 ? (montos[i] - movingAvg[i]) / movingAvg[i] : 0;
+      if(irpfFlags[i] || delta > 0.15){
         outliers.push({ mes, monto: montos[i], delta, irpf: irpfFlags[i], pagos: pagosPorMes[i], detalle: detallePorMes[i] });
       }
     });
@@ -718,8 +720,9 @@ function renderNominaTrend(){
           motivo = o.detalle.map(d => `${formatEUR(d.monto)} ${d.empresa || 'sin empresa'}`).join(' + ');
         }
         else motivo = 'sin explicación automática disponible';
+        const pctStr = o.delta > 0.001 ? ` · +${(o.delta*100).toFixed(0)}%` : '';
         return `<div style="margin-bottom:8px">
-          <div style="font-weight:500">${o.mes} · +${(o.delta*100).toFixed(0)}%</div>
+          <div style="font-weight:500">${o.mes}${pctStr}</div>
           <div style="color:var(--text-secondary)">${formatEUR(o.monto)} — ${motivo}</div>
         </div>`;
       }).join('');
