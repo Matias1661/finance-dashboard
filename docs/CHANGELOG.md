@@ -1,3 +1,7 @@
+## 2026-07-14 (6)
+
+- Card de nómina (tab Resumen): layout de dos columnas, gráfico + panel lateral `#nomina-outliers` con los meses que superan en más de 15% el promedio móvil 12m (motivo: IRPF si aplica, o "pago adicional" genérico). `js/charts.js`: `maintainAspectRatio:false` para que el canvas llene su columna. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
+
 ## 2026-07-14 (5)
 
 - Gráfico de nómina (tab Resumen): incluye devoluciones de Hacienda (IRPF). `scripts/sync_finance_data.py`: `build_nominas()` recibe `movimientos` y suma al mes de cobro los que tengan categoría Nomina + Nota="IRPF". Marcados en Notion: 2025-04-10 (173,57€) y 2026-06-06 (619,54€). `js/charts.js`: puntos IRPF con forma de rombo más grande, tooltip y nueva leyenda `#nomina-irpf-note` con los meses afectados. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
