@@ -1,3 +1,18 @@
+## [2026-07-14] Corrección: gráfico de nómina arranca en abril 2025, se descarta el histórico Ford (auditoria 2026-07, orden 9)
+
+**Contexto:** tras ver el gráfico con el histórico completo (Ford Argentina 2022 convertido + huecos de 15 y 6 meses entre etapas), el usuario decidió que no tenía sentido mostrar un histórico con tanta falta de datos y una conversión de moneda de por medio.
+
+**Decisión del usuario:** el gráfico arranca en abril 2025 (primer mes con datos limpios y continuos, ya con Between Technology) y se va poblando hacia adelante con cada sync. Se descarta por completo la conversión de Ford Argentina (dólar blue → EUR) — no se muestra en el dashboard.
+
+**Cambio implementado:**
+- `scripts/sync_finance_data.py`: se eliminó `FORD_HISTORICO_EUR` y toda la conversión asociada. Nueva constante `NOMINA_INICIO = "2025-04"`; `build_nominas()` descarta meses anteriores a ese corte y sigue excluyendo las filas de Ford Argentina de la DB Nominas (quedan fuera de alcance, no se reemplazan por nada).
+- `js/charts.js`: `renderNominaTrend()` sin referencias a "estimado"/conversión aproximada — ya no aplica.
+- La sección "Implementado" del 2026-07-14 más abajo (con la conversión Ford) queda parcialmente obsoleta: la lógica de combinación DB Nominas + Movimientos y el resto del diseño del gráfico se mantienen, pero el tramo Ford descrito ahí ya no existe en el código.
+
+**Estado:** Hecho.
+
+---
+
 ## [2026-07-14] Implementado: evolución de ingresos (nómina YoY) combinando DB Nominas + Movimientos (auditoria 2026-07, orden 9)
 
 **Contexto:** el orden 9 de la auditoría pedía un indicador de tendencia de ingresos (variación interanual, promedio móvil 12m) sobre la categoría "Nomina" de Movimientos. El usuario señaló que existe una DB Notion separada "Nominas" (`19833ce5-0e68-8121-8f95-000bddffaaea`, 39 registros) con detalle de Empresa y archivo del recibo por cada pago, y pidió combinarla con Movimientos para dar más contexto (empresa, períodos sin nómina) al gráfico.
