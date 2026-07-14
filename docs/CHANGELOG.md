@@ -1,3 +1,7 @@
+## 2026-07-14 (10)
+
+- Card "Incrementos" (tab Inversiones): el renglón del mes en curso se estima con el neto de aportes/retiros (categoría "Inversion") cuando falta el reporte de alguna plataforma (ej. MyInvestor mensual todavía no llegó), en vez de mostrar el delta de capital con fill-forward. Se marca "(estimado por aportes)". Ver `DECISIONS.md` 2026-07-14.
+
 ## 2026-07-14 (9)
 
 - Gráfico de nómina: promedio móvil se reinicia por etapa (evita falsos positivos al cambiar de ingresos, ej. paro→Between). Panel de outliers: los meses con IRPF siempre aparecen, sin depender del umbral de 15% (fix del caso junio 2026, que coincide con el primer mes de la etapa Luzutania y por eso el criterio estadístico solo nunca lo iba a detectar). Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
