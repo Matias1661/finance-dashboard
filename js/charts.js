@@ -585,19 +585,6 @@ function renderCategoryAvgTable(){
   if(el) el.innerHTML = html;
 }
 
-// Paleta fija por empresa: mismo color siempre para la misma empresa entre
-// renders. Gris para meses sin nómina (huecos reales, ej. cambio de empleo).
-const _NOMINA_EMPRESA_COLORS = {
-  'Valeo España, S.A.U.':    'rgba(66,133,180,0.9)',
-  'Between Technology S.L':  'rgba(13,138,82,0.9)',
-  'Luzutania Group SLU':     'rgba(160,80,190,0.9)'
-};
-const _NOMINA_GAP_COLOR = 'rgba(160,160,160,0.6)';
-
-function _nominaColorFor(empresa){
-  return empresa ? (_NOMINA_EMPRESA_COLORS[empresa] || 'rgba(120,120,120,0.9)') : _NOMINA_GAP_COLOR;
-}
-
 function renderNominaTrend(){
   const raw = window.FINANCE_STATE?.nominas || [];
   const ctx = document.getElementById('chart-nomina');
@@ -622,6 +609,8 @@ function renderNominaTrend(){
 
   const montos = labels.map(mes => byMonth[mes] ? byMonth[mes].monto : 0);
   const empresas = labels.map(mes => byMonth[mes] ? byMonth[mes].empresa : null);
+  const etapas = labels.map(mes => byMonth[mes] ? (byMonth[mes].etapa || byMonth[mes].empresa) : null);
+  const estimados = labels.map(mes => byMonth[mes] ? !!byMonth[mes].estimado : false);
   const irpfFlags = labels.map(mes => byMonth[mes] ? !!byMonth[mes].irpf : false);
   const pagosPorMes = labels.map(mes => byMonth[mes] ? (byMonth[mes].pagos || 0) : 0);
   const detallePorMes = labels.map(mes => byMonth[mes] ? (byMonth[mes].detalle || []) : []);
@@ -649,26 +638,53 @@ function renderNominaTrend(){
     }
   }
 
-  // Nota de períodos por empresa (auto-generada a partir de los datos)
+  // Colores por etapa (banda de fondo + puntos), usados también en la leyenda
+  const ETAPA_COLORS = {
+    'Ford Argentina S.C.A.':  { punto: 'rgba(235,104,52,0.9)',  banda: 'rgba(235,104,52,0.07)' },
+    'Mudanza':                { punto: 'rgba(163,60,60,0.9)',  banda: 'rgba(163,60,60,0.06)' },
+    'Valeo España, S.A.U.':   { punto: 'rgba(66,133,180,0.9)',  banda: 'rgba(66,133,180,0.06)' },
+    'Paro':                   { punto: 'rgba(120,120,120,0.9)', banda: 'rgba(120,120,120,0.08)' },
+    'Between Technology S.L': { punto: 'rgba(13,138,82,0.9)',   banda: 'rgba(13,138,82,0.07)' },
+    'Luzutania Group SLU':    { punto: 'rgba(160,80,190,0.9)',  banda: 'rgba(160,80,190,0.07)' }
+  };
+  function etapaColor(etapa){
+    return (ETAPA_COLORS[etapa] || { punto: 'rgba(120,120,120,0.9)', banda: null });
+  }
+
+  // Nota de períodos por etapa (auto-generada a partir de los datos)
   const noteEl = document.getElementById('nomina-empresa-note');
   if(noteEl){
     const periodos = [];
-    let curEmpresa = undefined, curStart = null;
+    let curEtapa = undefined, curStart = null;
     labels.forEach((mes, i) => {
-      const emp = empresas[i];
-      if(emp !== curEmpresa){
-        if(curEmpresa !== undefined) periodos.push({empresa: curEmpresa, start: curStart, end: labels[i-1]});
-        curEmpresa = emp; curStart = mes;
+      const et = etapas[i];
+      if(et !== curEtapa){
+        if(curEtapa !== undefined) periodos.push({etapa: curEtapa, start: curStart, end: labels[i-1]});
+        curEtapa = et; curStart = mes;
       }
     });
-    periodos.push({empresa: curEmpresa, start: curStart, end: labels[labels.length-1]});
+    periodos.push({etapa: curEtapa, start: curStart, end: labels[labels.length-1]});
 
     const partes = periodos.map(p => {
-      const nombre = p.empresa || 'Sin nómina';
+      const nombre = p.etapa || 'Sin nómina';
       const rango = p.start === p.end ? p.start : `${p.start} – ${p.end}`;
       return `${nombre} (${rango})`;
     });
     noteEl.textContent = partes.join(' · ');
+  }
+
+  // Leyenda de qué significa cada sombreado (solo las etapas presentes en los datos)
+  const legendEl = document.getElementById('nomina-etapas-legend');
+  if(legendEl){
+    const etapasPresentes = [...new Set(etapas.filter(Boolean))];
+    legendEl.innerHTML = etapasPresentes.map(et => {
+      const c = etapaColor(et);
+      return `<span style="display:inline-flex;align-items:center;gap:4px;margin-right:12px">
+        <span style="width:10px;height:10px;border-radius:2px;background:${c.banda || c.punto}"></span>${et}
+      </span>`;
+    }).join('') + `<span style="display:inline-flex;align-items:center;gap:4px;margin-right:12px">
+        <span style="width:9px;height:9px;border-radius:50%;border:2px solid var(--text-secondary);background:transparent"></span>Estimado (de memoria)
+      </span>`;
   }
 
   // Panel lateral: meses más de 15% por encima del promedio móvil 12m
@@ -701,23 +717,19 @@ function renderNominaTrend(){
     }
   }
 
-  // Bandas de fondo por empresa (Between Technology / Luzutania), calculadas
-  // a partir de los mismos segmentos que la nota de texto
-  const bandColors = {
-    'Between Technology S.L': 'rgba(13,138,82,0.07)',
-    'Luzutania Group SLU':    'rgba(160,80,190,0.07)'
-  };
+  // Bandas de fondo por etapa, calculadas a partir de los mismos segmentos
+  // que la nota de texto
   const segments = [];
   {
-    let curEmpresa = undefined, curStartIdx = 0;
+    let curEtapa = undefined, curStartIdx = 0;
     labels.forEach((mes, i) => {
-      const emp = empresas[i];
-      if(emp !== curEmpresa){
-        if(curEmpresa !== undefined) segments.push({empresa: curEmpresa, startIdx: curStartIdx, endIdx: i-1});
-        curEmpresa = emp; curStartIdx = i;
+      const et = etapas[i];
+      if(et !== curEtapa){
+        if(curEtapa !== undefined) segments.push({etapa: curEtapa, startIdx: curStartIdx, endIdx: i-1});
+        curEtapa = et; curStartIdx = i;
       }
     });
-    segments.push({empresa: curEmpresa, startIdx: curStartIdx, endIdx: labels.length-1});
+    segments.push({etapa: curEtapa, startIdx: curStartIdx, endIdx: labels.length-1});
   }
 
   const nominaBandsPlugin = {
@@ -726,7 +738,7 @@ function renderNominaTrend(){
       const {ctx, chartArea, scales} = chart;
       if(!chartArea) return;
       segments.forEach(seg => {
-        const color = bandColors[seg.empresa];
+        const color = etapaColor(seg.etapa).banda;
         if(!color) return;
         const xStart = scales.x.getPixelForValue(seg.startIdx) - (scales.x.width / labels.length / 2);
         const xEnd = scales.x.getPixelForValue(seg.endIdx) + (scales.x.width / labels.length / 2);
@@ -750,8 +762,9 @@ function renderNominaTrend(){
           label: 'Ingreso mensual (nómina)',
           data: montos,
           borderColor: 'rgba(66,133,180,0.9)',
-          pointBackgroundColor: labels.map((_, i) => _nominaColorFor(empresas[i])),
-          pointBorderColor: labels.map((_, i) => _nominaColorFor(empresas[i])),
+          pointBackgroundColor: labels.map((_, i) => estimados[i] ? 'rgba(255,255,255,1)' : etapaColor(etapas[i]).punto),
+          pointBorderColor: labels.map((_, i) => etapaColor(etapas[i]).punto),
+          pointBorderWidth: labels.map((_, i) => estimados[i] ? 2 : 1),
           pointStyle: labels.map((_, i) => irpfFlags[i] ? 'rectRot' : 'circle'),
           pointRadius: labels.map((_, i) => irpfFlags[i] ? 7 : 4),
           pointHoverRadius: 8,
@@ -783,9 +796,10 @@ function renderNominaTrend(){
               if(ctxPoint.dataset.label.startsWith('Promedio')){
                 return `Promedio 12m: ${formatEUR(ctxPoint.parsed.y)}`;
               }
-              const emp = empresas[i];
+              const et = etapas[i];
               const irpfStr = irpfFlags[i] ? ' (incluye devolución IRPF)' : '';
-              return `${emp || 'Sin nómina'}${irpfStr}: ${formatEUR(ctxPoint.parsed.y)}`;
+              const estStr = estimados[i] ? ' [estimado]' : '';
+              return `${et || 'Sin nómina'}${irpfStr}${estStr}: ${formatEUR(ctxPoint.parsed.y)}`;
             }
           }
         }
