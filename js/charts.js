@@ -615,10 +615,15 @@ function renderNominaTrend(){
   const pagosPorMes = labels.map(mes => byMonth[mes] ? (byMonth[mes].pagos || 0) : 0);
   const detallePorMes = labels.map(mes => byMonth[mes] ? (byMonth[mes].detalle || []) : []);
 
-  // Promedio móvil 12 meses (incluye los meses en 0 como ingreso real, según
-  // decisión: solo se excluyen huecos de DATOS, no meses reales sin ingreso)
+  // Promedio móvil "consciente de etapa": se reinicia cada vez que cambia
+  // la etapa (ej. paro -> Between -> Luzutania), para no marcar como
+  // anómalo el salto normal de nivel de ingresos tras un cambio de empleo.
+  // Dentro de una misma etapa sigue siendo un promedio móvil de hasta 12
+  // meses, así que sí detecta anomalías reales dentro de la etapa (IRPF,
+  // doble pago).
   const movingAvg = labels.map((_, i) => {
-    const start = Math.max(0, i - 11);
+    let start = i;
+    while(start > 0 && etapas[start - 1] === etapas[i] && (i - start) < 11) start--;
     const window_ = montos.slice(start, i+1);
     return window_.reduce((a,b) => a+b, 0) / window_.length;
   });
@@ -691,7 +696,7 @@ function renderNominaTrend(){
     legendEl.innerHTML = html;
   }
 
-  // Panel lateral: meses más de 15% por encima del promedio móvil 12m
+  // Panel lateral: meses más de 15% por encima del promedio móvil por etapa
   const outliersEl = document.getElementById('nomina-outliers');
   if(outliersEl){
     const outliers = [];
@@ -777,7 +782,7 @@ function renderNominaTrend(){
           fill: false
         },
         {
-          label: 'Promedio móvil 12m',
+          label: 'Promedio móvil (por etapa)',
           data: movingAvg,
           borderColor: 'rgba(201,74,48,0.9)',
           borderDash: [5,4],
@@ -798,7 +803,7 @@ function renderNominaTrend(){
             label: function(ctxPoint){
               const i = ctxPoint.dataIndex;
               if(ctxPoint.dataset.label.startsWith('Promedio')){
-                return `Promedio 12m: ${formatEUR(ctxPoint.parsed.y)}`;
+                return `Promedio (etapa actual): ${formatEUR(ctxPoint.parsed.y)}`;
               }
               const et = etapas[i];
               const irpfStr = irpfFlags[i] ? ' (incluye devolución IRPF)' : '';
