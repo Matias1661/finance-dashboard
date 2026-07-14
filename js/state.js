@@ -3,6 +3,7 @@
 window.FINANCE_STATE = {
   raw: [],
   inversiones: { capital: [], rendimiento: [] },
+  nominas: [],
   excludedCategories: ['Guille', 'Inversion', 'Talho Argentino'],
   // Categorías donde un ingreso puede ser reembolso de un gasto
   reimbursableCategories: ['Viajes', 'Club', 'Combustible', 'Comer afuera', 'Salidas', 'Gastos en conjunto'],
