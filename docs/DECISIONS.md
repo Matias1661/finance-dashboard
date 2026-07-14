@@ -1,3 +1,17 @@
+## [2026-07-14] Implementado: separar aportes brutos de retiros en la categoría Inversion (auditoria 2026-07, fila 7)
+
+**Contexto:** la categoría Inversion mezclaba depósitos y retiros (liquidación parcial de Peerberry), con un neto positivo (+398€) que no sirve como medida de aporte real al mes.
+
+**Decisión del usuario (confirmada explícitamente antes de implementar):** distinguir depósitos de retiros por el signo del Monto (opción automática, sin marcar Nota en Notion): monto negativo = aporte, monto positivo = retiro.
+
+**Cambio implementado:**
+- `js/app.js`: nueva función `renderInvAportesRetiros()`, llamada al inicio de `renderInversiones()`. Filtra `FINANCE_STATE.raw` por `categoria === 'Inversion'` y separa aportes (suma de `abs(monto)` donde `monto < 0`) de retiros (suma de `monto` donde `monto > 0`), mostrando ambos para el mes actual y los últimos 12 meses. El neto nunca se muestra como "ahorro".
+- `index.html`: nueva card "Aportes y retiros (categoría Inversion)" en el tab Inversiones, entre "Capital invertido por plataforma" y "Rentabilidad mensual por plataforma", con contenedor `#inv-aportes-retiros`.
+
+**Estado:** Hecho. Marcar fila 7 de la DB "Auditoría 2026-07 — Mejoras sugeridas" como Estado=Hecho.
+
+---
+
 ## [2026-07-14] Implementado: KPI de coste anualizado de suscripciones y ahorro por cancelaciones (auditoria 2026-07, fila 5)
 
 **Contexto:** la seccion de suscripciones (`#subs-card`) mostraba el total mensual de suscripciones activas pero no el coste anualizado ni el ahorro conseguido por las cancelaciones de julio 2026, cifra que motivo esas cancelaciones en un analisis manual previo.
