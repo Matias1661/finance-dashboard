@@ -42,6 +42,15 @@ const SUB_KEYWORDS_AMT = [
   { kw: 'PAYPAL EUROPE', amt: 10.00 }
 ];
 
+// Suscripciones canceladas: importe = último cargo mensual real antes de la
+// cancelación (verificado en finance_data.json, no un valor de lista de precios).
+// Actualizar esta lista cuando se confirme una nueva cancelación.
+const CANCELLED_SUBS = [
+  { name: 'Microsoft 365 Personal', monto: 10.00, cancelada: '2026-07' },
+  { name: 'Kindle Unlimited',       monto: 9.99,  cancelada: '2026-07' },
+  { name: 'Wellhub',                monto: 22.99, cancelada: '2026-06' }
+];
+
 const RECURRING_EXCLUDED_CATS = ['Guille', 'Talho Argentino', 'Nomina', 'Inversion'];
 const RECURRING_MIN_CHARGES = 3;
 const RECURRING_GAP_MIN = 25;   // días — cadencia mensual
@@ -137,6 +146,8 @@ function renderSuscripciones(){
   const subsInact   = subs.filter(r => !r.activa);
   const totalSubsAct  = subsAct.reduce((s, r) => s + r.monto, 0);
   const totalOtrosAct = otros.filter(r => r.activa).reduce((s, r) => s + r.monto, 0);
+  const totalAnualSubs   = totalSubsAct * 12;
+  const ahorroAnualCanceladas = CANCELLED_SUBS.reduce((s, c) => s + c.monto, 0) * 12;
 
   const row = r => `<tr style="${r.activa ? '' : 'opacity:0.55'}">
     <td>${r.alias ? `<strong>${r.alias}</strong><div style="font-size:11px;color:var(--text-secondary)">${r.concepto}</div>` : r.concepto}</td>
@@ -158,7 +169,12 @@ function renderSuscripciones(){
     <div style="font-size:13px;margin-bottom:12px">
       <strong>${subs.filter(r => r.activa).length} activas</strong> ·
       <span style="font-family:'DM Mono';color:var(--red)">${formatEUR(-totalSubsAct)}/mes</span>
+      <span style="color:var(--text-secondary);font-size:12px"> (${formatEUR(-totalAnualSubs)}/año proyectado)</span>
       <span style="color:var(--text-secondary);font-size:12px"> · "Sin cobros" = más de ${RECURRING_ACTIVE_DAYS} días sin cargo (cancelación verificada)</span>
+    </div>
+    <div style="font-size:13px;margin-bottom:12px;color:var(--green)">
+      Ahorro anual conseguido por cancelaciones (Microsoft 365, Kindle Unlimited, Wellhub):
+      <span style="font-family:'DM Mono';font-weight:600">${formatEUR(ahorroAnualCanceladas)}/año</span>
     </div>
     <div style="overflow-x:auto"><table>${tableHead}<tbody>${subsAct.map(row).join('')}</tbody></table></div>
     ${subsInact.length ? `
@@ -293,3 +309,4 @@ function renderInsights(){
     ${alertLines ? `<ul style="list-style:none;padding:0;margin:10px 0 0">${alertLines}</ul>` : ''}
   `;
 }
+
