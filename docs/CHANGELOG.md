@@ -1,3 +1,7 @@
+## 2026-07-14 (2)
+
+- Tab Inversiones: nueva card "Aportes y retiros (categoría Inversion)" (`index.html`, `#inv-aportes-retiros`) y función `renderInvAportesRetiros()` en `js/app.js`. Separa aportes brutos (monto negativo) de retiros (monto positivo) dentro de la categoría Inversion, mes actual y últimos 12 meses; el neto ya no se usa como medida de ahorro. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, fila 7).
+
 ## 2026-07-14
 
 - Sección "Suscripciones" (`js/insights.js`): agregado total anual proyectado junto al total mensual de suscripciones activas, y "ahorro anual conseguido" por las cancelaciones de Microsoft 365, Kindle Unlimited y Wellhub (515,76€/año, calculado sobre el último cargo real de cada una). Wellhub se canceló en junio 2026 (no julio como figuraba en la auditoría). Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, fila 5).
