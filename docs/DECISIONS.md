@@ -1,3 +1,15 @@
+## [2026-07-14] Card "Incrementos" (tab Inversiones): estimar mes en curso con aportes/retiros si falta reporte de plataforma
+
+**Problema detectado por el usuario:** el segundo renglón de la card "Incrementos" (mes-1 → mes actual) toma su valor del gráfico de capital, que depende del fill-forward de `finance_data.json`. Cuando el reporte mensual de MyInvestor todavía no llegó (valor 0 para el mes en curso), el fill-forward arrastra el valor del mes anterior y el incremento mostrado no refleja el mes en curso (queda en 0 o solo con el delta de Peerberry).
+
+**Solución implementada:** en `renderInversiones()` (`js/app.js`), se detecta si el mes en curso tiene reporte real de ambas plataformas (`peerberry` y `myinvestor` != 0 en el array `capital` sin fill-forward). Si falta alguno, `inc2Val` se reemplaza por el neto de aportes − retiros del mes (categoría "Inversion"), mismo criterio que usa el insight `renderInvAportesRetiros()`. Se marca con la nota "(estimado por aportes)" junto al label del período, para dejar claro que no incluye la ganancia generada, solo el movimiento de fondos.
+
+**Alcance:** solo afecta el segundo renglón (mes-1 → mes actual). El primer renglón (mes-2 → mes-1) siempre usa datos ya cerrados y no se modificó.
+
+**Estado:** Hecho.
+
+---
+
 ## [2026-07-14] Implementado: promedio móvil "consciente de etapa" + excepción IRPF en panel de outliers (auditoria 2026-07, orden 9)
 
 **Problema detectado por el usuario:** el promedio móvil de 12 meses arrastraba meses de la etapa anterior tras un cambio de ingresos (paro→Between, Between→Luzutania), marcando como "anómalo" el salto normal de nivel de sueldo en los primeros meses de la etapa nueva, en vez de detectar solo anomalías reales.
