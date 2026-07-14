@@ -533,7 +533,13 @@ function renderCategoryAvgTable(){
   const thStyleL = 'text-align:left;padding:6px 10px;border-bottom:2px solid var(--border);color:var(--text-secondary);font-weight:500';
 
   let html = `<div style="overflow-x:auto;margin-top:4px">
-<table style="width:100%;border-collapse:collapse;font-size:13px">
+<table style="width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px">
+  <colgroup>
+    <col style="width:40%">
+    <col style="width:20%">
+    <col style="width:20%">
+    <col style="width:20%">
+  </colgroup>
   <thead>
     <tr>
       <th style="${thStyleL}">Categoría</th>
