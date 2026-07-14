@@ -1,3 +1,7 @@
+## 2026-07-14 (5)
+
+- Gráfico de nómina (tab Resumen): incluye devoluciones de Hacienda (IRPF). `scripts/sync_finance_data.py`: `build_nominas()` recibe `movimientos` y suma al mes de cobro los que tengan categoría Nomina + Nota="IRPF". Marcados en Notion: 2025-04-10 (173,57€) y 2026-06-06 (619,54€). `js/charts.js`: puntos IRPF con forma de rombo más grande, tooltip y nueva leyenda `#nomina-irpf-note` con los meses afectados. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
+
 ## 2026-07-14 (4)
 
 - Corrección sobre la entrada anterior: el gráfico de nómina descarta el histórico de Ford Argentina (2022, conversión ARS→EUR) y arranca en abril 2025. `scripts/sync_finance_data.py`: eliminado `FORD_HISTORICO_EUR`, nueva constante `NOMINA_INICIO = "2025-04"` en `build_nominas()`. Ver `DECISIONS.md` 2026-07-14 (corrección, auditoría 2026-07, orden 9).
