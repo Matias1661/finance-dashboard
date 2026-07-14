@@ -254,9 +254,16 @@ def build_nominas(pages, movimientos=None):
 
     # Fallback: meses sin cobertura en la DB Nominas, sumar Movimientos
     # categoria=Nomina (cubre el paro real dic 2024-feb 2025 sin hardcodear).
+    # Se filtra ademas por Concepto (NOMINA o DESEMPLEO): en dic 2024 la
+    # categoria "Nomina" quedo contaminada con movimientos ajenos
+    # (transferencias, pago de tarjeta, venta de fondos) mal categorizados
+    # durante la migracion inicial -- verificado 2026-07-14, ver DECISIONS.md.
     movimientos_por_mes = {}
     for mov in (movimientos or []):
         if mov.get("categoria") != "Nomina":
+            continue
+        concepto = (mov.get("concepto") or "").upper()
+        if "NOMINA" not in concepto and "DESEMPLEO" not in concepto:
             continue
         fecha = mov.get("fecha")
         if not fecha:
