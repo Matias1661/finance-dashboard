@@ -614,7 +614,30 @@ function renderInversiones(){
   const inc2From  = last3.length >= 2 ? ((last3[last3.length-2].peerberry||0) + (last3[last3.length-2].myinvestor||0)) : null;
   const inc2To    = last3.length >= 2 ? ((last3[last3.length-1].peerberry||0) + (last3[last3.length-1].myinvestor||0)) : null;
   const inc2Label = last3.length >= 2 ? `${labelMes(last3[last3.length-2].mes)} → ${labelMes(last3[last3.length-1].mes)}` : '—';
-  const inc2Val   = (inc2From !== null && inc2To !== null) ? (inc2To - inc2From) : null;
+  let inc2Val   = (inc2From !== null && inc2To !== null) ? (inc2To - inc2From) : null;
+
+  // Si el mes actual todavía no tiene reporte real de alguna plataforma
+  // (fill-forward), el incremento de capital no refleja el mes en curso.
+  // En ese caso se estima con el neto de aportes/retiros del mes (categoría
+  // "Inversion"), igual que en el insight de abajo. No incluye la ganancia
+  // generada, solo el movimiento de fondos.
+  const now2 = new Date();
+  const currentMesKpi = now2.getFullYear() + '-' + String(now2.getMonth()+1).padStart(2,'0');
+  const rawCurrentMonth = capital.find(d => d.mes === currentMesKpi);
+  const sinReporteMesActual = !rawCurrentMonth || rawCurrentMonth.peerberry === 0 || rawCurrentMonth.myinvestor === 0;
+  const inc2EsMesActual = last3.length >= 2 && last3[last3.length-1].mes === currentMesKpi;
+  const inc2Estimado = inc2EsMesActual && sinReporteMesActual;
+
+  if (inc2Estimado) {
+    const invMovsMesActual = (window.FINANCE_STATE?.raw || []).filter(r => r.categoria === 'Inversion' && r.fecha.slice(0,7) === currentMesKpi);
+    let aportesMes = 0, retirosMes = 0;
+    invMovsMesActual.forEach(r => {
+      const v = Number(r.monto);
+      if (v < 0) aportesMes += Math.abs(v);
+      else if (v > 0) retirosMes += v;
+    });
+    inc2Val = aportesMes - retirosMes;
+  }
 
   const kpisEl = document.getElementById('inv-kpis');
   if(kpisEl){
@@ -639,7 +662,7 @@ function renderInversiones(){
             <span style="font-family:'DM Mono';font-weight:600;color:${inc1Val !== null ? (inc1Val >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--text-secondary)'}">${inc1Val !== null ? (inc1Val >= 0 ? '+' : '') + fmt(inc1Val) : '—'}</span>
           </div>
           <div style="display:flex;justify-content:space-between">
-            <span>${inc2Label}</span>
+            <span>${inc2Label}${inc2Estimado ? ' <span style="font-size:10px;color:var(--text-secondary)">(estimado por aportes)</span>' : ''}</span>
             <span style="font-family:'DM Mono';font-weight:600;color:${inc2Val !== null ? (inc2Val >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--text-secondary)'}">${inc2Val !== null ? (inc2Val >= 0 ? '+' : '') + fmt(inc2Val) : '—'}</span>
           </div>
         </div>
