@@ -624,6 +624,7 @@ function renderNominaTrend(){
   const empresas = labels.map(mes => byMonth[mes] ? byMonth[mes].empresa : null);
   const irpfFlags = labels.map(mes => byMonth[mes] ? !!byMonth[mes].irpf : false);
   const pagosPorMes = labels.map(mes => byMonth[mes] ? (byMonth[mes].pagos || 0) : 0);
+  const detallePorMes = labels.map(mes => byMonth[mes] ? (byMonth[mes].detalle || []) : []);
 
   // Promedio móvil 12 meses (incluye los meses en 0 como ingreso real, según
   // decisión: solo se excluyen huecos de DATOS, no meses reales sin ingreso)
@@ -678,7 +679,7 @@ function renderNominaTrend(){
       if(movingAvg[i] <= 0 || montos[i] <= 0) return;
       const delta = (montos[i] - movingAvg[i]) / movingAvg[i];
       if(delta > 0.15){
-        outliers.push({ mes, monto: montos[i], delta, irpf: irpfFlags[i], pagos: pagosPorMes[i] });
+        outliers.push({ mes, monto: montos[i], delta, irpf: irpfFlags[i], pagos: pagosPorMes[i], detalle: detallePorMes[i] });
       }
     });
 
@@ -688,7 +689,9 @@ function renderNominaTrend(){
       outliersEl.innerHTML = outliers.map(o => {
         let motivo;
         if(o.irpf) motivo = 'incluye devolución de Hacienda (IRPF)';
-        else if(o.pagos > 1) motivo = `incluye ${o.pagos} pagos ese mes (ej. cambio de empleador)`;
+        else if(o.pagos > 1 && o.detalle && o.detalle.length > 1){
+          motivo = o.detalle.map(d => `${formatEUR(d.monto)} ${d.empresa || 'sin empresa'}`).join(' + ');
+        }
         else motivo = 'sin explicación automática disponible';
         return `<div style="margin-bottom:8px">
           <div style="font-weight:500">${o.mes} · +${(o.delta*100).toFixed(0)}%</div>
