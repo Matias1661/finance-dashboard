@@ -616,6 +616,7 @@ function renderNominaTrend(){
 
   const montos = labels.map(mes => byMonth[mes] ? byMonth[mes].monto : 0);
   const empresas = labels.map(mes => byMonth[mes] ? byMonth[mes].empresa : null);
+  const irpfFlags = labels.map(mes => byMonth[mes] ? !!byMonth[mes].irpf : false);
 
   // Promedio móvil 12 meses (incluye los meses en 0 como ingreso real, según
   // decisión: solo se excluyen huecos de DATOS, no meses reales sin ingreso)
@@ -660,6 +661,15 @@ function renderNominaTrend(){
       return `${nombre} (${rango})`;
     });
     noteEl.textContent = partes.join(' · ');
+  }
+
+  // Leyenda fija de meses con devolución de Hacienda (IRPF) incluida
+  const irpfEl = document.getElementById('nomina-irpf-note');
+  if(irpfEl){
+    const mesesIrpf = labels.filter((mes, i) => irpfFlags[i]);
+    irpfEl.textContent = mesesIrpf.length > 0
+      ? `Incluye devolución de Hacienda (IRPF) en: ${mesesIrpf.join(', ')}`
+      : '';
   }
 
   // Bandas de fondo por empresa (Between Technology / Luzutania), calculadas
@@ -713,8 +723,9 @@ function renderNominaTrend(){
           borderColor: 'rgba(66,133,180,0.9)',
           pointBackgroundColor: labels.map((_, i) => _nominaColorFor(empresas[i])),
           pointBorderColor: labels.map((_, i) => _nominaColorFor(empresas[i])),
-          pointRadius: 4,
-          pointHoverRadius: 6,
+          pointStyle: labels.map((_, i) => irpfFlags[i] ? 'rectRot' : 'circle'),
+          pointRadius: labels.map((_, i) => irpfFlags[i] ? 7 : 4),
+          pointHoverRadius: 8,
           spanGaps: false,
           tension: 0.15,
           fill: false
@@ -743,7 +754,8 @@ function renderNominaTrend(){
                 return `Promedio 12m: ${formatEUR(ctxPoint.parsed.y)}`;
               }
               const emp = empresas[i];
-              return `${emp || 'Sin nómina'}: ${formatEUR(ctxPoint.parsed.y)}`;
+              const irpfStr = irpfFlags[i] ? ' (incluye devolución IRPF)' : '';
+              return `${emp || 'Sin nómina'}${irpfStr}: ${formatEUR(ctxPoint.parsed.y)}`;
             }
           }
         }
