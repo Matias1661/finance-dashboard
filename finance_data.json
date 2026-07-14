@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13 14:03",
+  "generated_at": "2026-07-14 11:08",
   "movimientos": [
     {
       "fecha": "2026-07-12",
@@ -13,7 +13,7 @@
       "concepto": "TRANSF. A SU FAVOR",
       "monto": 7.12,
       "categoria": "Gastos moto",
-      "nota": null
+      "nota": "Reintegro registro bienes muebles"
     },
     {
       "fecha": "2026-07-11",
