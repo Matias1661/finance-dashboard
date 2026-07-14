@@ -1,3 +1,7 @@
+## 2026-07-14 (3)
+
+- Tab Resumen: nueva card "Evolución de ingresos (nómina) · interanual" (`index.html`, `#chart-nomina`). Combina la DB Notion "Nominas" (empresa, período) con conversión histórica de las nóminas de Ford Argentina 2022 (ARS → USD dólar blue → EUR, valores fijos en `FORD_HISTORICO_EUR`). Nuevo campo `nominas` en `finance_data.json`, generado por `fetch_nominas_notion()` / `build_nominas()` en `scripts/sync_finance_data.py`. Nueva función `renderNominaTrend()` en `js/charts.js`: serie mensual continua (huecos = período real sin nómina, no huecos de datos), promedio móvil 12m, variación interanual del último mes, período por empresa en texto. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
+
 ## 2026-07-14 (2)
 
 - Tab Inversiones: nueva card "Aportes y retiros (categoría Inversion)" (`index.html`, `#inv-aportes-retiros`) y función `renderInvAportesRetiros()` en `js/app.js`. Separa aportes brutos (monto negativo) de retiros (monto positivo) dentro de la categoría Inversion, mes actual y últimos 12 meses; el neto ya no se usa como medida de ahorro. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, fila 7).
