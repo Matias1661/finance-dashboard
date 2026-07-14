@@ -737,9 +737,60 @@ function renderInversiones(){
     });
   }
 
+  renderInvAportesRetiros();
   renderInvRendimiento();
   renderInvBenchmark();
   renderInvAcumuladoAnual();
+}
+
+// Auditoria 2026-07, fila 7. La categoria "Inversion" mezcla depositos y
+// retiros (liquidacion parcial de Peerberry): el neto no sirve como medida
+// de ahorro. Convencion (decidida con el usuario): monto negativo = aporte,
+// monto positivo = retiro. Se reportan ambos por separado, nunca el neto.
+function renderInvAportesRetiros(){
+  const el = document.getElementById('inv-aportes-retiros');
+  if(!el) return;
+
+  const fmt = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
+  const invMovs = (window.FINANCE_STATE?.raw || []).filter(r => r.categoria === 'Inversion');
+
+  const now = new Date();
+  const currentMes = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+  const hace12 = new Date(now.getFullYear(), now.getMonth() - 11, 1);
+  const desde12 = hace12.getFullYear() + '-' + String(hace12.getMonth()+1).padStart(2,'0');
+
+  function splitAportesRetiros(movs){
+    let aportes = 0, retiros = 0;
+    movs.forEach(r => {
+      const v = Number(r.monto);
+      if (v < 0) aportes += Math.abs(v);
+      else if (v > 0) retiros += v;
+    });
+    return { aportes, retiros };
+  }
+
+  const mesActual = splitAportesRetiros(invMovs.filter(r => r.fecha.slice(0,7) === currentMes));
+  const ult12     = splitAportesRetiros(invMovs.filter(r => r.fecha.slice(0,7) >= desde12));
+
+  function fila(label, aportes, retiros){
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.06)">
+        <span style="font-size:13px;color:var(--text-secondary)">${label}</span>
+        <span style="font-family:'DM Mono';font-size:13px">
+          <span style="color:var(--green)">Aportes ${fmt(aportes)}</span>
+          &nbsp;·&nbsp;
+          <span style="color:var(--red)">Retiros ${fmt(retiros)}</span>
+        </span>
+      </div>`;
+  }
+
+  el.innerHTML = `
+    ${fila('Este mes', mesActual.aportes, mesActual.retiros)}
+    ${fila('Últimos 12 meses', ult12.aportes, ult12.retiros)}
+    <div style="font-size:11px;color:var(--text-secondary);margin-top:8px">
+      Aportes = movimientos con monto negativo (depósito a Peerberry/MyInvestor). Retiros = movimientos con monto positivo (liquidación parcial). El neto no se usa como indicador de ahorro.
+    </div>
+  `;
 }
 
 // ── Gráfico entre 2 y 3: acumulado de la cartera vs benchmark (MSCI World, IWDA.AS) desde enero-25 ──
