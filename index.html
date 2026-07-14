@@ -127,6 +127,7 @@
 
     /* ── Grid ── */
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-cat-resumen { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; }
 
     /* ── Tables ── */
     .tx-table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -162,6 +163,7 @@
 
       .kpis   { grid-template-columns: repeat(2,1fr); gap: 8px; }
       .grid-2 { grid-template-columns: 1fr; }
+      .grid-cat-resumen { grid-template-columns: 1fr; }
 
       .tab    { font-size: 12px; padding: 6px 6px; }
 
@@ -247,7 +249,7 @@
 
 <div class="card" id="subs-card" style="display:none"></div>
 
-<div class="grid-2" style="align-items:start">
+<div class="grid-cat-resumen" style="align-items:start">
   <div class="card">
     <div class="card-title">Evolución por categoría</div>
     <div class="filter-row" style="margin-bottom:14px">
@@ -255,7 +257,7 @@
       <select id="cat-trend-selector" onchange="renderCategoryTrend()">
       </select>
     </div>
-    <div class="chart-wrap-tall">
+    <div class="chart-wrap">
       <canvas id="chart-cat-trend"></canvas>
     </div>
   </div>
