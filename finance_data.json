@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14 15:00",
+  "generated_at": "2026-07-14 15:02",
   "movimientos": [
     {
       "fecha": "2026-07-12",
@@ -18834,57 +18834,13 @@
     {
       "mes": "2024-12",
       "empresa": null,
-      "monto": 5399.33,
+      "monto": 1101.4,
       "irpf": false,
-      "pagos": 12,
+      "pagos": 1,
       "detalle": [
         {
           "empresa": null,
           "monto": 1101.4
-        },
-        {
-          "empresa": null,
-          "monto": 1490.56
-        },
-        {
-          "empresa": null,
-          "monto": 61.66
-        },
-        {
-          "empresa": null,
-          "monto": 19.85
-        },
-        {
-          "empresa": null,
-          "monto": 1410.31
-        },
-        {
-          "empresa": null,
-          "monto": 1000
-        },
-        {
-          "empresa": null,
-          "monto": 70
-        },
-        {
-          "empresa": null,
-          "monto": 50.55
-        },
-        {
-          "empresa": null,
-          "monto": 50
-        },
-        {
-          "empresa": null,
-          "monto": 50
-        },
-        {
-          "empresa": null,
-          "monto": 50
-        },
-        {
-          "empresa": null,
-          "monto": 45
         }
       ],
       "estimado": false,
