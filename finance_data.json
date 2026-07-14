@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14 14:00",
+  "generated_at": "2026-07-14 14:22",
   "movimientos": [
     {
       "fecha": "2026-07-12",
@@ -18451,91 +18451,106 @@
       "mes": "2025-04",
       "empresa": "Between Technology S.L",
       "monto": 2197.96,
-      "irpf": true
+      "irpf": true,
+      "pagos": 1
     },
     {
       "mes": "2025-05",
       "empresa": "Between Technology S.L",
       "monto": 1950.55,
-      "irpf": false
+      "irpf": false,
+      "pagos": 1
     },
     {
       "mes": "2025-06",
       "empresa": "Between Technology S.L",
       "monto": 3234.55,
-      "irpf": false
+      "irpf": false,
+      "pagos": 2
     },
     {
       "mes": "2025-07",
       "empresa": "Between Technology S.L",
       "monto": 2394.13,
-      "irpf": false
+      "irpf": false,
+      "pagos": 1
     },
     {
       "mes": "2025-08",
       "empresa": "Between Technology S.L",
       "monto": 2394.13,
-      "irpf": false
+      "irpf": false,
+      "pagos": 1
     },
     {
       "mes": "2025-09",
       "empresa": "Between Technology S.L",
       "monto": 2394.13,
-      "irpf": false
+      "irpf": false,
+      "pagos": 1
     },
     {
       "mes": "2025-10",
       "empresa": "Between Technology S.L",
       "monto": 2394.13,
-      "irpf": false
+      "irpf": false,
+      "pagos": 1
     },
     {
       "mes": "2025-11",
       "empresa": "Between Technology S.L",
       "monto": 2393.52,
-      "irpf": false
+      "irpf": false,
+      "pagos": 1
     },
     {
       "mes": "2025-12",
       "empresa": "Between Technology S.L",
       "monto": 2393.52,
-      "irpf": false
+      "irpf": false,
+      "pagos": 1
     },
     {
       "mes": "2026-01",
       "empresa": "Between Technology S.L",
       "monto": 2307.43,
-      "irpf": false
+      "irpf": false,
+      "pagos": 1
     },
     {
       "mes": "2026-02",
       "empresa": "Between Technology S.L",
       "monto": 2307.43,
-      "irpf": false
+      "irpf": false,
+      "pagos": 1
     },
     {
       "mes": "2026-03",
       "empresa": "Between Technology S.L",
       "monto": 2307.43,
-      "irpf": false
+      "irpf": false,
+      "pagos": 1
     },
     {
       "mes": "2026-04",
       "empresa": "Between Technology S.L",
       "monto": 2307.43,
-      "irpf": false
+      "irpf": false,
+      "pagos": 1
     },
     {
       "mes": "2026-05",
       "empresa": "Between Technology S.L",
       "monto": 3248.79,
-      "irpf": false
+      "irpf": false,
+      "pagos": 2
     },
     {
       "mes": "2026-06",
       "empresa": "Luzutania Group SLU",
       "monto": 3268.53,
-      "irpf": true
+      "irpf": true,
+      "pagos": 1
     }
   ]
 }
