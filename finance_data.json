@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14 14:30",
+  "generated_at": "2026-07-14 15:00",
   "movimientos": [
     {
       "fecha": "2026-07-12",
@@ -18448,6 +18448,489 @@
   },
   "nominas": [
     {
+      "mes": "2022-01",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1115.47,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Ford Argentina S.C.A."
+    },
+    {
+      "mes": "2022-02",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1115.47,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Ford Argentina S.C.A."
+    },
+    {
+      "mes": "2022-03",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1115.47,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Ford Argentina S.C.A."
+    },
+    {
+      "mes": "2022-04",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1115.47,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Ford Argentina S.C.A."
+    },
+    {
+      "mes": "2022-05",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1115.47,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Ford Argentina S.C.A."
+    },
+    {
+      "mes": "2022-06",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1115.47,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Ford Argentina S.C.A."
+    },
+    {
+      "mes": "2022-07",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1115.47,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Ford Argentina S.C.A."
+    },
+    {
+      "mes": "2022-08",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1115.47,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Ford Argentina S.C.A."
+    },
+    {
+      "mes": "2022-09",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1115.47,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Ford Argentina S.C.A."
+    },
+    {
+      "mes": "2022-10",
+      "empresa": "Ford Argentina S.C.A.",
+      "monto": 1115.47,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Ford Argentina S.C.A."
+    },
+    {
+      "mes": "2022-11",
+      "empresa": null,
+      "monto": 0.0,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": false,
+      "etapa": "Mudanza"
+    },
+    {
+      "mes": "2022-12",
+      "empresa": null,
+      "monto": 0.0,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": false,
+      "etapa": "Mudanza"
+    },
+    {
+      "mes": "2023-01",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2023-02",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2023-03",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2023-04",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2023-05",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2023-06",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2023-07",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2023-08",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2023-09",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2023-10",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2023-11",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2023-12",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2024-01",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2024-02",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1679.19,
+      "irpf": false,
+      "pagos": 1,
+      "detalle": [
+        {
+          "empresa": "Valeo España, S.A.U.",
+          "monto": 1679.19
+        }
+      ],
+      "estimado": false,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2024-03",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1680.56,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": true,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2024-04",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1683.77,
+      "irpf": false,
+      "pagos": 1,
+      "detalle": [
+        {
+          "empresa": "Valeo España, S.A.U.",
+          "monto": 1683.77
+        }
+      ],
+      "estimado": false,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2024-05",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1679.63,
+      "irpf": false,
+      "pagos": 1,
+      "detalle": [
+        {
+          "empresa": "Valeo España, S.A.U.",
+          "monto": 1679.63
+        }
+      ],
+      "estimado": false,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2024-06",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 1679.63,
+      "irpf": false,
+      "pagos": 1,
+      "detalle": [
+        {
+          "empresa": "Valeo España, S.A.U.",
+          "monto": 1679.63
+        }
+      ],
+      "estimado": false,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2024-07",
+      "empresa": "VALEO ESPAÑA, S.A.U.",
+      "monto": 3584.1,
+      "irpf": false,
+      "pagos": 2,
+      "detalle": [
+        {
+          "empresa": "VALEO ESPAÑA, S.A.U.",
+          "monto": 1691.75
+        },
+        {
+          "empresa": "VALEO ESPAÑA, S.A.U.",
+          "monto": 1892.35
+        }
+      ],
+      "estimado": false,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2024-08",
+      "empresa": "Valeo España, S.A.U.",
+      "monto": 795.7,
+      "irpf": false,
+      "pagos": 1,
+      "detalle": [
+        {
+          "empresa": "Valeo España, S.A.U.",
+          "monto": 795.7
+        }
+      ],
+      "estimado": false,
+      "etapa": "Valeo España, S.A.U."
+    },
+    {
+      "mes": "2024-09",
+      "empresa": null,
+      "monto": 0.0,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": false,
+      "etapa": "Paro"
+    },
+    {
+      "mes": "2024-10",
+      "empresa": null,
+      "monto": 0.0,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": false,
+      "etapa": "Paro"
+    },
+    {
+      "mes": "2024-11",
+      "empresa": null,
+      "monto": 0.0,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": false,
+      "etapa": "Paro"
+    },
+    {
+      "mes": "2024-12",
+      "empresa": null,
+      "monto": 5399.33,
+      "irpf": false,
+      "pagos": 12,
+      "detalle": [
+        {
+          "empresa": null,
+          "monto": 1101.4
+        },
+        {
+          "empresa": null,
+          "monto": 1490.56
+        },
+        {
+          "empresa": null,
+          "monto": 61.66
+        },
+        {
+          "empresa": null,
+          "monto": 19.85
+        },
+        {
+          "empresa": null,
+          "monto": 1410.31
+        },
+        {
+          "empresa": null,
+          "monto": 1000
+        },
+        {
+          "empresa": null,
+          "monto": 70
+        },
+        {
+          "empresa": null,
+          "monto": 50.55
+        },
+        {
+          "empresa": null,
+          "monto": 50
+        },
+        {
+          "empresa": null,
+          "monto": 50
+        },
+        {
+          "empresa": null,
+          "monto": 50
+        },
+        {
+          "empresa": null,
+          "monto": 45
+        }
+      ],
+      "estimado": false,
+      "etapa": "Paro"
+    },
+    {
+      "mes": "2025-01",
+      "empresa": null,
+      "monto": 1101.4,
+      "irpf": false,
+      "pagos": 1,
+      "detalle": [
+        {
+          "empresa": null,
+          "monto": 1101.4
+        }
+      ],
+      "estimado": false,
+      "etapa": "Paro"
+    },
+    {
+      "mes": "2025-02",
+      "empresa": null,
+      "monto": 1101.1,
+      "irpf": false,
+      "pagos": 1,
+      "detalle": [
+        {
+          "empresa": null,
+          "monto": 1101.1
+        }
+      ],
+      "estimado": false,
+      "etapa": "Paro"
+    },
+    {
+      "mes": "2025-03",
+      "empresa": "Between Technology S.L",
+      "monto": 1016.94,
+      "irpf": false,
+      "pagos": 0,
+      "detalle": [],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
+    },
+    {
       "mes": "2025-04",
       "empresa": "Between Technology S.L",
       "monto": 2197.96,
@@ -18458,7 +18941,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2024.39
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2025-05",
@@ -18471,7 +18956,9 @@
           "empresa": "Between Technology S.L",
           "monto": 1950.55
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2025-06",
@@ -18488,7 +18975,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2023.29
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2025-07",
@@ -18501,7 +18990,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2394.13
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2025-08",
@@ -18514,7 +19005,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2394.13
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2025-09",
@@ -18527,7 +19020,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2394.13
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2025-10",
@@ -18540,7 +19035,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2394.13
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2025-11",
@@ -18553,7 +19050,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2393.52
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2025-12",
@@ -18566,7 +19065,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2393.52
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2026-01",
@@ -18579,7 +19080,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2307.43
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2026-02",
@@ -18592,7 +19095,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2307.43
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2026-03",
@@ -18605,7 +19110,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2307.43
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2026-04",
@@ -18618,7 +19125,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2307.43
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2026-05",
@@ -18635,7 +19144,9 @@
           "empresa": "Between Technology S.L",
           "monto": 2012.6
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Between Technology S.L"
     },
     {
       "mes": "2026-06",
@@ -18648,7 +19159,9 @@
           "empresa": "Luzutania Group SLU",
           "monto": 2648.99
         }
-      ]
+      ],
+      "estimado": false,
+      "etapa": "Luzutania Group SLU"
     }
   ]
 }
