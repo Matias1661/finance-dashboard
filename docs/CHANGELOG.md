@@ -1,3 +1,7 @@
+## 2026-07-14
+
+- Sección "Suscripciones" (`js/insights.js`): agregado total anual proyectado junto al total mensual de suscripciones activas, y "ahorro anual conseguido" por las cancelaciones de Microsoft 365, Kindle Unlimited y Wellhub (515,76€/año, calculado sobre el último cargo real de cada una). Wellhub se canceló en junio 2026 (no julio como figuraba en la auditoría). Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, fila 5).
+
 ## 2026-07-13 (2)
 
 - `scripts/sync_finance_data.py`: nueva función `check_relay_gaps()` — aborta el sync (exit code distinto de 0) si detecta huecos en la carga de Relay: sin fila Semanal de Peerberry en 10 dias, sin fila Mensual de MyInvestor del mes anterior pasado el dia 10, o sin movimientos nuevos en Movimientos en más de 5 dias. Mensajes con prefijo "HUECO RELAY:" para distinguirlos de un fallo de sync. Ver `DECISIONS.md` 2026-07-13 (auditoria 2026-07, fila 2).
@@ -607,3 +611,4 @@ Los fallos del 4 jun 2026 tuvieron dos causas distintas:
 - Created technical memory system. Added PROJECT_MEMORY.md.
 - fix: renderDonut() añadido a charts.js.
 - feat: Guille tab — KPIs, gráfico barras, línea acumulada, tabla filtrable.
+
