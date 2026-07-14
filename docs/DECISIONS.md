@@ -1,3 +1,13 @@
+## [2026-07-14] Implementado: KPI de coste anualizado de suscripciones y ahorro por cancelaciones (auditoria 2026-07, fila 5)
+
+**Contexto:** la seccion de suscripciones (`#subs-card`) mostraba el total mensual de suscripciones activas pero no el coste anualizado ni el ahorro conseguido por las cancelaciones de julio 2026, cifra que motivo esas cancelaciones en un analisis manual previo.
+
+**Decision:** en `js/insights.js`, `renderSuscripciones()` calcula `totalAnualSubs = totalSubsAct * 12` (todas las suscripciones activas ya son de cadencia mensual por construccion de `detectRecurring()`, gap 25-35 dias) y lo muestra junto al total mensual existente. Se agrega la constante `CANCELLED_SUBS` con el importe del ultimo cargo mensual real (verificado en `finance_data.json`, no de lista de precios) de las tres suscripciones canceladas: Microsoft 365 Personal (10,00€, ultimo cargo normal 03/06/2026 — el cargo de 32,94€ del 12/06 fue un error de Relay ya documentado), Kindle Unlimited (9,99€, ultimo cargo 22/06/2026) y Wellhub (22,99€, concepto "Wellhub Matias Or", ultimo cargo 04/06/2026 — cancelacion confirmada por el usuario para junio 2026, corrigiendo la fecha de julio 2026 que figuraba en la fila de auditoria). Ahorro anual conseguido = suma de esos tres importes × 12 = 515,76€/año.
+
+**Estado:** Hecho. Marcar fila 5 de la DB "Auditoría 2026-07 — Mejoras sugeridas" como Estado=Hecho.
+
+---
+
 ## [2026-07-13] Implementado: monitoreo de huecos en la carga automática de Relay (auditoria 2026-07, fila 2)
 
 **Contexto:** Relay carga Movimientos y Rendimiento Inversiones en Notion automaticamente, pero un fallo silencioso (lunes sin fila Semanal de Peerberry, mes sin Mensual de MyInvestor, o Movimientos sin altas nuevas) pasaba desapercibido hasta que alguien miraba el dashboard.
@@ -1123,5 +1133,6 @@ Allow future AI agents and developers to reconstruct project state without relyi
 renderDonut() consumes filteredData() directly.
 ### Reason
 Ensures the donut chart always reflects the active period and month filter.
+
 
 
