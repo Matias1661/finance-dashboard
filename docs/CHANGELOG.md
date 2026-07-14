@@ -1,3 +1,7 @@
+## 2026-07-14 (4)
+
+- Corrección sobre la entrada anterior: el gráfico de nómina descarta el histórico de Ford Argentina (2022, conversión ARS→EUR) y arranca en abril 2025. `scripts/sync_finance_data.py`: eliminado `FORD_HISTORICO_EUR`, nueva constante `NOMINA_INICIO = "2025-04"` en `build_nominas()`. Ver `DECISIONS.md` 2026-07-14 (corrección, auditoría 2026-07, orden 9).
+
 ## 2026-07-14 (3)
 
 - Tab Resumen: nueva card "Evolución de ingresos (nómina) · interanual" (`index.html`, `#chart-nomina`). Combina la DB Notion "Nominas" (empresa, período) con conversión histórica de las nóminas de Ford Argentina 2022 (ARS → USD dólar blue → EUR, valores fijos en `FORD_HISTORICO_EUR`). Nuevo campo `nominas` en `finance_data.json`, generado por `fetch_nominas_notion()` / `build_nominas()` en `scripts/sync_finance_data.py`. Nueva función `renderNominaTrend()` en `js/charts.js`: serie mensual continua (huecos = período real sin nómina, no huecos de datos), promedio móvil 12m, variación interanual del último mes, período por empresa en texto. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
