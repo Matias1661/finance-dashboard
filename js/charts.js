@@ -677,14 +677,18 @@ function renderNominaTrend(){
   const legendEl = document.getElementById('nomina-etapas-legend');
   if(legendEl){
     const etapasPresentes = [...new Set(etapas.filter(Boolean))];
-    legendEl.innerHTML = etapasPresentes.map(et => {
+    let html = etapasPresentes.map(et => {
       const c = etapaColor(et);
       return `<span style="display:inline-flex;align-items:center;gap:4px;margin-right:12px">
         <span style="width:10px;height:10px;border-radius:2px;background:${c.banda || c.punto}"></span>${et}
       </span>`;
-    }).join('') + `<span style="display:inline-flex;align-items:center;gap:4px;margin-right:12px">
+    }).join('');
+    if(estimados.some(Boolean)){
+      html += `<span style="display:inline-flex;align-items:center;gap:4px;margin-right:12px">
         <span style="width:9px;height:9px;border-radius:50%;border:2px solid var(--text-secondary);background:transparent"></span>Estimado (de memoria)
       </span>`;
+    }
+    legendEl.innerHTML = html;
   }
 
   // Panel lateral: meses más de 15% por encima del promedio móvil 12m
