@@ -83,36 +83,29 @@ def _normalizar_empresa(nombre):
     return _EMPRESA_NORMALIZADA.get(key, nombre.strip())
 
 
-# Historico de nomina anterior a lo que cubren las fuentes vivas (DB Nominas
-# arranca en 2024-02, Movimientos en 2024-12-01). Decision del usuario
-# 2026-07-14 (ver docs/DECISIONS.md): reconstruir el historico completo
-# desde enero 2022 combinando datos reales donde existen con valores
-# hardcodeados confirmados por el usuario donde no hay recibo cargado.
-# Cada entrada reemplaza por completo el mes correspondiente.
-# - estimado=True: valor de memoria, no verificable contra un recibo.
-# - estimado=False: hecho real confirmado (ingreso 0 durante mudanza/paro
-#   sin cobrar aun, o el total combinado de un mes con dos cobros reales).
-FORD_VALOR_ESTIMADO = 1115.47   # promedio de las 10 nominas Ford convertidas (blue->EUR)
-VALEO_VALOR_ESTIMADO = 1680.56  # promedio de las nominas reales conocidas de Valeo 2024
+# Corte del grafico de nomina: enero 2025 en adelante. Decision del usuario
+# 2026-07-14 (ver docs/DECISIONS.md): despues de ver el historico completo
+# 2022-2026 con Ford/Valeo/mudanza/paro estimados, se prefirio una solucion
+# intermedia -- arrancar en enero 2025 (ya con datos mayormente reales:
+# paro real ene-feb, paro+primer pago Between en marzo, resto 100% real) y
+# dejar Ford/Valeo solo como referencia textual fuera del grafico, no como
+# datos graficados.
+NOMINA_INICIO = "2025-01"
 
-HISTORICO_MANUAL = {}
-for _m in range(1, 11):
-    HISTORICO_MANUAL[f"2022-{_m:02d}"] = {
-        "monto": FORD_VALOR_ESTIMADO, "empresa": "Ford Argentina S.C.A.", "estimado": True}
-HISTORICO_MANUAL["2022-11"] = {"monto": 0.0, "empresa": None, "estimado": False}
-HISTORICO_MANUAL["2022-12"] = {"monto": 0.0, "empresa": None, "estimado": False}
-for _m in range(1, 13):
-    HISTORICO_MANUAL[f"2023-{_m:02d}"] = {
-        "monto": VALEO_VALOR_ESTIMADO, "empresa": "Valeo España, S.A.U.", "estimado": True}
-HISTORICO_MANUAL["2024-01"] = {"monto": VALEO_VALOR_ESTIMADO, "empresa": "Valeo España, S.A.U.", "estimado": True}
-HISTORICO_MANUAL["2024-03"] = {"monto": VALEO_VALOR_ESTIMADO, "empresa": "Valeo España, S.A.U.", "estimado": True}
-HISTORICO_MANUAL["2024-09"] = {"monto": 0.0, "empresa": None, "estimado": False}
-HISTORICO_MANUAL["2024-10"] = {"monto": 0.0, "empresa": None, "estimado": False}
-HISTORICO_MANUAL["2024-11"] = {"monto": 0.0, "empresa": None, "estimado": False}
+# Promedios de referencia (NO se grafican, solo para la nota de texto fija
+# en el frontend). Ford: promedio simple de las 10 nominas convertidas
+# (blue->EUR). Valeo: pagaba 14 pagas/ano (2 pagas extra) -- el promedio
+# mensual equivalente es 14 * paga_normal / 12, no la paga normal sola.
+FORD_PROMEDIO_MENSUAL = 1115.47                      # promedio simple, sin pagas extra
+_VALEO_PAGA_NORMAL = 1680.56                         # promedio de las nominas reales conocidas de Valeo 2024
+VALEO_PROMEDIO_MENSUAL = round(_VALEO_PAGA_NORMAL * 14 / 12, 2)  # ~1960.65, 14 pagas/ano
+
 # 2025-03: ultimo pago de paro (477.14) + primer pago parcial de Between
 # Technology (539.80), verificados en Movimientos. Se reemplaza el total
 # para no perder el componente de paro que la DB Nominas no registra.
-HISTORICO_MANUAL["2025-03"] = {"monto": round(477.14 + 539.80, 2), "empresa": "Between Technology S.L", "estimado": False}
+HISTORICO_MANUAL = {
+    "2025-03": {"monto": round(477.14 + 539.80, 2), "empresa": "Between Technology S.L", "estimado": False}
+}
 
 
 def etapa_for_month(mes, empresa):
@@ -120,12 +113,6 @@ def etapa_for_month(mes, empresa):
     Se calcula por rango de fechas fijo (eventos historicos ya cerrados) y,
     fuera de esos rangos, por la empresa real del mes. Ver docs/DECISIONS.md,
     auditoria orden 9 (2026-07-14)."""
-    if mes <= "2022-10":
-        return "Ford Argentina S.C.A."
-    if mes in ("2022-11", "2022-12"):
-        return "Mudanza"
-    if "2023-01" <= mes <= "2024-08":
-        return "Valeo España, S.A.U."
     if "2024-09" <= mes <= "2025-02":
         return "Paro"
     return empresa or "Sin nómina"
@@ -314,6 +301,8 @@ def build_nominas(pages, movimientos=None):
 
     nominas = []
     for mes in sorted(by_month.keys()):
+        if mes < NOMINA_INICIO:
+            continue
         registro = by_month[mes]
         nominas.append({
             "mes": mes,
@@ -971,7 +960,7 @@ if __name__ == "__main__":
             nominas_pages = fetch_nominas_notion()
             print(f"  {len(nominas_pages)} paginas")
             nominas = build_nominas(nominas_pages, movimientos)
-            print(f"  {len(nominas)} meses (histórico completo desde 2022-01)")
+            print(f"  {len(nominas)} meses desde {NOMINA_INICIO}")
         except Exception as nom_err:
             print(f"  AVISO: no se pudo leer Nominas: {nom_err}")
             nominas = []
