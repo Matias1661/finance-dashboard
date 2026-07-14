@@ -1,3 +1,7 @@
+## 2026-07-14 (8)
+
+- Corrección: gráfico de nómina vuelve a un corte, ahora en enero 2025 (18 meses, todo real). `scripts/sync_finance_data.py`: `NOMINA_INICIO="2025-01"`, `HISTORICO_MANUAL` reducido al override de marzo 2025. Ford (~1.115€/mes) y Valeo (~1.961€/mes, corregido por 14 pagas/año) pasan a nota de texto fija en `index.html`, fuera del gráfico. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
+
 ## 2026-07-14 (7)
 
 - Gráfico de nómina: histórico completo 2022-01 a 2026-06 (54 meses), reemplaza el corte de abril 2025. `scripts/sync_finance_data.py`: `HISTORICO_MANUAL` (Ford, Valeo estimado, mudanza, paro sin cobrar, marzo 2025 combinado) + fallback real de Movimientos para paro dic 2024-feb 2025 (filtrado por Concepto, fix de un bug de contaminación de categoría en dic 2024) + nuevos campos `etapa` y `estimado` por mes. `js/charts.js`: sombreado por etapa, puntos huecos para estimado, nueva leyenda `#nomina-etapas-legend`. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
