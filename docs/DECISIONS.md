@@ -1,3 +1,17 @@
+## [2026-07-14] Corrección: gráfico de nómina vuelve a un corte (enero 2025), Ford/Valeo pasan a ser referencia textual (auditoria 2026-07, orden 9)
+
+**Contexto:** el histórico completo 2022-2026 implementado antes no convenció al usuario. Solución intermedia: cortar en enero 2025 (paro real ene-feb, marzo combinado paro+primer Between, resto 100% real desde fuentes vivas) y sacar del gráfico los tramos 100% estimados de memoria (Ford, mudanza, Valeo, paro sin cobrar sep-nov 2024).
+
+**Cambio implementado:**
+- `scripts/sync_finance_data.py`: `NOMINA_INICIO = "2025-01"` (filtro aplicado al final de `build_nominas()`). `HISTORICO_MANUAL` queda reducido a un solo override (2025-03, paro+primer Between combinado). Se eliminan los overrides de Ford/mudanza/Valeo/paro-sin-cobrar (ya no se grafican). `etapa_for_month()` simplificado: solo distingue "Paro" (2024-09 a 2025-02) vs. empresa real -- las etapas Ford/Mudanza/Valeo ya no aplican con este corte pero la función las soporta si se decide extender el rango en el futuro.
+- Nuevas constantes de referencia (no graficadas): `FORD_PROMEDIO_MENSUAL = 1115.47`, `VALEO_PROMEDIO_MENSUAL = round(1680.56 * 14 / 12, 2) = 1960.65` -- corregido para reflejar las 14 pagas anuales de Valeo (el promedio mensual equivalente no es la paga normal sola, sino paga_normal × 14 ÷ 12).
+- `index.html`: nota de texto fija debajo de la card de nómina: "Referencia histórica (no incluida en el gráfico): Ford Argentina ~1.115€/mes promedio (ene–oct 2022) · Valeo España ~1.961€/mes promedio equivalente (14 pagas/año, ene 2023–ago 2024)".
+- `js/charts.js`: la leyenda "Estimado (de memoria)" ahora solo se muestra si hay al menos un mes con `estimado:true` en los datos (con este corte no hay ninguno, así que no aparece).
+
+**Estado:** Hecho.
+
+---
+
 ## [2026-07-14] Implementado: histórico completo de nómina 2022-2026 con etapas y sombreado (auditoria 2026-07, orden 9)
 
 **Contexto:** tras validar en el chat (widgets de preview con datos hardcodeados) el histórico completo de ingresos desde enero 2022, el usuario confirmó llevarlo a producción, reemplazando el corte anterior que arrancaba en abril 2025.
