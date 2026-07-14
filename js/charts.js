@@ -623,6 +623,7 @@ function renderNominaTrend(){
   const montos = labels.map(mes => byMonth[mes] ? byMonth[mes].monto : 0);
   const empresas = labels.map(mes => byMonth[mes] ? byMonth[mes].empresa : null);
   const irpfFlags = labels.map(mes => byMonth[mes] ? !!byMonth[mes].irpf : false);
+  const pagosPorMes = labels.map(mes => byMonth[mes] ? (byMonth[mes].pagos || 0) : 0);
 
   // Promedio móvil 12 meses (incluye los meses en 0 como ingreso real, según
   // decisión: solo se excluyen huecos de DATOS, no meses reales sin ingreso)
@@ -669,15 +670,6 @@ function renderNominaTrend(){
     noteEl.textContent = partes.join(' · ');
   }
 
-  // Leyenda fija de meses con devolución de Hacienda (IRPF) incluida
-  const irpfEl = document.getElementById('nomina-irpf-note');
-  if(irpfEl){
-    const mesesIrpf = labels.filter((mes, i) => irpfFlags[i]);
-    irpfEl.textContent = mesesIrpf.length > 0
-      ? `Incluye devolución de Hacienda (IRPF) en: ${mesesIrpf.join(', ')}`
-      : '';
-  }
-
   // Panel lateral: meses más de 15% por encima del promedio móvil 12m
   const outliersEl = document.getElementById('nomina-outliers');
   if(outliersEl){
@@ -686,7 +678,7 @@ function renderNominaTrend(){
       if(movingAvg[i] <= 0 || montos[i] <= 0) return;
       const delta = (montos[i] - movingAvg[i]) / movingAvg[i];
       if(delta > 0.15){
-        outliers.push({ mes, monto: montos[i], delta, irpf: irpfFlags[i] });
+        outliers.push({ mes, monto: montos[i], delta, irpf: irpfFlags[i], pagos: pagosPorMes[i] });
       }
     });
 
@@ -694,9 +686,10 @@ function renderNominaTrend(){
       outliersEl.innerHTML = '<div style="color:var(--text-secondary)">Ningún mes supera el 15% por encima del promedio.</div>';
     } else {
       outliersEl.innerHTML = outliers.map(o => {
-        const motivo = o.irpf
-          ? 'incluye devolución de Hacienda (IRPF)'
-          : 'pago adicional (revisar Nota en Notion)';
+        let motivo;
+        if(o.irpf) motivo = 'incluye devolución de Hacienda (IRPF)';
+        else if(o.pagos > 1) motivo = `incluye ${o.pagos} pagos ese mes (ej. cambio de empleador)`;
+        else motivo = 'sin explicación automática disponible';
         return `<div style="margin-bottom:8px">
           <div style="font-weight:500">${o.mes} · +${(o.delta*100).toFixed(0)}%</div>
           <div style="color:var(--text-secondary)">${formatEUR(o.monto)} — ${motivo}</div>
