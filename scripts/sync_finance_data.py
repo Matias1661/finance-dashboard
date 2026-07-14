@@ -165,11 +165,14 @@ def fetch_nominas_notion():
     return results
 
 
-def build_nominas(pages):
+def build_nominas(pages, movimientos=None):
     """Agrega la DB Nominas por mes calendario (Empresa + suma de Total),
-    excluye las filas de Ford Argentina (pesos, sin convertir) y las
-    reemplaza por FORD_HISTORICO_EUR (conversion fija ARS->USD blue->EUR).
-    Ver docs/DECISIONS.md, auditoria orden 9 (2026-07-14)."""
+    excluye las filas de Ford Argentina (pesos, sin convertir) -- fuera de
+    alcance, ver NOMINA_INICIO. Ademas suma las devoluciones de Hacienda
+    (IRPF) detectadas en Movimientos (categoria Nomina, Nota == "IRPF") al
+    mes en que se cobraron, marcando ese mes con irpf=True para que el
+    frontend lo distinga. Ver docs/DECISIONS.md, auditoria orden 9
+    (2026-07-14) y correccion del mismo dia sobre devoluciones IRPF."""
     by_month = {}
 
     for page in pages:
@@ -194,16 +197,38 @@ def build_nominas(pages):
         if mes < NOMINA_INICIO:
             continue
         if mes not in by_month:
-            by_month[mes] = {"monto": 0.0, "empresa": empresa}
+            by_month[mes] = {"monto": 0.0, "empresa": empresa, "irpf": False}
         by_month[mes]["monto"] += total
         by_month[mes]["empresa"] = empresa  # ultima empresa vista en el mes
+
+    # Devoluciones de Hacienda (IRPF): vienen de Movimientos, categoria
+    # Nomina, Nota == "IRPF" (marcado manual, una vez al ano). Se suman al
+    # ingreso del mes en que se cobraron.
+    for mov in (movimientos or []):
+        if mov.get("categoria") != "Nomina":
+            continue
+        nota = (mov.get("nota") or "").strip().upper()
+        if nota != "IRPF":
+            continue
+        fecha = mov.get("fecha")
+        if not fecha:
+            continue
+        mes = fecha[:7]
+        if mes < NOMINA_INICIO:
+            continue
+        monto = mov.get("monto") or 0
+        if mes not in by_month:
+            by_month[mes] = {"monto": 0.0, "empresa": None, "irpf": False}
+        by_month[mes]["monto"] += monto
+        by_month[mes]["irpf"] = True
 
     nominas = []
     for mes in sorted(by_month.keys()):
         nominas.append({
             "mes": mes,
             "empresa": by_month[mes]["empresa"],
-            "monto": round(by_month[mes]["monto"], 2)
+            "monto": round(by_month[mes]["monto"], 2),
+            "irpf": by_month[mes]["irpf"]
         })
 
     return nominas
@@ -850,7 +875,7 @@ if __name__ == "__main__":
         try:
             nominas_pages = fetch_nominas_notion()
             print(f"  {len(nominas_pages)} paginas")
-            nominas = build_nominas(nominas_pages)
+            nominas = build_nominas(nominas_pages, movimientos)
             print(f"  {len(nominas)} meses desde {NOMINA_INICIO}")
         except Exception as nom_err:
             print(f"  AVISO: no se pudo leer Nominas: {nom_err}")
