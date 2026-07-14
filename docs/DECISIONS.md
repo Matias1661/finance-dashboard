@@ -1,3 +1,28 @@
+## [2026-07-14] Implementado: histórico completo de nómina 2022-2026 con etapas y sombreado (auditoria 2026-07, orden 9)
+
+**Contexto:** tras validar en el chat (widgets de preview con datos hardcodeados) el histórico completo de ingresos desde enero 2022, el usuario confirmó llevarlo a producción, reemplazando el corte anterior que arrancaba en abril 2025.
+
+**Fuentes combinadas por prioridad:**
+1. DB Notion "Nominas" (real) donde tiene cobertura: Valeo feb/abr/may/jun/jul/ago 2024, todo desde abril 2025.
+2. Movimientos (real, fallback) para meses sin cobertura en la DB Nominas: paro dic 2024–feb 2025, filtrando por Concepto conteniendo "NOMINA" o "DESEMPLEO" — **no alcanza con `categoria == "Nomina"` sola**, porque diciembre 2024 tiene varios movimientos ajenos mal categorizados como Nomina (transferencias, pago de tarjeta de crédito, venta de fondos) que inflaban el mes a 5.399,33€ en vez de 1.101,40€. Bug detectado y corregido el mismo día antes de publicar.
+3. `HISTORICO_MANUAL` (valores hardcodeados, confirmados explícitamente por el usuario) para los meses sin ninguna fuente real: Ford Argentina ene-oct 2022 (flat, promedio de las 10 conversiones blue→EUR = 1.115,47€), mudanza nov-dic 2022 (0, real), Valeo ene 2023-ene 2024 y marzo 2024 (flat, promedio de los meses reales conocidos = 1.680,56€, estimado), paro sin cobrar sep-nov 2024 (0, real — el primer pago de paro fue recién el 2024-12-10), marzo 2025 (1.016,94€ = último pago de paro 477,14€ + primer pago parcial de Between Technology 539,80€, reemplaza el parcial que traía la DB Nominas).
+
+**Nuevo campo `etapa`** (función `etapa_for_month()`): banda de vida calculada por rango de fechas fijo + empresa real fuera de esos rangos — Ford Argentina S.C.A. / Mudanza / Valeo España, S.A.U. / Paro / empresa real (Between Technology S.L, Luzutania Group SLU, etc.).
+
+**Nuevo campo `estimado`** (booleano): `true` solo para los tramos de memoria sin recibo verificable (Ford, Valeo ene23-ene24 y mar24). Los tramos en 0 (mudanza, paro sin cobrar) son `estimado:false` porque son hechos reales confirmados, no una suposición de monto.
+
+**Frontend (`js/charts.js`):**
+- Sombreado de fondo (`nominaBandsPlugin`) agrupado por `etapa` en vez de por empresa, con un color por etapa.
+- Puntos: círculo relleno = real: círculo hueco (borde de color, relleno blanco) = estimado; rombo grande = incluye devolución IRPF (sin cambios).
+- Nueva leyenda `#nomina-etapas-legend` dentro de la card, mostrando qué significa cada color de sombreado + el marcador de "estimado".
+- Nota de períodos (`#nomina-empresa-note`) ahora agrupa por etapa en vez de por empresa.
+
+**Limitación aceptada:** los tramos estimados son de memoria del usuario, no verificables contra recibos; si en el futuro se cargan los recibos reales de esa época a la DB Nominas, los valores estimados quedarían desactualizados y habría que quitar el override correspondiente de `HISTORICO_MANUAL`.
+
+**Estado:** Hecho.
+
+---
+
 ## [2026-07-14] Implementado: layout de dos columnas en gráfico de nómina + panel de meses atípicos (auditoria 2026-07, orden 9)
 
 **Contexto:** el usuario pidió que el gráfico de nómina no use el 100% del ancho del card, sino que deje espacio para un panel con explicación de los meses que están muy por encima del promedio (dio como ejemplo junio y julio). Umbral acordado: más de 15% por encima del promedio móvil 12m.
