@@ -57,7 +57,52 @@ from zoneinfo import ZoneInfo
 NOTION_TOKEN               = os.environ["NOTION_TOKEN"]
 NOTION_DATA_SOURCE_ID      = os.environ["NOTION_MOVIMIENTOS_DATA_SOURCE_ID"]
 NOTION_RENDIMIENTO_DS_ID   = os.environ.get("NOTION_RENDIMIENTO_DATA_SOURCE_ID")
+# DB "Nominas" (detalle Empresa/Total por recibo). ID no sensible (no es un
+# secret real de acceso, es solo el identificador de la data source), por eso
+# se hardcodea con fallback en vez de requerir un nuevo secret de GitHub
+# Actions. Ver docs/DECISIONS.md, auditoria orden 9.
+NOTION_NOMINAS_DS_ID       = os.environ.get(
+    "NOTION_NOMINAS_DATA_SOURCE_ID", "19833ce5-0e68-8121-8f95-000bddffaaea")
 NOTION_VERSION             = "2025-09-03"
+
+# Normalizacion de nombre de empresa: la DB Nominas tiene variantes de
+# mayusculas/tipeo para la misma empresa (ej. "VALEO ESPAÑA, S.A.U." vs
+# "Valeo España, S.A.U.", "LUZUTANIAESP GROUP SLU" vs "LUZUTANIAES GROUP SLU").
+_EMPRESA_NORMALIZADA = {
+    "valeo espana, s.a.u.": "Valeo España, S.A.U.",
+    "between technology s.l": "Between Technology S.L",
+    "luzutaniaesp group slu": "Luzutania Group SLU",
+    "luzutaniaes group slu": "Luzutania Group SLU",
+    "ford argentina s.c.a.": "Ford Argentina S.C.A.",
+}
+
+def _normalizar_empresa(nombre):
+    if not nombre:
+        return nombre
+    key = nombre.strip().lower()
+    return _EMPRESA_NORMALIZADA.get(key, nombre.strip())
+
+
+# Nominas de Ford Argentina (pesos, ene-oct 2022), convertidas a EUR en dos
+# pasos: ARS -> USD con el dolar blue del dia de pago (fuente:
+# api.argentinadatos.com/v1/cotizaciones/dolares/blue), luego USD -> EUR con
+# la cotizacion de Yahoo Finance (EURUSD=X) del mismo dia. Decision del
+# usuario (2026-07-14, ver DECISIONS.md): usar blue y no el oficial, porque
+# refleja mejor el poder adquisitivo real en un periodo de brecha cambiaria
+# alta. Valores fijos, historicos, no se recalculan en cada sync -- agregados
+# por mes calendario (marzo y octubre tuvieron 2 pagos cada uno).
+FORD_HISTORICO_EUR = [
+    {"mes": "2022-01", "empresa": "Ford Argentina S.C.A.", "monto": 754.36,  "estimado": True},
+    {"mes": "2022-02", "empresa": "Ford Argentina S.C.A.", "monto": 754.98,  "estimado": True},
+    {"mes": "2022-03", "empresa": "Ford Argentina S.C.A.", "monto": 1981.26, "estimado": True},
+    {"mes": "2022-04", "empresa": "Ford Argentina S.C.A.", "monto": 936.71,  "estimado": True},
+    {"mes": "2022-05", "empresa": "Ford Argentina S.C.A.", "monto": 958.66,  "estimado": True},
+    {"mes": "2022-06", "empresa": "Ford Argentina S.C.A.", "monto": 1298.36, "estimado": True},
+    {"mes": "2022-07", "empresa": "Ford Argentina S.C.A.", "monto": 845.57,  "estimado": True},
+    {"mes": "2022-08", "empresa": "Ford Argentina S.C.A.", "monto": 843.88,  "estimado": True},
+    {"mes": "2022-09", "empresa": "Ford Argentina S.C.A.", "monto": 852.60,  "estimado": True},
+    {"mes": "2022-10", "empresa": "Ford Argentina S.C.A.", "monto": 1928.36, "estimado": True},
+]
 
 
 def fetch_movimientos_notion():
@@ -108,6 +153,73 @@ def fetch_rendimiento_inversiones_notion():
         payload["start_cursor"] = data["next_cursor"]
 
     return results
+
+
+def fetch_nominas_notion():
+    """Lee todas las paginas de la DB Notion 'Nominas' via API REST."""
+    url = f"https://api.notion.com/v1/data_sources/{NOTION_NOMINAS_DS_ID}/query"
+    headers = {
+        "Authorization": f"Bearer {NOTION_TOKEN}",
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json"
+    }
+    payload = {"page_size": 100}
+
+    results = []
+    while True:
+        resp = requests.post(url, headers=headers, json=payload, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+        results.extend(data.get("results", []))
+        if not data.get("has_more"):
+            break
+        payload["start_cursor"] = data["next_cursor"]
+
+    return results
+
+
+def build_nominas(pages):
+    """Agrega la DB Nominas por mes calendario (Empresa + suma de Total),
+    excluye las filas de Ford Argentina (pesos, sin convertir) y las
+    reemplaza por FORD_HISTORICO_EUR (conversion fija ARS->USD blue->EUR).
+    Ver docs/DECISIONS.md, auditoria orden 9 (2026-07-14)."""
+    by_month = {}
+
+    for page in pages:
+        props = page.get("properties", {})
+        fecha_prop = props.get("Fecha de pago", {}).get("date")
+        fecha = fecha_prop["start"][:10] if fecha_prop and fecha_prop.get("start") else None
+        if not fecha:
+            continue
+
+        empresa_title = props.get("Empresa", {}).get("title", [])
+        empresa_raw = "".join(t.get("plain_text", "") for t in empresa_title).strip()
+        empresa = _normalizar_empresa(empresa_raw)
+
+        if empresa == "Ford Argentina S.C.A.":
+            continue  # se reemplaza por la conversion fija de FORD_HISTORICO_EUR
+
+        total = props.get("Total", {}).get("number")
+        if total is None:
+            continue
+
+        mes = fecha[:7]
+        if mes not in by_month:
+            by_month[mes] = {"monto": 0.0, "empresa": empresa}
+        by_month[mes]["monto"] += total
+        by_month[mes]["empresa"] = empresa  # ultima empresa vista en el mes
+
+    nominas = list(FORD_HISTORICO_EUR)
+    for mes in sorted(by_month.keys()):
+        nominas.append({
+            "mes": mes,
+            "empresa": by_month[mes]["empresa"],
+            "monto": round(by_month[mes]["monto"], 2),
+            "estimado": False
+        })
+
+    nominas.sort(key=lambda r: r["mes"])
+    return nominas
 
 
 def _extract_rendimiento_row(page):
@@ -747,6 +859,16 @@ if __name__ == "__main__":
             inversiones = {"capital": [], "rendimiento": [], "ganancia": [], "kpi": None, "rendimiento_mensual": []}
             rend_pages = []
 
+        print("Leyendo Nominas (Notion: empresa, periodo, evolucion YoY)...")
+        try:
+            nominas_pages = fetch_nominas_notion()
+            print(f"  {len(nominas_pages)} paginas")
+            nominas = build_nominas(nominas_pages)
+            print(f"  {len(nominas)} meses (incluye {len(FORD_HISTORICO_EUR)} historicos Ford convertidos)")
+        except Exception as nom_err:
+            print(f"  AVISO: no se pudo leer Nominas: {nom_err}")
+            nominas = []
+
         sanity_check(movimientos, inversiones)
 
         if rend_read_ok:
@@ -759,7 +881,8 @@ if __name__ == "__main__":
         output = {
             "generated_at": datetime.now(ZoneInfo("Europe/Madrid")).strftime("%Y-%m-%d %H:%M"),
             "movimientos": movimientos,
-            "inversiones": inversiones
+            "inversiones": inversiones,
+            "nominas": nominas
         }
 
         with open("finance_data.json", "w", encoding="utf-8") as f:
