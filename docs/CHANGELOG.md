@@ -1,3 +1,7 @@
+## 2026-07-14 (9)
+
+- Gráfico de nómina: promedio móvil se reinicia por etapa (evita falsos positivos al cambiar de ingresos, ej. paro→Between). Panel de outliers: los meses con IRPF siempre aparecen, sin depender del umbral de 15% (fix del caso junio 2026, que coincide con el primer mes de la etapa Luzutania y por eso el criterio estadístico solo nunca lo iba a detectar). Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
+
 ## 2026-07-14 (8)
 
 - Corrección: gráfico de nómina vuelve a un corte, ahora en enero 2025 (18 meses, todo real). `scripts/sync_finance_data.py`: `NOMINA_INICIO="2025-01"`, `HISTORICO_MANUAL` reducido al override de marzo 2025. Ford (~1.115€/mes) y Valeo (~1.961€/mes, corregido por 14 pagas/año) pasan a nota de texto fija en `index.html`, fuera del gráfico. Ver `DECISIONS.md` 2026-07-14 (auditoría 2026-07, orden 9).
