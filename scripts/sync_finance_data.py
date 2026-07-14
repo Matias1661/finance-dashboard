@@ -83,26 +83,13 @@ def _normalizar_empresa(nombre):
     return _EMPRESA_NORMALIZADA.get(key, nombre.strip())
 
 
-# Nominas de Ford Argentina (pesos, ene-oct 2022), convertidas a EUR en dos
-# pasos: ARS -> USD con el dolar blue del dia de pago (fuente:
-# api.argentinadatos.com/v1/cotizaciones/dolares/blue), luego USD -> EUR con
-# la cotizacion de Yahoo Finance (EURUSD=X) del mismo dia. Decision del
-# usuario (2026-07-14, ver DECISIONS.md): usar blue y no el oficial, porque
-# refleja mejor el poder adquisitivo real en un periodo de brecha cambiaria
-# alta. Valores fijos, historicos, no se recalculan en cada sync -- agregados
-# por mes calendario (marzo y octubre tuvieron 2 pagos cada uno).
-FORD_HISTORICO_EUR = [
-    {"mes": "2022-01", "empresa": "Ford Argentina S.C.A.", "monto": 754.36,  "estimado": True},
-    {"mes": "2022-02", "empresa": "Ford Argentina S.C.A.", "monto": 754.98,  "estimado": True},
-    {"mes": "2022-03", "empresa": "Ford Argentina S.C.A.", "monto": 1981.26, "estimado": True},
-    {"mes": "2022-04", "empresa": "Ford Argentina S.C.A.", "monto": 936.71,  "estimado": True},
-    {"mes": "2022-05", "empresa": "Ford Argentina S.C.A.", "monto": 958.66,  "estimado": True},
-    {"mes": "2022-06", "empresa": "Ford Argentina S.C.A.", "monto": 1298.36, "estimado": True},
-    {"mes": "2022-07", "empresa": "Ford Argentina S.C.A.", "monto": 845.57,  "estimado": True},
-    {"mes": "2022-08", "empresa": "Ford Argentina S.C.A.", "monto": 843.88,  "estimado": True},
-    {"mes": "2022-09", "empresa": "Ford Argentina S.C.A.", "monto": 852.60,  "estimado": True},
-    {"mes": "2022-10", "empresa": "Ford Argentina S.C.A.", "monto": 1928.36, "estimado": True},
-]
+# Corte del grafico de nomina: empieza en abril 2025 (primer mes con datos
+# limpios y continuos, un solo empleador por entonces). Se descartó traer
+# historico previo (Ford Argentina 2022 en pesos convertido, y el hueco de 15
+# meses entre esa etapa y Valeo/Between) por decision del usuario 2026-07-14:
+# con tantos huecos y una conversion de moneda de por medio, el grafico no
+# aportaba una lectura clara. Ver docs/DECISIONS.md.
+NOMINA_INICIO = "2025-04"
 
 
 def fetch_movimientos_notion():
@@ -197,28 +184,28 @@ def build_nominas(pages):
         empresa = _normalizar_empresa(empresa_raw)
 
         if empresa == "Ford Argentina S.C.A.":
-            continue  # se reemplaza por la conversion fija de FORD_HISTORICO_EUR
+            continue  # etapa en pesos, fuera de alcance (ver NOMINA_INICIO)
 
         total = props.get("Total", {}).get("number")
         if total is None:
             continue
 
         mes = fecha[:7]
+        if mes < NOMINA_INICIO:
+            continue
         if mes not in by_month:
             by_month[mes] = {"monto": 0.0, "empresa": empresa}
         by_month[mes]["monto"] += total
         by_month[mes]["empresa"] = empresa  # ultima empresa vista en el mes
 
-    nominas = list(FORD_HISTORICO_EUR)
+    nominas = []
     for mes in sorted(by_month.keys()):
         nominas.append({
             "mes": mes,
             "empresa": by_month[mes]["empresa"],
-            "monto": round(by_month[mes]["monto"], 2),
-            "estimado": False
+            "monto": round(by_month[mes]["monto"], 2)
         })
 
-    nominas.sort(key=lambda r: r["mes"])
     return nominas
 
 
@@ -864,7 +851,7 @@ if __name__ == "__main__":
             nominas_pages = fetch_nominas_notion()
             print(f"  {len(nominas_pages)} paginas")
             nominas = build_nominas(nominas_pages)
-            print(f"  {len(nominas)} meses (incluye {len(FORD_HISTORICO_EUR)} historicos Ford convertidos)")
+            print(f"  {len(nominas)} meses desde {NOMINA_INICIO}")
         except Exception as nom_err:
             print(f"  AVISO: no se pudo leer Nominas: {nom_err}")
             nominas = []
