@@ -662,10 +662,48 @@ function renderNominaTrend(){
     noteEl.textContent = partes.join(' · ');
   }
 
+  // Bandas de fondo por empresa (Between Technology / Luzutania), calculadas
+  // a partir de los mismos segmentos que la nota de texto
+  const bandColors = {
+    'Between Technology S.L': 'rgba(13,138,82,0.07)',
+    'Luzutania Group SLU':    'rgba(160,80,190,0.07)'
+  };
+  const segments = [];
+  {
+    let curEmpresa = undefined, curStartIdx = 0;
+    labels.forEach((mes, i) => {
+      const emp = empresas[i];
+      if(emp !== curEmpresa){
+        if(curEmpresa !== undefined) segments.push({empresa: curEmpresa, startIdx: curStartIdx, endIdx: i-1});
+        curEmpresa = emp; curStartIdx = i;
+      }
+    });
+    segments.push({empresa: curEmpresa, startIdx: curStartIdx, endIdx: labels.length-1});
+  }
+
+  const nominaBandsPlugin = {
+    id: 'nominaBands',
+    beforeDatasetsDraw(chart){
+      const {ctx, chartArea, scales} = chart;
+      if(!chartArea) return;
+      segments.forEach(seg => {
+        const color = bandColors[seg.empresa];
+        if(!color) return;
+        const xStart = scales.x.getPixelForValue(seg.startIdx) - (scales.x.width / labels.length / 2);
+        const xEnd = scales.x.getPixelForValue(seg.endIdx) + (scales.x.width / labels.length / 2);
+        ctx.save();
+        ctx.fillStyle = color;
+        ctx.fillRect(xStart, chartArea.top, xEnd - xStart, chartArea.bottom - chartArea.top);
+        ctx.restore();
+      });
+    }
+  };
+
   if(window.nominaChart) window.nominaChart.destroy();
 
   window.nominaChart = new Chart(ctx, {
     type: 'line',
+    plugins: [nominaBandsPlugin],
     data: {
       labels,
       datasets: [
@@ -673,14 +711,13 @@ function renderNominaTrend(){
           label: 'Ingreso mensual (nómina)',
           data: montos,
           borderColor: 'rgba(66,133,180,0.9)',
-          backgroundColor: 'rgba(66,133,180,0.15)',
           pointBackgroundColor: labels.map((_, i) => _nominaColorFor(empresas[i])),
           pointBorderColor: labels.map((_, i) => _nominaColorFor(empresas[i])),
           pointRadius: 4,
           pointHoverRadius: 6,
           spanGaps: false,
           tension: 0.15,
-          fill: true
+          fill: false
         },
         {
           label: 'Promedio móvil 12m',
