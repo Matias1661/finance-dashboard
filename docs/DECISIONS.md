@@ -1,3 +1,26 @@
+## [2026-07-14] Implementado: devoluciones de Hacienda (IRPF) en el gráfico de nómina (auditoria 2026-07, orden 9)
+
+**Contexto:** el usuario pidió incluir en el gráfico de nómina las devoluciones anuales de Hacienda (IRPF), que hoy están cargadas en Movimientos bajo la categoría "Nomina" mezcladas con el sueldo, sin ninguna marca que las distinga.
+
+**Criterio de identificación acordado:** marcar manualmente el campo Nota del movimiento con el texto exacto "IRPF" (una vez al año, cuando se cobra la devolución). El script las detecta buscando `categoria == "Nomina"` y `nota == "IRPF"` (case-insensitive) en Movimientos.
+
+**Movimientos identificados y marcados (2026-07-14):**
+- 2025-04-10, "DEVOLUCION HACIENDA", 173,57€ → Nota = "IRPF"
+- 2026-06-06, "TRANSF. A SU FAVOR", 619,54€ → Nota = "IRPF" (confirmado por el usuario como la devolución de ese año)
+
+No se encontraron devoluciones anteriores a 2025 porque Movimientos solo tiene datos desde 2024-12-01.
+
+**Cambio implementado:**
+- `scripts/sync_finance_data.py`: `build_nominas()` ahora recibe también `movimientos` (ya se leen en `main()` para Movimientos). Cruza los movimientos con Nota="IRPF" y categoría Nomina, y suma el monto al mes correspondiente en la serie de nómina. Cada mes queda marcado con `irpf: true/false` en el output.
+- `js/charts.js`: puntos del mes con IRPF se dibujan más grandes y con forma de rombo (`rectRot`) en vez de círculo; tooltip agrega "(incluye devolución IRPF)"; nueva leyenda de texto fija `#nomina-irpf-note` con la lista de meses que incluyen devolución.
+- `index.html`: nuevo contenedor `#nomina-irpf-note` debajo de la nota de períodos por empresa.
+
+**Decisión sobre el tratamiento:** se suma al mes de cobro (no se muestra aparte ni se excluye del promedio móvil 12m), tal como pidió el usuario — sí afecta la tendencia, con la aclaración visual como contexto.
+
+**Estado:** Hecho.
+
+---
+
 ## [2026-07-14] Corrección: gráfico de nómina arranca en abril 2025, se descarta el histórico Ford (auditoria 2026-07, orden 9)
 
 **Contexto:** tras ver el gráfico con el histórico completo (Ford Argentina 2022 convertido + huecos de 15 y 6 meses entre etapas), el usuario decidió que no tenía sentido mostrar un histórico con tanta falta de datos y una conversión de moneda de por medio.
