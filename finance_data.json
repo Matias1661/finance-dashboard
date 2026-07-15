@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-14 16:10",
+  "generated_at": "2026-07-15 11:12",
   "movimientos": [
     {
       "fecha": "2026-07-13",
       "concepto": "E.S. APADIS",
       "monto": -3.75,
-      "categoria": "Combustible",
-      "nota": null
+      "categoria": "Salidas",
+      "nota": "Hielo"
     },
     {
       "fecha": "2026-07-13",
