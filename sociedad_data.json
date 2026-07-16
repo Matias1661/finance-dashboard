@@ -1,5 +1,11 @@
 [
   {
+    "fecha": "2026-07-13",
+    "concepto": "Compra de materiales de construcción",
+    "costo": 167.94,
+    "pagado": null
+  },
+  {
     "fecha": "2026-07-14",
     "concepto": "Materiales de construcción",
     "costo": 15.63,
