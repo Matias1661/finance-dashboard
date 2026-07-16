@@ -1,5 +1,23 @@
 [
   {
+    "fecha": "2026-07-14",
+    "concepto": "Materiales de construcción",
+    "costo": 15.63,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-13",
+    "concepto": "ROLLO 16MM 25M MULTICAPA",
+    "costo": 187.94,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-14",
+    "concepto": "OBRAMAT MAJADAHONDA",
+    "costo": 8.89,
+    "pagado": null
+  },
+  {
     "fecha": "2026-07-01",
     "concepto": "Cliente 10969 Fact 073725",
     "costo": 193.6,
