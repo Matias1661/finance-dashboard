@@ -16,7 +16,15 @@
 - [x] Migración de capital/rendimiento del tab Inversiones de Google Sheets a Notion (elimina dependencia de GOOGLE_SERVICE_ACCOUNT, 2026-07-10)
 
 ## Alta prioridad
-- [ ] Arreglar botón "Actualizar" en `index.html`: hoy tiene un token de GitHub hardcodeado (viejo, ya revocado — el botón está roto). Reemplazar por llamada a un webhook de Make que guarde el token del lado del servidor y dispare `Sync Finance Data` + `Sync Sociedad Data`. Ver `DECISIONS.md` 2026-07-17.
+- [ ] Arreglar botón "Actualizar" en `index.html`: hoy tiene un token de GitHub hardcodeado (viejo, ya revocado — el botón está roto). **Actualizado 17/07:** ya no aplica la idea original de un webhook de Make (Make quedó fuera de la arquitectura, ver `DECISIONS.md`); evaluar una alternativa server-side sin Make (ej. un endpoint propio, o simplemente dejar el botón disparando el workflow por `gh workflow run` manual hasta decidir algo mejor).
+- [ ] Migración Relay → GitHub Actions, flujos pendientes de implementar (ver `PROJECT_MEMORY.md`, sección "Migración en curso", y `DECISIONS.md` 2026-07-17 para prompts ya probados):
+  - [ ] Peerberry: script Python + paso en `sync-finance-data.yml` (prompt ya probado en Make, reusar tal cual)
+  - [ ] MyInvestor: script Python pidiendo `text/plain` a la API de Gmail (evita el límite de tamaño que bloqueó Make)
+  - [ ] Nóminas: script Python que vigile la carpeta Drive "Nominas" (carga manual del PDF, ya no lee el email automáticamente)
+  - [ ] Resolver autenticación de Gmail API para Peerberry/MyInvestor (cuenta de servicio actual solo tiene scope de Drive)
+  - [ ] Talho Argentino / Gastos del local (paso 4.5 del plan): script + workflow, cubre comprobante en Drive + cambios en DB Notion
+  - [ ] Validar cada flujo con datos reales antes de apagar Relay (paso 5 del plan)
+- [ ] Alerta en el dashboard cuando falta subir la nómina de un mes (propuesta del usuario, 17/07): detectar por tiempo transcurrido desde la última nómina cargada, o cruzando contra el ingreso de nómina esperado en Movimientos. Sin diseño todavía.
 - [x] Flujo "Organizar Movimientos": PayPal+Gmail, Uber, Amazon, Viajes — trigger en chat, registro en reviewed_movements.json, KPI en dashboard
 - [ ] Panel de revisión de transacciones: vista filtrable de movimientos con categoría "A revisar" o baja confianza, con acción de reclasificación directa desde el dashboard que escriba en Notion vía `notion-update-page` (el workflow `update-sheet-cells.yml` del que dependía esta tarea fue eliminado el 30/06/2026; replantear el mecanismo de escritura, no hay endpoint HTTP directo desde el navegador a Notion — evaluar en DECISIONS.md antes de implementar)
 - [x] Vista ampliada de Viajes en tab Categorías (desglose por viaje, subcategorías, transacciones colapsables)

@@ -1,3 +1,57 @@
+## [2026-07-17] DECISIÓN FINAL: los 4 flujos de email/Drive de la migración Relay van a GitHub Actions, Make queda libre
+
+**Contexto:** después de armar y probar un escenario real en Make (Peerberry + MyInvestor + Nóminas), se encontró un límite de tamaño de mensaje en el trigger de Gmail de Make (`MaxFileSizeExceededError`) que bloqueaba MyInvestor (email de marketing con HTML muy pesado, sin adjuntos) y potencialmente Nóminas. Es una limitación conocida de Make sin workaround simple (confirmado en su comunidad de soporte).
+
+**Decisión:** consolidar **Movimientos + Peerberry + MyInvestor + Nóminas** en GitHub Actions, reusando el patrón ya construido para Movimientos (`scripts/process_bank_statements.py` + paso en `sync-finance-data.yml`). Motivos:
+1. Evita el límite de tamaño de Make de raíz — el script propio pide a la API de Gmail solo la parte `text/plain`, sin el HTML pesado.
+2. El repo es público, así que los minutos de GitHub Actions son gratis e ilimitados — sin restricción de volumen.
+3. Un solo lugar para monitorear (logs de Actions, alertas por Issue si falla), un solo set de credenciales (ya en GitHub Secrets).
+4. Deja **Make completamente libre (0 escenarios activos)** para lo que surja en el futuro, en vez de "medio usado" por un solo flujo — mejor alineado con el objetivo original del usuario de minimizar herramientas.
+
+**Cambio de diseño en Nóminas:** en vez de que el flujo lea el email de Beatriz y su adjunto automáticamente (lo que compartía el mismo problema de tamaño de Gmail), **Matías sube el PDF de la nómina a mano** a la carpeta Drive "Nominas" cuando le llega. El flujo en GitHub Actions solo vigila esa carpeta.
+
+**Lo que queda de la exploración en Make (no se descarta, sirve de referencia para escribir los scripts):**
+- Escenario "Emails financieros" (id 9538432, desactivado): Peerberry validado con email real; prompt de extracción probado y funcionando (evita confundir la sección "resumen de cuenta" con "Portfolio" del email de Peerberry). MyInvestor: prompt escrito pero nunca llegó a ejecutar por el límite de tamaño.
+- Escenario "Nóminas" (id 9538741, desactivado): lógica de extracción (Empresa/Total/Fecha de pago) y subida a Drive escrita, nunca ejecutada.
+- Conexiones creadas en Make (quedan ahí, sin uso): Gmail+Drive combinado (id 14438625), Anthropic Claude propio de Make (id 14438562).
+
+**Idea pendiente de evaluar (propuesta por el usuario, no implementada):** alerta en el dashboard que detecte si falta subir la nómina de un mes — por tiempo transcurrido, o cruzando contra el ingreso de nómina esperado en Movimientos. Agregada a `ROADMAP.md`.
+
+**Estado del plan completo tras esta decisión:**
+| Flujo | Plataforma | Estado |
+|---|---|---|
+| Movimientos | GitHub Actions | Implementado y validado con extracto real |
+| Peerberry | GitHub Actions (migrar prompt ya probado en Make) | Por implementar |
+| MyInvestor | GitHub Actions | Por implementar |
+| Nóminas | GitHub Actions (carga manual a Drive) | Por implementar |
+| Talho Argentino / Gastos del local (paso 4.5) | GitHub Actions | Decidido, por implementar |
+
+**Próximo paso concreto:** escribir `scripts/process_peerberry_emails.py`, `scripts/process_myinvestor_emails.py` y `scripts/process_nominas.py` (o consolidar en un único script con sub-comandos), agregar los pasos correspondientes a `sync-finance-data.yml`, y agregar el scope de Gmail readonly a la cuenta de servicio de Google ya usada para Drive (o crear una nueva cuenta de servicio dedicada).
+
+**Prompts ya escritos y probados (Peerberry funcionando; MyInvestor y Nóminas escritos pero sin ejecutar) — reusar tal cual en los scripts Python:**
+
+*Peerberry (probado y funcionando):*
+```
+Extrae del email semanal de Peerberry: Capital total = Invested funds + Available balance de la seccion Portfolio (NUNCA Balance on), Ganancia del periodo, Fecha reporte (YYYY-MM-DD).
+
+Este email de Peerberry tiene DOS secciones con fechas y montos distintos: (1) un resumen de cuenta arriba, con varias lineas 'Balance on <fecha>' e 'Interest income'; (2) una seccion 'Portfolio' mas abajo, con 'Portfolio updated on <fecha>', 'Invested funds', 'Available balance' y 'Profit'. IGNORA COMPLETAMENTE la seccion (1). Usa UNICAMENTE la seccion Portfolio: Capital total = Invested funds + Available balance. Ganancia = el valor de 'Profit' (NO 'Interest income'). Fecha reporte = la fecha de 'Portfolio updated on' (NO ninguna fecha 'Balance on'), formato YYYY-MM-DD.
+```
+Salida JSON esperada: `{"ganancia": number, "capital_total": number, "fecha_reporte": "YYYY-MM-DD"}`. Filtro Gmail: `from:info@peerberry.com subject:"Account summary overview"`.
+
+*MyInvestor (escrito, sin ejecutar):*
+```
+Extrae del email mensual de MyInvestor (asunto 'Rentabilidad de tu cartera en <mes>'): Ganancia del mes, Aportes (si aplica), Capital total, Fecha reporte (YYYY-MM-DD, ultimo dia del mes que informa). Si el email tiene mas de una fecha, usa la fecha de cierre del informe/reporte, no fechas de otros movimientos.
+```
+Salida JSON esperada: `{"ganancia": number, "aportes": number, "capital_total": number, "fecha_reporte": "YYYY-MM-DD"}`. Filtro Gmail: `from:(comunicaciones@myinvestor.es OR notificaciones@myinvestor.es) subject:"Rentabilidad de tu cartera"`.
+
+*Nóminas (escrito, sin ejecutar):*
+```
+Extrae de esta nomina en PDF: nombre de la empresa, total neto a cobrar, y fecha de pago (YYYY-MM-DD).
+```
+Salida JSON esperada: `{"empresa": string, "total": number, "fecha_pago": "YYYY-MM-DD"}`. Con el cambio de diseño (carga manual a Drive), ya no hace falta filtro de Gmail — el trigger pasa a ser la carpeta Drive "Nominas".
+
+---
+
 ## [2026-07-17] Implementado (parcial): escenarios de Make para Peerberry, MyInvestor y Nóminas
 
 **Qué se construyó vía API de Make (sin depender de la interfaz, que tuvo una caída puntual):**

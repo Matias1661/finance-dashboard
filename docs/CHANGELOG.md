@@ -1,3 +1,7 @@
+## 2026-07-17 (9)
+
+- **Decisión final de arquitectura:** los 4 flujos de email/Drive (Movimientos, Peerberry, MyInvestor, Nóminas) van a GitHub Actions, no Make — límite de tamaño de mensaje de Gmail en Make sin workaround, y objetivo de minimizar herramientas (Make queda con 0 escenarios activos). Nóminas cambia de diseño: carga manual del PDF a Drive en vez de lectura automática del email. Notion actualizado (filas 2, 3, 4). Ver `DECISIONS.md` 2026-07-17.
+
 ## 2026-07-17 (8)
 
 - Construidos vía API de Make los escenarios "Emails financieros" (Peerberry+MyInvestor) y "Nóminas" (separado tras un problema de límite de tamaño de adjunto que tumbaba el trigger compartido). Peerberry validado con email real, con fix de prompt (confundía dos secciones del email). MyInvestor y Nóminas con código listo, validación real pendiente. Ver `DECISIONS.md` 2026-07-17.
