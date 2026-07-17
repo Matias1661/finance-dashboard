@@ -1,0 +1,158 @@
+{
+  "exportedAt": "2026-07-17T08:08:33.961+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmragvsiraw860qm70qzzdzm8",
+    "title": "Rentabilidad de tu cartera en mayo 2026",
+    "templateId": "cmragm3th0me90oko6nou1qnv",
+    "templateName": "MyInvestor: Rentabilidad cartera → Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-07-07T09:49:19.356Z",
+    "completedAt": "2026-07-07T09:50:05.231+00:00",
+    "isTestRun": true
+  },
+  "summary": {
+    "stepsCompleted": 0,
+    "aiCreditsConsumed": 3438
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "threadId": "19e89089d12cc10c",
+        "messageId": "19e89089d12cc10c",
+        "headerMessageId": "<1780415463895.caa3c7b6-1a69-45df-8ef3-51e40ae52de6@transactional.hubspotemail.net>"
+      },
+      "label": "Rentabilidad de tu cartera en mayo 2026",
+      "url": "https://mail.google.com/mail/#all/19e89089d12cc10c"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-07-07T09:49:19.356Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-07-07T09:49:23.726Z",
+      "step": {
+        "id": "w9mv1p",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmragn8fkavdq0qkp2ev86t83",
+          "executionKey": "cmragvy6rawdp0qm7g7jx6cly"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Extrae los datos del informe mensual de rentabilidad de MyInvestor a partir del correo adjunto.\n\n- Ganancias del mes: importe del bloque 'GANANCIAS ... En [mes]' (la ganancia del mes indicado).\n- Aportaciones del mes: aportaciones netas del mes.\n- Valor de la cartera: valor total actual de la cartera.\n- Fecha reporte: ultimo dia natural del mes al que corresponde el informe (indicado en el asunto o cuerpo), en formato AAAA-MM-DD.\n- Titulo: 'MyInvestor AAAA-MM' usando el ano y mes del informe.\n\nLos importes son numeros: elimina simbolos de moneda y separadores de miles y usa punto decimal.\n\n<attachment id=\"19e89089d12cc10c\" type=\"gmail.mail\">\n  From: MyInvestor (comunicaciones@myinvestor.es)\n  To: matiaso81@gmail.com\n  Reply-To: no-reply@myinvestor.es\n  Labels: Important, Category Updates, Inbox\n  Subject: Rentabilidad de tu cartera en mayo 2026\n  Send date/time: 2026-06-02 17:51:10 UTC+2\n  Message ID: 19e89089d12cc10c\n  Thread ID: 19e89089d12cc10c\n  Has external recipients: No\n  Is first in conversation: Yes\n  Is unread: No\n  <body>\n    Así ha sido la rentabilidad de tu cartera en mayo 2026\r\n    \r\n    Aquí tienes los datos de tu cartera RED\r\n    \r\n    Te remitimos los datos de tu cartera a 31 de mayo de 2026.\r\n    \r\n    Plantilla\r\n    \r\n    VALOR DE TU CARTERA\r\n    \r\n    8.269 €\r\n    \r\n    Plantilla\r\n    \r\n    APORTACIONES\r\n    \r\n    438 €\r\n    \r\n    En mayo\r\n    \r\n    -8.417 € en 2026\r\n    \r\n    Cuánto dinero has invertido.\r\n    \r\n    Aportaciones (€) menos Reembolsos (€).\r\n    \r\n    Plantilla\r\n    \r\n    GANANCIAS\r\n    \r\n    427 €\r\n    \r\n    En mayo\r\n    \r\n    1.195 € en 2026\r\n    \r\n    3.847 € desde inicio\r\n    \r\n    Cuánto se ha revalorizado tu dinero.\r\n    \r\n    Valor de tu cartera (€) menos Aportaciones (€).\r\n    \r\n    Plantilla\r\n    \r\n    RENTABILIDAD\r\n    \r\n    5,4 %\r\n    \r\n    En mayo\r\n    \r\n    14,0 % en 2026\r\n    \r\n    28,9 % desde inicio\r\n    \r\n    Cuánto dinero has ganado o perdido por cada 100 € invertidos. Beneficio (€) entre\r\n    \r\n    Saldo medio (€).\r\n    \r\n    Aviso Legal\r\n    \r\n    Los datos de rentabilidades, aportaciones netas y beneficios de abril se refieren al periodo desde 01/05/2026 a 31/05/2026. Los datos de rentabilidades, aportaciones netas y beneficios de 2026 se refieren al periodo desde 31/12/2025 a 31/05/2026. Ten en cuenta que la valoración de tu cartera toma como referencia los valores liquidativos de los fondos de inversión del 28 de mayo de 2026. Contabilizamos como aportación el dinero que se ha invertido en fondos. La parte que se queda en efectivo en tu cuenta pendiente de invertirse o para el pago de comisiones no se contabiliza en el dato de la aportación, pero sí se tiene en consideración para remunerar el saldo en cuenta al 0,75 % TAE, si has invertido 300 euros en productos seleccionados.\r\n    \r\n    Las carteras de MyInvestor son un servicio de gestión discrecional de carteras prestado por MyInvestor Banco, S.A. y delegado en Andbank Wealth Management, SGIIC, S.A.U., inscrita en el Registro de la CNMV con el número 237. La entidad depositaria de los fondos gestionados por Andbank Wealth Management, SGIIC, S.A.U. en que invierten las carteras es Inversis Banco, S.A., entidad bancaria sujeta a la supervisión del Banco de España y de la Comisión Nacional del Mercado de Valores e inscrita en el Registro Oficial de Bancos con el número 0232. Código BIC: INVLESMM. Para contratar el servicio, el cliente deberá realizar en todo caso el correspondiente Test de Idoneidad y firmar el contrato de gestión discrecional con MyInvestor Banco, S.A.\r\n    \r\n    Toda inversión en mercados financieros conlleva un riesgo, incluido el potencial riesgo de pérdida del capital invertido o el de ausencia de rentabilidad. El nivel de riesgo y la información de cada uno de los Fondos de Inversión comercializados por MyInvestor está detallado en el Folleto Informativo o Documento de Datos Fundamentales para el Inversor (DFI) de cada uno de los Fondos de Inversión, disponible en la página web de MyInvestor y en la página web de la Comisión Nacional del Mercado de Valores (www.cnmv.es (https://cnmv.es/ ) ). Rentabilidades pasadas no garantizan rentabilidades futuras.\r\n    \r\n    Sobre MyInvestor\r\n    \r\n    MyInvestor es un neobanco experto en inversión. Está supervisado por el Banco de España y la Comisión Nacional del Mercado de Valores. Tus ahorros están garantizados por el Fondo de Garantía de Depósitos Español.\r\n    \r\n    Puedes consultar todos los detalles de nuestros productos en myinvestor.es (https://myinvestor.es )\r\n    \r\n    En MyInvestor nos tomamos muy en serio el tratamiento de los datos personales de nuestros clientes o de quienes se interesan por nuestros productos y servicios. Por eso queremos que puedas consultar en cualquier momento la información detallada de la Política de Privacidad que le aplica como cliente de Andbank/MyInvestor en este enlace. (https://myinvestor.es/legal/politica-privacidad/ )\r\n    \r\n    https://hs-4268397.s.hubspotemail.net/hs/preferences-center/es/page?data=W2nXS-N30h-RLW3dt97G1BfjdCW1Vj-Lp3K1FRJW3G_PYP45mg0NW2D0rkl2CxcdJW2CTCZB3bB7xyW4rwp2y4rnpXmW4kDtDb2RR10-W3ZxtzW3CbgkGW3yYLGl1BdSbqW2RCVLS3M2KBHW1N60Jn2MN_1WW4rzPhH1Q2sq4W1_ncnH21qsmDW4tvpzG45yMrWW2RPrlq4rlGgkW2z-yGT3bffb7W3T3kjq3DYM8nW3BYqVJ4cswtFW1SsnrZ2TvrKCW3T022-3T48qcW30Kwgv2p3M1bW36FzTq2YxsGbW2CX3HW2FW2rVW3h_0hZ1QDJwKW3NXX4Q3ZG7CrW3XHxPv2Ft3l5W2qMx7J45yJyzW34pSLh36zpNzW2zLGtd4rw3TsW3zk3GD47QdHQW4tjSt13C0d2vW34l1rB2RmsMSW3QPymQ3G_S6TW2-B-h32WJ2FMW1Lyz-g2zZkcpW4mp7P84fQYp0W1_l4_-49K1LdW3QW1qz49kghBW25q4Yk32HczDW30v1cS3ZCCXfW43BZdG2MXRtRW3F6KYG30cR-xW1LHbQc213LgyW3JTxNv3H8xthW3SPM8K3LRhBzW3X_Dzv1QtNP8W2MnLfM1SBsJYW3_FvSB3bhlbBW3Vzy-v349jP3W211j0P2YwgMrW2-c_7X2FYv71W3R0Gx34cw36JW2KxwrS3NLTD7W2vK3DL2FrWk6W2xPk_c3_tKNkW2zKVvX3DWCn3W3_N9vW2MLxzxf2s_z_B04\r\n    \r\n    MyInvestor Banco S.A., C/ Columela, 8, Madrid, España 28001, España\n  </body>\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"titulo\":\"MyInvestor 2026-05\",\"fechaReporte\":\"2026-05-31\",\"gananciasDelMes\":427,\"valorDeLaCartera\":8269,\"aportacionesDelMes\":438}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-07T09:49:24.220Z",
+      "step": {
+        "id": "ruudiw",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "93eda06b-9207-4589-b3f0-66be10ab9caf"
+          },
+          "label": "Finance Tracker · Rendimiento Inversiones",
+          "url": "https://notion.so/5c9525eea4e64892bce6c38b07404460"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Fecha": "MyInvestor 2026-05"
+          },
+          {
+            "Plataforma": "MyInvestor"
+          },
+          {
+            "Periodo": "Mensual"
+          },
+          {
+            "Ganancia": 427
+          },
+          {
+            "Aportes": 438
+          },
+          {
+            "Capital total": 8269
+          },
+          {
+            "Fecha reporte": {
+              "start": "2026-05-31"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-07-07T09:50:05.012Z",
+      "step": {
+        "id": "ruudiw",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "93eda06b-9207-4589-b3f0-66be10ab9caf"
+          },
+          "label": "Finance Tracker · Rendimiento Inversiones",
+          "url": "https://notion.so/5c9525eea4e64892bce6c38b07404460"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Fecha": "MyInvestor 2026-05"
+          },
+          {
+            "Plataforma": "MyInvestor"
+          },
+          {
+            "Periodo": "Mensual"
+          },
+          {
+            "Ganancia": 427
+          },
+          {
+            "Aportes": 438
+          },
+          {
+            "Capital total": 8269
+          },
+          {
+            "Fecha reporte": {
+              "start": "2026-05-31"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "39633ce5-0e68-813e-95c3-fdd926a50e38",
+          "dataSourceId": "93eda06b-9207-4589-b3f0-66be10ab9caf"
+        },
+        "label": "MyInvestor 2026-05",
+        "url": "https://notion.so/39633ce50e68813e95c3fdd926a50e38"
+      }
+    }
+  ]
+}

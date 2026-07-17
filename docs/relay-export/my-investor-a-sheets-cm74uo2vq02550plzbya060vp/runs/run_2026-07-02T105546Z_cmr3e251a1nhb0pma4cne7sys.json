@@ -1,0 +1,128 @@
+{
+  "exportedAt": "2026-07-17T08:08:36.025+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmr3e251a1nhb0pma4cne7sys",
+    "title": "Rentabilidad de tu cartera en junio 2026",
+    "templateId": "cm74uo2vq02550plzbya060vp",
+    "templateName": "My Investor a Sheets",
+    "status": "COMPLETED",
+    "createdAt": "2026-07-02T10:55:46.176Z",
+    "completedAt": "2026-07-02T10:55:51.525+00:00",
+    "isTestRun": true
+  },
+  "summary": {
+    "stepsCompleted": 0,
+    "aiCreditsConsumed": 804
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "threadId": "19f1e8304669b5fd",
+        "messageId": "19f1e8304669b5fd",
+        "headerMessageId": "<1782923313237.a6617859-ae9b-475b-8904-56f0200e2007@transactional.hubspotemail.net>"
+      },
+      "label": "Rentabilidad de tu cartera en junio 2026",
+      "url": "https://mail.google.com/mail/#all/19f1e8304669b5fd"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-07-02T10:55:46.176Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-07-02T10:55:49.592Z",
+      "step": {
+        "id": "qzdpo7",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cm74uo2w6025c0plz3mxmaosq",
+          "executionKey": "cmr3e253u1nhx0pmaf1j79git"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "El correo que estas analizando es un resumen del valor de mi cartera de inversiones.\nDel correo necesito que extraigas el valor de la cartera y el mes al cual hace referencia ese valor.\n\n<attachment id=\"19f1e8304669b5fd\" type=\"gmail.mail\">\n  From: MyInvestor (comunicaciones@myinvestor.es)\n  To: matiaso81@gmail.com\n  Reply-To: no-reply@myinvestor.es\n  Labels: Important, Category Updates, Inbox\n  Subject: Rentabilidad de tu cartera en junio 2026\n  Send date/time: 2026-07-01 18:28:34 UTC+2\n  Message ID: 19f1e8304669b5fd\n  Thread ID: 19f1e8304669b5fd\n  Has external recipients: No\n  Is first in conversation: Yes\n  Is unread: No\n  <body>\n    Así ha sido la rentabilidad de tu cartera en junio 2026\r\n    \r\n    Aquí tienes los datos de tu cartera RED\r\n    \r\n    Te remitimos los datos de tu cartera a 30 de junio de 2026.\r\n    \r\n    Plantilla\r\n    \r\n    VALOR DE TU CARTERA\r\n    \r\n    8.864 €\r\n    \r\n    Plantilla\r\n    \r\n    APORTACIONES\r\n    \r\n    444 €\r\n    \r\n    En junio\r\n    \r\n    -7.973 € en 2026\r\n    \r\n    Cuánto dinero has invertido.\r\n    \r\n    Aportaciones (€) menos Reembolsos (€).\r\n    \r\n    Plantilla\r\n    \r\n    GANANCIAS\r\n    \r\n    151 €\r\n    \r\n    En junio\r\n    \r\n    1.346 € en 2026\r\n    \r\n    3.999 € desde inicio\r\n    \r\n    Cuánto se ha revalorizado tu dinero.\r\n    \r\n    Valor de tu cartera (€) menos Aportaciones (€).\r\n    \r\n    Plantilla\r\n    \r\n    RENTABILIDAD\r\n    \r\n    1,8 %\r\n    \r\n    En junio\r\n    \r\n    15,8 % en 2026\r\n    \r\n    30,3 % desde inicio\r\n    \r\n    Cuánto dinero has ganado o perdido por cada 100 € invertidos. Beneficio (€) entre\r\n    \r\n    Saldo medio (€).\r\n    \r\n    Aviso Legal\r\n    \r\n    Los datos de rentabilidades, aportaciones netas y beneficios de abril se refieren al periodo desde 01/06/2026 a 30/06/2026. Los datos de rentabilidades, aportaciones netas y beneficios de 2026 se refieren al periodo desde 31/12/2025 a 30/06/2026. Ten en cuenta que la valoración de tu cartera toma como referencia los valores liquidativos de los fondos de inversión del 29 de junio de 2026. Contabilizamos como aportación el dinero que se ha invertido en fondos. La parte que se queda en efectivo en tu cuenta pendiente de invertirse o para el pago de comisiones no se contabiliza en el dato de la aportación, pero sí se tiene en consideración para remunerar el saldo en cuenta al 1 % TAE, si has invertido 300 euros en productos seleccionados.\r\n    \r\n    Las carteras de MyInvestor son un servicio de gestión discrecional de carteras prestado por MyInvestor Banco, S.A. y delegado en Andbank Wealth Management, SGIIC, S.A.U., inscrita en el Registro de la CNMV con el número 237. La entidad depositaria de los fondos gestionados por Andbank Wealth Management, SGIIC, S.A.U. en que invierten las carteras es Inversis Banco, S.A., entidad bancaria sujeta a la supervisión del Banco de España y de la Comisión Nacional del Mercado de Valores e inscrita en el Registro Oficial de Bancos con el número 0232. Código BIC: INVLESMM. Para contratar el servicio, el cliente deberá realizar en todo caso el correspondiente Test de Idoneidad y firmar el contrato de gestión discrecional con MyInvestor Banco, S.A.\r\n    \r\n    Toda inversión en mercados financieros conlleva un riesgo, incluido el potencial riesgo de pérdida del capital invertido o el de ausencia de rentabilidad. El nivel de riesgo y la información de cada uno de los Fondos de Inversión comercializados por MyInvestor está detallado en el Folleto Informativo o Documento de Datos Fundamentales para el Inversor (DFI) de cada uno de los Fondos de Inversión, disponible en la página web de MyInvestor y en la página web de la Comisión Nacional del Mercado de Valores (www.cnmv.es (https://cnmv.es/ ) ). Rentabilidades pasadas no garantizan rentabilidades futuras.\r\n    \r\n    Sobre MyInvestor\r\n    \r\n    MyInvestor es un neobanco experto en inversión. Está supervisado por el Banco de España y la Comisión Nacional del Mercado de Valores. Tus ahorros están garantizados por el Fondo de Garantía de Depósitos Español.\r\n    \r\n    Puedes consultar todos los detalles de nuestros productos en myinvestor.es (https://myinvestor.es )\r\n    \r\n    En MyInvestor nos tomamos muy en serio el tratamiento de los datos personales de nuestros clientes o de quienes se interesan por nuestros productos y servicios. Por eso queremos que puedas consultar en cualquier momento la información detallada de la Política de Privacidad que le aplica como cliente de Andbank/MyInvestor en este enlace. (https://myinvestor.es/legal/politica-privacidad/ )\r\n    \r\n    https://hs-4268397.s.hubspotemail.net/hs/preferences-center/es/page?data=W2nXS-N30h-SsW1QwtxB3ddhpLW217Whb1_368-W2-FvlD2PMxgRW3Zr59L2WMKDvW2YDqkV4pnbBRW4hJnk847mX29W1Vg9nc4cRySfW4pK2-V3_GmWSW3_zPk82RDdVjW3NGfKJ2KBp5wW4ftyGw2t7zYtW1-_lSN1Qv7hcW4kGC-M2y2wPCW2WvzR23SSJ3sW49lWJt1VjdxfW3j9PfV2CvY2lW43R2fg2PBR4rW43Prl43jpQR6W32rgRh47C0FJW41qJj24r47FVW3XWCQZ41K1qjW4ckwfY2TLKh4W36w22q3g8mR3W1V0TrY1SsN9tW3GMxWL1LqTH3W43zLRZ2CNxSZW3Y2_K93GRJW-W2WJQ_02TGY04W2RlfgS1SBTn4W2TyLNC20Xm7SW2TRftP3NQcG5W36p7ms3ZSZJnW2y1kgS41sKNRW3gcD1S3NPq-3W2xzP8f3C0gMQW384lzk1NcNGvW2YC_SL4fKq3QW3NFV-h3SYN3jW2qTgjK2xYMvqW1Lg6Cs3c-8XMW4ksPsR2YmK96W2Rtnvm2KCHmVW2RNbKY1Btj_xW1XcqXf43qr2QW2WF73y1Vyxp6W34mknV3_MmCyW2KSvCh2nDFs1W3ZM7Mz2p5vHHW4cvcR-2TGxG9W3gxLSf3VPZztW1Q3H4h4mtQYfW4ftw_n34Hn8SW4pc2N33yNx81W2KNqfP4mmw_4W32CrVZ2KFHmjW4t8zNN2y4zptW1_8wRF3QBMlYf2B1V5c04\r\n    \r\n    MyInvestor Banco S.A., C/ Columela, 8, Madrid, España 28001, España\n  </body>\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"fecha\":\"2026-06-30\",\"valorDeLaCartera\":8864}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-02T10:55:49.674Z",
+      "step": {
+        "id": "um2hqw",
+        "type": "TRANSFORM"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Date": {
+          "subject": "2026-06-30",
+          "operations": [
+            "date.startOf",
+            "date.addUnit",
+            "date.subUnit",
+            "date.dateOf"
+          ],
+          "result": "2026-06-30"
+        }
+      },
+      "output": {
+        "id": {
+          "originKey": "cm74uv56u0014356swkm1jmyx",
+          "executionKey": "cmr3e253u1nhx0pmaf1j79git:cm74uv56u0014356swkm1jmyx"
+        },
+        "label": "Data"
+      }
+    },
+    {
+      "timestamp": "2026-07-02T10:55:51.494Z",
+      "step": {
+        "id": "bc84yf",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Sheet": {
+          "id": {
+            "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+            "sheetId": 1687438032,
+            "spreadsheetTitle": "Finance Tracker"
+          },
+          "label": "Inversiones",
+          "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=1687438032"
+        },
+        "inputs": [
+          {
+            "Fecha": "2026-06-30"
+          },
+          {
+            "My Investor": 8864
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+          "sheetId": 1687438032,
+          "rowOffset": 173,
+          "metadataId": 431577136
+        },
+        "label": "Row 174",
+        "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=1687438032&range=174:174"
+      }
+    }
+  ]
+}

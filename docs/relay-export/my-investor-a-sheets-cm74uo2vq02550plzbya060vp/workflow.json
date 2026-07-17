@@ -1,0 +1,269 @@
+{
+  "exportedAt": "2026-07-17T08:08:33.571+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "templateId": "cm74uo2vq02550plzbya060vp",
+    "name": "My Investor a Sheets",
+    "emoji": "📝",
+    "type": "PLUSPLUS",
+    "revision": 219
+  },
+  "workflow": {
+    "metadata": {
+      "name": "My Investor a Sheets"
+    },
+    "threads": [
+      {
+        "threadId": "main",
+        "ancestors": [],
+        "steps": [
+          {
+            "stepId": "trigger",
+            "stepType": "gmail.mailReceived",
+            "title": "Email received",
+            "description": "Checks connection periodically and starts run for detected events. Event is automatically detected, concrete implementation depends on integration. Filters are optional and can be used to further limit which events should trigger runs. Can only trigger once per Email.",
+            "connection": "matiaso81@gmail.com (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "filter",
+                "$ref": "relay/filter",
+                "value": {
+                  "or": [
+                    {
+                      "and": [
+                        {
+                          "field": "From",
+                          "operator": "equal",
+                          "value": "comunicaciones@myinvestor.es"
+                        },
+                        {
+                          "field": "Subject",
+                          "operator": "contains",
+                          "value": "Rentabilidad"
+                        },
+                        {
+                          "field": "Subject",
+                          "operator": "contains",
+                          "value": "cartera"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "input": "onlyFirst",
+                "title": "Only trigger for first email in conversation",
+                "type": "boolean",
+                "value": false
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/gmail.mail"
+            }
+          },
+          {
+            "stepId": "qzdpo7",
+            "stepType": "ai.prompt.object",
+            "stepNr": "Step 2",
+            "title": "Prompt GPT 5.4 nano",
+            "inputs": [
+              {
+                "input": "model",
+                "description": "relay models use AI credits, otherwise user API keys for: anthropic, deepseek, openai",
+                "type": "string",
+                "enum": [
+                  "anthropic.claude-sonnet-5",
+                  "relay.claude-sonnet-5",
+                  "anthropic.claude-haiku-4-5",
+                  "relay.claude-haiku-4-5",
+                  "anthropic.claude-opus-4-8",
+                  "relay.claude-opus-4-8",
+                  "anthropic.claude-fable-5",
+                  "relay.claude-fable-5",
+                  "deepseek.deepseek-v4-flash",
+                  "deepseek.deepseek-v4-pro",
+                  "relay.gemini-3.1-flash-lite",
+                  "relay.gemini-3.5-flash",
+                  "relay.gemini-3.1-pro",
+                  "openai.gpt-4.1-nano",
+                  "openai.gpt-4.1-mini",
+                  "openai.gpt-4.1",
+                  "openai.gpt-5.4-mini",
+                  "relay.gpt-5.4-mini",
+                  "openai.gpt-5.4-nano",
+                  "relay.gpt-5.4-nano",
+                  "openai.gpt-5.5-pro",
+                  "relay.gpt-5.5-pro",
+                  "openai.gpt-5.6-sol",
+                  "relay.gpt-5.6-sol",
+                  "openai.gpt-5.6-terra",
+                  "relay.gpt-5.6-terra",
+                  "openai.gpt-5.6-luna",
+                  "relay.gpt-5.6-luna",
+                  "openai.o1",
+                  "openai.gpt-4o",
+                  "relay.grok-4.3"
+                ],
+                "title": "Model",
+                "value": "relay.gpt-5.4-nano"
+              },
+              {
+                "input": "prompt",
+                "title": "User prompt",
+                "type": "string",
+                "value": "El correo que estas analizando es un resumen del valor de mi cartera de inversiones.\nDel correo necesito que extraigas:\n- El valor de la cartera.\n- La fecha exacta a la que hacen referencia esos datos (por ejemplo, el correo indica que los datos son \"a 30 de junio\"). Extrae esa fecha tal como la menciona el correo, no el mes completo."
+              },
+              {
+                "input": "codeSandbox",
+                "description": "Recommendation: OFF, The task is to extract and identify specific text information from an email (portfolio value and date). This is a content understanding task, not a data transformation or processing task that requires code execution.",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "webAccess",
+                "description": "Recommendation: OFF, The task involves extracting information from an already-provided email resource about investment portfolio values. No external web access is needed since the email content will be available in the workflow context.",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "review",
+                "title": "Review (human-in-the-loop)",
+                "type": "string",
+                "enum": [
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "attachments",
+                "type": "array",
+                "items": {
+                  "type": "any"
+                },
+                "value": [
+                  {
+                    "ref": "trigger"
+                  }
+                ]
+              },
+              {
+                "input": "knowledgeSources",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "title": "Knowledge item ID",
+                  "remoteEnumId": "relay.knowledgeSources"
+                },
+                "value": []
+              },
+              {
+                "input": "outputMode",
+                "type": "string",
+                "enum": [
+                  "text",
+                  "object"
+                ],
+                "value": "object"
+              },
+              {
+                "input": "reasoningEffort",
+                "description": "Defaults to low.",
+                "type": "string",
+                "enum": [
+                  "MINIMAL",
+                  "LOW",
+                  "MEDIUM",
+                  "HIGH"
+                ],
+                "title": "Reasoning effort",
+                "value": null
+              },
+              {
+                "input": "maxTokens",
+                "description": "Defaults to unrestricted.",
+                "type": "number",
+                "title": "Max output tokens",
+                "value": null
+              }
+            ],
+            "userSchema": {
+              "type": "object",
+              "properties": {
+                "Valor de la cartera": {
+                  "type": "number"
+                },
+                "Fecha": {
+                  "type": "string",
+                  "format": "date"
+                }
+              },
+              "required": []
+            },
+            "effectiveOutputSchema": {
+              "$ref": "#/steps/qzdpo7/user-schema"
+            }
+          },
+          {
+            "stepId": "bc84yf",
+            "stepType": "sheets.createRow",
+            "stepNr": "Step 3",
+            "title": "Add row to sheet",
+            "scope": {
+              "title": "Sheet",
+              "type": "resource",
+              "resourceTypeId": "sheets.sheet[1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI]",
+              "value": {
+                "pointer": "sheets.sheet[1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI]/1687438032",
+                "label": "Inversiones"
+              }
+            },
+            "connection": "matiaso81@gmail.com (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "position",
+                "title": "Insert at",
+                "description": "If unset: Bottom of sheet",
+                "type": "string",
+                "enum": [
+                  "Top of sheet",
+                  "Bottom of sheet",
+                  "Append to table"
+                ]
+              },
+              {
+                "input": "Fecha",
+                "type": "string",
+                "format": "date",
+                "value": {
+                  "ref": "qzdpo7.Fecha"
+                }
+              },
+              {
+                "input": "My Investor",
+                "type": "number",
+                "value": {
+                  "ref": "qzdpo7.Valor de la cartera"
+                }
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/sheets.row[1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI::1687438032]"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

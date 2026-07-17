@@ -1,0 +1,425 @@
+{
+  "exportedAt": "2026-07-17T08:08:33.943+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmqqr9y8l2rd40om3a9kh5rcx",
+    "title": "CaixaBank_digital_CaixaBankNow_20260623.pdf",
+    "templateId": "cm70adnqi059w0pm6bwhedq4t",
+    "templateName": "Pasar extracto bancario a Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-06-23T14:44:45.330Z",
+    "completedAt": "2026-06-23T14:45:21.638+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 9,
+    "aiCreditsConsumed": 21817
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1Ja4RB7ATwmttsILC7kWMwnQUC5mjlZZ8"
+      },
+      "label": "CaixaBank_digital_CaixaBankNow_20260623.pdf",
+      "url": "https://drive.google.com/file/d/1Ja4RB7ATwmttsILC7kWMwnQUC5mjlZZ8/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-06-23T14:44:45.330Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-06-23T14:44:47.863Z",
+      "step": {
+        "id": "e7mt6c",
+        "type": "GET_DATA"
+      },
+      "action": "Completed",
+      "inputs": {
+        "filters": [
+          {
+            "conditions": [
+              {
+                "subject": "Prompt",
+                "mode": "notEmpty",
+                "result": "ok"
+              }
+            ],
+            "result": "ok"
+          }
+        ],
+        "behavior": {
+          "noMatches": "PROCEED",
+          "multipleMatches": "PICK_FIRST"
+        }
+      },
+      "output": {
+        "id": {
+          "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+          "sheetId": 1796728716,
+          "rowTitle": "Eres un clasificador de movimientos bancarios. Tu tarea es asignar una categoría a cada transacción basándote en el concepto, el importe y el contexto.\n\n## CATEGORÍAS VÁLIDAS\nSalidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar, Talho Argentino\n\n---\n\n## REGLAS DURAS (no verificar, aplicar siempre)\n\n**Guille** — movimientos relacionados con la pareja:\n- Concepto contiene: PRES.32334358886, PRES.32333435888, TRANSF. A SU FAVOR, TRANSFER. EN DIV., TRANSFER INMEDIATA (importes típicos 40-100 €), TRASPASO, BIZUM RECIBIDO (importes pequeños 30-100 €), MUTUA MADRILEÑA, GUILLERMO BONNANO, Cuenta Guille, Pasajes Guille, AYUNTAMIENTO JAEN, CUSTOM MOTOR BIKE, BlaBlaC ar (gastos)\n\n**Gastos coche** — préstamo y seguro del vehículo:\n- Concepto contiene: PRES.80194189697, RECIBO UNICO MYBOX\n\n**Departamento** — gastos del piso:\n- Concepto contiene: RECIBOS VARIOS, PAG NOMINAS, BE CASA SAN SEBAS\n\n**Nómina** — ingresos laborales:\n- Concepto contiene: NOMINA (TRF), TRANSF.DIVISAS, PREST. DESEMPLEO, VENT.LU, DEVOLUCION HACIENDA, INGRESO CA JERO, BIZUM RECIBIDO (importes altos >200 €)\n\n**Gastos en conjunto** — cuenta compartida con pareja:\n- Concepto contiene: Gastos conjuntos, MIELE OPERATIONS, LIDL SAN SEBASTI (cuando es gasto conjunto), WILLIAMS BURG\n\n---\n\n## REGLAS SEMI-DURAS (keyword, raramente falla)\n\n| Categoría | Keywords |\n|---|---|\n| Combustible | REPSOL, SHELL, SANSE I, BALLENOIL, CEPSA, BP, MOEVE, GALP, BONIF., CEDIPSA, BALLENO IL, E.S., EESS |\n| Comer afuera | UBER EATS, SERVIMATIC, UBR* PENDING.UBER (importes pequeños) |\n| Suscripciones | APPLE.COM/BILL, YOIGO, SKYSHOWTIME, PADDLE.NET* RELAY, Wellhub, BIT2ME, OPENAI, NOTION LABS, UBER*ONE MEMBE, SANITAS, DIGI SPAIN |\n| Supermercado | MERCADONA, LIDL, HIPER S S REYES, MI ALCAMPO, CARREF |\n| Gastos coche | VOLKSWAGEN RENTIN, NORAUTO, PARKING, ITV, DGT SANCIONES, AUTOPISTA, ARBITRADE CENTRO, SOBRIAUTO, NYX*BP, TELPARK, OPERATIVA DE AUTO, SEGURCAIXA, MOVILIDAD ACM |\n| Tarjeta | T. VISA CLASSIC, CAIXABANK PAYMENT, MYCARD, Oney Pago aplazad, FINDIRECT (SEQURA), SEQURA |\n| Inversion | MyInvestor, Peerberry, BingX, DEPOSITO A LA CUE, CONSTIT. PRESTAMO, Inversiones, Aportacion Carter, TRASPASO DONATIVO, PAG NOMINAS (cuando es inversión), CUSTODIA.FONDOS |\n\n---\n\n## CATEGORÍAS ABIERTAS (verificar activamente)\n\n**Viajes** — confirmar si hay desplazamiento largo o evento:\n- Gasolineras fuera del área habitual (Madrid/Leganés/San Sebastián de los Reyes)\n- Peajes: ATLANDES, COFIROUTE, AUTOROUTES ASF, AUTOPISTA DEL SOL, AP-1, BIDEGI, SEITT, SEITR, INDIGO\n- Alojamiento: hoteles, Airbnb, Booking\n- Transporte: UBER RIDES, BlaBlaC ar (cuando es ingreso = viaje compartido), vuelos, trenes\n- Combustible en ruta (estaciones desconocidas o fuera del área habitual)\n\n**Salidas** — ocio nocturno, eventos, entradas:\n- Bares, discotecas, parkings de ocio, CROCANTICKETS, KINEPOLIS, BKT-MAD-PARK\n\n**Comer afuera vs Salidas** — mismo comercio puede ser ambos; usar contexto (hora, día, importe)\n\n**Compras** — compras online y tiendas:\n- Amazon, Zara, PRIMARK, DECATHLON, ropa, tecnología, farmacia (importes grandes)\n- SeQura, Oney = cuotas aplazadas → categorizar como Compras\n\n**Gastos moto** — mantenimiento y seguro de la moto:\n- 0182-8736-88-0830, HARLEY TALLER, MUTUA MADRILEÑA (moto), Cuota moto, UBR* PENDING.UBER (repartos en moto), MOTEA\n\n**Departamento** — gastos del piso adicionales:\n- LEROY MERLIN, CAIXABANK PAYMENT (cuando es cuota hipoteca/alquiler), luz, agua, internet\n\n**Club** — gastos del club:\n- Cuota club, Gastos club, BIZUM ENVIADO (cuando concepto indica club), NYX*AIRservSpain, PARKING AENA MAD\n\n**Talho Argentino** — gastos del local de hostelería:\n- PRES.32664031137 (cuota préstamo CaixaBank destinado al local)\n- Cualquier gasto etiquetado explícitamente como Talho Argentino\n\n---\n\n## CASOS ESPECIALES\n\n- **TRANSFER INMEDIATA / TRASPASO con importe negativo** → Guille (pago a pareja)\n- **SANSE I** → Combustible por defecto (es una gasolinera); Supermercado solo si el importe y contexto indican compra de alimentación sin indicios de repostaje\n- **PAYPAL EUROPE** → si el importe es ≤15 € y el mismo importe ya apareció en meses anteriores (recurrente) → Suscripciones; si el importe es variable o pago único → Compras\n- **TRANSFER INMEDIATA / TRASPASO con importe positivo** → Guille (ingreso de pareja) o Inversion si el concepto lo indica\n- **BIZUM ENVIADO** → según contexto: Compras, Salidas, Club, Guille, Departamento\n- **BIZUM RECIBIDO** → según contexto: Guille (pequeños), Nomina (altos), Club, Gastos en conjunto\n- **CAIXABANK PAYMENT** → Tarjeta (cuota tarjeta), Departamento (cuota piso), o según contexto\n- **SABADELL CONSUMER** → Gastos coche (cuota préstamo Golf GTE, ya refinanciado en CaixaBank pero puede seguir apareciendo)\n- **PAG NOMINAS** → Departamento (pago nómina empleado del piso) o Inversion según contexto\n- **ESTANCO, OTROS pequeños** → Otros\n\n---\n\n## INSTRUCCIONES DE SALIDA\n\nResponde ÚNICAMENTE con la categoría, sin explicación ni texto adicional. Elige siempre la categoría más específica disponible. Si no puedes determinar la categoría con confianza razonable, responde: A revisar\n",
+          "rowOffset": 1,
+          "metadataId": 914159183
+        },
+        "label": "Eres un clasificador de movimientos bancarios. Tu tarea es asignar una categoría a cada transacción basándote en el concepto, el importe y el contexto.\n\n## CATEGORÍAS VÁLIDAS\nSalidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar, Talho Argentino\n\n---\n\n## REGLAS DURAS (no verificar, aplicar siempre)\n\n**Guille** — movimientos relacionados con la pareja:\n- Concepto contiene: PRES.32334358886, PRES.32333435888, TRANSF. A SU FAVOR, TRANSFER. EN DIV., TRANSFER INMEDIATA (importes típicos 40-100 €), TRASPASO, BIZUM RECIBIDO (importes pequeños 30-100 €), MUTUA MADRILEÑA, GUILLERMO BONNANO, Cuenta Guille, Pasajes Guille, AYUNTAMIENTO JAEN, CUSTOM MOTOR BIKE, BlaBlaC ar (gastos)\n\n**Gastos coche** — préstamo y seguro del vehículo:\n- Concepto contiene: PRES.80194189697, RECIBO UNICO MYBOX\n\n**Departamento** — gastos del piso:\n- Concepto contiene: RECIBOS VARIOS, PAG NOMINAS, BE CASA SAN SEBAS\n\n**Nómina** — ingresos laborales:\n- Concepto contiene: NOMINA (TRF), TRANSF.DIVISAS, PREST. DESEMPLEO, VENT.LU, DEVOLUCION HACIENDA, INGRESO CA JERO, BIZUM RECIBIDO (importes altos >200 €)\n\n**Gastos en conjunto** — cuenta compartida con pareja:\n- Concepto contiene: Gastos conjuntos, MIELE OPERATIONS, LIDL SAN SEBASTI (cuando es gasto conjunto), WILLIAMS BURG\n\n---\n\n## REGLAS SEMI-DURAS (keyword, raramente falla)\n\n| Categoría | Keywords |\n|---|---|\n| Combustible | REPSOL, SHELL, SANSE I, BALLENOIL, CEPSA, BP, MOEVE, GALP, BONIF., CEDIPSA, BALLENO IL, E.S., EESS |\n| Comer afuera | UBER EATS, SERVIMATIC, UBR* PENDING.UBER (importes pequeños) |\n| Suscripciones | APPLE.COM/BILL, YOIGO, SKYSHOWTIME, PADDLE.NET* RELAY, Wellhub, BIT2ME, OPENAI, NOTION LABS, UBER*ONE MEMBE, SANITAS, DIGI SPAIN |\n| Supermercado | MERCADONA, LIDL, HIPER S S REYES, MI ALCAMPO, CARREF |\n| Gastos coche | VOLKSWAGEN RENTIN, NORAUTO, PARKING, ITV, DGT SANCIONES, AUTOPISTA, ARBITRADE CENTRO, SOBRIAUTO, NYX*BP, TELPARK, OPERATIVA DE AUTO, SEGURCAIXA, MOVILIDAD ACM |\n| Tarjeta | T. VISA CLASSIC, CAIXABANK PAYMENT, MYCARD, Oney Pago aplazad, FINDIRECT (SEQURA), SEQURA |\n| Inversion | MyInvestor, Peerberry, BingX, DEPOSITO A LA CUE, CONSTIT. PRESTAMO, Inversiones, Aportacion Carter, TRASPASO DONATIVO, PAG NOMINAS (cuando es inversión), CUSTODIA.FONDOS |\n\n---\n\n## CATEGORÍAS ABIERTAS (verificar activamente)\n\n**Viajes** — confirmar si hay desplazamiento largo o evento:\n- Gasolineras fuera del área habitual (Madrid/Leganés/San Sebastián de los Reyes)\n- Peajes: ATLANDES, COFIROUTE, AUTOROUTES ASF, AUTOPISTA DEL SOL, AP-1, BIDEGI, SEITT, SEITR, INDIGO\n- Alojamiento: hoteles, Airbnb, Booking\n- Transporte: UBER RIDES, BlaBlaC ar (cuando es ingreso = viaje compartido), vuelos, trenes\n- Combustible en ruta (estaciones desconocidas o fuera del área habitual)\n\n**Salidas** — ocio nocturno, eventos, entradas:\n- Bares, discotecas, parkings de ocio, CROCANTICKETS, KINEPOLIS, BKT-MAD-PARK\n\n**Comer afuera vs Salidas** — mismo comercio puede ser ambos; usar contexto (hora, día, importe)\n\n**Compras** — compras online y tiendas:\n- Amazon, Zara, PRIMARK, DECATHLON, ropa, tecnología, farmacia (importes grandes)\n- SeQura, Oney = cuotas aplazadas → categorizar como Compras\n\n**Gastos moto** — mantenimiento y seguro de la moto:\n- 0182-8736-88-0830, HARLEY TALLER, MUTUA MADRILEÑA (moto), Cuota moto, UBR* PENDING.UBER (repartos en moto), MOTEA\n\n**Departamento** — gastos del piso adicionales:\n- LEROY MERLIN, CAIXABANK PAYMENT (cuando es cuota hipoteca/alquiler), luz, agua, internet\n\n**Club** — gastos del club:\n- Cuota club, Gastos club, BIZUM ENVIADO (cuando concepto indica club), NYX*AIRservSpain, PARKING AENA MAD\n\n**Talho Argentino** — gastos del local de hostelería:\n- PRES.32664031137 (cuota préstamo CaixaBank destinado al local)\n- Cualquier gasto etiquetado explícitamente como Talho Argentino\n\n---\n\n## CASOS ESPECIALES\n\n- **TRANSFER INMEDIATA / TRASPASO con importe negativo** → Guille (pago a pareja)\n- **SANSE I** → Combustible por defecto (es una gasolinera); Supermercado solo si el importe y contexto indican compra de alimentación sin indicios de repostaje\n- **PAYPAL EUROPE** → si el importe es ≤15 € y el mismo importe ya apareció en meses anteriores (recurrente) → Suscripciones; si el importe es variable o pago único → Compras\n- **TRANSFER INMEDIATA / TRASPASO con importe positivo** → Guille (ingreso de pareja) o Inversion si el concepto lo indica\n- **BIZUM ENVIADO** → según contexto: Compras, Salidas, Club, Guille, Departamento\n- **BIZUM RECIBIDO** → según contexto: Guille (pequeños), Nomina (altos), Club, Gastos en conjunto\n- **CAIXABANK PAYMENT** → Tarjeta (cuota tarjeta), Departamento (cuota piso), o según contexto\n- **SABADELL CONSUMER** → Gastos coche (cuota préstamo Golf GTE, ya refinanciado en CaixaBank pero puede seguir apareciendo)\n- **PAG NOMINAS** → Departamento (pago nómina empleado del piso) o Inversion según contexto\n- **ESTANCO, OTROS pequeños** → Otros\n\n---\n\n## INSTRUCCIONES DE SALIDA\n\nResponde ÚNICAMENTE con la categoría, sin explicación ni texto adicional. Elige siempre la categoría más específica disponible. Si no puedes determinar la categoría con confianza razonable, responde: A revisar\n (Row 2)",
+        "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=1796728716&range=2:2"
+      }
+    },
+    {
+      "timestamp": "2026-06-23T14:45:13.186Z",
+      "step": {
+        "id": "0ym3gu",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cm70adnr905a90pm65hyd885t",
+          "executionKey": "cmqqr9ya22rd90om36dsi7zrn"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Eres un clasificador de movimientos bancarios. Tu tarea es asignar una categoría a cada transacción basándote en el concepto, el importe y el contexto.\n\n## CATEGORÍAS VÁLIDAS\nSalidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar, Talho Argentino\n\n---\n\n## REGLAS DURAS (no verificar, aplicar siempre)\n\n**Guille** — movimientos relacionados con la pareja:\n- Concepto contiene: PRES.32334358886, PRES.32333435888, TRANSF. A SU FAVOR, TRANSFER. EN DIV., TRANSFER INMEDIATA (importes típicos 40-100 €), TRASPASO, BIZUM RECIBIDO (importes pequeños 30-100 €), MUTUA MADRILEÑA, GUILLERMO BONNANO, Cuenta Guille, Pasajes Guille, AYUNTAMIENTO JAEN, CUSTOM MOTOR BIKE, BlaBlaC ar (gastos)\n\n**Gastos coche** — préstamo y seguro del vehículo:\n- Concepto contiene: PRES.80194189697, RECIBO UNICO MYBOX\n\n**Departamento** — gastos del piso:\n- Concepto contiene: RECIBOS VARIOS, PAG NOMINAS, BE CASA SAN SEBAS\n\n**Nómina** — ingresos laborales:\n- Concepto contiene: NOMINA (TRF), TRANSF.DIVISAS, PREST. DESEMPLEO, VENT.LU, DEVOLUCION HACIENDA, INGRESO CA JERO, BIZUM RECIBIDO (importes altos >200 €)\n\n**Gastos en conjunto** — cuenta compartida con pareja:\n- Concepto contiene: Gastos conjuntos, MIELE OPERATIONS, LIDL SAN SEBASTI (cuando es gasto conjunto), WILLIAMS BURG\n\n---\n\n## REGLAS SEMI-DURAS (keyword, raramente falla)\n\n| Categoría | Keywords |\n|---|---|\n| Combustible | REPSOL, SHELL, SANSE I, BALLENOIL, CEPSA, BP, MOEVE, GALP, BONIF., CEDIPSA, BALLENO IL, E.S., EESS |\n| Comer afuera | UBER EATS, SERVIMATIC, UBR* PENDING.UBER (importes pequeños) |\n| Suscripciones | APPLE.COM/BILL, YOIGO, SKYSHOWTIME, PADDLE.NET* RELAY, Wellhub, BIT2ME, OPENAI, NOTION LABS, UBER*ONE MEMBE, SANITAS, DIGI SPAIN |\n| Supermercado | MERCADONA, LIDL, HIPER S S REYES, MI ALCAMPO, CARREF |\n| Gastos coche | VOLKSWAGEN RENTIN, NORAUTO, PARKING, ITV, DGT SANCIONES, AUTOPISTA, ARBITRADE CENTRO, SOBRIAUTO, NYX*BP, TELPARK, OPERATIVA DE AUTO, SEGURCAIXA, MOVILIDAD ACM |\n| Tarjeta | T. VISA CLASSIC, CAIXABANK PAYMENT, MYCARD, Oney Pago aplazad, FINDIRECT (SEQURA), SEQURA |\n| Inversion | MyInvestor, Peerberry, BingX, DEPOSITO A LA CUE, CONSTIT. PRESTAMO, Inversiones, Aportacion Carter, TRASPASO DONATIVO, PAG NOMINAS (cuando es inversión), CUSTODIA.FONDOS |\n\n---\n\n## CATEGORÍAS ABIERTAS (verificar activamente)\n\n**Viajes** — confirmar si hay desplazamiento largo o evento:\n- Gasolineras fuera del área habitual (Madrid/Leganés/San Sebastián de los Reyes)\n- Peajes: ATLANDES, COFIROUTE, AUTOROUTES ASF, AUTOPISTA DEL SOL, AP-1, BIDEGI, SEITT, SEITR, INDIGO\n- Alojamiento: hoteles, Airbnb, Booking\n- Transporte: UBER RIDES, BlaBlaC ar (cuando es ingreso = viaje compartido), vuelos, trenes\n- Combustible en ruta (estaciones desconocidas o fuera del área habitual)\n\n**Salidas** — ocio nocturno, eventos, entradas:\n- Bares, discotecas, parkings de ocio, CROCANTICKETS, KINEPOLIS, BKT-MAD-PARK\n\n**Comer afuera vs Salidas** — mismo comercio puede ser ambos; usar contexto (hora, día, importe)\n\n**Compras** — compras online y tiendas:\n- Amazon, Zara, PRIMARK, DECATHLON, ropa, tecnología, farmacia (importes grandes)\n- SeQura, Oney = cuotas aplazadas → categorizar como Compras\n\n**Gastos moto** — mantenimiento y seguro de la moto:\n- 0182-8736-88-0830, HARLEY TALLER, MUTUA MADRILEÑA (moto), Cuota moto, UBR* PENDING.UBER (repartos en moto), MOTEA\n\n**Departamento** — gastos del piso adicionales:\n- LEROY MERLIN, CAIXABANK PAYMENT (cuando es cuota hipoteca/alquiler), luz, agua, internet\n\n**Club** — gastos del club:\n- Cuota club, Gastos club, BIZUM ENVIADO (cuando concepto indica club), NYX*AIRservSpain, PARKING AENA MAD\n\n**Talho Argentino** — gastos del local de hostelería:\n- PRES.32664031137 (cuota préstamo CaixaBank destinado al local)\n- Cualquier gasto etiquetado explícitamente como Talho Argentino\n\n---\n\n## CASOS ESPECIALES\n\n- **TRANSFER INMEDIATA / TRASPASO con importe negativo** → Guille (pago a pareja)\n- **SANSE I** → Combustible por defecto (es una gasolinera); Supermercado solo si el importe y contexto indican compra de alimentación sin indicios de repostaje\n- **PAYPAL EUROPE** → si el importe es ≤15 € y el mismo importe ya apareció en meses anteriores (recurrente) → Suscripciones; si el importe es variable o pago único → Compras\n- **TRANSFER INMEDIATA / TRASPASO con importe positivo** → Guille (ingreso de pareja) o Inversion si el concepto lo indica\n- **BIZUM ENVIADO** → según contexto: Compras, Salidas, Club, Guille, Departamento\n- **BIZUM RECIBIDO** → según contexto: Guille (pequeños), Nomina (altos), Club, Gastos en conjunto\n- **CAIXABANK PAYMENT** → Tarjeta (cuota tarjeta), Departamento (cuota piso), o según contexto\n- **SABADELL CONSUMER** → Gastos coche (cuota préstamo Golf GTE, ya refinanciado en CaixaBank pero puede seguir apareciendo)\n- **PAG NOMINAS** → Departamento (pago nómina empleado del piso) o Inversion según contexto\n- **ESTANCO, OTROS pequeños** → Otros\n\n---\n\n## INSTRUCCIONES DE SALIDA\n\nResponde ÚNICAMENTE con la categoría, sin explicación ni texto adicional. Elige siempre la categoría más específica disponible. Si no puedes determinar la categoría con confianza razonable, responde: A revisar\n\n<attachment label=\"Actual file\">\n[attached pdf 1: \"CaixaBank_digital_CaixaBankNow_20260623.pdf\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"movimientos\":[{\"date\":\"2026-06-22\",\"monto\":-50,\"category\":\"Gastos en conjunto\",\"concepto\":\"Gastos conjuntos\"},{\"date\":\"2026-06-22\",\"monto\":-6723.97,\"category\":\"Talho Argentino\",\"concepto\":\"Heladeras Talho A\"},{\"date\":\"2026-06-22\",\"monto\":50,\"category\":\"Guille\",\"concepto\":\"TRANSFER INMEDIATA\"},{\"date\":\"2026-06-22\",\"monto\":50,\"category\":\"Guille\",\"concepto\":\"TRANSFER INMEDIATA\"},{\"date\":\"2026-06-22\",\"monto\":164.43,\"category\":\"Guille\",\"concepto\":\"TRANSFER. EN DIV.\"},{\"date\":\"2026-06-22\",\"monto\":-9.99,\"category\":\"Compras\",\"concepto\":\"AMAZON.ES\"}]}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-06-23T14:45:13.814Z",
+      "step": {
+        "id": "k7qjss",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_1",
+      "action": "Completed",
+      "inputs": {
+        "Sheet": {
+          "id": {
+            "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+            "sheetId": 0,
+            "spreadsheetTitle": "Finance Tracker"
+          },
+          "label": "Movimientos",
+          "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0"
+        },
+        "Insert at": "Top of sheet",
+        "inputs": [
+          {
+            "Fecha": "2026-06-22"
+          },
+          {
+            "Concepto": "Gastos conjuntos"
+          },
+          {
+            "Monto": -50
+          },
+          {
+            "Categoria": "Gastos en conjunto"
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+          "sheetId": 0,
+          "rowTitle": "Gastos conjuntos",
+          "rowOffset": 1,
+          "metadataId": 686893789
+        },
+        "label": "Gastos conjuntos (Row 2)",
+        "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0&range=2:2"
+      }
+    },
+    {
+      "timestamp": "2026-06-23T14:45:15.075Z",
+      "step": {
+        "id": "k7qjss",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_2",
+      "action": "Completed",
+      "inputs": {
+        "Sheet": {
+          "id": {
+            "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+            "sheetId": 0,
+            "spreadsheetTitle": "Finance Tracker"
+          },
+          "label": "Movimientos",
+          "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0"
+        },
+        "Insert at": "Top of sheet",
+        "inputs": [
+          {
+            "Fecha": "2026-06-22"
+          },
+          {
+            "Concepto": "Heladeras Talho A"
+          },
+          {
+            "Monto": -6723.97
+          },
+          {
+            "Categoria": "Talho Argentino"
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+          "sheetId": 0,
+          "rowTitle": "Heladeras Talho A",
+          "rowOffset": 1,
+          "metadataId": 676822186
+        },
+        "label": "Heladeras Talho A (Row 2)",
+        "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0&range=2:2"
+      }
+    },
+    {
+      "timestamp": "2026-06-23T14:45:15.653Z",
+      "step": {
+        "id": "k7qjss",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_3",
+      "action": "Completed",
+      "inputs": {
+        "Sheet": {
+          "id": {
+            "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+            "sheetId": 0,
+            "spreadsheetTitle": "Finance Tracker"
+          },
+          "label": "Movimientos",
+          "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0"
+        },
+        "Insert at": "Top of sheet",
+        "inputs": [
+          {
+            "Fecha": "2026-06-22"
+          },
+          {
+            "Concepto": "TRANSFER INMEDIATA"
+          },
+          {
+            "Monto": 50
+          },
+          {
+            "Categoria": "Guille"
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+          "sheetId": 0,
+          "rowTitle": "TRANSFER INMEDIATA",
+          "rowOffset": 1,
+          "metadataId": 1556665389
+        },
+        "label": "TRANSFER INMEDIATA (Row 2)",
+        "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0&range=2:2"
+      }
+    },
+    {
+      "timestamp": "2026-06-23T14:45:16.841Z",
+      "step": {
+        "id": "k7qjss",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_4",
+      "action": "Completed",
+      "inputs": {
+        "Sheet": {
+          "id": {
+            "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+            "sheetId": 0,
+            "spreadsheetTitle": "Finance Tracker"
+          },
+          "label": "Movimientos",
+          "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0"
+        },
+        "Insert at": "Top of sheet",
+        "inputs": [
+          {
+            "Fecha": "2026-06-22"
+          },
+          {
+            "Concepto": "TRANSFER INMEDIATA"
+          },
+          {
+            "Monto": 50
+          },
+          {
+            "Categoria": "Guille"
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+          "sheetId": 0,
+          "rowTitle": "TRANSFER INMEDIATA",
+          "rowOffset": 1,
+          "metadataId": 1159194984
+        },
+        "label": "TRANSFER INMEDIATA (Row 2)",
+        "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0&range=2:2"
+      }
+    },
+    {
+      "timestamp": "2026-06-23T14:45:19.170Z",
+      "step": {
+        "id": "k7qjss",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_5",
+      "action": "Completed",
+      "inputs": {
+        "Sheet": {
+          "id": {
+            "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+            "sheetId": 0,
+            "spreadsheetTitle": "Finance Tracker"
+          },
+          "label": "Movimientos",
+          "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0"
+        },
+        "Insert at": "Top of sheet",
+        "inputs": [
+          {
+            "Fecha": "2026-06-22"
+          },
+          {
+            "Concepto": "TRANSFER. EN DIV."
+          },
+          {
+            "Monto": 164.43
+          },
+          {
+            "Categoria": "Guille"
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+          "sheetId": 0,
+          "rowTitle": "TRANSFER. EN DIV.",
+          "rowOffset": 1,
+          "metadataId": 812697146
+        },
+        "label": "TRANSFER. EN DIV. (Row 2)",
+        "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0&range=2:2"
+      }
+    },
+    {
+      "timestamp": "2026-06-23T14:45:20.088Z",
+      "step": {
+        "id": "k7qjss",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_6",
+      "action": "Completed",
+      "inputs": {
+        "Sheet": {
+          "id": {
+            "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+            "sheetId": 0,
+            "spreadsheetTitle": "Finance Tracker"
+          },
+          "label": "Movimientos",
+          "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0"
+        },
+        "Insert at": "Top of sheet",
+        "inputs": [
+          {
+            "Fecha": "2026-06-22"
+          },
+          {
+            "Concepto": "AMAZON.ES"
+          },
+          {
+            "Monto": -9.99
+          },
+          {
+            "Categoria": "Compras"
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+          "sheetId": 0,
+          "rowTitle": "AMAZON.ES",
+          "rowOffset": 1,
+          "metadataId": 708113228
+        },
+        "label": "AMAZON.ES (Row 2)",
+        "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=0&range=2:2"
+      }
+    },
+    {
+      "timestamp": "2026-06-23T14:45:20.292Z",
+      "step": {
+        "id": "2kmae7",
+        "type": "TRANSFORM"
+      },
+      "action": "Completed",
+      "inputs": {
+        "ref": "main"
+      },
+      "output": {
+        "id": {
+          "originKey": "cmpwh1yav8xd30rku9rsq8540",
+          "executionKey": "cmqqr9ya22rd90om36dsi7zrn:cmpwh1yav8xd30rku9rsq8540"
+        },
+        "label": "Data"
+      }
+    },
+    {
+      "timestamp": "2026-06-23T14:45:21.596Z",
+      "step": {
+        "id": "lwog93",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Request URL": "https://api.github.com/repos/Matias1661/finance-dashboard/actions/workflows/sync-finance-data.yml/dispatches",
+        "HTTP method": "POST",
+        "Headers": [
+          {
+            "Authorization": "Bearer __RELAY_SECRET__GITHUB_DISPATCH_TOKEN__"
+          },
+          {
+            "Accept": "application/vnd.github+json"
+          }
+        ],
+        "Encoding": "JSON (application/json)",
+        "Body": {
+          "ref": "main"
+        },
+        "Error handling": "Fail"
+      },
+      "output": {
+        "id": {
+          "originKey": "cmpwgxtvu9ky50rm8bvgea75z",
+          "executionKey": "cmqqr9ya22rd90om36dsi7zrn:cmpwgxtvu9ky50rm8bvgea75z"
+        },
+        "label": "HTTP Response"
+      }
+    }
+  ]
+}

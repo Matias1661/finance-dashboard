@@ -1,0 +1,405 @@
+{
+  "exportedAt": "2026-07-17T08:08:30.466+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "templateId": "cmrafzoi3anhr0qkp9vrvcetw",
+    "name": "Peerberry a Notion",
+    "emoji": "📝",
+    "type": "PLUSPLUS",
+    "revision": 69
+  },
+  "workflow": {
+    "metadata": {
+      "name": "Peerberry a Notion"
+    },
+    "threads": [
+      {
+        "threadId": "main",
+        "ancestors": [],
+        "steps": [
+          {
+            "stepId": "trigger",
+            "stepType": "gmail.mailReceived",
+            "title": "Email received",
+            "description": "Checks connection periodically and starts run for detected events. Event is automatically detected, concrete implementation depends on integration. Filters are optional and can be used to further limit which events should trigger runs. Can only trigger once per Email.",
+            "connection": "matiaso81@gmail.com (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "filter",
+                "$ref": "relay/filter",
+                "value": {
+                  "or": [
+                    {
+                      "and": [
+                        {
+                          "field": "From",
+                          "operator": "equal",
+                          "value": "info@peerberry.com"
+                        },
+                        {
+                          "field": "Subject",
+                          "operator": "contains",
+                          "value": "Account summary overview"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "input": "onlyFirst",
+                "title": "Only trigger for first email in conversation",
+                "type": "boolean",
+                "value": false
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/gmail.mail"
+            }
+          },
+          {
+            "stepId": "5fj3jd",
+            "stepType": "ai.prompt.object.easy",
+            "stepNr": "Step 2",
+            "title": "Extraer datos del mail",
+            "connection": "Anthropic #1 (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "model",
+                "description": "relay models use AI credits, otherwise user API keys for: anthropic, deepseek, openai",
+                "type": "string",
+                "enum": [
+                  "anthropic.claude-sonnet-5",
+                  "relay.claude-sonnet-5",
+                  "anthropic.claude-haiku-4-5",
+                  "relay.claude-haiku-4-5",
+                  "anthropic.claude-opus-4-8",
+                  "relay.claude-opus-4-8",
+                  "anthropic.claude-fable-5",
+                  "relay.claude-fable-5",
+                  "deepseek.deepseek-v4-flash",
+                  "deepseek.deepseek-v4-pro",
+                  "relay.gemini-3.1-flash-lite",
+                  "relay.gemini-3.5-flash",
+                  "relay.gemini-3.1-pro",
+                  "openai.gpt-4.1-nano",
+                  "openai.gpt-4.1-mini",
+                  "openai.gpt-4.1",
+                  "openai.gpt-5.4-mini",
+                  "relay.gpt-5.4-mini",
+                  "openai.gpt-5.4-nano",
+                  "relay.gpt-5.4-nano",
+                  "openai.gpt-5.5-pro",
+                  "relay.gpt-5.5-pro",
+                  "openai.gpt-5.6-sol",
+                  "relay.gpt-5.6-sol",
+                  "openai.gpt-5.6-terra",
+                  "relay.gpt-5.6-terra",
+                  "openai.gpt-5.6-luna",
+                  "relay.gpt-5.6-luna",
+                  "openai.o1",
+                  "openai.gpt-4o",
+                  "relay.grok-4.3"
+                ],
+                "title": "Model",
+                "value": "anthropic.claude-haiku-4-5"
+              },
+              {
+                "input": "prompt",
+                "title": "User prompt",
+                "type": "string",
+                "value": "Este correo es el resumen semanal de mi cuenta en Peerberry. Extrae los siguientes valores del cuerpo del mail:\n- Fecha fin periodo: el mail muestra \"Balance on [inicio] - [fin]\". Devuelve SOLO la fecha de FIN del periodo, en formato YYYY-MM-DD.\n- Interest income: el importe de intereses de la semana (número).\n- Deposit: importe depositado. Si no aparece, usa 0.\n- Withdrawals: importe retirado. Si no aparece, usa 0.\n- Invested funds: del bloque Portfolio.\n- Available balance: del bloque Portfolio.\nDevuelve solo los números sin símbolos de moneda."
+              },
+              {
+                "input": "codeSandbox",
+                "description": "Recommendation: OFF, The task is to extract and format specific values from email text. This is a content understanding task, not a data transformation task that requires programmatic processing or file manipulation.",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "AUTO"
+              },
+              {
+                "input": "webAccess",
+                "description": "Recommendation: OFF, The user is extracting structured data from an email that is already provided as input. No additional web access is needed to parse the email content.",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "AUTO"
+              },
+              {
+                "input": "review",
+                "title": "Review (human-in-the-loop)",
+                "type": "string",
+                "enum": [
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "attachments",
+                "type": "array",
+                "items": {
+                  "type": "any"
+                },
+                "value": [
+                  {
+                    "ref": "trigger"
+                  }
+                ]
+              },
+              {
+                "input": "knowledgeSources",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "title": "Knowledge item ID",
+                  "remoteEnumId": "relay.knowledgeSources"
+                },
+                "value": []
+              },
+              {
+                "input": "outputMode",
+                "type": "string",
+                "enum": [
+                  "text",
+                  "object"
+                ],
+                "value": "object"
+              },
+              {
+                "input": "thinkingTokens",
+                "description": "Minimum 1024, 0 to disable. Defaults to 1024.",
+                "type": "number",
+                "title": "Thinking tokens",
+                "value": null
+              },
+              {
+                "input": "maxTokens",
+                "description": "Defaults to unrestricted.",
+                "type": "number",
+                "title": "Max output tokens",
+                "value": null
+              }
+            ],
+            "userSchema": {
+              "type": "object",
+              "title": "Response",
+              "properties": {
+                "Fecha fin periodo": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "Interest income": {
+                  "type": "number"
+                },
+                "Deposit": {
+                  "type": "number"
+                },
+                "Withdrawals": {
+                  "type": "number"
+                },
+                "Invested funds": {
+                  "type": "number"
+                },
+                "Available balance": {
+                  "type": "number"
+                }
+              },
+              "required": []
+            },
+            "effectiveOutputSchema": {
+              "$ref": "#/steps/5fj3jd/user-schema"
+            }
+          },
+          {
+            "stepId": "ea1xvr",
+            "stepType": "transform",
+            "stepNr": "Step 3",
+            "title": "Calcular Aportes y Capital total",
+            "inputs": [],
+            "createConstants": "No constants configured",
+            "transformData": {
+              "Aportes": {
+                "subject": {
+                  "ref": "5fj3jd.Deposit"
+                },
+                "chainOps": [
+                  {
+                    "op": "number.subtract",
+                    "additionalArgs": [
+                      {
+                        "ref": "5fj3jd.Withdrawals"
+                      }
+                    ],
+                    "signature": {
+                      "parameters": [
+                        {
+                          "name": "a",
+                          "type": "number"
+                        },
+                        {
+                          "name": "b",
+                          "type": "number"
+                        }
+                      ],
+                      "returns": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                ]
+              },
+              "Capital total": {
+                "subject": {
+                  "ref": "5fj3jd.Invested funds"
+                },
+                "chainOps": [
+                  {
+                    "op": "number.add",
+                    "additionalArgs": [
+                      {
+                        "ref": "5fj3jd.Available balance"
+                      }
+                    ],
+                    "signature": {
+                      "parameters": [
+                        {
+                          "name": "a",
+                          "type": "number"
+                        },
+                        {
+                          "name": "b",
+                          "type": "number"
+                        }
+                      ],
+                      "returns": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "effectiveOutputSchema": {
+              "type": "object",
+              "properties": {
+                "Aportes": {
+                  "type": "number"
+                },
+                "Capital total": {
+                  "type": "number"
+                }
+              },
+              "description": "Automatically derived"
+            }
+          },
+          {
+            "stepId": "s04l5q",
+            "stepType": "notion.createPageDb",
+            "stepNr": "Step 4",
+            "title": "Crear página en Notion",
+            "scope": {
+              "title": "Data source",
+              "type": "resource",
+              "resourceTypeId": "notion.dataSource",
+              "value": {
+                "pointer": "notion.dataSource/93eda06b-9207-4589-b3f0-66be10ab9caf",
+                "label": "Finance Tracker · Rendimiento Inversiones"
+              }
+            },
+            "connection": "Notion #1 (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "template",
+                "description": "If unset: None",
+                "type": "string",
+                "remoteEnumId": "notion.dataSource.dataSourceTemplate[93eda06b-9207-4589-b3f0-66be10ab9caf]"
+              },
+              {
+                "input": "content",
+                "type": "string",
+                "format": "markdown",
+                "value": null
+              },
+              {
+                "input": "Fecha",
+                "type": "string",
+                "value": "Peerberry {{5fj3jd.Fecha fin periodo | format: 'yyyy-MM-dd'}}"
+              },
+              {
+                "input": "Plataforma",
+                "type": "string",
+                "enum": [
+                  "Peerberry",
+                  "MyInvestor"
+                ],
+                "value": "Peerberry"
+              },
+              {
+                "input": "Periodo",
+                "type": "string",
+                "enum": [
+                  "Semanal",
+                  "Mensual"
+                ],
+                "value": "Semanal"
+              },
+              {
+                "input": "Ganancia",
+                "type": "number",
+                "value": {
+                  "ref": "5fj3jd.Interest income"
+                }
+              },
+              {
+                "input": "Aportes",
+                "type": "number",
+                "value": {
+                  "ref": "ea1xvr.Aportes"
+                }
+              },
+              {
+                "input": "Capital total",
+                "type": "number",
+                "value": {
+                  "ref": "ea1xvr.Capital total"
+                }
+              },
+              {
+                "input": "Fecha reporte",
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "title": "Start",
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "end": {
+                    "title": "End",
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "value": {
+                  "start": {
+                    "ref": "5fj3jd.Fecha fin periodo"
+                  }
+                }
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/notion.page2[93eda06b-9207-4589-b3f0-66be10ab9caf]"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

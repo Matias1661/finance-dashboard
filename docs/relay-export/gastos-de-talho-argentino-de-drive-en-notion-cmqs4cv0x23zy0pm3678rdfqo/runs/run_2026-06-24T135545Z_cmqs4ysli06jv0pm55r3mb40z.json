@@ -1,0 +1,136 @@
+{
+  "exportedAt": "2026-07-17T08:08:33.384+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmqs4ysli06jv0pm55r3mb40z",
+    "title": "document.pdf",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-06-24T13:55:45.602Z",
+    "completedAt": "2026-06-24T13:56:32.822+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 2,
+    "aiCreditsConsumed": 7228
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1ZzB-oUG37NRgmsu5sQTPdj-ew9lTWcCL"
+      },
+      "label": "document.pdf",
+      "url": "https://drive.google.com/file/d/1ZzB-oUG37NRgmsu5sQTPdj-ew9lTWcCL/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-06-24T13:55:45.602Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-06-24T13:55:51.219Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmqs4ysmd06k00pm5550xea5x"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached pdf 1: \"document.pdf\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Defining the Objective**\n\nOkay, I'm now zeroing in on defining the goal. My focus is extracting \"concepto,\" \"costo,\" and \"fecha\" from the receipt. I've set the stage by clarifying the objective: to pull out specific details. My next steps are analyzing the receipt image and the OCR output.\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\n  \"concepto\": \"ALQUILER MES AGOSTO 2026 LOCAL CALLE ISABEL DE FARNESIO 18\",\n  \"costo\": 1300.00,\n  \"fecha\": \"2026-06-01\"\n}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-06-24T13:55:52.015Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "ALQUILER MES AGOSTO 2026 LOCAL CALLE ISABEL DE FARNESIO 18"
+          },
+          {
+            "Costo": 1300
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-01"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-06-24T13:56:32.674Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "ALQUILER MES AGOSTO 2026 LOCAL CALLE ISABEL DE FARNESIO 18"
+          },
+          {
+            "Costo": 1300
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-01"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "38933ce5-0e68-81c0-a6fe-cd05689e508a",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "ALQUILER MES AGOSTO 2026 LOCAL CALLE ISABEL DE FARNESIO 18",
+        "url": "https://notion.so/38933ce50e6881c0a6fecd05689e508a"
+      }
+    }
+  ]
+}

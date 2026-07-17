@@ -1,0 +1,97 @@
+{
+  "exportedAt": "2026-07-17T08:08:30.403+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "templateId": "cmqt7jmtm9cyl0qlx71hh7pqk",
+    "name": "Actualizar gastos local en GH",
+    "emoji": "📝",
+    "type": "PLUSPLUS",
+    "revision": 123
+  },
+  "workflow": {
+    "metadata": {
+      "name": "Actualizar gastos local en GH"
+    },
+    "threads": [
+      {
+        "threadId": "main",
+        "ancestors": [],
+        "steps": [
+          {
+            "stepId": "trigger",
+            "stepType": "notion.databasePageCreated.change",
+            "title": "Página de Notion actualizada",
+            "description": "Instant trigger - starts a new run when event occurs. Relay.app monitors Pages and detects changes to the configured fields (Concepto, Costo, Fecha, Pagado por). Filters are optional to further limit which changes should trigger runs. Changes to multiple fields at the same time result in one run, but multiple changes over time will trigger again for the same resource.",
+            "connection": "Notion #1 (owned by Matias Ortiz)",
+            "scope": {
+              "title": "Data source",
+              "type": "resource",
+              "resourceTypeId": "notion.dataSource",
+              "value": {
+                "pointer": "notion.dataSource/38933ce5-0e68-80ba-9e03-000b001f2431",
+                "label": "Gastos del local"
+              }
+            },
+            "inputs": [
+              {
+                "input": "filter",
+                "$ref": "relay/filter"
+              },
+              {
+                "input": "changeFields",
+                "title": "Fields to check for changes",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "value": [
+                  "Concepto",
+                  "Costo",
+                  "Fecha",
+                  "Pagado por"
+                ]
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/notion.page2[38933ce5-0e68-80ba-9e03-000b001f2431]"
+            }
+          },
+          {
+            "stepId": "ws7xcd",
+            "stepType": "github.dispatchWorkflow",
+            "stepNr": "Step 2",
+            "title": "Ejecutar workflow de GitHub",
+            "scope": {
+              "title": "Workflow",
+              "type": "resource",
+              "resourceTypeId": "github.workflow",
+              "value": {
+                "pointer": "github.workflow/301444283",
+                "label": "Sync Sociedad Data"
+              }
+            },
+            "connection": "GitHub #1 (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "ref",
+                "type": "resource",
+                "resourceTypeId": "github.branch",
+                "value": {
+                  "pointer": "github.branch/main",
+                  "label": "main"
+                }
+              },
+              {
+                "input": "inputs",
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

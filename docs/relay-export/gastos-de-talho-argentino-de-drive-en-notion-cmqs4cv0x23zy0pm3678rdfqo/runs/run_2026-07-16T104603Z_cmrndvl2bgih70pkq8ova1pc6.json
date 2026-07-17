@@ -1,0 +1,164 @@
+{
+  "exportedAt": "2026-07-17T08:08:38.281+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmrndvl2bgih70pkq8ova1pc6",
+    "title": "PHOTO-2026-07-16-12-32-23.jpg",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-07-16T10:46:03.874Z",
+    "completedAt": "2026-07-16T10:46:11.910+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 3,
+    "aiCreditsConsumed": 11638
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1WICsC9pqaXcm1esmbvZJo_M-vdfVr0Rh"
+      },
+      "label": "PHOTO-2026-07-16-12-32-23.jpg",
+      "url": "https://drive.google.com/file/d/1WICsC9pqaXcm1esmbvZJo_M-vdfVr0Rh/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-07-16T10:46:03.874Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-07-16T10:46:09.888Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmrndvl32gihc0pkq48ek54w6"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached image 1: \"PHOTO-2026-07-16-12-32-23.jpg\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Initiating the Extraction Process**\n\nI'm currently focused on dissecting the request. My target is a schema that looks for \"concepto,\" \"costo,\" and \"fecha\" data, with specific formats for each. The source material is an image of an Obramat receipt, which I'm gearing up to process. The overarching goal is a complete and accurate extraction.\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"concepto\":\"OBRAMAT MAJADAHONDA\",\"costo\":8.89,\"fecha\":\"2026-07-14\"}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-16T10:46:10.379Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "OBRAMAT MAJADAHONDA"
+          },
+          {
+            "Costo": 8.89
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-14"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-07-16T10:46:10.689Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "OBRAMAT MAJADAHONDA"
+          },
+          {
+            "Costo": 8.89
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-14"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "39f33ce5-0e68-8147-a716-d66a8cee7133",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "OBRAMAT MAJADAHONDA",
+        "url": "https://notion.so/39f33ce50e688147a716d66a8cee7133"
+      }
+    },
+    {
+      "timestamp": "2026-07-16T10:46:11.872Z",
+      "step": {
+        "id": "dfn16j",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Workflow": {
+          "id": {
+            "ownerLogin": "Matias1661",
+            "workflowId": 301444283,
+            "repositoryName": "finance-dashboard"
+          },
+          "label": "Sync Sociedad Data"
+        },
+        "Ref": {
+          "id": {
+            "ownedBy": "user",
+            "branchName": "main",
+            "ownerLogin": "Matias1661",
+            "repositoryId": 1255881086,
+            "repositoryName": "finance-dashboard"
+          },
+          "url": "https://github.com/Matias1661/finance-dashboard/tree/main"
+        }
+      }
+    }
+  ]
+}

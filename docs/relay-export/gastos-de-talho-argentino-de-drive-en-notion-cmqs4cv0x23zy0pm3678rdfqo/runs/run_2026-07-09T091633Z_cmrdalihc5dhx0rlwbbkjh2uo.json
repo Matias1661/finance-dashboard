@@ -1,0 +1,154 @@
+{
+  "exportedAt": "2026-07-17T08:08:37.505+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmrdalihc5dhx0rlwbbkjh2uo",
+    "title": "PHOTO-2026-07-09-11-14-28.jpg",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-07-09T09:16:33.360Z",
+    "completedAt": "2026-07-09T09:17:40.892+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 3,
+    "aiCreditsConsumed": 8955
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1t5shIRiSjR4CrIf9H8-nms_0KJrWK6jC"
+      },
+      "label": "PHOTO-2026-07-09-11-14-28.jpg",
+      "url": "https://drive.google.com/file/d/1t5shIRiSjR4CrIf9H8-nms_0KJrWK6jC/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-07-09T09:16:33.360Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-07-09T09:16:39.066Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmrdalihu5di20rlw5e4y7mr0"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached image 1: \"PHOTO-2026-07-09-11-14-28.jpg\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Analyzing the Transaction**\n\nI've examined the provided image and determined it relates to a transaction from \"Leroy Merlin Alcorcon\" for -23.98€. I'm focusing on the nature of this expense – whether it's an outright purchase, a refund, or something else. I want to know more about the transaction.\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"concepto\": \"Leroy merlin alcorcon al-corcon es\", \"costo\": 23.98, \"fecha\": null}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-09T09:16:40.395Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Leroy merlin alcorcon al-corcon es"
+          },
+          {
+            "Costo": 23.98
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-07-09T09:17:39.267Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Leroy merlin alcorcon al-corcon es"
+          },
+          {
+            "Costo": 23.98
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "39833ce5-0e68-81cc-bbf4-de0cb32608a9",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "Leroy merlin alcorcon al-corcon es",
+        "url": "https://notion.so/39833ce50e6881ccbbf4de0cb32608a9"
+      }
+    },
+    {
+      "timestamp": "2026-07-09T09:17:40.651Z",
+      "step": {
+        "id": "dfn16j",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Workflow": {
+          "id": {
+            "ownerLogin": "Matias1661",
+            "workflowId": 301444283,
+            "repositoryName": "finance-dashboard"
+          },
+          "label": "Sync Sociedad Data"
+        },
+        "Ref": {
+          "id": {
+            "ownedBy": "user",
+            "branchName": "main",
+            "ownerLogin": "Matias1661",
+            "repositoryId": 1255881086,
+            "repositoryName": "finance-dashboard"
+          },
+          "url": "https://github.com/Matias1661/finance-dashboard/tree/main"
+        }
+      }
+    }
+  ]
+}

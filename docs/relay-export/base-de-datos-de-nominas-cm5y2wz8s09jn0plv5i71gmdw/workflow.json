@@ -1,0 +1,358 @@
+{
+  "exportedAt": "2026-07-17T08:08:30.917+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "templateId": "cm5y2wz8s09jn0plv5i71gmdw",
+    "name": "Base de datos de nominas",
+    "emoji": "📝",
+    "type": "PLUSPLUS",
+    "revision": 445
+  },
+  "workflow": {
+    "metadata": {
+      "name": "Base de datos de nominas"
+    },
+    "threads": [
+      {
+        "threadId": "main",
+        "ancestors": [],
+        "steps": [
+          {
+            "stepId": "trigger",
+            "stepType": "drive.fileAddedToFolder",
+            "title": "File added to folder",
+            "description": "Instant trigger - starts a new run when event occurs. Event is automatically detected, concrete implementation depends on integration. Filters are optional and can be used to further limit which events should trigger runs. Can only trigger once per File.",
+            "connection": "matiaso81@gmail.com (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "filter",
+                "$ref": "relay/filter"
+              },
+              {
+                "input": "parent",
+                "title": "Parent Folder (where Files are added)",
+                "type": "resource",
+                "resourceTypeId": "drive.folder",
+                "value": {
+                  "pointer": "drive.folder/1pt9WGS3nzR8t1NIS5egrL0OMm2QGUKGj",
+                  "label": "Nominas"
+                }
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/drive.file"
+            }
+          },
+          {
+            "stepId": "s0m80u",
+            "stepType": "paths",
+            "stepNr": "Step 2",
+            "title": "Select a path",
+            "paths": [
+              {
+                "position": 0,
+                "title": "Si es un PDF",
+                "rule": {
+                  "or": [
+                    {
+                      "and": [
+                        {
+                          "subject": {
+                            "ref": "trigger.MIME type"
+                          },
+                          "operator": "equal",
+                          "value": "application/pdf"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "threadId": "s0m80u_08zcpa"
+              },
+              {
+                "position": 1,
+                "title": null,
+                "rule": "No other path is matching",
+                "threadId": "s0m80u_zf2ss2"
+              }
+            ],
+            "effectiveOutputSchema": {
+              "type": "object",
+              "properties": {},
+              "description": "Automatically derived"
+            }
+          }
+        ]
+      },
+      {
+        "threadId": "s0m80u_08zcpa",
+        "ancestors": [
+          "main"
+        ],
+        "parameterId": "s0m80u_08zcpa",
+        "steps": [
+          {
+            "stepId": "k8k9ou",
+            "stepType": "ai.prompt.object",
+            "stepNr": "Step 3",
+            "title": "Prompt GPT 5.4 mini",
+            "inputs": [
+              {
+                "input": "model",
+                "description": "relay models use AI credits, otherwise user API keys for: anthropic, deepseek, openai",
+                "type": "string",
+                "enum": [
+                  "anthropic.claude-sonnet-5",
+                  "relay.claude-sonnet-5",
+                  "anthropic.claude-haiku-4-5",
+                  "relay.claude-haiku-4-5",
+                  "anthropic.claude-opus-4-8",
+                  "relay.claude-opus-4-8",
+                  "anthropic.claude-fable-5",
+                  "relay.claude-fable-5",
+                  "deepseek.deepseek-v4-flash",
+                  "deepseek.deepseek-v4-pro",
+                  "relay.gemini-3.1-flash-lite",
+                  "relay.gemini-3.5-flash",
+                  "relay.gemini-3.1-pro",
+                  "openai.gpt-4.1-nano",
+                  "openai.gpt-4.1-mini",
+                  "openai.gpt-4.1",
+                  "openai.gpt-5.4-mini",
+                  "relay.gpt-5.4-mini",
+                  "openai.gpt-5.4-nano",
+                  "relay.gpt-5.4-nano",
+                  "openai.gpt-5.5-pro",
+                  "relay.gpt-5.5-pro",
+                  "openai.gpt-5.6-sol",
+                  "relay.gpt-5.6-sol",
+                  "openai.gpt-5.6-terra",
+                  "relay.gpt-5.6-terra",
+                  "openai.gpt-5.6-luna",
+                  "relay.gpt-5.6-luna",
+                  "openai.o1",
+                  "openai.gpt-4o",
+                  "relay.grok-4.3"
+                ],
+                "title": "Model",
+                "value": "relay.gpt-5.4-mini"
+              },
+              {
+                "input": "prompt",
+                "title": "User prompt",
+                "type": "string",
+                "value": "Este archivo es el recibo del pago de mi sueldo.\nNecesito que extraigas los siguientes datos:\nNombre de la empresa\nLa fecha de pago\nMonto total depositado\n"
+              },
+              {
+                "input": "codeSandbox",
+                "description": "",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "webAccess",
+                "description": "",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "review",
+                "title": "Review (human-in-the-loop)",
+                "type": "string",
+                "enum": [
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "attachments",
+                "type": "array",
+                "items": {
+                  "type": "any"
+                },
+                "value": [
+                  {
+                    "ref": "trigger"
+                  }
+                ]
+              },
+              {
+                "input": "knowledgeSources",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "title": "Knowledge item ID",
+                  "remoteEnumId": "relay.knowledgeSources"
+                },
+                "value": []
+              },
+              {
+                "input": "outputMode",
+                "type": "string",
+                "enum": [
+                  "text",
+                  "object"
+                ],
+                "value": "object"
+              },
+              {
+                "input": "reasoningEffort",
+                "description": "Defaults to low.",
+                "type": "string",
+                "enum": [
+                  "MINIMAL",
+                  "LOW",
+                  "MEDIUM",
+                  "HIGH"
+                ],
+                "title": "Reasoning effort",
+                "value": null
+              },
+              {
+                "input": "maxTokens",
+                "description": "Defaults to unrestricted.",
+                "type": "number",
+                "title": "Max output tokens",
+                "value": null
+              }
+            ],
+            "userSchema": {
+              "type": "object",
+              "title": "Response",
+              "properties": {
+                "Empresa": {
+                  "type": "string"
+                },
+                "Fecha de pago": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "Monto": {
+                  "type": "number"
+                }
+              },
+              "required": []
+            },
+            "effectiveOutputSchema": {
+              "$ref": "#/steps/k8k9ou/user-schema"
+            }
+          },
+          {
+            "stepId": "0ajah3",
+            "stepType": "notion.createPageDb",
+            "stepNr": "Step 4",
+            "title": "Create page in database",
+            "scope": {
+              "title": "Data source",
+              "type": "resource",
+              "resourceTypeId": "notion.dataSource",
+              "value": {
+                "pointer": "notion.dataSource/19833ce5-0e68-8121-8f95-000bddffaaea",
+                "label": "Finance Tracker · Nominas"
+              }
+            },
+            "connection": "Notion #1 (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "template",
+                "description": "If unset: None",
+                "type": "string",
+                "remoteEnumId": "notion.dataSource.dataSourceTemplate[19833ce5-0e68-8121-8f95-000bddffaaea]"
+              },
+              {
+                "input": "content",
+                "type": "string",
+                "format": "markdown",
+                "value": null
+              },
+              {
+                "input": "Empresa",
+                "type": "string",
+                "value": {
+                  "ref": "k8k9ou.Empresa"
+                }
+              },
+              {
+                "input": "Archivo",
+                "type": "string",
+                "format": "uri",
+                "value": {
+                  "ref": "trigger.File URL"
+                }
+              },
+              {
+                "input": "Fecha de pago",
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "title": "Start",
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "end": {
+                    "title": "End",
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "value": {
+                  "start": {
+                    "ref": "k8k9ou.Fecha de pago"
+                  }
+                }
+              },
+              {
+                "input": "Total",
+                "type": "number",
+                "value": {
+                  "ref": "k8k9ou.Monto"
+                }
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/notion.page2[19833ce5-0e68-8121-8f95-000bddffaaea]"
+            }
+          }
+        ]
+      },
+      {
+        "threadId": "s0m80u_zf2ss2",
+        "ancestors": [
+          "main"
+        ],
+        "parameterId": "s0m80u_zf2ss2",
+        "steps": [
+          {
+            "stepId": "a3txr2",
+            "stepType": "drive.moveFileToTrash",
+            "stepNr": "Step 5",
+            "title": "Move file to trash",
+            "connection": "matiaso81@gmail.com (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "file",
+                "description": "You must own the file or at least be a 'fileOrganizer' on the parent for shared drive files",
+                "type": "resource",
+                "resourceTypeId": "drive.file",
+                "value": {
+                  "ref": "trigger"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

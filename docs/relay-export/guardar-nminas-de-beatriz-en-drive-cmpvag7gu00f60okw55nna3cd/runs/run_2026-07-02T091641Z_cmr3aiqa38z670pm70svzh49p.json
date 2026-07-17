@@ -1,0 +1,263 @@
+{
+  "exportedAt": "2026-07-17T08:08:34.726+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmr3aiqa38z670pm70svzh49p",
+    "title": "Nómina junio | LUZA ES",
+    "templateId": "cmpvag7gu00f60okw55nna3cd",
+    "templateName": "Guardar nóminas de Beatriz en Drive",
+    "status": "COMPLETED",
+    "createdAt": "2026-07-02T09:16:41.737Z",
+    "completedAt": "2026-07-02T09:16:55.984+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 3,
+    "aiCreditsConsumed": 15810
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "threadId": "19f221d983668dc5",
+        "messageId": "19f221d983668dc5",
+        "references": "<RIXP284MB4132EC0471E331D1B5026AB1F1F52@RIXP284MB4132.BRAP284.PROD.OUTLOOK.COM>",
+        "headerMessageId": "<RIXP284MB4132A789429B26C3777B867AF1F52@RIXP284MB4132.BRAP284.PROD.OUTLOOK.COM>"
+      },
+      "label": "Nómina junio | LUZA ES",
+      "url": "https://mail.google.com/mail/#all/19f221d983668dc5"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-07-02T09:16:41.737Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-07-02T09:16:42.690Z",
+      "step": {
+        "id": "pinydp",
+        "type": "PATH_GROUP"
+      },
+      "loopIteration": "gecur7_each_1",
+      "action": "Path selected by rules",
+      "inputs": {
+        "paths": [
+          {
+            "name": "A • Es PDF",
+            "filters": [
+              {
+                "conditions": [
+                  {
+                    "subject": "Mime type",
+                    "mode": "equal",
+                    "value": "application/pdf",
+                    "result": "true"
+                  }
+                ],
+                "result": "true"
+              }
+            ]
+          }
+        ],
+        "outcome": {
+          "kind": "match",
+          "path": "A • Es PDF"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-02T09:16:42.808Z",
+      "step": {
+        "id": "pinydp",
+        "type": "PATH_GROUP"
+      },
+      "loopIteration": "gecur7_each_2",
+      "action": "Path selected by rules",
+      "inputs": {
+        "paths": [
+          {
+            "name": "A • Es PDF",
+            "filters": [
+              {
+                "conditions": [
+                  {
+                    "subject": "Mime type",
+                    "mode": "equal",
+                    "value": "application/pdf",
+                    "result": "true"
+                  }
+                ],
+                "result": "true"
+              }
+            ]
+          }
+        ],
+        "outcome": {
+          "kind": "match",
+          "path": "A • Es PDF"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-02T09:16:46.624Z",
+      "step": {
+        "id": "c4pqig",
+        "type": "AI"
+      },
+      "loopIteration": "pinydp_vd08of_1",
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmpvakm1t07vd0qm6f1ot9hau",
+          "executionKey": "cmr3air0p8z6s0pm70faoadfn"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Analiza el PDF adjunto y determina si es una nómina (recibo de sueldo / pago salarial). Responde true solo si claramente es una nómina.\n\n<attachment label=\"File\">\n[attached pdf 1: \"072026_CONTROL HORARIO PTC ES_MATIAS ORTIZ.pdf\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Analyzing the Document Type**\n\nI'm now certain the document is a monthly work hours log, despite the user's initial assumption. The title and content point definitively away from a payslip, as it focuses on detailed hour tracking, not financial compensation. I'm moving on to a more granular analysis of the hour tracking details.\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"esNomina\": false, \"motivo\": \"El documento es un registro de jornada de trabajo ('Listado Resumen mensual del registro de jornada') y no un recibo de nómina o pago de salarios.\"}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-02T09:16:52.221Z",
+      "step": {
+        "id": "c4pqig",
+        "type": "AI"
+      },
+      "loopIteration": "pinydp_vd08of_2",
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmpvakm1t07vd0qm6f1ot9hau",
+          "executionKey": "cmr3air418z6v0pm7beltdoq5"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Analiza el PDF adjunto y determina si es una nómina (recibo de sueldo / pago salarial). Responde true solo si claramente es una nómina.\n\n<attachment label=\"File\">\n[attached pdf 1: \"000038_ORTIZ RODRIGUEZ, MATIAS LEANDRO.pdf\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Analyzing the Document**\n\nI'm currently focused on determining if the provided document is indeed a \"nómina.\" I've started examining the visual cues. So far, I've identified key terms like \"EMPRESA\" and \"TRABAJADOR/A,\" which point towards its potential as a payslip. The next steps involve looking for specific financial data and formatting characteristics typical of such documents in this context.\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\n  \"esNomina\": true,\n  \"motivo\": \"El documento es un recibo de salarios (nómina) correspondiente al período de junio de 2026 para el empleado Matias Leandro Ortiz Rodriguez de la empresa Luzutaniaesp Group S.L.U., detallando devengos, aportaciones a la Seguridad Social, retención de IRPF y el importe líquido a percibir.\"\n}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-02T09:16:52.351Z",
+      "step": {
+        "id": "qie4kr",
+        "type": "PATH_GROUP"
+      },
+      "loopIteration": "pinydp_vd08of_1",
+      "action": "Path selected by rules",
+      "inputs": {
+        "paths": [
+          {
+            "name": "A • Sí es nómina",
+            "filters": [
+              {
+                "conditions": [
+                  {
+                    "subject": "Es nomina",
+                    "mode": "equal",
+                    "value": true,
+                    "result": "false"
+                  }
+                ],
+                "result": "false"
+              }
+            ]
+          }
+        ],
+        "outcome": {
+          "kind": "fallback",
+          "path": "B • No es nómina"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-02T09:16:52.458Z",
+      "step": {
+        "id": "qie4kr",
+        "type": "PATH_GROUP"
+      },
+      "loopIteration": "pinydp_vd08of_2",
+      "action": "Path selected by rules",
+      "inputs": {
+        "paths": [
+          {
+            "name": "A • Sí es nómina",
+            "filters": [
+              {
+                "conditions": [
+                  {
+                    "subject": "Es nomina",
+                    "mode": "equal",
+                    "value": true,
+                    "result": "true"
+                  }
+                ],
+                "result": "true"
+              }
+            ]
+          }
+        ],
+        "outcome": {
+          "kind": "match",
+          "path": "A • Sí es nómina"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-02T09:16:55.414Z",
+      "step": {
+        "id": "c2cdih",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "qie4kr_xodypf_1",
+      "action": "Completed",
+      "inputs": {
+        "Parent folder": {
+          "id": {
+            "folderId": "1pt9WGS3nzR8t1NIS5egrL0OMm2QGUKGj"
+          },
+          "url": "https://drive.google.com/drive/folders/1pt9WGS3nzR8t1NIS5egrL0OMm2QGUKGj"
+        },
+        "File": {
+          "filename": "000038_ORTIZ RODRIGUEZ, MATIAS LEANDRO.pdf"
+        }
+      },
+      "output": {
+        "id": {
+          "fileId": "1xybPoFrrjemFmlfcFjS2_5UJAFJmMhEp"
+        },
+        "label": "000038_ORTIZ RODRIGUEZ, MATIAS LEANDRO.pdf",
+        "url": "https://drive.google.com/file/d/1xybPoFrrjemFmlfcFjS2_5UJAFJmMhEp/view"
+      }
+    }
+  ]
+}

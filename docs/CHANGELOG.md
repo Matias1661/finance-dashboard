@@ -1,3 +1,7 @@
+## 2026-07-17 (1)
+
+- Migración de Relay: export completo del workspace (14 workflows) revisado; 5 descartados por no ser del dashboard. Los 9 relevantes guardados en `docs/relay-export/` con `README.md` documentando trigger/procesamiento/escritura/post-acción de cada uno. Fila "4.5" agregada al plan de Notion (flujo Gastos Talho Argentino / Sync Sociedad Data, no cubierto antes). Ver `DECISIONS.md` 2026-07-17.
+
 ## 2026-07-14 (10)
 
 - Card "Incrementos" (tab Inversiones): el renglón del mes en curso se estima con el neto de aportes/retiros (categoría "Inversion") cuando falta el reporte de alguna plataforma (ej. MyInvestor mensual todavía no llegó), en vez de mostrar el delta de capital con fill-forward. Se marca "(estimado por aportes)". Ver `DECISIONS.md` 2026-07-14.

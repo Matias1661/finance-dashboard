@@ -1,0 +1,164 @@
+{
+  "exportedAt": "2026-07-17T08:08:34.033+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmqt78vp213h80qm57czo5mws",
+    "title": "TiquePedido Cliente Nº  360475.pdf",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-06-25T07:47:21.592Z",
+    "completedAt": "2026-06-25T07:48:23.595+00:00",
+    "isTestRun": true
+  },
+  "summary": {
+    "stepsCompleted": 0,
+    "aiCreditsConsumed": 7050
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1t1Epy6Urds6dYBTvfXDzboG7t9P9yPDN"
+      },
+      "label": "TiquePedido Cliente Nº  360475.pdf",
+      "url": "https://drive.google.com/file/d/1t1Epy6Urds6dYBTvfXDzboG7t9P9yPDN/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-06-25T07:47:21.592Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-06-25T07:47:26.372Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmqt78vqn13hw0qm57xdih7fs"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached pdf 1: \"TiquePedido Cliente Nº  360475.pdf\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Defining the Main Concept**\n\nI'm now zeroing in on defining the \"Concepto.\" It's essentially a purchase of materials from LEROY MERLIN, specifically encompassing construction materials, carpentry, and ceramics, with the primary concept to be a general description like \"MATERIALES\". I'm refining how to extract and represent this core purchase descriptor.\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"concepto\": \"Materiales de construcción\", \"costo\": 784.74, \"fecha\": \"2026-06-20\"}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-06-25T07:47:27.072Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Materiales de construcción"
+          },
+          {
+            "Costo": 784.74
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-20"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-06-25T07:48:22.242Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Materiales de construcción"
+          },
+          {
+            "Costo": 784.74
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-20"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "38a33ce5-0e68-813a-b62b-eb8c0b550a42",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "Materiales de construcción",
+        "url": "https://notion.so/38a33ce50e68813ab62beb8c0b550a42"
+      }
+    },
+    {
+      "timestamp": "2026-06-25T07:48:23.538Z",
+      "step": {
+        "id": "dfn16j",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Workflow": {
+          "id": {
+            "ownerLogin": "Matias1661",
+            "workflowId": 301444283,
+            "repositoryName": "finance-dashboard"
+          },
+          "label": "Sync Sociedad Data"
+        },
+        "Ref": {
+          "id": {
+            "ownedBy": "user",
+            "branchName": "main",
+            "ownerLogin": "Matias1661",
+            "repositoryId": 1255881086,
+            "repositoryName": "finance-dashboard"
+          },
+          "url": "https://github.com/Matias1661/finance-dashboard/tree/main"
+        }
+      }
+    }
+  ]
+}

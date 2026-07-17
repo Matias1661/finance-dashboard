@@ -1,0 +1,136 @@
+{
+  "exportedAt": "2026-07-17T08:08:33.540+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmqs50p9e04wc0rluhpflc5pf",
+    "title": "document.pdf",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-06-24T13:57:14.593Z",
+    "completedAt": "2026-06-24T13:58:02.649+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 2,
+    "aiCreditsConsumed": 8098
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1qSwInySnDSOYafO6rmD_3s6b5ejTViPW"
+      },
+      "label": "document.pdf",
+      "url": "https://drive.google.com/file/d/1qSwInySnDSOYafO6rmD_3s6b5ejTViPW/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-06-24T13:57:14.593Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-06-24T13:57:20.298Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmqs50pa304wh0rlu130nfhoh"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached pdf 1: \"document.pdf\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Defining the Parameters**\n\nI'm now zeroing in on defining the precise parameters for this extraction task. My focus is on pulling out the \"concepto,\" the numerical \"costo,\" and the \"fecha\" in the ISO 8601 format. I'm carefully analyzing the receipt to determine the best method for accurately identifying and isolating each of these data points.\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\n  \"concepto\": \"Deposito (2) LOCAL CALLE ISABEL DE FARNESIO 18\",\n  \"costo\": 2600.00,\n  \"fecha\": \"2026-06-01\"\n}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-06-24T13:57:20.825Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Deposito (2) LOCAL CALLE ISABEL DE FARNESIO 18"
+          },
+          {
+            "Costo": 2600
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-01"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-06-24T13:58:02.376Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Deposito (2) LOCAL CALLE ISABEL DE FARNESIO 18"
+          },
+          {
+            "Costo": 2600
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-01"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "38933ce5-0e68-81e3-a1ad-f7d9a803ab12",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "Deposito (2) LOCAL CALLE ISABEL DE FARNESIO 18",
+        "url": "https://notion.so/38933ce50e6881e3a1adf7d9a803ab12"
+      }
+    }
+  ]
+}

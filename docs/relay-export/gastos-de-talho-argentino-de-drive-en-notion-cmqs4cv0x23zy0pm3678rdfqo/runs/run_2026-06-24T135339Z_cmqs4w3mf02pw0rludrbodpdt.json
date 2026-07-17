@@ -1,0 +1,136 @@
+{
+  "exportedAt": "2026-07-17T08:08:33.295+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmqs4w3mf02pw0rludrbodpdt",
+    "title": "Detalle de la operación realizada.pdf",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-06-24T13:53:39.921Z",
+    "completedAt": "2026-06-24T13:54:31.900+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 2,
+    "aiCreditsConsumed": 11745
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1ULTLbcWHEZfln-CKV6i19U7nAmeyle4m"
+      },
+      "label": "Detalle de la operación realizada.pdf",
+      "url": "https://drive.google.com/file/d/1ULTLbcWHEZfln-CKV6i19U7nAmeyle4m/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-06-24T13:53:39.921Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-06-24T13:53:46.580Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmqs4w3nh02q10rluf4gk7uhj"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached pdf 1: \"Detalle de la operación realizada.pdf\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Defining the Scope**\n\nI'm currently focused on defining the scope for extracting data from the document image. I've pinpointed the \"Concepto\" as a key piece of information, found within the \"Datos de la orden\" section, and am working to structure this into a usable format, ready for other parts of the process. I believe that understanding this concept, is a vital starting point.\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\n  \"concepto\": \"Pago factura F11/ T2 / 2026\",\n  \"costo\": 605.0,\n  \"fecha\": \"2026-06-01\"\n}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-06-24T13:53:47.021Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Pago factura F11/ T2 / 2026"
+          },
+          {
+            "Costo": 605
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-01"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-06-24T13:54:31.709Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Pago factura F11/ T2 / 2026"
+          },
+          {
+            "Costo": 605
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-01"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "38933ce5-0e68-8183-a324-cb4e13a290ed",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "Pago factura F11/ T2 / 2026",
+        "url": "https://notion.so/38933ce50e688183a324cb4e13a290ed"
+      }
+    }
+  ]
+}

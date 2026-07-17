@@ -1,0 +1,152 @@
+{
+  "exportedAt": "2026-07-17T08:08:33.181+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmqs4q14q23tg0qmba71hfumw",
+    "title": "TiquePedido Cliente Nº  360475.pdf",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-06-24T13:48:56.763Z",
+    "completedAt": "2026-06-24T13:50:30.415+00:00",
+    "isTestRun": true
+  },
+  "summary": {
+    "stepsCompleted": 0,
+    "aiCreditsConsumed": 7050
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1t1Epy6Urds6dYBTvfXDzboG7t9P9yPDN"
+      },
+      "label": "TiquePedido Cliente Nº  360475.pdf",
+      "url": "https://drive.google.com/file/d/1t1Epy6Urds6dYBTvfXDzboG7t9P9yPDN/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-06-24T13:48:56.763Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-06-24T13:49:05.099Z",
+      "step": {
+        "id": "ig1660",
+        "type": "unknown"
+      },
+      "action": "Failed",
+      "error": {
+        "message": "You have run out of OpenAI platform credits or hit your maximum monthly spend on OpenAI.\n\nYou can either [purchase more OpenAI credits](https://platform.openai.com/account/billing) or [increase the account spend limits.](https://platform.openai.com/account/limits)",
+        "technicalDetails": "insufficient_quota: You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors."
+      }
+    },
+    {
+      "timestamp": "2026-06-24T13:49:32.086Z",
+      "action": "Run upgraded to the latest workflow version"
+    },
+    {
+      "timestamp": "2026-06-24T13:49:36.683Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmqs4q16r23u00qmb68g259z3"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached pdf 1: \"TiquePedido Cliente Nº  360475.pdf\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Defining the Main Concept**\n\nI'm now zeroing in on defining the \"Concepto.\" It's essentially a purchase of materials. Specifically, \"MATERIALES DE CONSTRUCCION, CARPINTERIA Y MADERA, CERAMICA...\" from \"LEROY MERLIN.\" My focus is to create a succinct, descriptive tag, such as \"MATERIALS.\"\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"concepto\": \"Materiales de construcción\", \"costo\": 784.74, \"fecha\": \"2026-06-20\"}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-06-24T13:49:37.166Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Materiales de construcción"
+          },
+          {
+            "Costo": 784.74
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-20"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-06-24T13:50:30.363Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Materiales de construcción"
+          },
+          {
+            "Costo": 784.74
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-20"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "38933ce5-0e68-81e9-a6cb-d0f80ee1f7e6",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "Materiales de construcción",
+        "url": "https://notion.so/38933ce50e6881e9a6cbd0f80ee1f7e6"
+      }
+    }
+  ]
+}

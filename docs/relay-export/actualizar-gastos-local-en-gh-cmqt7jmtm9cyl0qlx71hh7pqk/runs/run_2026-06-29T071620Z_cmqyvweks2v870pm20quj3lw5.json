@@ -1,0 +1,62 @@
+{
+  "exportedAt": "2026-07-17T08:08:32.697+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmqyvweks2v870pm20quj3lw5",
+    "title": "Proyecto+Obra Arquitecta",
+    "templateId": "cmqt7jmtm9cyl0qlx71hh7pqk",
+    "templateName": "Actualizar gastos local en GH",
+    "status": "COMPLETED",
+    "createdAt": "2026-06-29T07:16:20.806Z",
+    "completedAt": "2026-06-29T07:16:23.496+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 1,
+    "aiCreditsConsumed": 0
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "pageId": "38c33ce5-0e68-8064-9019-e346d81d36b3",
+        "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+      },
+      "label": "Proyecto+Obra Arquitecta",
+      "url": "https://notion.so/38c33ce50e6880649019e346d81d36b3"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-06-29T07:16:20.806Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-06-29T07:16:22.566Z",
+      "step": {
+        "id": "ws7xcd",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Workflow": {
+          "id": {
+            "ownerLogin": "Matias1661",
+            "workflowId": 301444283,
+            "repositoryName": "finance-dashboard"
+          },
+          "label": "Sync Sociedad Data"
+        },
+        "Ref": {
+          "id": {
+            "ownedBy": "user",
+            "branchName": "main",
+            "ownerLogin": "Matias1661",
+            "repositoryId": 1255881086,
+            "repositoryName": "finance-dashboard"
+          },
+          "url": "https://github.com/Matias1661/finance-dashboard/tree/main"
+        }
+      }
+    }
+  ]
+}

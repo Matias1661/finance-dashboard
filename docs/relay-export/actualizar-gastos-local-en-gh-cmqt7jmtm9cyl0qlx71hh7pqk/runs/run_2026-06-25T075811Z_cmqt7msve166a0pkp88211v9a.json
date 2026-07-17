@@ -1,0 +1,62 @@
+{
+  "exportedAt": "2026-07-17T08:08:32.292+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmqt7msve166a0pkp88211v9a",
+    "title": "Materiales de construcción",
+    "templateId": "cmqt7jmtm9cyl0qlx71hh7pqk",
+    "templateName": "Actualizar gastos local en GH",
+    "status": "COMPLETED",
+    "createdAt": "2026-06-25T07:58:11.116Z",
+    "completedAt": "2026-06-25T07:58:12.366+00:00",
+    "isTestRun": true
+  },
+  "summary": {
+    "stepsCompleted": 0,
+    "aiCreditsConsumed": 0
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "pageId": "38a33ce5-0e68-819d-9ac2-d4c7ccb69ae9",
+        "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+      },
+      "label": "Materiales de construcción",
+      "url": "https://notion.so/38a33ce50e68819d9ac2d4c7ccb69ae9"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-06-25T07:58:11.116Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-06-25T07:58:12.319Z",
+      "step": {
+        "id": "ws7xcd",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Workflow": {
+          "id": {
+            "ownerLogin": "Matias1661",
+            "workflowId": 301444283,
+            "repositoryName": "finance-dashboard"
+          },
+          "label": "Sync Sociedad Data"
+        },
+        "Ref": {
+          "id": {
+            "ownedBy": "user",
+            "branchName": "main",
+            "ownerLogin": "Matias1661",
+            "repositoryId": 1255881086,
+            "repositoryName": "finance-dashboard"
+          },
+          "url": "https://github.com/Matias1661/finance-dashboard/tree/main"
+        }
+      }
+    }
+  ]
+}

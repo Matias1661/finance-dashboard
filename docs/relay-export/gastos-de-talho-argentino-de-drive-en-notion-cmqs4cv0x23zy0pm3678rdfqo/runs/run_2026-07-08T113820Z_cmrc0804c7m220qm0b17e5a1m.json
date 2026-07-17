@@ -1,0 +1,164 @@
+{
+  "exportedAt": "2026-07-17T08:08:37.143+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmrc0804c7m220qm0b17e5a1m",
+    "title": "PHOTO-2026-07-08-13-37-46.jpg",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-07-08T11:38:20.697Z",
+    "completedAt": "2026-07-08T11:39:11.062+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 3,
+    "aiCreditsConsumed": 11073
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1IAY7xzm2QTDvbUBj05u9hSodLxOVE_yL"
+      },
+      "label": "PHOTO-2026-07-08-13-37-46.jpg",
+      "url": "https://drive.google.com/file/d/1IAY7xzm2QTDvbUBj05u9hSodLxOVE_yL/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-07-08T11:38:20.697Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-07-08T11:38:27.121Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmrc0805h7m270qm08t8e1gs9"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached image 1: \"PHOTO-2026-07-08-13-37-46.jpg\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Initiating the Analysis**\n\nI'm currently focused on dissecting the request. The primary goal is clear: extract specific data points – concept, cost, and date – from a receipt image. The required output is a JSON structure adhering to the specified schema, ensuring `concepto`, `costo`, and `fecha` are correctly formatted in ISO 8601.\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"concepto\": \"Suelo vinílico SPC click ARTENS Forte 4mm Jaén\", \"costo\": 333.83, \"fecha\": \"2026-07-08\"}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-08T11:38:27.874Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Suelo vinílico SPC click ARTENS Forte 4mm Jaén"
+          },
+          {
+            "Costo": 333.83
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-08"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-07-08T11:39:09.514Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Suelo vinílico SPC click ARTENS Forte 4mm Jaén"
+          },
+          {
+            "Costo": 333.83
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-08"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "39733ce5-0e68-812d-be20-db9af06905e7",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "Suelo vinílico SPC click ARTENS Forte 4mm Jaén",
+        "url": "https://notion.so/39733ce50e68812dbe20db9af06905e7"
+      }
+    },
+    {
+      "timestamp": "2026-07-08T11:39:11.027Z",
+      "step": {
+        "id": "dfn16j",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Workflow": {
+          "id": {
+            "ownerLogin": "Matias1661",
+            "workflowId": 301444283,
+            "repositoryName": "finance-dashboard"
+          },
+          "label": "Sync Sociedad Data"
+        },
+        "Ref": {
+          "id": {
+            "ownedBy": "user",
+            "branchName": "main",
+            "ownerLogin": "Matias1661",
+            "repositoryId": 1255881086,
+            "repositoryName": "finance-dashboard"
+          },
+          "url": "https://github.com/Matias1661/finance-dashboard/tree/main"
+        }
+      }
+    }
+  ]
+}

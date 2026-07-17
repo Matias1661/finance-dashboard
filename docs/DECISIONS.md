@@ -1,3 +1,19 @@
+## [2026-07-17] Inicio migración Relay: export guardado en docs/relay-export/, fila 4.5 agregada al plan
+
+**Contexto:** Relay.app cierra el 15/08/2026 (plan gratuito) o 14/09/2026 (plan de pago). Paso 0 del plan de migración ("Plan de migración Relay → nueva plataforma" en Notion): exportar y documentar todos los flujos antes de tocar nada.
+
+**Hecho:**
+- Export completo del workspace de Relay (14 workflows) revisado; se descartaron 5 sin relación con el dashboard (Powertrain DB, Poster Open House, Articulos Holy Death, Weekly automotive news digest, Archivar documentos importantes).
+- Los 9 flujos restantes (2 vigentes de Peerberry/MyInvestor + 2 legacy que reemplazan + Movimientos + Nóminas [2 flujos encadenados] + Gastos Talho Argentino [2 flujos]) se guardaron en `docs/relay-export/`, con `README.md` documentando trigger, procesamiento, escritura y post-acciones de cada uno.
+- Se detectó que el plan de Notion no cubría el par "Gastos Talho Argentino / Actualizar gastos local en GH" (ambos disparan GitHub Actions "Sync Sociedad Data", 301444283) — se agregó como fila "4.5" al plan.
+- Se detectó que el flujo de Movimientos no solo escribe en Notion: también dispara GitHub Actions "Sync Finance Data" (286832931) al final. Cualquier reemplazo debe replicar ambas acciones.
+- Se detectó que el flujo de MyInvestor a Notion nunca corrió en producción (solo test runs) — validar con un email real antes de apagar el legacy a Sheets.
+- El prompt de categorización de Movimientos no tiene copia embebida en el workflow: se lee en vivo de la DB Notion "Prompts para Relay" en cada corrida, así que no hay drift que corregir ahí.
+
+**Estado:** Hecho (documentación). Reconstrucción de cada flujo en la plataforma nueva: pendiente (pasos 1-6 del plan).
+
+---
+
 ## [2026-07-14] Card "Incrementos" (tab Inversiones): estimar mes en curso con aportes/retiros si falta reporte de plataforma
 
 **Problema detectado por el usuario:** el segundo renglón de la card "Incrementos" (mes-1 → mes actual) toma su valor del gráfico de capital, que depende del fill-forward de `finance_data.json`. Cuando el reporte mensual de MyInvestor todavía no llegó (valor 0 para el mes en curso), el fill-forward arrastra el valor del mes anterior y el incremento mostrado no refleja el mes en curso (queda en 0 o solo con el delta de Peerberry).

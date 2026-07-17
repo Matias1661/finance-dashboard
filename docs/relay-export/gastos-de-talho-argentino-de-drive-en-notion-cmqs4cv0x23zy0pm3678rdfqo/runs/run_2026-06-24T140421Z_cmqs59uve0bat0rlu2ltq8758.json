@@ -1,0 +1,136 @@
+{
+  "exportedAt": "2026-07-17T08:08:33.757+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmqs59uve0bat0rlu2ltq8758",
+    "title": "comprobante.pdf",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-06-24T14:04:21.767Z",
+    "completedAt": "2026-06-24T14:05:10.265+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 2,
+    "aiCreditsConsumed": 8148
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "117kXYKbeAgiT7rD6pUcIo8Qf8YLQ3bl2"
+      },
+      "label": "comprobante.pdf",
+      "url": "https://drive.google.com/file/d/117kXYKbeAgiT7rD6pUcIo8Qf8YLQ3bl2/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-06-24T14:04:21.767Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-06-24T14:04:27.450Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmqs59uw90bay0rlu328yak7e"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached pdf 1: \"comprobante.pdf\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Extracting Transaction Details**\n\nI'm now zeroing in on the transaction details. I've successfully identified \"Heladeras Talho Argentino\" as the concept or principal description. I'm actively working to pinpoint the total cost and the specific date associated with this purchase within the document, aiming for precise extraction.\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"concepto\": \"Heladeras Talho Argentino\", \"costo\": 6723.97, \"fecha\": \"2026-06-22\"}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-06-24T14:04:28.869Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Heladeras Talho Argentino"
+          },
+          {
+            "Costo": 6723.97
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-22"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-06-24T14:05:10.187Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Heladeras Talho Argentino"
+          },
+          {
+            "Costo": 6723.97
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-22"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "38933ce5-0e68-81ee-84f8-cac99a193a65",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "Heladeras Talho Argentino",
+        "url": "https://notion.so/38933ce50e6881ee84f8cac99a193a65"
+      }
+    }
+  ]
+}

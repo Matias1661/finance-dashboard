@@ -1,0 +1,164 @@
+{
+  "exportedAt": "2026-07-17T08:08:37.920+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmretaqr8b8gp0rj727ys0lx9",
+    "title": "PHOTO-2026-07-10-12-46-21.jpg",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-07-10T10:47:49.746Z",
+    "completedAt": "2026-07-10T10:49:00.217+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 3,
+    "aiCreditsConsumed": 10963
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "10FJgIst7MwCnsFoB5k5ho-ZH2r4klzzd"
+      },
+      "label": "PHOTO-2026-07-10-12-46-21.jpg",
+      "url": "https://drive.google.com/file/d/10FJgIst7MwCnsFoB5k5ho-ZH2r4klzzd/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-07-10T10:47:49.746Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-07-10T10:48:02.165Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmretaqs0b8gu0rj7a7w48zt9"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached image 1: \"PHOTO-2026-07-10-12-46-21.jpg\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Extracting Image Data**\n\nI'm currently focused on extracting the core information from the invoice image. My primary goal is to identify the concept, total cost (as a number), and the date (in the YYYY-MM-DD format). Right now, I'm working on analyzing the image to find the document type, which appears to be a \"Factura\". This is a key first step!\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"concepto\": \"Materiales de construcción y bricolaje\", \"costo\": 52.76, \"fecha\": \"2026-07-02\"}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-10T10:48:02.620Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Materiales de construcción y bricolaje"
+          },
+          {
+            "Costo": 52.76
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-02"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-07-10T10:48:57.225Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Materiales de construcción y bricolaje"
+          },
+          {
+            "Costo": 52.76
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-02"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "39933ce5-0e68-8149-9147-e1ce363d215b",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "Materiales de construcción y bricolaje",
+        "url": "https://notion.so/39933ce50e6881499147e1ce363d215b"
+      }
+    },
+    {
+      "timestamp": "2026-07-10T10:48:59.747Z",
+      "step": {
+        "id": "dfn16j",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Workflow": {
+          "id": {
+            "ownerLogin": "Matias1661",
+            "workflowId": 301444283,
+            "repositoryName": "finance-dashboard"
+          },
+          "label": "Sync Sociedad Data"
+        },
+        "Ref": {
+          "id": {
+            "ownedBy": "user",
+            "branchName": "main",
+            "ownerLogin": "Matias1661",
+            "repositoryId": 1255881086,
+            "repositoryName": "finance-dashboard"
+          },
+          "url": "https://github.com/Matias1661/finance-dashboard/tree/main"
+        }
+      }
+    }
+  ]
+}

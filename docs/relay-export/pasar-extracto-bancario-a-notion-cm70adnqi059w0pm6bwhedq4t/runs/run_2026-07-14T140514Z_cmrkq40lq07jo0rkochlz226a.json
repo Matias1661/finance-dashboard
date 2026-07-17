@@ -1,0 +1,437 @@
+{
+  "exportedAt": "2026-07-17T08:08:38.354+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmrkq40lq07jo0rkochlz226a",
+    "title": "CaixaBank_digital_CaixaBankNow_20260714.pdf",
+    "templateId": "cm70adnqi059w0pm6bwhedq4t",
+    "templateName": "Pasar extracto bancario a Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-07-14T14:05:14.122Z",
+    "completedAt": "2026-07-14T14:10:08.219+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 7,
+    "aiCreditsConsumed": 5240
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1zDEGR7nEUTGLC4rZXu44D7hSOxnrYwXv"
+      },
+      "label": "CaixaBank_digital_CaixaBankNow_20260714.pdf",
+      "url": "https://drive.google.com/file/d/1zDEGR7nEUTGLC4rZXu44D7hSOxnrYwXv/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-07-14T14:05:14.122Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-07-14T14:05:16.462Z",
+      "step": {
+        "id": "j83jvw",
+        "type": "GET_DATA"
+      },
+      "action": "Completed",
+      "inputs": {
+        "filters": [
+          {
+            "conditions": [
+              {
+                "subject": "Nombre",
+                "mode": "equal",
+                "value": "Pasar extracto bancario a Notion",
+                "result": "ok"
+              }
+            ],
+            "result": "ok"
+          }
+        ],
+        "behavior": {
+          "noMatches": "PROCEED",
+          "multipleMatches": "PICK_FIRST"
+        }
+      },
+      "output": {
+        "id": {
+          "pageId": "39833ce5-0e68-8013-b1d2-c7168c43f5ed",
+          "dataSourceId": "39833ce5-0e68-804a-b091-000bef7a0796"
+        },
+        "label": "Pasar extracto bancario a Notion",
+        "url": "https://notion.so/39833ce50e688013b1d2c7168c43f5ed"
+      }
+    },
+    {
+      "timestamp": "2026-07-14T14:05:30.032Z",
+      "step": {
+        "id": "0ym3gu",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cm70adnr905a90pm65hyd885t",
+          "executionKey": "cmrkq40mq07ju0rko7aaqbezn"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Eres un clasificador de movimientos bancarios. Tu tarea es asignar una categoría a cada transacción basándote en el concepto, el importe y el contexto.\n\n## CATEGORÍAS VÁLIDAS\nSalidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar, Talho Argentino, Salud y Belleza\n\n---\n\n## REGLAS DURAS (no verificar, aplicar siempre)\n\nGuille — movimientos relacionados con la pareja:\n- Concepto contiene: PRES.32334358886, PRES.32333435888, TRANSF. A SU FAVOR, TRANSFER. EN DIV., TRANSFER INMEDIATA (importes típicos 40-100 €), TRASPASO, BIZUM RECIBIDO (importes pequeños 30-100 €), MUTUA MADRILEÑA, GUILLERMO BONNANO, Cuenta Guille, Pasajes Guille, AYUNTAMIENTO JAEN, CUSTOM MOTOR BIKE, BlaBlaC ar (gastos)\n\nGastos coche — préstamo y seguro del vehículo:\n- Concepto contiene: PRES.80194189697, RECIBO UNICO MYBOX\n\nDepartamento — gastos del piso:\n- Concepto contiene: RECIBOS VARIOS, PAG NOMINAS, BE CASA SAN SEBAS\n\nNómina — ingresos laborales:\n- Concepto contiene: NOMINA (TRF), TRANSF.DIVISAS, PREST. DESEMPLEO, VENT.LU, DEVOLUCION HACIENDA, INGRESO CA JERO, BIZUM RECIBIDO (importes altos >200 €)\n\nGastos en conjunto — cuenta compartida con pareja:\n- Concepto contiene: Gastos conjuntos, MIELE OPERATIONS, LIDL SAN SEBASTI (cuando es gasto conjunto), WILLIAMS BURG\n\nSalud y Belleza — recurrentes identificados:\n- Concepto contiene: SANITAS (seguro médico, recurrente ~69€/mes), MARVIZA (barbería)\n\n---\n\n## REGLAS SEMI-DURAS (keyword, raramente falla)\n\n| Categoría | Keywords |\n|---|---|\n| Combustible | REPSOL, SHELL, SANSE I, BALLENOIL, CEPSA, BP, MOEVE, GALP, BONIF., CEDIPSA, BALLENO IL, E.S., EESS |\n| Comer afuera | UBER EATS, SERVIMATIC, UBR PENDING.UBER (importes pequeños) |\n| Suscripciones | APPLE.COM/BILL, YOIGO, SKYSHOWTIME, PADDLE.NET RELAY, BIT2ME, OPENAI, NOTION LABS, UBERONE MEMBE, DIGI SPAIN (incluye variante DIGI SPAIN TELEC.) |\n| Supermercado | MERCADONA, LIDL, HIPER S S REYES, MI ALCAMPO, CARREF |\n| Gastos coche | VOLKSWAGEN RENTIN, NORAUTO, PARKING, ITV, DGT SANCIONES, AUTOPISTA, ARBITRADE CENTRO, SOBRIAUTO, NYXBP, TELPARK, OPERATIVA DE AUTO, SEGURCAIXA, MOVILIDAD ACM |\n| Tarjeta | T. VISA CLASSIC, CAIXABANK PAYMENT, MYCARD, Oney Pago aplazad, FINDIRECT (SEQURA), SEQURA |\n| Inversion | MyInvestor, Peerberry, BingX, DEPOSITO A LA CUE, CONSTIT. PRESTAMO, Inversiones, Aportacion Carter, TRASPASO DONATIVO, PAG NOMINAS (cuando es inversión), CUSTODIA.FONDOS |\n| Salud y Belleza | KRUSS, WELLHUB, GYMPASS, VIVAGYM, FARMACIA, BARBERIA, BARBERÍA, ADENTIS, DENTIST, Suplementos, SANITAS, MARVIZA |\n\n---\n\n## CATEGORÍAS ABIERTAS (verificar activamente)\n\nViajes — confirmar si hay desplazamiento largo o evento:\n- Gasolineras fuera del área habitual (Madrid/Leganés/San Sebastián de los Reyes)\n- Peajes: ATLANDES, COFIROUTE, AUTOROUTES ASF, AUTOPISTA DEL SOL, AP-1, BIDEGI, SEITT, SEITR, INDIGO\n- Alojamiento: hoteles, Airbnb, Booking\n- Transporte: UBER RIDES, BlaBlaC ar (cuando es ingreso = viaje compartido), vuelos, trenes\n- Combustible en ruta (estaciones desconocidas o fuera del área habitual)\n\nSalidas — ocio nocturno, eventos, entradas:\n- Bares, discotecas, parkings de ocio, CROCANTICKETS, KINEPOLIS, BKT-MAD-PARK\n\nComer afuera vs Salidas — mismo comercio puede ser ambos; usar contexto (hora, día, importe)\n\nCompras — compras online y tiendas:\n- Amazon, Zara, PRIMARK, DECATHLON, ropa, tecnología\n- SeQura, Oney = cuotas aplazadas → categorizar como Compras\n\nGastos moto — mantenimiento y seguro de la moto:\n- 0182-8736-88-0830, HARLEY TALLER, MUTUA MADRILEÑA (moto), Cuota moto, UBR PENDING.UBER (repartos en moto), MOTEA\n\nDepartamento — gastos del piso adicionales:\n- LEROY MERLIN, CAIXABANK PAYMENT (cuando es cuota hipoteca/alquiler), luz, agua, internet\n\nClub — gastos del club:\n- Cuota club, Gastos club, BIZUM ENVIADO (cuando concepto indica club), NYXAIRservSpain, NYXAIRservSpain, PARKING AENA MAD\n\nTalho Argentino — gastos del local de hostelería:\n- PRES.32664031137 (cuota préstamo CaixaBank destinado al local)\n- Cualquier gasto etiquetado explícitamente como Talho Argentino\n\n---\n\n## CASOS ESPECIALES\n\n- TRANSFER INMEDIATA / TRASPASO con importe negativo → Guille (pago a pareja)\n- SANSE I → Combustible por defecto (es una gasolinera); Supermercado solo si el importe y contexto indican compra de alimentación sin indicios de repostaje\n- PAYPAL EUROPE → si el importe es ≤15 € y el mismo importe ya apareció en meses anteriores (recurrente) → Suscripciones; si el importe es variable o pago único → Compras\n- TRANSFER INMEDIATA / TRASPASO con importe positivo → Guille (ingreso de pareja) o Inversion si el concepto lo indica\n- BIZUM ENVIADO → según contexto: Compras, Salidas, Club, Guille, Departamento, Salud y Belleza (si el concepto indica suplementos, farmacia, o similar)\n- BIZUM ENVIADO (IPHONE) / (Iphone) → cuota fija ~29€, recurrente → Tarjeta (financiación de dispositivo), salvo indicación contraria\n- BIZUM RECIBIDO → según contexto: Guille (pequeños), Nomina (altos), Club, Gastos en conjunto\n- CAIXABANK PAYMENT → Tarjeta (cuota tarjeta), Departamento (cuota piso), o según contexto\n- SABADELL CONSUMER → Gastos coche (cuota préstamo Golf GTE, ya refinanciado en CaixaBank pero puede seguir apareciendo)\n- PAG NOMINAS → Departamento (pago nómina empleado del piso) o Inversion según contexto\n- Cualquier concepto que empiece por AMAZON con importe exacto de 9,99 € → Suscripciones (Kindle Unlimited, cargo recurrente mensual). Aplica a AMAZON.ES, AMAZON.ES (con cualquier sufijo), WWW.AMAZON, etc.\n- ESTANCO, OTROS pequeños → Otros\n- GROUPON → A revisar (puede ser cualquier tipo de servicio o producto)\n- Ssrr → sin origen confirmado; mantener siempre en A revisar hasta que Matias confirme qué es (no asumir categoría)\n\n---\n\n## INSTRUCCIONES DE SALIDA\n\nResponde ÚNICAMENTE con la categoría, sin explicación ni texto adicional. Elige siempre la categoría más específica disponible. Si no puedes determinar la categoría con confianza razonable, responde: A revisar\n\n<attachment label=\"Actual file\">\n[attached pdf 1: \"CaixaBank_digital_CaixaBankNow_20260714.pdf\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"movimientos\":[{\"date\":\"2026-07-13\",\"monto\":50,\"category\":\"Guille\",\"concepto\":\"TRANSFER INMEDIATA\"},{\"date\":\"2026-07-13\",\"monto\":50,\"category\":\"Guille\",\"concepto\":\"TRANSFER INMEDIATA\"},{\"date\":\"2026-07-13\",\"monto\":50,\"category\":\"Guille\",\"concepto\":\"TRANSFER INMEDIATA\"},{\"date\":\"2026-07-13\",\"monto\":-3.75,\"category\":\"Combustible\",\"concepto\":\"E.S. APADIS\"}]}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-14T14:05:31.138Z",
+      "step": {
+        "id": "kv2foz",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_1",
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+          },
+          "label": "Movimientos",
+          "url": "https://notion.so/46a204b1ad5a464593ca739648123569"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "TRANSFER INMEDIATA"
+          },
+          {
+            "Monto": 50
+          },
+          {
+            "Categoria": "Guille"
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-13"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-07-14T14:05:31.734Z",
+      "step": {
+        "id": "kv2foz",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_2",
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+          },
+          "label": "Movimientos",
+          "url": "https://notion.so/46a204b1ad5a464593ca739648123569"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "TRANSFER INMEDIATA"
+          },
+          {
+            "Monto": 50
+          },
+          {
+            "Categoria": "Guille"
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-13"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-07-14T14:05:32.481Z",
+      "step": {
+        "id": "kv2foz",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_3",
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+          },
+          "label": "Movimientos",
+          "url": "https://notion.so/46a204b1ad5a464593ca739648123569"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "TRANSFER INMEDIATA"
+          },
+          {
+            "Monto": 50
+          },
+          {
+            "Categoria": "Guille"
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-13"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-07-14T14:05:32.976Z",
+      "step": {
+        "id": "kv2foz",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_4",
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+          },
+          "label": "Movimientos",
+          "url": "https://notion.so/46a204b1ad5a464593ca739648123569"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "E.S. APADIS"
+          },
+          {
+            "Monto": -3.75
+          },
+          {
+            "Categoria": "Combustible"
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-13"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-07-14T14:06:14.905Z",
+      "step": {
+        "id": "kv2foz",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_1",
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+          },
+          "label": "Movimientos",
+          "url": "https://notion.so/46a204b1ad5a464593ca739648123569"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "TRANSFER INMEDIATA"
+          },
+          {
+            "Monto": 50
+          },
+          {
+            "Categoria": "Guille"
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-13"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "39d33ce5-0e68-8155-a54e-f7cb52a307ff",
+          "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+        },
+        "label": "TRANSFER INMEDIATA",
+        "url": "https://notion.so/39d33ce50e688155a54ef7cb52a307ff"
+      }
+    },
+    {
+      "timestamp": "2026-07-14T14:06:19.867Z",
+      "step": {
+        "id": "kv2foz",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_2",
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+          },
+          "label": "Movimientos",
+          "url": "https://notion.so/46a204b1ad5a464593ca739648123569"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "TRANSFER INMEDIATA"
+          },
+          {
+            "Monto": 50
+          },
+          {
+            "Categoria": "Guille"
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-13"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "39d33ce5-0e68-81d5-8c03-e4401feec855",
+          "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+        },
+        "label": "TRANSFER INMEDIATA",
+        "url": "https://notion.so/39d33ce50e6881d58c03e4401feec855"
+      }
+    },
+    {
+      "timestamp": "2026-07-14T14:06:20.257Z",
+      "step": {
+        "id": "kv2foz",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_3",
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+          },
+          "label": "Movimientos",
+          "url": "https://notion.so/46a204b1ad5a464593ca739648123569"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "TRANSFER INMEDIATA"
+          },
+          {
+            "Monto": 50
+          },
+          {
+            "Categoria": "Guille"
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-13"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "39d33ce5-0e68-817d-ad22-d5ddad337623",
+          "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+        },
+        "label": "TRANSFER INMEDIATA",
+        "url": "https://notion.so/39d33ce50e68817dad22d5ddad337623"
+      }
+    },
+    {
+      "timestamp": "2026-07-14T14:10:04.672Z",
+      "step": {
+        "id": "kv2foz",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "m655cy_each_4",
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+          },
+          "label": "Movimientos",
+          "url": "https://notion.so/46a204b1ad5a464593ca739648123569"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "E.S. APADIS"
+          },
+          {
+            "Monto": -3.75
+          },
+          {
+            "Categoria": "Combustible"
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-13"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "39d33ce5-0e68-817c-bfb9-fcf4bb9050b8",
+          "dataSourceId": "367d58ce-928b-4e31-832d-07707f876365"
+        },
+        "label": "E.S. APADIS",
+        "url": "https://notion.so/39d33ce50e68817cbfb9fcf4bb9050b8"
+      }
+    },
+    {
+      "timestamp": "2026-07-14T14:10:07.839Z",
+      "step": {
+        "id": "vf8w1v",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Workflow": {
+          "id": {
+            "ownerLogin": "Matias1661",
+            "workflowId": 286832931,
+            "repositoryName": "finance-dashboard"
+          },
+          "label": "Sync Finance Data"
+        },
+        "Ref": {
+          "id": {
+            "ownedBy": "user",
+            "branchName": "main",
+            "ownerLogin": "Matias1661",
+            "repositoryId": 1255881086,
+            "repositoryName": "finance-dashboard"
+          },
+          "url": "https://github.com/Matias1661/finance-dashboard/tree/main"
+        }
+      }
+    }
+  ]
+}

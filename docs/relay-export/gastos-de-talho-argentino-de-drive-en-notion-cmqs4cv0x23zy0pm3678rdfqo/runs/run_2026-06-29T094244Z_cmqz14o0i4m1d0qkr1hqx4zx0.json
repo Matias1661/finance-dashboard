@@ -1,0 +1,164 @@
+{
+  "exportedAt": "2026-07-17T08:08:35.991+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmqz14o0i4m1d0qkr1hqx4zx0",
+    "title": "PHOTO-2026-06-29-11-38-49.jpg",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-06-29T09:42:44.366Z",
+    "completedAt": "2026-06-29T09:43:35.816+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 3,
+    "aiCreditsConsumed": 10498
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1QUdv6UxuFCBrtFjt1qsVFa5cITP3wQZ4"
+      },
+      "label": "PHOTO-2026-06-29-11-38-49.jpg",
+      "url": "https://drive.google.com/file/d/1QUdv6UxuFCBrtFjt1qsVFa5cITP3wQZ4/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-06-29T09:42:44.366Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-06-29T09:42:50.492Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmqz14o1x4m1i0qkrga2adlp0"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached image 1: \"PHOTO-2026-06-29-11-38-49.jpg\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Defining the Task**\n\nI'm currently focused on defining the core requirements. I've identified the main goal: extracting the main concept, cost, and date. So far, I've managed to analyze the initial image, identifying the vendor (Supermercado Boadilla) and date (27/06/202-).\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\n  \"concepto\": \"Supermercado Boadilla\",\n  \"costo\": 3.90,\n  \"fecha\": \"2026-06-27\"\n}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-06-29T09:42:51.256Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Supermercado Boadilla"
+          },
+          {
+            "Costo": 3.9
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-27"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-06-29T09:43:32.477Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Supermercado Boadilla"
+          },
+          {
+            "Costo": 3.9
+          },
+          {
+            "Fecha": {
+              "start": "2026-06-27"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "38e33ce5-0e68-81df-9fdd-f5f07fb5ad4f",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "Supermercado Boadilla",
+        "url": "https://notion.so/38e33ce50e6881df9fddf5f07fb5ad4f"
+      }
+    },
+    {
+      "timestamp": "2026-06-29T09:43:35.432Z",
+      "step": {
+        "id": "dfn16j",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Workflow": {
+          "id": {
+            "ownerLogin": "Matias1661",
+            "workflowId": 301444283,
+            "repositoryName": "finance-dashboard"
+          },
+          "label": "Sync Sociedad Data"
+        },
+        "Ref": {
+          "id": {
+            "ownedBy": "user",
+            "branchName": "main",
+            "ownerLogin": "Matias1661",
+            "repositoryId": 1255881086,
+            "repositoryName": "finance-dashboard"
+          },
+          "url": "https://github.com/Matias1661/finance-dashboard/tree/main"
+        }
+      }
+    }
+  ]
+}

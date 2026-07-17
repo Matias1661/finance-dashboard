@@ -1,0 +1,257 @@
+{
+  "exportedAt": "2026-07-17T08:08:33.468+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "templateId": "cm5psej9u05kx0pkv4kd4hlyg",
+    "name": "Peerberry",
+    "emoji": "📝",
+    "type": "PLUSPLUS",
+    "revision": 430
+  },
+  "workflow": {
+    "metadata": {
+      "name": "Peerberry"
+    },
+    "threads": [
+      {
+        "threadId": "main",
+        "ancestors": [],
+        "steps": [
+          {
+            "stepId": "trigger",
+            "stepType": "gmail.mailReceived",
+            "title": "Email received",
+            "description": "Checks connection periodically and starts run for detected events. Event is automatically detected, concrete implementation depends on integration. Filters are optional and can be used to further limit which events should trigger runs. Can only trigger once per Email.",
+            "connection": "matiaso81@gmail.com (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "filter",
+                "$ref": "relay/filter",
+                "value": {
+                  "or": [
+                    {
+                      "and": [
+                        {
+                          "field": "From",
+                          "operator": "equal",
+                          "value": "info@peerberry.com"
+                        },
+                        {
+                          "field": "Subject",
+                          "operator": "contains",
+                          "value": "Account"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "input": "onlyFirst",
+                "title": "Only trigger for first email in conversation",
+                "type": "boolean",
+                "value": false
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/gmail.mail"
+            }
+          },
+          {
+            "stepId": "ayvlv6",
+            "stepType": "ai.prompt.object",
+            "stepNr": "Step 2",
+            "title": "Prompt Gemini 3.1 Flash-Lite",
+            "inputs": [
+              {
+                "input": "model",
+                "description": "relay models use AI credits, otherwise user API keys for: anthropic, deepseek, openai",
+                "type": "string",
+                "enum": [
+                  "anthropic.claude-sonnet-5",
+                  "relay.claude-sonnet-5",
+                  "anthropic.claude-haiku-4-5",
+                  "relay.claude-haiku-4-5",
+                  "anthropic.claude-opus-4-8",
+                  "relay.claude-opus-4-8",
+                  "anthropic.claude-fable-5",
+                  "relay.claude-fable-5",
+                  "deepseek.deepseek-v4-flash",
+                  "deepseek.deepseek-v4-pro",
+                  "relay.gemini-3.1-flash-lite",
+                  "relay.gemini-3.5-flash",
+                  "relay.gemini-3.1-pro",
+                  "openai.gpt-4.1-nano",
+                  "openai.gpt-4.1-mini",
+                  "openai.gpt-4.1",
+                  "openai.gpt-5.4-mini",
+                  "relay.gpt-5.4-mini",
+                  "openai.gpt-5.4-nano",
+                  "relay.gpt-5.4-nano",
+                  "openai.gpt-5.5-pro",
+                  "relay.gpt-5.5-pro",
+                  "openai.gpt-5.6-sol",
+                  "relay.gpt-5.6-sol",
+                  "openai.gpt-5.6-terra",
+                  "relay.gpt-5.6-terra",
+                  "openai.gpt-5.6-luna",
+                  "relay.gpt-5.6-luna",
+                  "openai.o1",
+                  "openai.gpt-4o",
+                  "relay.grok-4.3"
+                ],
+                "title": "Model",
+                "value": "relay.gemini-3.1-flash-lite"
+              },
+              {
+                "input": "prompt",
+                "title": "User prompt",
+                "type": "string",
+                "value": "El correo que estas analizando es el estado de mi cuenta en Peerberry.\nQuiero que extraigas el valor \"Invested funds\", el de \"Available balance\" y la fecha de \"Portfolio updated\".\nY quiero que me crees una cuarta variable llamada \"Total\" que sea la suma de \"Invested funds\" y \"Available balance\"."
+              },
+              {
+                "input": "codeSandbox",
+                "description": "",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "webAccess",
+                "description": "",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "review",
+                "title": "Review (human-in-the-loop)",
+                "type": "string",
+                "enum": [
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "attachments",
+                "type": "array",
+                "items": {
+                  "type": "any"
+                },
+                "value": [
+                  {
+                    "ref": "trigger"
+                  }
+                ]
+              },
+              {
+                "input": "knowledgeSources",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "title": "Knowledge item ID",
+                  "remoteEnumId": "relay.knowledgeSources"
+                },
+                "value": []
+              },
+              {
+                "input": "outputMode",
+                "type": "string",
+                "enum": [
+                  "text",
+                  "object"
+                ],
+                "value": "object"
+              },
+              {
+                "input": "thinkingBudget",
+                "description": "Range 0-24576, -1 for dynamic, 0 to disable. Defaults to -1.",
+                "type": "number",
+                "title": "Thinking budget",
+                "value": null
+              }
+            ],
+            "userSchema": {
+              "type": "object",
+              "properties": {
+                "Invested Funds": {
+                  "type": "number"
+                },
+                "Fecha": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "Available balance": {
+                  "type": "number"
+                },
+                "Total": {
+                  "type": "number"
+                }
+              },
+              "required": []
+            },
+            "effectiveOutputSchema": {
+              "$ref": "#/steps/ayvlv6/user-schema"
+            }
+          },
+          {
+            "stepId": "4crun0",
+            "stepType": "sheets.createRow",
+            "stepNr": "Step 3",
+            "title": "Add row to sheet",
+            "scope": {
+              "title": "Sheet",
+              "type": "resource",
+              "resourceTypeId": "sheets.sheet[1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI]",
+              "value": {
+                "pointer": "sheets.sheet[1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI]/1687438032",
+                "label": "Inversiones"
+              }
+            },
+            "connection": "matiaso81@gmail.com (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "position",
+                "title": "Insert at",
+                "description": "If unset: Bottom of sheet",
+                "type": "string",
+                "enum": [
+                  "Top of sheet",
+                  "Bottom of sheet",
+                  "Append to table"
+                ]
+              },
+              {
+                "input": "Fecha",
+                "type": "string",
+                "format": "date",
+                "value": {
+                  "ref": "ayvlv6.Fecha"
+                }
+              },
+              {
+                "input": "Peerberry",
+                "type": "number",
+                "value": {
+                  "ref": "ayvlv6.Total"
+                }
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/sheets.row[1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI::1687438032]"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

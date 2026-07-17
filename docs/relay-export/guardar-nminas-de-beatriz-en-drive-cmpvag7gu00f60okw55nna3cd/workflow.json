@@ -1,0 +1,433 @@
+{
+  "exportedAt": "2026-07-17T08:08:30.443+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "templateId": "cmpvag7gu00f60okw55nna3cd",
+    "name": "Guardar nóminas de Beatriz en Drive",
+    "emoji": "📝",
+    "type": "PLUSPLUS",
+    "revision": 119
+  },
+  "workflow": {
+    "metadata": {
+      "name": "Guardar nóminas de Beatriz en Drive"
+    },
+    "threads": [
+      {
+        "threadId": "main",
+        "ancestors": [],
+        "steps": [
+          {
+            "stepId": "trigger",
+            "stepType": "gmail.mailReceived",
+            "title": "Email recibido de Beatriz",
+            "description": "Checks connection periodically and starts run for detected events. Event is automatically detected, concrete implementation depends on integration. Filters are optional and can be used to further limit which events should trigger runs. Can only trigger once per Email.",
+            "connection": "matiaso81@gmail.com (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "filter",
+                "$ref": "relay/filter",
+                "value": {
+                  "or": [
+                    {
+                      "and": [
+                        {
+                          "field": "From",
+                          "operator": "equal",
+                          "value": "beatriz.matos@luzagroup.com"
+                        },
+                        {
+                          "field": "Attachments",
+                          "operator": "notEmpty",
+                          "value": null
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "input": "onlyFirst",
+                "title": "Only trigger for first email in conversation",
+                "type": "boolean",
+                "value": false
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/gmail.mail"
+            }
+          },
+          {
+            "stepId": "gecur7",
+            "stepType": "iterator",
+            "stepNr": "Step 2",
+            "title": "Recorrer adjuntos",
+            "scope": {
+              "title": "List",
+              "description": "List of items to iterate over. This can only be set to a reference to a list from another step. To loop over a constant list, use a 'transform' step to create the constant.",
+              "type": "array",
+              "items": {
+                "type": "any"
+              },
+              "value": {
+                "ref": "trigger.Attachments"
+              }
+            },
+            "inputs": [
+              {
+                "input": "filter",
+                "$ref": "relay/filter"
+              },
+              {
+                "input": "execution",
+                "description": "Prefer parallel unless sequential execution is required",
+                "type": "string",
+                "enum": [
+                  "PARALLEL",
+                  "SEQUENTIAL"
+                ],
+                "title": "Execution",
+                "value": "PARALLEL"
+              }
+            ],
+            "forEach": {
+              "threadId": "gecur7_each",
+              "effectiveParameterSchema": {
+                "type": "file"
+              }
+            },
+            "effectiveOutputSchema": {
+              "type": "object",
+              "properties": {
+                "agg_pinydp": {
+                  "title": "Files",
+                  "type": "array",
+                  "items": {
+                    "type": "resource",
+                    "resourceTypeId": "drive.file"
+                  }
+                }
+              },
+              "description": "Automatically derived"
+            }
+          }
+        ]
+      },
+      {
+        "threadId": "gecur7_each",
+        "ancestors": [
+          "main"
+        ],
+        "parameterId": "gecur7_each",
+        "parameter": {
+          "title": "File",
+          "effectiveOutputSchema": {
+            "type": "file"
+          }
+        },
+        "steps": [
+          {
+            "stepId": "pinydp",
+            "stepType": "paths",
+            "stepNr": "Step 3",
+            "title": "Solo PDFs",
+            "paths": [
+              {
+                "position": 0,
+                "title": "Es PDF",
+                "rule": {
+                  "or": [
+                    {
+                      "and": [
+                        {
+                          "subject": {
+                            "ref": "gecur7_each.mimeType"
+                          },
+                          "operator": "equal",
+                          "value": "application/pdf"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "threadId": "pinydp_vd08of"
+              },
+              {
+                "position": 1,
+                "title": "No es PDF",
+                "rule": "No other path is matching",
+                "threadId": "pinydp_qlwye9"
+              }
+            ],
+            "effectiveOutputSchema": {
+              "type": "object",
+              "properties": {
+                "¿Es una nómina?": {
+                  "$ref": "#/steps/c4pqig/user-schema"
+                },
+                "File": {
+                  "type": "resource",
+                  "resourceTypeId": "drive.file"
+                }
+              },
+              "description": "Automatically derived"
+            }
+          }
+        ]
+      },
+      {
+        "threadId": "pinydp_vd08of",
+        "ancestors": [
+          "main",
+          "gecur7_each"
+        ],
+        "parameterId": "pinydp_vd08of",
+        "steps": [
+          {
+            "stepId": "c4pqig",
+            "stepType": "ai.prompt.object",
+            "stepNr": "Step 4",
+            "title": "¿Es una nómina?",
+            "inputs": [
+              {
+                "input": "model",
+                "description": "relay models use AI credits, otherwise user API keys for: anthropic, deepseek, openai",
+                "type": "string",
+                "enum": [
+                  "anthropic.claude-sonnet-5",
+                  "relay.claude-sonnet-5",
+                  "anthropic.claude-haiku-4-5",
+                  "relay.claude-haiku-4-5",
+                  "anthropic.claude-opus-4-8",
+                  "relay.claude-opus-4-8",
+                  "anthropic.claude-fable-5",
+                  "relay.claude-fable-5",
+                  "deepseek.deepseek-v4-flash",
+                  "deepseek.deepseek-v4-pro",
+                  "relay.gemini-3.1-flash-lite",
+                  "relay.gemini-3.5-flash",
+                  "relay.gemini-3.1-pro",
+                  "openai.gpt-4.1-nano",
+                  "openai.gpt-4.1-mini",
+                  "openai.gpt-4.1",
+                  "openai.gpt-5.4-mini",
+                  "relay.gpt-5.4-mini",
+                  "openai.gpt-5.4-nano",
+                  "relay.gpt-5.4-nano",
+                  "openai.gpt-5.5-pro",
+                  "relay.gpt-5.5-pro",
+                  "openai.gpt-5.6-sol",
+                  "relay.gpt-5.6-sol",
+                  "openai.gpt-5.6-terra",
+                  "relay.gpt-5.6-terra",
+                  "openai.gpt-5.6-luna",
+                  "relay.gpt-5.6-luna",
+                  "openai.o1",
+                  "openai.gpt-4o",
+                  "relay.grok-4.3"
+                ],
+                "title": "Model",
+                "value": "relay.gemini-3.5-flash"
+              },
+              {
+                "input": "prompt",
+                "title": "User prompt",
+                "type": "string",
+                "value": "Analiza el PDF adjunto y determina si es una nómina (recibo de sueldo / pago salarial). Responde true solo si claramente es una nómina."
+              },
+              {
+                "input": "codeSandbox",
+                "description": "Recommendation: OFF, The task is to understand and analyze the content of a PDF file (visual and textual elements) to determine its type, not to process or transform data programmatically. Vision-capable models work best with native PDF handling rather than sandbox file access.",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "AUTO"
+              },
+              {
+                "input": "webAccess",
+                "description": "Recommendation: OFF, No external information or recent knowledge is needed. The task only requires analyzing an attached PDF document to identify if it's a payroll receipt.",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "AUTO"
+              },
+              {
+                "input": "review",
+                "title": "Review (human-in-the-loop)",
+                "type": "string",
+                "enum": [
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "attachments",
+                "type": "array",
+                "items": {
+                  "type": "any"
+                },
+                "value": [
+                  {
+                    "ref": "gecur7_each"
+                  }
+                ]
+              },
+              {
+                "input": "knowledgeSources",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "title": "Knowledge item ID",
+                  "remoteEnumId": "relay.knowledgeSources"
+                },
+                "value": []
+              },
+              {
+                "input": "outputMode",
+                "type": "string",
+                "enum": [
+                  "text",
+                  "object"
+                ],
+                "value": "object"
+              },
+              {
+                "input": "thinkingBudget",
+                "description": "Range 0-24576, -1 for dynamic, 0 to disable. Defaults to -1.",
+                "type": "number",
+                "title": "Thinking budget",
+                "value": null
+              }
+            ],
+            "userSchema": {
+              "type": "object",
+              "title": "Response",
+              "properties": {
+                "Es nomina": {
+                  "type": "boolean"
+                },
+                "Motivo": {
+                  "type": "string"
+                }
+              }
+            },
+            "effectiveOutputSchema": {
+              "$ref": "#/steps/c4pqig/user-schema"
+            }
+          },
+          {
+            "stepId": "qie4kr",
+            "stepType": "paths",
+            "stepNr": "Step 5",
+            "title": "Si es nómina",
+            "paths": [
+              {
+                "position": 0,
+                "title": "Sí es nómina",
+                "rule": {
+                  "or": [
+                    {
+                      "and": [
+                        {
+                          "subject": {
+                            "ref": "c4pqig.Es nomina"
+                          },
+                          "operator": "equal",
+                          "value": true
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "threadId": "qie4kr_xodypf"
+              },
+              {
+                "position": 1,
+                "title": "No es nómina",
+                "rule": "No other path is matching",
+                "threadId": "qie4kr_4zbz4i"
+              }
+            ],
+            "effectiveOutputSchema": {
+              "type": "object",
+              "properties": {
+                "File": {
+                  "type": "resource",
+                  "resourceTypeId": "drive.file"
+                }
+              },
+              "description": "Automatically derived"
+            }
+          }
+        ]
+      },
+      {
+        "threadId": "qie4kr_xodypf",
+        "ancestors": [
+          "main",
+          "gecur7_each",
+          "pinydp_vd08of"
+        ],
+        "parameterId": "qie4kr_xodypf",
+        "steps": [
+          {
+            "stepId": "c2cdih",
+            "stepType": "drive.uploadFile",
+            "stepNr": "Step 6",
+            "title": "Subir nómina",
+            "connection": "matiaso81@gmail.com (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "parent",
+                "title": "Parent folder",
+                "description": "If unset: My Drive",
+                "type": "resource",
+                "resourceTypeId": "drive.folder",
+                "value": {
+                  "pointer": "drive.folder/1pt9WGS3nzR8t1NIS5egrL0OMm2QGUKGj",
+                  "label": "Nominas"
+                }
+              },
+              {
+                "input": "file",
+                "type": "file",
+                "value": {
+                  "ref": "gecur7_each"
+                }
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/drive.file"
+            }
+          }
+        ]
+      },
+      {
+        "threadId": "qie4kr_4zbz4i",
+        "ancestors": [
+          "main",
+          "gecur7_each",
+          "pinydp_vd08of"
+        ],
+        "parameterId": "qie4kr_4zbz4i",
+        "steps": []
+      },
+      {
+        "threadId": "pinydp_qlwye9",
+        "ancestors": [
+          "main",
+          "gecur7_each"
+        ],
+        "parameterId": "pinydp_qlwye9",
+        "steps": []
+      }
+    ]
+  }
+}

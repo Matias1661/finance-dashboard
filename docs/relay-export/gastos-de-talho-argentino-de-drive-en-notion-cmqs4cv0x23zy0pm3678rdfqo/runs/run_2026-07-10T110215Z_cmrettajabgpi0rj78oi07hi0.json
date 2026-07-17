@@ -1,0 +1,164 @@
+{
+  "exportedAt": "2026-07-17T08:08:38.044+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmrettajabgpi0rj78oi07hi0",
+    "title": "PHOTO-2026-07-10-12-59-02.jpg",
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "templateName": "Gastos de Talho Argentino de Drive en Notion",
+    "status": "COMPLETED",
+    "createdAt": "2026-07-10T11:02:15.188Z",
+    "completedAt": "2026-07-10T11:03:13.658+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 3,
+    "aiCreditsConsumed": 9973
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1tRA7Ow0psXCtg8A7TEDBLO563yHk3e_f"
+      },
+      "label": "PHOTO-2026-07-10-12-59-02.jpg",
+      "url": "https://drive.google.com/file/d/1tRA7Ow0psXCtg8A7TEDBLO563yHk3e_f/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-07-10T11:02:15.188Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-07-10T11:02:26.797Z",
+      "step": {
+        "id": "ig1660",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cmqs4od7idd2y0rkoaina96rv",
+          "executionKey": "cmrettak1bgpn0rj778yieaii"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número.\n\n<attachment label=\"Actual file\">\n[attached image 1: \"PHOTO-2026-07-10-12-59-02.jpg\"]\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "**Defining the Core Task**\n\nI'm focused on understanding the primary goal: extracting the key data (concept, cost, date) from the invoice image and formatting it as a JSON object, adhering to a defined schema. This is the foundation to build upon.\n\n\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"concepto\": \"Herramientas y materiales de ferretería (Obramat)\", \"costo\": 16.93, \"fecha\": \"2026-07-09\"}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-10T11:02:27.368Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Herramientas y materiales de ferretería (Obramat)"
+          },
+          {
+            "Costo": 16.93
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-09"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-07-10T11:03:09.180Z",
+      "step": {
+        "id": "uweo6l",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+          },
+          "label": "Gastos del local",
+          "url": "https://notion.so/38933ce50e6880b9899beedec9156145"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Concepto": "Herramientas y materiales de ferretería (Obramat)"
+          },
+          {
+            "Costo": 16.93
+          },
+          {
+            "Fecha": {
+              "start": "2026-07-09"
+            }
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "39933ce5-0e68-815d-bb0d-e855df93b287",
+          "dataSourceId": "38933ce5-0e68-80ba-9e03-000b001f2431"
+        },
+        "label": "Herramientas y materiales de ferretería (Obramat)",
+        "url": "https://notion.so/39933ce50e68815dbb0de855df93b287"
+      }
+    },
+    {
+      "timestamp": "2026-07-10T11:03:13.120Z",
+      "step": {
+        "id": "dfn16j",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Workflow": {
+          "id": {
+            "ownerLogin": "Matias1661",
+            "workflowId": 301444283,
+            "repositoryName": "finance-dashboard"
+          },
+          "label": "Sync Sociedad Data"
+        },
+        "Ref": {
+          "id": {
+            "ownedBy": "user",
+            "branchName": "main",
+            "ownerLogin": "Matias1661",
+            "repositoryId": 1255881086,
+            "repositoryName": "finance-dashboard"
+          },
+          "url": "https://github.com/Matias1661/finance-dashboard/tree/main"
+        }
+      }
+    }
+  ]
+}

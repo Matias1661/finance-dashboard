@@ -1,0 +1,102 @@
+{
+  "exportedAt": "2026-07-17T08:08:33.980+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmqqnyqz911fe0qkteqqn5meb",
+    "title": "RE: [EXTERNO]Fwd: Timesheet junio | Luza Group",
+    "templateId": "cmpvag7gu00f60okw55nna3cd",
+    "templateName": "Guardar nóminas de Beatriz en Drive",
+    "status": "COMPLETED",
+    "createdAt": "2026-06-23T13:12:03.858Z",
+    "completedAt": "2026-06-23T13:12:05.402+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 0,
+    "aiCreditsConsumed": 0
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "threadId": "19ef44ff428a3d0e",
+        "messageId": "19ef49bc6f8cb1e8",
+        "references": "<ROAP284MB15042EC47515B1CD94EE93FA9CEE2@ROAP284MB1504.BRAP284.PROD.OUTLOOK.COM> <CAGgZW=Yvxiu7PiOP-G-=AyDGT4+HJW0-sUEzw+HD2=OOn7zYSA@mail.gmail.com>",
+        "headerMessageId": "<RIXP284MB4132B399BB5C445A5AB6CDDFF1EE2@RIXP284MB4132.BRAP284.PROD.OUTLOOK.COM>"
+      },
+      "label": "RE: [EXTERNO]Fwd: Timesheet junio | Luza Group",
+      "url": "https://mail.google.com/mail/#all/19ef49bc6f8cb1e8"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-06-23T13:12:03.858Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-06-23T13:12:05.107Z",
+      "step": {
+        "id": "pinydp",
+        "type": "PATH_GROUP"
+      },
+      "loopIteration": "gecur7_each_1",
+      "action": "Path selected by rules",
+      "inputs": {
+        "paths": [
+          {
+            "name": "A • Es PDF",
+            "filters": [
+              {
+                "conditions": [
+                  {
+                    "subject": "Mime type",
+                    "mode": "equal",
+                    "value": "application/pdf",
+                    "result": "false"
+                  }
+                ],
+                "result": "false"
+              }
+            ]
+          }
+        ],
+        "outcome": {
+          "kind": "fallback",
+          "path": "B • No es PDF"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-06-23T13:12:05.201Z",
+      "step": {
+        "id": "pinydp",
+        "type": "PATH_GROUP"
+      },
+      "loopIteration": "gecur7_each_2",
+      "action": "Path selected by rules",
+      "inputs": {
+        "paths": [
+          {
+            "name": "A • Es PDF",
+            "filters": [
+              {
+                "conditions": [
+                  {
+                    "subject": "Mime type",
+                    "mode": "equal",
+                    "value": "application/pdf",
+                    "result": "false"
+                  }
+                ],
+                "result": "false"
+              }
+            ]
+          }
+        ],
+        "outcome": {
+          "kind": "fallback",
+          "path": "B • No es PDF"
+        }
+      }
+    }
+  ]
+}

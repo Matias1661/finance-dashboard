@@ -38,6 +38,27 @@ Ante cualquier duda sobre alcance, preguntar antes de asumir.
 
 ---
 
+## 🔄 MIGRACIÓN EN CURSO: Relay → nueva plataforma (iniciada 17/07/2026)
+
+**Motivo:** Relay.app cierra el 15/08/2026 (plan gratuito) o 14/09/2026 (plan de pago). Todos los flujos siguen corriendo hasta esa fecha.
+
+**Plan completo:** DB Notion "Plan de migración Relay → nueva plataforma" (bajo Finance Tracker). 8 pasos (0-6, con un 4.5 agregado el 17/07): exportar y documentar (paso 0, hecho) → Movimientos → Peerberry → MyInvestor → Nóminas → Gastos Talho Argentino/Sync Sociedad Data (4.5, agregado por no estar cubierto originalmente) → validación en paralelo → apagado de Relay.
+
+**Paso 0 completado:** export del workspace completo de Relay (14 workflows) revisado y filtrado a los 9 relevantes al dashboard. Documentación detallada de cada uno (trigger, procesamiento, escritura, post-acciones, credenciales) en `docs/relay-export/README.md`. Los JSON/CSV originales de cada flujo están en `docs/relay-export/<nombre-flujo>/`.
+
+**Hallazgos clave que cualquier reemplazo debe replicar (no solo cubiertos por la lógica de Notion):**
+- El flujo de Movimientos ("Pasar extracto bancario a Notion") dispara GitHub Actions "Sync Finance Data" (286832931) además de escribir en Notion.
+- Los flujos de Gastos Talho Argentino ("...de Drive en Notion" y "Actualizar gastos local en GH") disparan GitHub Actions "Sync Sociedad Data" (301444283) — dos caminos distintos (comprobante subido a Drive, o página creada/editada manualmente en Notion) que convergen en el mismo dispatch.
+- El flujo de nóminas es en realidad una cadena de dos workflows: email de Beatriz (RRHH) con adjunto → sube el PDF a Drive → un segundo flujo detecta el archivo nuevo y extrae los datos a la DB Nominas.
+- El flujo de MyInvestor a Notion nunca tuvo una corrida real en producción (solo test runs) — validar con un email real antes de apagar el legacy a Sheets.
+- El prompt de categorización de Movimientos no está embebido en el workflow: se lee en vivo de la DB Notion "Prompts para Relay" en cada corrida, así que esa DB ya es la única fuente de verdad (sin necesidad de sincronizar nada extra al migrar).
+
+**Pendiente:** reconstruir cada flujo en Make o GitHub Actions (pasos 1-6 del plan), validar en paralelo, apagar Relay y actualizar esta documentación.
+
+---
+
+---
+
 ## 🔄 MIGRACIÓN EN CURSO: Google Sheets → Notion (Movimientos)
 
 **Estado: 8 de 8 pasos completados (30/06/2026). Migración de Movimientos terminada.**

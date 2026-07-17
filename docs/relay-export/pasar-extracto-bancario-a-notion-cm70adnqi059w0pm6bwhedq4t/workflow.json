@@ -1,0 +1,560 @@
+{
+  "exportedAt": "2026-07-17T08:08:30.528+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "templateId": "cm70adnqi059w0pm6bwhedq4t",
+    "name": "Pasar extracto bancario a Notion",
+    "emoji": "🏦",
+    "type": "PLUSPLUS",
+    "revision": 930
+  },
+  "workflow": {
+    "metadata": {
+      "name": "Pasar extracto bancario a Notion"
+    },
+    "threads": [
+      {
+        "threadId": "main",
+        "ancestors": [],
+        "steps": [
+          {
+            "stepId": "trigger",
+            "stepType": "drive.fileAddedToFolder",
+            "title": "File added to folder",
+            "description": "Instant trigger - starts a new run when event occurs. Event is automatically detected, concrete implementation depends on integration. Filters are optional and can be used to further limit which events should trigger runs. Can only trigger once per File.",
+            "connection": "matiaso81@gmail.com (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "filter",
+                "$ref": "relay/filter"
+              },
+              {
+                "input": "parent",
+                "title": "Parent Folder (where Files are added)",
+                "type": "resource",
+                "resourceTypeId": "drive.folder",
+                "value": {
+                  "pointer": "drive.folder/1tDJJ8iJJ5SR5pFQdmp-vKO52x9uc_3Cs",
+                  "label": "Extractos para Notion"
+                }
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/drive.file"
+            }
+          },
+          {
+            "stepId": "j83jvw",
+            "stepType": "notion.findPage2",
+            "stepNr": "Step 2",
+            "title": "Leer prompt desde Notion",
+            "scope": {
+              "title": "Data source",
+              "type": "resource",
+              "resourceTypeId": "notion.dataSource",
+              "value": {
+                "pointer": "notion.dataSource/39833ce5-0e68-804a-b091-000bef7a0796",
+                "label": "Prompts para Relay"
+              }
+            },
+            "connection": "Notion #1 (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "filter",
+                "$ref": "relay/filter",
+                "value": {
+                  "or": [
+                    {
+                      "and": [
+                        {
+                          "field": "Nombre",
+                          "operator": "equal",
+                          "value": "Pasar extracto bancario a Notion"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "input": "outputMode",
+                "type": "string",
+                "enum": [
+                  "single",
+                  "list"
+                ],
+                "value": "single"
+              },
+              {
+                "input": "onNoMatches",
+                "type": "string",
+                "enum": [
+                  "notify",
+                  "proceed",
+                  "end"
+                ],
+                "value": "proceed"
+              },
+              {
+                "input": "ifMultipleMatches",
+                "title": "If more than one page is found",
+                "type": "string",
+                "enum": [
+                  "first",
+                  "fail"
+                ],
+                "value": "first"
+              },
+              {
+                "input": "sorting",
+                "title": "Sort order",
+                "description": "Sort order",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string"
+                    },
+                    "direction": {
+                      "type": "string",
+                      "enum": [
+                        "asc",
+                        "desc"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "direction"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/notion.page2[39833ce5-0e68-804a-b091-000bef7a0796]"
+            }
+          },
+          {
+            "stepId": "0ym3gu",
+            "stepType": "ai.prompt.object",
+            "stepNr": "Step 3",
+            "title": "Crear el archivo JSON de todos los movimientos",
+            "inputs": [
+              {
+                "input": "model",
+                "description": "relay models use AI credits, otherwise user API keys for: anthropic, deepseek, openai",
+                "type": "string",
+                "enum": [
+                  "anthropic.claude-sonnet-5",
+                  "relay.claude-sonnet-5",
+                  "anthropic.claude-haiku-4-5",
+                  "relay.claude-haiku-4-5",
+                  "anthropic.claude-opus-4-8",
+                  "relay.claude-opus-4-8",
+                  "anthropic.claude-fable-5",
+                  "relay.claude-fable-5",
+                  "deepseek.deepseek-v4-flash",
+                  "deepseek.deepseek-v4-pro",
+                  "relay.gemini-3.1-flash-lite",
+                  "relay.gemini-3.5-flash",
+                  "relay.gemini-3.1-pro",
+                  "openai.gpt-4.1-nano",
+                  "openai.gpt-4.1-mini",
+                  "openai.gpt-4.1",
+                  "openai.gpt-5.4-mini",
+                  "relay.gpt-5.4-mini",
+                  "openai.gpt-5.4-nano",
+                  "relay.gpt-5.4-nano",
+                  "openai.gpt-5.5-pro",
+                  "relay.gpt-5.5-pro",
+                  "openai.gpt-5.6-sol",
+                  "relay.gpt-5.6-sol",
+                  "openai.gpt-5.6-terra",
+                  "relay.gpt-5.6-terra",
+                  "openai.gpt-5.6-luna",
+                  "relay.gpt-5.6-luna",
+                  "openai.o1",
+                  "openai.gpt-4o",
+                  "relay.grok-4.3"
+                ],
+                "title": "Model",
+                "value": "relay.gpt-5.4-mini"
+              },
+              {
+                "input": "prompt",
+                "title": "User prompt",
+                "type": "string",
+                "value": {
+                  "ref": "j83jvw.Texto"
+                }
+              },
+              {
+                "input": "codeSandbox",
+                "description": "No recommendation yet: The attached file type is generic without format details. Without knowing the file format, size, or how it will be used, a definitive recommendation cannot be made.",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "webAccess",
+                "description": "Recommendation: OFF, The user prompt is simply a placeholder '{Texto}' with no instructions indicating need for web access or external information.",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "review",
+                "title": "Review (human-in-the-loop)",
+                "type": "string",
+                "enum": [
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "attachments",
+                "type": "array",
+                "items": {
+                  "type": "any"
+                },
+                "value": [
+                  {
+                    "ref": "trigger.Actual file"
+                  }
+                ]
+              },
+              {
+                "input": "knowledgeSources",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "title": "Knowledge item ID",
+                  "remoteEnumId": "relay.knowledgeSources"
+                },
+                "value": []
+              },
+              {
+                "input": "outputMode",
+                "type": "string",
+                "enum": [
+                  "text",
+                  "object"
+                ],
+                "value": "object"
+              },
+              {
+                "input": "reasoningEffort",
+                "description": "Defaults to low.",
+                "type": "string",
+                "enum": [
+                  "MINIMAL",
+                  "LOW",
+                  "MEDIUM",
+                  "HIGH"
+                ],
+                "title": "Reasoning effort",
+                "value": null
+              },
+              {
+                "input": "maxTokens",
+                "description": "Defaults to unrestricted.",
+                "type": "number",
+                "title": "Max output tokens",
+                "value": null
+              }
+            ],
+            "userSchema": {
+              "type": "object",
+              "title": "Response",
+              "properties": {
+                "Movimientos": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Concepto": {
+                        "type": "string"
+                      },
+                      "Monto": {
+                        "type": "number"
+                      },
+                      "Category": {
+                        "type": "string"
+                      },
+                      "Date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "En el extracto las fechas vienen en formato DD/MM/AAAA (día/mes/año). Devuélvelas en formato ISO AAAA-MM-DD. Ej: 02/06/2026 → 2026-06-02."
+                      }
+                    },
+                    "required": [
+                      "Concepto",
+                      "Monto"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "Movimientos"
+              ]
+            },
+            "effectiveOutputSchema": {
+              "$ref": "#/steps/0ym3gu/user-schema"
+            }
+          },
+          {
+            "stepId": "m655cy",
+            "stepType": "iterator",
+            "stepNr": "Step 4",
+            "title": "For each item in {scope} run these steps",
+            "scope": {
+              "title": "List",
+              "description": "List of items to iterate over. This can only be set to a reference to a list from another step. To loop over a constant list, use a 'transform' step to create the constant.",
+              "type": "array",
+              "items": {
+                "type": "any"
+              },
+              "value": {
+                "ref": "0ym3gu.Movimientos"
+              }
+            },
+            "inputs": [
+              {
+                "input": "filter",
+                "$ref": "relay/filter"
+              },
+              {
+                "input": "execution",
+                "description": "Prefer parallel unless sequential execution is required",
+                "type": "string",
+                "enum": [
+                  "PARALLEL",
+                  "SEQUENTIAL"
+                ],
+                "title": "Execution",
+                "value": "PARALLEL"
+              }
+            ],
+            "forEach": {
+              "threadId": "m655cy_each",
+              "effectiveParameterSchema": {
+                "type": "object",
+                "properties": {
+                  "Concepto": {
+                    "type": "string"
+                  },
+                  "Monto": {
+                    "type": "number"
+                  },
+                  "Category": {
+                    "type": "string"
+                  },
+                  "Date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "En el extracto las fechas vienen en formato DD/MM/AAAA (día/mes/año). Devuélvelas en formato ISO AAAA-MM-DD. Ej: 02/06/2026 → 2026-06-02."
+                  }
+                },
+                "required": [
+                  "Concepto",
+                  "Monto"
+                ]
+              }
+            },
+            "effectiveOutputSchema": {
+              "type": "object",
+              "properties": {
+                "agg_kv2foz": {
+                  "title": "Pages",
+                  "type": "array",
+                  "items": {
+                    "type": "resource",
+                    "resourceTypeId": "notion.page2[367d58ce-928b-4e31-832d-07707f876365]"
+                  }
+                }
+              },
+              "description": "Automatically derived"
+            }
+          },
+          {
+            "stepId": "vf8w1v",
+            "stepType": "github.dispatchWorkflow",
+            "stepNr": "Step 6",
+            "title": "Disparar workflow de GitHub",
+            "scope": {
+              "title": "Workflow",
+              "type": "resource",
+              "resourceTypeId": "github.workflow",
+              "value": {
+                "pointer": "github.workflow/286832931",
+                "label": "Sync Finance Data"
+              }
+            },
+            "connection": "GitHub #1 (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "ref",
+                "type": "resource",
+                "resourceTypeId": "github.branch",
+                "value": {
+                  "pointer": "github.branch/main",
+                  "label": "main"
+                }
+              },
+              {
+                "input": "inputs",
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "threadId": "m655cy_each",
+        "ancestors": [
+          "main"
+        ],
+        "parameterId": "m655cy_each",
+        "parameter": {
+          "title": "Movimientos",
+          "effectiveOutputSchema": {
+            "type": "object",
+            "properties": {
+              "Concepto": {
+                "type": "string"
+              },
+              "Monto": {
+                "type": "number"
+              },
+              "Category": {
+                "type": "string"
+              },
+              "Date": {
+                "type": "string",
+                "format": "date",
+                "description": "En el extracto las fechas vienen en formato DD/MM/AAAA (día/mes/año). Devuélvelas en formato ISO AAAA-MM-DD. Ej: 02/06/2026 → 2026-06-02."
+              }
+            },
+            "required": [
+              "Concepto",
+              "Monto"
+            ]
+          }
+        },
+        "steps": [
+          {
+            "stepId": "kv2foz",
+            "stepType": "notion.createPageDb",
+            "stepNr": "Step 5",
+            "title": "Crear movimiento en Notion",
+            "scope": {
+              "title": "Data source",
+              "type": "resource",
+              "resourceTypeId": "notion.dataSource",
+              "value": {
+                "pointer": "notion.dataSource/367d58ce-928b-4e31-832d-07707f876365",
+                "label": "Movimientos"
+              }
+            },
+            "connection": "Notion #1 (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "template",
+                "description": "If unset: None",
+                "type": "string",
+                "remoteEnumId": "notion.dataSource.dataSourceTemplate[367d58ce-928b-4e31-832d-07707f876365]"
+              },
+              {
+                "input": "content",
+                "type": "string",
+                "format": "markdown",
+                "value": null
+              },
+              {
+                "input": "Concepto",
+                "type": "string",
+                "value": {
+                  "ref": "m655cy_each.Concepto"
+                }
+              },
+              {
+                "input": "Monto",
+                "type": "number",
+                "value": {
+                  "ref": "m655cy_each.Monto"
+                }
+              },
+              {
+                "input": "Categoria",
+                "type": "string",
+                "enum": [
+                  "Salidas",
+                  "Comer afuera",
+                  "Combustible",
+                  "Guille",
+                  "Gastos coche",
+                  "Compras",
+                  "Gastos moto",
+                  "Departamento",
+                  "Club",
+                  "Suscripciones",
+                  "Gastos en conjunto",
+                  "Inversion",
+                  "Viajes",
+                  "Nomina",
+                  "Otros",
+                  "Tarjeta",
+                  "Supermercado",
+                  "A revisar",
+                  "Talho Argentino",
+                  "Salud y Belleza"
+                ],
+                "value": {
+                  "ref": "m655cy_each.Category"
+                }
+              },
+              {
+                "input": "Fecha",
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "title": "Start",
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "end": {
+                    "title": "End",
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "value": {
+                  "start": {
+                    "ref": "m655cy_each.Date"
+                  }
+                }
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/notion.page2[367d58ce-928b-4e31-832d-07707f876365]"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

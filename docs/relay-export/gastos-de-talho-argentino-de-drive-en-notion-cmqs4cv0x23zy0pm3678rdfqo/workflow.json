@@ -1,0 +1,295 @@
+{
+  "exportedAt": "2026-07-17T08:08:30.375+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "templateId": "cmqs4cv0x23zy0pm3678rdfqo",
+    "name": "Gastos de Talho Argentino de Drive en Notion",
+    "emoji": "📝",
+    "type": "PLUSPLUS",
+    "revision": 122
+  },
+  "workflow": {
+    "metadata": {
+      "name": "Gastos de Talho Argentino de Drive en Notion"
+    },
+    "threads": [
+      {
+        "threadId": "main",
+        "ancestors": [],
+        "steps": [
+          {
+            "stepId": "trigger",
+            "stepType": "drive.fileAddedToFolder",
+            "title": "Archivo agregado a Talho Argentino",
+            "description": "Instant trigger - starts a new run when event occurs. Event is automatically detected, concrete implementation depends on integration. Filters are optional and can be used to further limit which events should trigger runs. Can only trigger once per File.",
+            "connection": "matiaso81@gmail.com (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "filter",
+                "$ref": "relay/filter"
+              },
+              {
+                "input": "parent",
+                "title": "Parent Folder (where Files are added)",
+                "type": "resource",
+                "resourceTypeId": "drive.folder",
+                "value": {
+                  "pointer": "drive.folder/1rlmEnN35OFcVmpWHylY9G3-qsK14-s0s",
+                  "label": "Gastos Talho Argentino"
+                }
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/drive.file"
+            }
+          },
+          {
+            "stepId": "ig1660",
+            "stepType": "ai.prompt.object",
+            "stepNr": "Step 2",
+            "title": "Extraer datos del gasto",
+            "inputs": [
+              {
+                "input": "model",
+                "description": "relay models use AI credits, otherwise user API keys for: anthropic, deepseek, openai",
+                "type": "string",
+                "enum": [
+                  "anthropic.claude-sonnet-5",
+                  "relay.claude-sonnet-5",
+                  "anthropic.claude-haiku-4-5",
+                  "relay.claude-haiku-4-5",
+                  "anthropic.claude-opus-4-8",
+                  "relay.claude-opus-4-8",
+                  "anthropic.claude-fable-5",
+                  "relay.claude-fable-5",
+                  "deepseek.deepseek-v4-flash",
+                  "deepseek.deepseek-v4-pro",
+                  "relay.gemini-3.1-flash-lite",
+                  "relay.gemini-3.5-flash",
+                  "relay.gemini-3.1-pro",
+                  "openai.gpt-4.1-nano",
+                  "openai.gpt-4.1-mini",
+                  "openai.gpt-4.1",
+                  "openai.gpt-5.4-mini",
+                  "relay.gpt-5.4-mini",
+                  "openai.gpt-5.4-nano",
+                  "relay.gpt-5.4-nano",
+                  "openai.gpt-5.5-pro",
+                  "relay.gpt-5.5-pro",
+                  "openai.gpt-5.6-sol",
+                  "relay.gpt-5.6-sol",
+                  "openai.gpt-5.6-terra",
+                  "relay.gpt-5.6-terra",
+                  "openai.gpt-5.6-luna",
+                  "relay.gpt-5.6-luna",
+                  "openai.o1",
+                  "openai.gpt-4o",
+                  "relay.grok-4.3"
+                ],
+                "title": "Model",
+                "value": "relay.gemini-3.5-flash"
+              },
+              {
+                "input": "prompt",
+                "title": "User prompt",
+                "type": "string",
+                "value": "Este es un comprobante de un gasto (factura, ticket o recibo). Extrae el concepto o descripción principal del gasto, el costo total y la fecha del comprobante. Si el costo incluye símbolo de moneda, devuelve solo el número."
+              },
+              {
+                "input": "codeSandbox",
+                "description": "Recommendation: OFF, The task involves reading and understanding the content of a file (receipt/invoice) to extract specific information like description, total cost, and date. This is a content understanding task, not data transformation, so the model's vision capabilities are better suited than sandboxed code execution.",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "AUTO"
+              },
+              {
+                "input": "webAccess",
+                "description": "Recommendation: OFF, The task is to extract information from an attached receipt/invoice file. No web access is needed since the data is already provided locally.",
+                "type": "string",
+                "enum": [
+                  "AUTO",
+                  "OFF",
+                  "ON"
+                ],
+                "value": "AUTO"
+              },
+              {
+                "input": "review",
+                "title": "Review (human-in-the-loop)",
+                "type": "string",
+                "enum": [
+                  "OFF",
+                  "ON"
+                ],
+                "value": "OFF"
+              },
+              {
+                "input": "attachments",
+                "type": "array",
+                "items": {
+                  "type": "any"
+                },
+                "value": [
+                  {
+                    "ref": "trigger.Actual file"
+                  }
+                ]
+              },
+              {
+                "input": "knowledgeSources",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "title": "Knowledge item ID",
+                  "remoteEnumId": "relay.knowledgeSources"
+                },
+                "value": []
+              },
+              {
+                "input": "outputMode",
+                "type": "string",
+                "enum": [
+                  "text",
+                  "object"
+                ],
+                "value": "object"
+              },
+              {
+                "input": "thinkingBudget",
+                "description": "Range 0-24576, -1 for dynamic, 0 to disable. Defaults to -1.",
+                "type": "number",
+                "title": "Thinking budget",
+                "value": null
+              }
+            ],
+            "userSchema": {
+              "type": "object",
+              "title": "Response",
+              "properties": {
+                "Concepto": {
+                  "type": "string"
+                },
+                "Costo": {
+                  "type": "number"
+                },
+                "Fecha": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            },
+            "effectiveOutputSchema": {
+              "$ref": "#/steps/ig1660/user-schema"
+            }
+          },
+          {
+            "stepId": "uweo6l",
+            "stepType": "notion.createPageDb",
+            "stepNr": "Step 3",
+            "title": "Crear gasto en Notion",
+            "scope": {
+              "title": "Data source",
+              "type": "resource",
+              "resourceTypeId": "notion.dataSource",
+              "value": {
+                "pointer": "notion.dataSource/38933ce5-0e68-80ba-9e03-000b001f2431",
+                "label": "Gastos del local"
+              }
+            },
+            "connection": "Notion #1 (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "template",
+                "description": "If unset: None",
+                "type": "string",
+                "remoteEnumId": "notion.dataSource.dataSourceTemplate[38933ce5-0e68-80ba-9e03-000b001f2431]"
+              },
+              {
+                "input": "content",
+                "type": "string",
+                "format": "markdown",
+                "value": null
+              },
+              {
+                "input": "Concepto",
+                "type": "string",
+                "value": {
+                  "ref": "ig1660.Concepto"
+                }
+              },
+              {
+                "input": "Costo",
+                "type": "number",
+                "value": {
+                  "ref": "ig1660.Costo"
+                }
+              },
+              {
+                "input": "Fecha",
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "title": "Start",
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "end": {
+                    "title": "End",
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "value": {
+                  "start": {
+                    "ref": "ig1660.Fecha"
+                  }
+                }
+              }
+            ],
+            "effectiveOutputSchema": {
+              "$ref": "#/resource-types/notion.page2[38933ce5-0e68-80ba-9e03-000b001f2431]"
+            }
+          },
+          {
+            "stepId": "dfn16j",
+            "stepType": "github.dispatchWorkflow",
+            "stepNr": "Step 4",
+            "title": "Disparar workflow de GitHub",
+            "scope": {
+              "title": "Workflow",
+              "type": "resource",
+              "resourceTypeId": "github.workflow",
+              "value": {
+                "pointer": "github.workflow/301444283",
+                "label": "Sync Sociedad Data"
+              }
+            },
+            "connection": "GitHub #1 (owned by Matias Ortiz)",
+            "inputs": [
+              {
+                "input": "ref",
+                "type": "resource",
+                "resourceTypeId": "github.branch",
+                "value": {
+                  "pointer": "github.branch/main",
+                  "label": "main"
+                }
+              },
+              {
+                "input": "inputs",
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

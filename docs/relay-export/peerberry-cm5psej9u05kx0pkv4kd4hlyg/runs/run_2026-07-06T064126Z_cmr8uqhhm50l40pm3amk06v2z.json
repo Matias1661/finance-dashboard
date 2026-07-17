@@ -1,0 +1,101 @@
+{
+  "exportedAt": "2026-07-17T08:08:36.180+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmr8uqhhm50l40pm3amk06v2z",
+    "title": "Account summary overview",
+    "templateId": "cm5psej9u05kx0pkv4kd4hlyg",
+    "templateName": "Peerberry",
+    "status": "COMPLETED",
+    "createdAt": "2026-07-06T06:41:26.791Z",
+    "completedAt": "2026-07-06T06:41:31.886+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 2,
+    "aiCreditsConsumed": 1220
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "threadId": "19f3628e9bc25255",
+        "messageId": "19f3628e9bc25255",
+        "headerMessageId": "<31137988.20260706064118.6a4b4e0e28ea71.85437143@maillist.peerberry.com>"
+      },
+      "label": "Account summary overview",
+      "url": "https://mail.google.com/mail/#all/19f3628e9bc25255"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-07-06T06:41:26.791Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-07-06T06:41:29.914Z",
+      "step": {
+        "id": "ayvlv6",
+        "type": "AI"
+      },
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cm5psejax05l40pkv3wpg8zf5",
+          "executionKey": "cmr8uqhit50l90pm3hxju925e"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "El correo que estas analizando es el estado de mi cuenta en Peerberry.\nQuiero que extraigas el valor \"Invested funds\", el de \"Available balance\" y la fecha de \"Portfolio updated\".\nY quiero que me crees una cuarta variable llamada \"Total\" que sea la suma de \"Invested funds\" y \"Available balance\".\n\n<attachment id=\"19f3628e9bc25255\" type=\"gmail.mail\">\n  From: Peerberry (info@peerberry.com)\n  To: matiaso81@gmail.com\n  Reply-To: info@peerberry.com\n  Labels: Unread, Category Updates, Inbox\n  Subject: Account summary overview\n  Send date/time: 2026-07-06 08:41:18 UTC+2\n  Message ID: 19f3628e9bc25255\n  Thread ID: 19f3628e9bc25255\n  Has external recipients: No\n  Is first in conversation: Yes\n  Is unread: Yes\n  <body>\n    *|SUBJECT|*                                                 == Dear\r\n    Matías, ==\r\n    \r\n                      It is a summary of your PeerBerry account. Please log in\r\n    to your account for more detailed information.                     *Balance\r\n    on* 2026-06-29  € 3342.08   *Interest income* € 17.09   *Principal\r\n    repayment* € 326.57   *Investment* € -1057.25   *Deposit* € 0.00  \r\n    *Withdrawals* € 0.00   *Balance on *2026-07-05 € 2628.49               \r\n                        *Portfolio*\r\n          Portfolio updated on  2026-07-06   Invested funds: € 9091.59  \r\n    Available balance: € 2628.49   Profit: € 770.08                        \r\n     Go to profile overview\r\n    <https://mandrillapp.com/track/click/31137988/peerberry.com?p=eyJzIjoieU9sQW0xSEt5enVqcVFySDY1YmVOWUg3cWxNIiwidiI6MiwicCI6IntcInVcIjozMTEzNzk4OCxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3BlZXJiZXJyeS5jb21cXFwvP3V0bV9zb3VyY2U9ZW1haWwmdXRtX21lZGl1bT1ub3RpZnkmdXRtX2NhbXBhaWduPWFjY291bnQtc3VtbWFyeVwiLFwiaWRcIjpcImUxNWJiOTgzZDg2MzRhYmE4MDAyNTAxNDQ0MTRiNDNkXCIsXCJ1cmxfaWRzXCI6W1wiZGI4MWEzMDI2MTdlN2E1M2NlN2Y2YzFmMTQ2MzIwYWQ2NTU3NGQ2MVwiXSxcIm1zZ190c1wiOjE3ODMzMjAwNzh9In0>\r\n                    You can change the frequency of receiving the account\r\n    summary in your PeerBerry account.                 View\r\n    <https://mandrillapp.com/track/click/31137988/peerberry.com?p=eyJzIjoiclFzZDNjV1kwRmtEbGwyY1daZkh0MnlxcGpnIiwidiI6MiwicCI6IntcInVcIjozMTEzNzk4OCxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3BlZXJiZXJyeS5jb21cXFwvZW5cXFwvY2xpZW50XFxcL1wiLFwiaWRcIjpcImUxNWJiOTgzZDg2MzRhYmE4MDAyNTAxNDQ0MTRiNDNkXCIsXCJ1cmxfaWRzXCI6W1wiNWY1MGVhM2FiYzg4ZmY3YWQ0ZmU3M2VhOGM0MjA0ZTU4ZWI2ZDk5NVwiXSxcIm1zZ190c1wiOjE3ODMzMjAwNzh9In0> <https://mandrillapp.com/track/click/31137988/www.facebook.com?p=eyJzIjoiQ1lBY0dFSVdFN2xvcFhTeU5YNGpqSWIxbEdzIiwidiI6MiwicCI6IntcInVcIjozMTEzNzk4OCxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5mYWNlYm9vay5jb21cXFwvcGVlcmJlcnJ5XFxcL1wiLFwiaWRcIjpcImUxNWJiOTgzZDg2MzRhYmE4MDAyNTAxNDQ0MTRiNDNkXCIsXCJ1cmxfaWRzXCI6W1wiODBjYTk2OTc0OWY0OTNjZTY5NmM5MDMxOWE2ZjczNTdkNjg2ZjZiNFwiXSxcIm1zZ190c1wiOjE3ODMzMjAwNzh9In0>\r\n    <https://mandrillapp.com/track/click/31137988/twitter.com?p=eyJzIjoiT0tPNGUwNmJNak1ONWE5QmdWTUI2SlBWaS0wIiwidiI6MiwicCI6IntcInVcIjozMTEzNzk4OCxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3R3aXR0ZXIuY29tXFxcL1BlZXJCZXJyeVwiLFwiaWRcIjpcImUxNWJiOTgzZDg2MzRhYmE4MDAyNTAxNDQ0MTRiNDNkXCIsXCJ1cmxfaWRzXCI6W1wiZjQ2MTUyODdiNzE1MDYxNjMyODkxNTQwZDllNWRlMDVjYjllNTdlNVwiXSxcIm1zZ190c1wiOjE3ODMzMjAwNzh9In0>\r\n    <https://mandrillapp.com/track/click/31137988/www.linkedin.com?p=eyJzIjoia0laTHpyT2x5VlBxTks4MVhMaW8wS0tWNFJzIiwidiI6MiwicCI6IntcInVcIjozMTEzNzk4OCxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5saW5rZWRpbi5jb21cXFwvY29tcGFueVxcXC9wZWVyYmVycnlcXFwvXCIsXCJpZFwiOlwiZTE1YmI5ODNkODYzNGFiYTgwMDI1MDE0NDQxNGI0M2RcIixcInVybF9pZHNcIjpbXCIzZTc5MDk2YWVlZjAyYTkxODZlY2E4ZmJiYzMzNWJjMzZjYmVmMmEyXCJdLFwibXNnX3RzXCI6MTc4MzMyMDA3OH0ifQ>                          \r\n    *Contact us*:*\r\n    \r\n     Peerberry d.o.o. Kareviu str. 11B, Vilnius, Lithuania, LT-09109\r\n    \r\n     info@peerberry.com\r\n    \r\n     +370 61 355 529\r\n    \r\n     https://mandrillapp.com/track/click/31137988/peerberry.com?p=eyJzIjoiUXJMUWo1Rldkb3FLYlpady1xMHkxX05fZDNNIiwidiI6MiwicCI6IntcInVcIjozMTEzNzk4OCxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3BlZXJiZXJyeS5jb21cXFwvXCIsXCJpZFwiOlwiZTE1YmI5ODNkODYzNGFiYTgwMDI1MDE0NDQxNGI0M2RcIixcInVybF9pZHNcIjpbXCJkYjgxYTMwMjYxN2U3YTUzY2U3ZjZjMWYxNDYzMjBhZDY1NTc0ZDYxXCJdLFwibXNnX3RzXCI6MTc4MzMyMDA3OH0ifQ\r\n    \r\n     \r\n     You have received this email because you have signed up to PeerBerry. \r\n     If you find this information irrrelevant, please go to settings in your\r\n    PeerBerry account to unsubscribe <https://mandrillapp.com/track/click/31137988/peerberry.com?p=eyJzIjoiX1pJX2toR3RVNTZaTlcxTzI5OEgtUWlwQ2hZIiwidiI6MiwicCI6IntcInVcIjozMTEzNzk4OCxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3BlZXJiZXJyeS5jb21cXFwvZW5cXFwvc2V0dGluZ3NcIixcImlkXCI6XCJlMTViYjk4M2Q4NjM0YWJhODAwMjUwMTQ0NDE0YjQzZFwiLFwidXJsX2lkc1wiOltcImM4OWY3NDJmNmEyYWRlY2NmZTc2NTBkODc2OTI2NGRjNTc2ZjhkYjlcIl0sXCJtc2dfdHNcIjoxNzgzMzIwMDc4fSJ9>.\r\n    Please note that investments are related to risks.\n  </body>\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\n  \"availableBalance\": 2628.49,\n  \"fecha\": \"2026-07-06\",\n  \"investedFunds\": 9091.59,\n  \"total\": 11720.08\n}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-06T06:41:31.814Z",
+      "step": {
+        "id": "4crun0",
+        "type": "AUTOMATION"
+      },
+      "action": "Completed",
+      "inputs": {
+        "Sheet": {
+          "id": {
+            "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+            "sheetId": 1687438032,
+            "spreadsheetTitle": "Finance Tracker"
+          },
+          "label": "Inversiones",
+          "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=1687438032"
+        },
+        "inputs": [
+          {
+            "Fecha": "2026-07-06"
+          },
+          {
+            "Peerberry": 11720.08
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "fileId": "1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI",
+          "sheetId": 1687438032,
+          "rowOffset": 173,
+          "metadataId": 91573718
+        },
+        "label": "Row 174",
+        "url": "https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI/edit#gid=1687438032&range=174:174"
+      }
+    }
+  ]
+}

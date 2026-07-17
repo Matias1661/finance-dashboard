@@ -1,0 +1,173 @@
+{
+  "exportedAt": "2026-07-17T08:08:33.293+00:00",
+  "exportVersion": "1.0",
+  "metadata": {
+    "runId": "cmr3aj3238zd40pm7ejjpfun9",
+    "title": "000038_ORTIZ RODRIGUEZ, MATIAS LEANDRO.pdf",
+    "templateId": "cm5y2wz8s09jn0plv5i71gmdw",
+    "templateName": "Base de datos de nominas",
+    "status": "COMPLETED",
+    "createdAt": "2026-07-02T09:16:58.297Z",
+    "completedAt": "2026-07-02T09:17:53.554+00:00",
+    "isTestRun": false
+  },
+  "summary": {
+    "stepsCompleted": 2,
+    "aiCreditsConsumed": 3111
+  },
+  "trigger": {
+    "output": {
+      "id": {
+        "fileId": "1xybPoFrrjemFmlfcFjS2_5UJAFJmMhEp"
+      },
+      "label": "000038_ORTIZ RODRIGUEZ, MATIAS LEANDRO.pdf",
+      "url": "https://drive.google.com/file/d/1xybPoFrrjemFmlfcFjS2_5UJAFJmMhEp/view"
+    }
+  },
+  "executionHistory": [
+    {
+      "timestamp": "2026-07-02T09:16:58.297Z",
+      "action": "Run started"
+    },
+    {
+      "timestamp": "2026-07-02T09:16:59.420Z",
+      "step": {
+        "id": "s0m80u",
+        "type": "PATH_GROUP"
+      },
+      "action": "Path selected by rules",
+      "inputs": {
+        "paths": [
+          {
+            "name": "A • Si es un PDF",
+            "filters": [
+              {
+                "conditions": [
+                  {
+                    "subject": "MIME type",
+                    "mode": "equal",
+                    "value": "application/pdf",
+                    "result": "true"
+                  }
+                ],
+                "result": "true"
+              }
+            ]
+          }
+        ],
+        "outcome": {
+          "kind": "match",
+          "path": "A • Si es un PDF"
+        }
+      }
+    },
+    {
+      "timestamp": "2026-07-02T09:17:06.875Z",
+      "step": {
+        "id": "k8k9ou",
+        "type": "AI"
+      },
+      "loopIteration": "s0m80u_08zcpa_1",
+      "action": "Completed",
+      "output": {
+        "id": {
+          "originKey": "cm5y2y5co0006356sltmaetmc",
+          "executionKey": "cmr3aj3xg8zdk0pm7d7i61ecz"
+        },
+        "label": "AI response"
+      },
+      "aiChatHistory": [
+        {
+          "role": "system",
+          "content": "Return the final result for the user request below.\nThe response must match the required output schema.\nYou are being invoked in an automation context. Plain-text assistant messages are ignored."
+        },
+        {
+          "role": "user",
+          "content": "Este archivo es el recibo del pago de mi sueldo.\nNecesito que extraigas los siguientes datos:\nNombre de la empresa\nLa fecha de pago\nMonto total depositado\n\n\n<attachment id=\"1xybPoFrrjemFmlfcFjS2_5UJAFJmMhEp\" type=\"drive.file\">\n  File ID: 1xybPoFrrjemFmlfcFjS2_5UJAFJmMhEp\n  Parent folder (drive.folder): 1pt9WGS3nzR8t1NIS5egrL0OMm2QGUKGj\n  Full path: My Drive/Nominas/000038_ORTIZ RODRIGUEZ, MATIAS LEANDRO.pdf\n  MIME type: application/pdf\n  Creation time: 2026-07-02 09:16:54\n  Last modified time: 2026-07-02 09:16:54\n  Modified by me: Yes\n  Last modified by me time: 2026-07-02 09:16:54\n  Title: 000038_ORTIZ RODRIGUEZ, MATIAS LEANDRO.pdf\n  Size (bytes): 478325\n  <actual_file>\n[attached pdf 1: \"000038_ORTIZ RODRIGUEZ, MATIAS LEANDRO.pdf\"]\n  </actual_file>\n  <owner>\n    Email: matiaso81@gmail.com\n    Name: Matias Ortiz\n    First name: Matias\n    Last name: Ortiz\n  </owner>\n  <last_modifying_user>\n    Email: matiaso81@gmail.com\n    Name: Matias Ortiz\n    First name: Matias\n    Last name: Ortiz\n  </last_modifying_user>\n</attachment>\n"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"monto\":2648.99,\"empresa\":\"LUZUTANIAES GROUP SLU\",\"fechaDePago\":\"2026-06-30T00:00:00Z\"}"
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-02T09:17:07.475Z",
+      "step": {
+        "id": "0ajah3",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "s0m80u_08zcpa_1",
+      "action": "Enqueued",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "19833ce5-0e68-8121-8f95-000bddffaaea"
+          },
+          "label": "Finance Tracker · Nominas",
+          "url": "https://notion.so/19833ce50e6881d59230d35570dc532e"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Empresa": "LUZUTANIAES GROUP SLU"
+          },
+          {
+            "Archivo": "https://drive.google.com/file/d/1xybPoFrrjemFmlfcFjS2_5UJAFJmMhEp/view"
+          },
+          {
+            "Fecha de pago": {
+              "start": "2026-06-30"
+            }
+          },
+          {
+            "Total": 2648.99
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-07-02T09:17:52.525Z",
+      "step": {
+        "id": "0ajah3",
+        "type": "AUTOMATION"
+      },
+      "loopIteration": "s0m80u_08zcpa_1",
+      "action": "Completed",
+      "inputs": {
+        "Data source": {
+          "id": {
+            "dataSourceId": "19833ce5-0e68-8121-8f95-000bddffaaea"
+          },
+          "label": "Finance Tracker · Nominas",
+          "url": "https://notion.so/19833ce50e6881d59230d35570dc532e"
+        },
+        "Template": "None",
+        "inputs": [
+          {
+            "Empresa": "LUZUTANIAES GROUP SLU"
+          },
+          {
+            "Archivo": "https://drive.google.com/file/d/1xybPoFrrjemFmlfcFjS2_5UJAFJmMhEp/view"
+          },
+          {
+            "Fecha de pago": {
+              "start": "2026-06-30"
+            }
+          },
+          {
+            "Total": 2648.99
+          }
+        ]
+      },
+      "output": {
+        "id": {
+          "pageId": "39133ce5-0e68-81a8-986e-f2573c6ac260",
+          "dataSourceId": "19833ce5-0e68-8121-8f95-000bddffaaea"
+        },
+        "label": "LUZUTANIAES GROUP SLU",
+        "url": "https://notion.so/39133ce50e6881a8986ef2573c6ac260"
+      }
+    }
+  ]
+}
