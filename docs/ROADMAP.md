@@ -19,7 +19,7 @@
 - [ ] Arreglar botón "Actualizar" en `index.html`: hoy tiene un token de GitHub hardcodeado (viejo, ya revocado — el botón está roto). **Actualizado 17/07:** ya no aplica la idea original de un webhook de Make (Make quedó fuera de la arquitectura, ver `DECISIONS.md`); evaluar una alternativa server-side sin Make (ej. un endpoint propio, o simplemente dejar el botón disparando el workflow por `gh workflow run` manual hasta decidir algo mejor).
 - [ ] Migración Relay → GitHub Actions, flujos pendientes de implementar (ver `PROJECT_MEMORY.md`, sección "Migración en curso", y `DECISIONS.md` 2026-07-17 para prompts ya probados):
   - [x] Peerberry: script Python + paso en `sync-finance-data.yml`, validado con datos reales (incidente de duplicados detectado y corregido, ver `DECISIONS.md` 2026-07-17). Flujo de Relay para Peerberry dado de baja.
-  - [ ] MyInvestor: script Python pidiendo `text/plain` a la API de Gmail (evita el límite de tamaño que bloqueó Make)
+  - [x] MyInvestor: script Python pidiendo `text/plain` a la API de Gmail, validado con datos reales (incidente de cuentas conflictivas pre-dic-2024 detectado y corregido, ver `DECISIONS.md` 2026-07-17)
   - [ ] Nóminas: script Python que vigile la carpeta Drive "Nominas" (carga manual del PDF, ya no lee el email automáticamente)
   - [x] Resolver autenticación de Gmail API: OAuth 2.0 con refresh_token (cuenta de servicio no sirve para Gmail personal). Secrets `GMAIL_CLIENT_ID`/`GMAIL_CLIENT_SECRET`/`GMAIL_REFRESH_TOKEN` ya cargados, reusar para MyInvestor.
   - [ ] Talho Argentino / Gastos del local (paso 4.5 del plan): script + workflow, cubre comprobante en Drive + cambios en DB Notion
