@@ -1,3 +1,19 @@
+## [2026-07-17] Paso 1 del plan Relay: Movimientos se reconstruye en GitHub Actions, no Make
+
+**Contexto:** paso 1 del plan ("Pasar extracto bancario a Notion") recomendaba Make en Notion. Se evaluaron las dos opciones antes de implementar.
+
+**Hallazgo que cambió la recomendación original:** se chequeó la cuenta real de Make (conector activo) — plan Free confirmado con máximo **2 escenarios activos** (`license.scenarios: 2`), 1.000 operaciones/mes, intervalo mínimo de disparo 15 min, 0 escenarios creados hasta ahora. El plan completo de migración tiene más de 2 flujos con trigger propio (Movimientos, Peerberry, MyInvestor, Nóminas ×2, Talho Argentino ×2), así que el cupo de 2 escenarios es un recurso escaso a repartir entre todos los flujos, no una decisión aislada por flujo.
+
+**Comparación (Movimientos):**
+- Make: trigger de Drive nativo sin código, pero consume 1 de los 2 escenarios disponibles; ejecuciones y errores visibles directo por el conector MCP de Make.
+- GitHub Actions: sin límite de escenarios (usa minutos de Actions, ya disponibles y sin costo adicional real); reutiliza el patrón que el repo ya tiene (secrets, script Python, workflow) usado en `sync-finance-data.yml` y `sync-sociedad-data.yml`; requiere gestionar un service account de Google para leer Drive; los logs de Actions no son legibles directo por Claude (se redirigen a Azure Blob) — hay que inferir del YAML + conclusión del step.
+
+**Decisión:** GitHub Actions para Movimientos, reservando los 2 escenarios de Make para los flujos con trigger por email en tiempo real (Peerberry, MyInvestor, Nóminas), que se benefician más de reacción instantánea y no tienen alternativa sencilla de polling.
+
+**Estado:** Decidido. Implementación (workflow + script) pendiente.
+
+---
+
 ## [2026-07-17] Inicio migración Relay: export guardado en docs/relay-export/, fila 4.5 agregada al plan
 
 **Contexto:** Relay.app cierra el 15/08/2026 (plan gratuito) o 14/09/2026 (plan de pago). Paso 0 del plan de migración ("Plan de migración Relay → nueva plataforma" en Notion): exportar y documentar todos los flujos antes de tocar nada.

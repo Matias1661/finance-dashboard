@@ -1,3 +1,7 @@
+## 2026-07-17 (2)
+
+- Paso 1 de la migración Relay (Movimientos): decidido GitHub Actions en vez de Make, tras chequear que el plan Free de Make solo permite 2 escenarios activos (se reservan para Peerberry/MyInvestor/Nóminas, con trigger por email). Fila del plan en Notion actualizada. Ver `DECISIONS.md` 2026-07-17.
+
 ## 2026-07-17 (1)
 
 - Migración de Relay: export completo del workspace (14 workflows) revisado; 5 descartados por no ser del dashboard. Los 9 relevantes guardados en `docs/relay-export/` con `README.md` documentando trigger/procesamiento/escritura/post-acción de cada uno. Fila "4.5" agregada al plan de Notion (flujo Gastos Talho Argentino / Sync Sociedad Data, no cubierto antes). Ver `DECISIONS.md` 2026-07-17.
