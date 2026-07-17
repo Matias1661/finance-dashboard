@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17 12:09",
+  "generated_at": "2026-07-17 16:00",
   "movimientos": [
     {
       "fecha": "2026-07-16",
@@ -18078,12 +18078,12 @@
       },
       {
         "mes": "2026-06",
-        "peerberry": 0.31,
+        "peerberry": 44.32,
         "myinvestor": 1.76
       },
       {
         "mes": "2026-07",
-        "peerberry": 0.21,
+        "peerberry": 13.36,
         "myinvestor": 0
       }
     ],
@@ -18252,7 +18252,7 @@
       },
       {
         "mes": "2026-06",
-        "peerberry": 25.9,
+        "peerberry": 3740.83,
         "myinvestor": 151.0,
         "peerberry_aportes": 6500.0,
         "myinvestor_aportes": 444.0,
@@ -18261,7 +18261,7 @@
       },
       {
         "mes": "2026-07",
-        "peerberry": 25.17,
+        "peerberry": 1565.33,
         "myinvestor": 0.0,
         "peerberry_aportes": 0.0,
         "myinvestor_aportes": null,
@@ -18270,16 +18270,16 @@
       }
     ],
     "kpi": {
-      "pct_ultimo_mes": 1.04,
-      "pct_12m": 20.35,
-      "ganancia_12m": 3212.98,
+      "pct_ultimo_mes": 22.88,
+      "pct_12m": 46.37,
+      "ganancia_12m": 6927.91,
       "capital_actual": 20566.989999999998,
       "periodo_ultimo_mes": "2026-06",
       "por_plataforma": {
         "peerberry": {
-          "pct_ultimo_mes": 0.31,
-          "pct_12m": 7.81,
-          "ganancia_12m": 402.98,
+          "pct_ultimo_mes": 44.32,
+          "pct_12m": 55.12,
+          "ganancia_12m": 4117.91,
           "capital_actual": 11702.99,
           "periodo_ultimo_mes": "2026-06"
         },
@@ -18511,13 +18511,13 @@
       },
       {
         "mes": "2026-06",
-        "peerberry": 0.31,
+        "peerberry": 44.32,
         "myinvestor": 1.76,
-        "total": 1.04,
-        "acumulado": 20.04,
-        "acumulado_anio": 10.92,
-        "benchmark": 0.93,
-        "benchmark_acumulado": 16.74,
+        "total": 22.88,
+        "acumulado": 46.0,
+        "acumulado_anio": 34.9,
+        "benchmark": 0.9,
+        "benchmark_acumulado": 16.71,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
