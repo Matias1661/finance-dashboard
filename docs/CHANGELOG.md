@@ -1,3 +1,7 @@
+## 2026-07-17 (10)
+
+- Peerberry: escrito `scripts/process_peerberry_emails.py` + paso nuevo en `sync-finance-data.yml`. Requiere OAuth con refresh_token para Gmail (no cuenta de servicio — Gmail personal no soporta domain-wide delegation). Pendiente: crear OAuth Client ID, correr `scripts/get_gmail_refresh_token.py`, cargar 3 secrets nuevos, y validar con un email real. Ver `DECISIONS.md` 2026-07-17.
+
 ## 2026-07-17 (9)
 
 - **Decisión final de arquitectura:** los 4 flujos de email/Drive (Movimientos, Peerberry, MyInvestor, Nóminas) van a GitHub Actions, no Make — límite de tamaño de mensaje de Gmail en Make sin workaround, y objetivo de minimizar herramientas (Make queda con 0 escenarios activos). Nóminas cambia de diseño: carga manual del PDF a Drive en vez de lectura automática del email. Notion actualizado (filas 2, 3, 4). Ver `DECISIONS.md` 2026-07-17.
