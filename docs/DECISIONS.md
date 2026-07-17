@@ -1,3 +1,30 @@
+## [2026-07-17] Peerberry no puede usar la cuenta de servicio: Gmail personal requiere OAuth con refresh_token
+
+**Contexto:** al implementar el paso 2 del plan Relay (Peerberry en GitHub Actions), la nota "agregar el scope de Gmail readonly a la cuenta de servicio de Google ya usada para Drive" no es viable. Una cuenta de servicio solo puede leer un Gmail ajeno via domain-wide delegation, que solo existe en Google Workspace (dominio con panel de administracion). `matiaso81@gmail.com` es una cuenta personal, sin ese mecanismo disponible.
+
+**Decision:** usar OAuth 2.0 con refresh_token en vez de cuenta de servicio para todo lo que necesite leer Gmail (Peerberry, y despues MyInvestor). Consentimiento interactivo una unica vez (`scripts/get_gmail_refresh_token.py`, corrido localmente por el usuario) para obtener un refresh_token de larga duracion; cada corrida del workflow lo cambia por un access_token nuevo via el endpoint estandar `oauth2.googleapis.com/token`, sin volver a pedir login. Nuevos secrets de GitHub: `GMAIL_CLIENT_ID`, `GMAIL_CLIENT_SECRET`, `GMAIL_REFRESH_TOKEN`. La cuenta de servicio existente (`GOOGLE_SERVICE_ACCOUNT`) sigue sin cambios, se usa solo para Drive.
+
+**Estado:** Decidido e implementado en `scripts/process_peerberry_emails.py`. Pendiente: usuario debe crear el OAuth Client ID en Google Cloud Console, correr el helper localmente para obtener el refresh_token, y cargar los 3 secrets nuevos antes de la primera corrida real.
+
+---
+
+## [2026-07-17] Implementado: flujo de Peerberry en GitHub Actions (reemplaza a Make)
+
+**Que se construyo:** `scripts/process_peerberry_emails.py`, nuevo paso en `sync-finance-data.yml` ("Process Peerberry emails"), corre despues del paso de Movimientos y antes de generar `finance_data.json`. Busca emails nuevos de `info@peerberry.com` (asunto "Account summary overview") via Gmail API, pide solo la parte `text/plain` (no el HTML completo), manda el texto a Claude con el prompt ya validado en Make el 13/07 (distingue la seccion "resumen de cuenta" de la seccion "Portfolio", usa Invested funds + Available balance como capital y Profit como ganancia), y crea una fila en la DB Notion "Rendimiento Inversiones" (Plataforma=Peerberry, Periodo=Semanal). Control de duplicados por Plataforma+Periodo+Fecha reporte antes de crear cada fila. Registro de mensajes ya procesados en `processed_peerberry_emails.json` (mismo patron que `processed_bank_statements.json`).
+
+**Pendiente para que funcione:**
+1. Crear OAuth Client ID (tipo Desktop app) en el proyecto de Google Cloud ya usado para la cuenta de servicio de Drive.
+2. Correr `scripts/get_gmail_refresh_token.py` localmente, iniciar sesion como `matiaso81@gmail.com`, aceptar el scope `gmail.readonly`.
+3. Cargar `GMAIL_CLIENT_ID`, `GMAIL_CLIENT_SECRET`, `GMAIL_REFRESH_TOKEN` como secrets del repo.
+4. Antes de la primera corrida real, listar los emails de Peerberry ya existentes en el inbox y pre-cargar sus IDs en `processed_peerberry_emails.json` (mismo criterio que la prueba de humo de Movimientos) para no reprocesar el historico completo de una sola vez.
+5. Validar con una corrida manual (`workflow_dispatch`) antes de dar el paso por cerrado.
+
+**Riesgo/duda abierta:** el contenido exacto de la propiedad "Fecha" (title) de la DB no esta documentado en `PROJECT_MEMORY.md` mas alla de "Fecha (titulo)". Este script usa el mismo string que "Fecha reporte" (ej. "2026-07-13"). Confirmar contra como quedaron cargadas las filas historicas antes de dar el flujo por validado, y corregir si no coincide.
+
+**Estado:** Codigo escrito. Sin desplegar ni validar contra un email real todavia — depende de los 3 secrets nuevos.
+
+---
+
 ## [2026-07-17] DECISIÓN FINAL: los 4 flujos de email/Drive de la migración Relay van a GitHub Actions, Make queda libre
 
 **Contexto:** después de armar y probar un escenario real en Make (Peerberry + MyInvestor + Nóminas), se encontró un límite de tamaño de mensaje en el trigger de Gmail de Make (`MaxFileSizeExceededError`) que bloqueaba MyInvestor (email de marketing con HTML muy pesado, sin adjuntos) y potencialmente Nóminas. Es una limitación conocida de Make sin workaround simple (confirmado en su comunidad de soporte).
