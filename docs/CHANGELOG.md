@@ -1,3 +1,7 @@
+## 2026-07-17 (11)
+
+- Peerberry: primera corrida real detecto 5 filas duplicadas en Rendimiento Inversiones (semanas ya cargadas antes del fix de prompt del 13/07, con fecha corrida y Ganancia de "Interest income" en vez de "Profit"). Detectado antes de cerrar el paso comparando agregados mensuales contra suma manual. Corregido borrando las filas viejas en Notion; `finance_data.json` regenerado: mayo 2.841,92€, junio 3.714,93€, julio 1.548,24€, todos verificados contra la suma de semanas individuales. Paso Peerberry del plan Relay dado por validado y cerrado. Ver `DECISIONS.md` 2026-07-17.
+
 ## 2026-07-17 (10)
 
 - Peerberry: escrito `scripts/process_peerberry_emails.py` + paso nuevo en `sync-finance-data.yml`. Requiere OAuth con refresh_token para Gmail (no cuenta de servicio — Gmail personal no soporta domain-wide delegation). Pendiente: crear OAuth Client ID, correr `scripts/get_gmail_refresh_token.py`, cargar 3 secrets nuevos, y validar con un email real. Ver `DECISIONS.md` 2026-07-17.
