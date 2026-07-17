@@ -1,3 +1,7 @@
+## 2026-07-17 (8)
+
+- Construidos vía API de Make los escenarios "Emails financieros" (Peerberry+MyInvestor) y "Nóminas" (separado tras un problema de límite de tamaño de adjunto que tumbaba el trigger compartido). Peerberry validado con email real, con fix de prompt (confundía dos secciones del email). MyInvestor y Nóminas con código listo, validación real pendiente. Ver `DECISIONS.md` 2026-07-17.
+
 ## 2026-07-17 (7)
 
 - Flujo de Movimientos: primera validación con extracto real en paralelo con Relay. 7 movimientos extraídos, los 7 coincidieron exactamente con lo ya cargado por Relay (0 duplicados creados). Categorización idéntica. Ver `DECISIONS.md` 2026-07-17.
