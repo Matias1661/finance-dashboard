@@ -1,6 +1,12 @@
 [
   {
     "fecha": "2026-07-01",
+    "concepto": "Carterl lumisoso tahlo argentino madrid",
+    "costo": 410,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-01",
     "concepto": "Proforma 008079 / cliente guillermo Muñoz",
     "costo": 209.06,
     "pagado": null
