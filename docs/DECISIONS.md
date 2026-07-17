@@ -1,3 +1,36 @@
+## [2026-07-17] Seguridad: token de GitHub expuesto en index.html — se descarta el parche rápido, se pasa al arreglo de fondo
+
+**Hallazgo:** un Personal Access Token de GitHub estaba hardcodeado en texto plano en el `<script>` de `index.html` (botón "Actualizar", dispara `Sync Finance Data` y `Sync Sociedad Data` vía `workflow_dispatch`). Al ser servido públicamente por GitHub Pages, era legible por cualquiera desde "Ver código fuente". El usuario revocó el token expuesto.
+
+**Parche rápido intentado y descartado:** se generó un token fine-grained nuevo (acotado a este repo, permiso único Actions: Read/write, expiración 90 días) para reemplazar al anterior directo en `index.html`. **GitHub bloqueó el push por secret scanning / push protection** — no permite comitear ningún patrón de token reconocible en el código, acotado o no. Ese commit nunca llegó a `main`. El token fine-grained generado para este intento quedó sin usar — **hay que revocarlo también**, ya que se pegó en el chat y no tiene ningún otro uso.
+
+**Decisión:** ir directo al arreglo de fondo, descartado el parche. El botón "Actualizar" va a llamar a un webhook de Make (sin secretos visibles en el cliente) en vez de tener un token embebido. El escenario de Make que reciba ese webhook guarda el token del lado del servidor y dispara los workflows de GitHub.
+
+**Estado actual (importante):** `index.html` en `main` todavía tiene el token **viejo y ya revocado** hardcodeado — el botón "Actualizar" está roto en producción hasta que se implemente el webhook de Make. No es un riesgo de seguridad (el token no funciona), pero sí una funcionalidad caída.
+
+**Pendiente (roadmap, alta prioridad):** implementar el webhook de Make y actualizar `index.html` para que llame a esa URL en vez de a la API de GitHub directamente.
+
+**Estado:** Hallazgo documentado. Arreglo de fondo pendiente de implementación.
+
+---
+
+## [2026-07-17] Reparto final de herramientas para toda la migración Relay
+
+**Objetivo del usuario:** reemplazar todos los flujos de Relay con la menor cantidad de herramientas posible, sin pagar o pagando lo mínimo.
+
+**Verificación hecha antes de decidir:** Make (plan gratis) permite máximo 2 escenarios activos, y cada escenario admite un solo trigger de entrada. Se confirmó (comunidad de Make, ver búsqueda del 17/07) que el módulo de Google Drive "Watch Files in a Folder" no vigila subcarpetas ni se puede combinar con otro tipo de trigger (Notion, otra carpeta) dentro del mismo escenario. Los flujos con trigger de email (Gmail) sí pueden compartir un único escenario con un router.
+
+**Reparto final:**
+- **Make (1 de 2 escenarios, "Emails financieros"):** Peerberry, MyInvestor y Nóminas — los tres con trigger Gmail, un solo trigger + router de 3 rutas. Nóminas se simplifica respecto al diseño original de Relay (2 workflows encadenados vía Drive): se resuelve en un solo salto (adjunto del email → IA → Notion), sin pasar por Drive.
+- **GitHub Actions (comparte infraestructura con Movimientos):** Gastos Talho Argentino + Actualizar gastos local en GH (paso 4.5) — ambos triggers (Drive y cambios en Notion) no entran en el cupo de Make sin gastar el segundo escenario, y reusan el mismo patrón de cron + archivo de estado que se construye para Movimientos.
+- **GitHub Actions (ya decidido):** Movimientos.
+
+**Resultado:** 2 herramientas en total (Make + GitHub Actions), ambas dentro de plan gratis, con margen libre en Make (queda 1 de 2 escenarios disponible).
+
+**Estado:** Decidido. Plan de Notion actualizado (filas 2, 3, 4, 4.5). Implementación pendiente.
+
+---
+
 ## [2026-07-17] Paso 1 del plan Relay: Movimientos se reconstruye en GitHub Actions, no Make
 
 **Contexto:** paso 1 del plan ("Pasar extracto bancario a Notion") recomendaba Make en Notion. Se evaluaron las dos opciones antes de implementar.

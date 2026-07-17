@@ -1,3 +1,11 @@
+## 2026-07-17 (4)
+
+- Reparto final de herramientas para la migración Relay: Make (1 escenario, Peerberry+MyInvestor+Nóminas vía router) + GitHub Actions (Movimientos + Talho Argentino/Gastos del local, reusando la misma infraestructura de polling). 2 herramientas en total, ambas gratis. Plan de Notion actualizado (filas 2, 3, 4, 4.5). Ver `DECISIONS.md` 2026-07-17.
+
+## 2026-07-17 (3)
+
+- Seguridad: se descarta el parche rápido para el token expuesto en `index.html` (GitHub bloqueó el commit por secret scanning). Se decide el arreglo de fondo: webhook de Make en vez de token embebido en el cliente. El botón "Actualizar" queda roto en producción (token viejo revocado) hasta implementar el webhook. Ver `DECISIONS.md` 2026-07-17.
+
 ## 2026-07-17 (2)
 
 - Paso 1 de la migración Relay (Movimientos): decidido GitHub Actions en vez de Make, tras chequear que el plan Free de Make solo permite 2 escenarios activos (se reservan para Peerberry/MyInvestor/Nóminas, con trigger por email). Fila del plan en Notion actualizada. Ver `DECISIONS.md` 2026-07-17.

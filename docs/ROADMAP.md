@@ -16,6 +16,7 @@
 - [x] Migración de capital/rendimiento del tab Inversiones de Google Sheets a Notion (elimina dependencia de GOOGLE_SERVICE_ACCOUNT, 2026-07-10)
 
 ## Alta prioridad
+- [ ] Arreglar botón "Actualizar" en `index.html`: hoy tiene un token de GitHub hardcodeado (viejo, ya revocado — el botón está roto). Reemplazar por llamada a un webhook de Make que guarde el token del lado del servidor y dispare `Sync Finance Data` + `Sync Sociedad Data`. Ver `DECISIONS.md` 2026-07-17.
 - [x] Flujo "Organizar Movimientos": PayPal+Gmail, Uber, Amazon, Viajes — trigger en chat, registro en reviewed_movements.json, KPI en dashboard
 - [ ] Panel de revisión de transacciones: vista filtrable de movimientos con categoría "A revisar" o baja confianza, con acción de reclasificación directa desde el dashboard que escriba en Notion vía `notion-update-page` (el workflow `update-sheet-cells.yml` del que dependía esta tarea fue eliminado el 30/06/2026; replantear el mecanismo de escritura, no hay endpoint HTTP directo desde el navegador a Notion — evaluar en DECISIONS.md antes de implementar)
 - [x] Vista ampliada de Viajes en tab Categorías (desglose por viaje, subcategorías, transacciones colapsables)
