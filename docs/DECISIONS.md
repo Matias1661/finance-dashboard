@@ -1,3 +1,19 @@
+## [2026-07-17] Incidente y correccion: filas duplicadas de Peerberry en Rendimiento Inversiones (validacion del flujo GitHub Actions)
+
+**Que paso:** la primera corrida real de `process_peerberry_emails.py` proceso 20 emails historicos de Peerberry (Gmail no tenia mas atras en la bandeja) y creo filas correctas para cada semana desde 2026-03-02. Para las semanas del 2026-06-07 al 2026-07-05, ya existian filas viejas cargadas antes del fix de prompt del 13/07 (bug documentado: tomaban "Interest income" en vez de "Profit", y la fecha de "Balance on" en vez de "Portfolio updated on", que cae un dia distinto). Como el control de duplicados compara por fecha exacta, no detecto esas filas viejas (fecha corrida un dia) y creo filas nuevas al lado, duplicando la Ganancia de esas 5 semanas en la agregacion mensual. El sync corrio automaticamente despues y publico `finance_data.json` con Ganancia de junio y julio infladas en 15,17€ y 17,09€ respectivamente.
+
+**Deteccion:** se detecto ANTES de dar el paso por cerrado, comparando la Ganancia mensual del `finance_data.json` generado contra la suma manual de las filas semanales correctas — la diferencia coincidia exactamente con la suma de las filas viejas.
+
+**Correccion:** el usuario borro las 5 filas viejas y erroneas en Notion (identificadas por titulo: "Peerberry semana 2026-06-07/14/21/28" y "Peerberry July 5, 2026"). El primer intento de borrado no tomo efecto de inmediato en la API (posible demora de la papelera de Notion); tras confirmar y reintentar, un segundo sync mostro las cifras ya correctas: mayo 2.841,92€, junio 3.714,93€, julio 1.548,24€ — todas coinciden exacto con la suma manual de las semanas individuales correctas, sin rastro de las filas viejas.
+
+**Efecto secundario (esperado, no un bug):** mayo paso de 23,63€ a 2.841,92€ porque antes no habia datos semanales reales de Peerberry cargados para marzo-mayo 2026 en Notion (el backfill documentado como "completo hasta mayo 2026, sin huecos" en `PROJECT_MEMORY.md` no era exacto para Peerberry semanal — habia un hueco real que este flujo lleno correctamente).
+
+**Leccion para los proximos flujos (MyInvestor, Nominas):** el control de duplicados por fecha exacta es fragil si el pipeline anterior guardo una fecha ligeramente distinta por un bug de extraccion. Antes de dar una corrida real por valida, comparar la Ganancia/Ganancia mensual agregada resultante contra una suma manual de las filas fuente, no solo confiar en el log de "creado/duplicado" del script.
+
+**Estado:** Corregido y validado. `finance_data.json` regenerado y republicado con datos correctos. Paso 2 del plan Relay (Peerberry) dado por cerrado.
+
+---
+
 ## [2026-07-17] Peerberry no puede usar la cuenta de servicio: Gmail personal requiere OAuth con refresh_token
 
 **Contexto:** al implementar el paso 2 del plan Relay (Peerberry en GitHub Actions), la nota "agregar el scope de Gmail readonly a la cuenta de servicio de Google ya usada para Drive" no es viable. Una cuenta de servicio solo puede leer un Gmail ajeno via domain-wide delegation, que solo existe en Google Workspace (dominio con panel de administracion). `matiaso81@gmail.com` es una cuenta personal, sin ese mecanismo disponible.
