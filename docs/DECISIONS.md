@@ -1,3 +1,15 @@
+## [2026-07-17] Implementado: flujo de MyInvestor en GitHub Actions (reemplaza a Relay/Make)
+
+**Que se construyo:** `scripts/process_myinvestor_emails.py`, nuevo paso en `sync-finance-data.yml` ("Process MyInvestor emails"), corre despues del paso de Peerberry y antes de generar `finance_data.json`. Busca emails de `comunicaciones@myinvestor.es` / `notificaciones@myinvestor.es` (asunto "Rentabilidad de tu cartera"), pide solo la parte `text/plain` (evita el HTML pesado que bloqueaba a Make con `MaxFileSizeExceededError`), manda el texto a Claude con el prompt ya documentado (Ganancia, Aportes, Capital total, Fecha reporte = ultimo dia del mes), y crea una fila en Notion "Rendimiento Inversiones" (Plataforma=MyInvestor, Periodo=Mensual). Reusa las credenciales OAuth de Gmail ya generadas para Peerberry (`GMAIL_CLIENT_ID`/`GMAIL_CLIENT_SECRET`/`GMAIL_REFRESH_TOKEN`) — no hizo falta un secret nuevo. Control de duplicados por Plataforma+Periodo+Fecha reporte. Registro en `processed_myinvestor_emails.json`.
+
+**Diferencia con el incidente de Peerberry:** antes de implementar se verifico contra Notion que el flujo de Relay/Make para MyInvestor nunca corrio en produccion (`docs/relay-export/README.md`: "solo tiene corridas de test, 2026-07-07 x2"). Los 19 meses ya cargados (dic 2024-jun 2026) vienen del backfill manual + esas 2 corridas de test, sin huecos ni duplicados verificado por SQL antes de la primera corrida real de este script — bajo riesgo de repetir el patron de fechas corridas que afecto a Peerberry, pero se valida igual comparando agregados antes de cerrar el paso.
+
+**Pendiente para validar:** correr el workflow, comparar `finance_data.json` resultante contra los 19 meses ya conocidos (mismos valores, sin duplicados) y confirmar si aparece un mes nuevo (julio 2026, si el reporte ya llego).
+
+**Estado:** Codigo escrito y desplegado. Validacion con corrida real pendiente.
+
+---
+
 ## [2026-07-17] Incidente y correccion: filas duplicadas de Peerberry en Rendimiento Inversiones (validacion del flujo GitHub Actions)
 
 **Que paso:** la primera corrida real de `process_peerberry_emails.py` proceso 20 emails historicos de Peerberry (Gmail no tenia mas atras en la bandeja) y creo filas correctas para cada semana desde 2026-03-02. Para las semanas del 2026-06-07 al 2026-07-05, ya existian filas viejas cargadas antes del fix de prompt del 13/07 (bug documentado: tomaban "Interest income" en vez de "Profit", y la fecha de "Balance on" en vez de "Portfolio updated on", que cae un dia distinto). Como el control de duplicados compara por fecha exacta, no detecto esas filas viejas (fecha corrida un dia) y creo filas nuevas al lado, duplicando la Ganancia de esas 5 semanas en la agregacion mensual. El sync corrio automaticamente despues y publico `finance_data.json` con Ganancia de junio y julio infladas en 15,17€ y 17,09€ respectivamente.
