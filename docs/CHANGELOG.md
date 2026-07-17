@@ -1,3 +1,7 @@
+## 2026-07-17 (5)
+
+- Implementado `scripts/process_bank_statements.py` + paso nuevo en `sync-finance-data.yml`: reemplazo del flujo de Relay para Movimientos (Drive → IA → Notion), con control de duplicados que Relay no tenía. Falta el secret `GOOGLE_SERVICE_ACCOUNT` y la prueba con un extracto real. Ver `DECISIONS.md` 2026-07-17.
+
 ## 2026-07-17 (4)
 
 - Reparto final de herramientas para la migración Relay: Make (1 escenario, Peerberry+MyInvestor+Nóminas vía router) + GitHub Actions (Movimientos + Talho Argentino/Gastos del local, reusando la misma infraestructura de polling). 2 herramientas en total, ambas gratis. Plan de Notion actualizado (filas 2, 3, 4, 4.5). Ver `DECISIONS.md` 2026-07-17.

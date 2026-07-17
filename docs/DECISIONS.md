@@ -1,3 +1,18 @@
+## [2026-07-17] Implementado: flujo de Movimientos en GitHub Actions (reemplaza a Relay)
+
+**Qué se construyó:** `scripts/process_bank_statements.py`, nuevo paso en `sync-finance-data.yml` (corre antes de generar `finance_data.json`, dentro del mismo cron diario 07:00 / dispatch manual). Revisa la carpeta Drive "Extractos para Notion" (ID `1tDJJ8iJJ5SR5pFQdmp-vKO52x9uc_3Cs`), compara contra `processed_bank_statements.json` (nuevo archivo de estado, mismo patrón que `reviewed_movements.json`) para no reprocesar el mismo PDF, manda cada PDF nuevo a Claude (modelo `claude-sonnet-5`) junto con el prompt de categorización leído en vivo de la DB Notion "Prompts para Relay" (mismo mecanismo que usaba Relay — sin copia local que se desactualice), y crea una página por movimiento en DB Movimientos. Incluye control de duplicados (Fecha+Concepto+Monto) antes de crear cada página, que el flujo original de Relay no tenía.
+
+**Autenticación con Google Drive:** cuenta de servicio (`GOOGLE_SERVICE_ACCOUNT`, JSON completo como secret), scope de solo lectura. Requiere compartir la carpeta "Extractos para Notion" con el email de la cuenta de servicio.
+
+**Pendiente para que funcione:**
+1. Crear la cuenta de servicio en Google Cloud Console y compartir la carpeta con su email.
+2. Agregar el secret `GOOGLE_SERVICE_ACCOUNT` al repo.
+3. Probar con el próximo extracto real en paralelo con Relay antes de apagarlo (paso 5 del plan).
+
+**Estado:** Código implementado. Pendiente de secret + prueba real antes de considerar el paso 1 del plan como completado.
+
+---
+
 ## [2026-07-17] Seguridad: token de GitHub expuesto en index.html — se descarta el parche rápido, se pasa al arreglo de fondo
 
 **Hallazgo:** un Personal Access Token de GitHub estaba hardcodeado en texto plano en el `<script>` de `index.html` (botón "Actualizar", dispara `Sync Finance Data` y `Sync Sociedad Data` vía `workflow_dispatch`). Al ser servido públicamente por GitHub Pages, era legible por cualquiera desde "Ver código fuente". El usuario revocó el token expuesto.
