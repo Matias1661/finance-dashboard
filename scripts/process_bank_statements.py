@@ -63,6 +63,8 @@ def list_new_files(drive_token, already_processed):
     }
     headers = {"Authorization": f"Bearer {drive_token}"}
     resp = requests.get(url, headers=headers, params=params, timeout=30)
+    if not resp.ok:
+        print(f"  Error de la API de Drive ({resp.status_code}): {resp.text}")
     resp.raise_for_status()
     files = resp.json().get("files", [])
     return [f for f in files if f["id"] not in already_processed]
