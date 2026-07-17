@@ -1,5 +1,11 @@
 [
   {
+    "fecha": "2026-07-01",
+    "concepto": "Proforma 008079 / cliente guillermo Muñoz",
+    "costo": 209.06,
+    "pagado": null
+  },
+  {
     "fecha": "2026-07-16",
     "concepto": "Aire Acondicionado Split Zairon Pureza 35 | 3500 Frigorías A++ con Wi-Fi y Bomba de Calor",
     "costo": 369.34,
