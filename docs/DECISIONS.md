@@ -5,11 +5,13 @@
 **Autenticación con Google Drive:** cuenta de servicio (`GOOGLE_SERVICE_ACCOUNT`, JSON completo como secret), scope de solo lectura. Requiere compartir la carpeta "Extractos para Notion" con el email de la cuenta de servicio.
 
 **Pendiente para que funcione:**
-1. Crear la cuenta de servicio en Google Cloud Console y compartir la carpeta con su email.
-2. Agregar el secret `GOOGLE_SERVICE_ACCOUNT` al repo.
+1. ~~Crear la cuenta de servicio en Google Cloud Console y compartir la carpeta con su email.~~ Hecho.
+2. ~~Agregar el secret `GOOGLE_SERVICE_ACCOUNT` al repo.~~ Hecho.
 3. Probar con el próximo extracto real en paralelo con Relay antes de apagarlo (paso 5 del plan).
 
-**Estado:** Código implementado. Pendiente de secret + prueba real antes de considerar el paso 1 del plan como completado.
+**Prueba de humo (2026-07-17):** primer intento falló por 403 (Google Drive API deshabilitada en el proyecto `finance-dashboard-498109`); habilitada por el usuario. Los 25 PDFs históricos ya en la carpeta (todos ya procesados por Relay en su momento) se pre-cargaron en `processed_bank_statements.json` para que el flujo nuevo no los reprocese. Run [29571518185](https://github.com/Matias1661/finance-dashboard/actions/runs/29571518185) corrió limpio de punta a punta (0 archivos nuevos, como se esperaba).
+
+**Estado:** Código funcionando en producción. Falta la prueba con un extracto real nuevo antes de dar el paso 1 por completado.
 
 ---
 

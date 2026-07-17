@@ -1,3 +1,7 @@
+## 2026-07-17 (6)
+
+- Flujo de Movimientos en GitHub Actions: prueba de humo exitosa (run 29571518185). Google Drive API estaba deshabilitada en el proyecto de la cuenta de servicio, se habilitó. Los 25 extractos históricos ya en la carpeta se pre-cargaron como procesados para que el flujo no los reprocese. Falta probar con un extracto real nuevo. Ver `DECISIONS.md` 2026-07-17.
+
 ## 2026-07-17 (5)
 
 - Implementado `scripts/process_bank_statements.py` + paso nuevo en `sync-finance-data.yml`: reemplazo del flujo de Relay para Movimientos (Drive → IA → Notion), con control de duplicados que Relay no tenía. Falta el secret `GOOGLE_SERVICE_ACCOUNT` y la prueba con un extracto real. Ver `DECISIONS.md` 2026-07-17.
