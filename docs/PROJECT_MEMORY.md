@@ -3,7 +3,7 @@
 ## Propósito
 Memoria técnica central del proyecto. Cualquier agente de IA o desarrollador debe poder reconstruir el estado completo del proyecto leyendo solo este documento y los demás archivos en `docs/`.
 
-Última actualización: 2026-07-06
+Última actualización: 2026-07-17
 
 ---
 
@@ -50,7 +50,7 @@ Ante cualquier duda sobre alcance, preguntar antes de asumir.
 | Flujo | Estado |
 |---|---|
 | **Movimientos** | ✅ Implementado (`scripts/process_bank_statements.py` + paso en `sync-finance-data.yml`) y validado con un extracto real en paralelo con Relay (0 duplicados, categorización idéntica). Falta: seguir en paralelo unos días más antes de apagar este flujo específico en Relay. |
-| **Peerberry** | Prompt de extracción ya escrito y probado (funciona) en un escenario de prueba de Make (desactivado, id 9538432) — **reusar ese prompt tal cual**, está en `docs/DECISIONS.md`. Falta escribir el script Python equivalente y agregarlo al workflow. |
+| **Peerberry** | ✅ Implementado (`scripts/process_peerberry_emails.py` + paso en `sync-finance-data.yml`), autenticación Gmail vía OAuth con refresh_token (no cuenta de servicio — Gmail personal no soporta domain-wide delegation, ver `docs/DECISIONS.md` 2026-07-17). Validado con datos reales: la primera corrida detectó 5 filas duplicadas heredadas de un bug del propio flujo de Relay (Ganancia = Interest income en vez de Profit, fecha de Balance on en vez de Portfolio updated on); corregido borrando las filas viejas en Notion, `finance_data.json` verificado contra suma manual. **Flujo de Relay "Peerberry a Notion" dado de baja por el usuario el 17/07** (el de Movimientos sigue activo, en validación paralela). |
 | **MyInvestor** | Prompt escrito (en el mismo escenario de Make de prueba) pero nunca se pudo ejecutar por el límite de tamaño. Falta escribir el script Python (pedir `text/plain` a la API de Gmail evita el problema) y probar con el próximo informe mensual real. |
 | **Nóminas** | **Cambio de diseño:** Matías sube el PDF a mano a la carpeta Drive "Nominas" (ID `1pt9WGS3nzR8t1NIS5egrL0OMm2QGUKGj`) en vez de que el flujo lea el email de Beatriz automáticamente. Falta escribir el script (vigila esa carpeta, mismo patrón que Movimientos). |
 | **Talho Argentino / Gastos del local (paso 4.5)** | Decidido GitHub Actions desde antes, cubre 2 sub-flujos (comprobante en Drive + cambios en DB "Gastos del local" → dispara Sync Sociedad Data). Sin implementar todavía. |
@@ -62,16 +62,17 @@ Ante cualquier duda sobre alcance, preguntar antes de asumir.
 - Los flujos de Gastos Talho Argentino disparan GitHub Actions "Sync Sociedad Data" (301444283) — dos caminos (comprobante en Drive, o página editada en Notion) que convergen en el mismo dispatch.
 - El prompt de categorización de Movimientos se lee en vivo de la DB Notion "Prompts para Relay" en cada corrida (no está embebido) — ya replicado igual en `process_bank_statements.py`.
 
-**Credenciales ya disponibles para escribir los scripts que faltan:**
-- `GOOGLE_SERVICE_ACCOUNT` (GitHub secret): tiene scope de Drive. Falta agregarle scope de Gmail readonly (o crear una segunda cuenta de servicio) para Peerberry/MyInvestor — Gmail API no soporta cuentas de servicio sin delegación de dominio (revisar si hace falta OAuth de usuario en su lugar, ya que es una cuenta personal de Gmail, no Workspace).
-- `ANTHROPIC_API_KEY` (GitHub secret): ya en uso por Movimientos, reusar.
+**Credenciales:**
+- `GOOGLE_SERVICE_ACCOUNT` (GitHub secret): scope de Drive, sin cambios — se usa para Movimientos y (cuando se implemente) Nóminas.
+- `GMAIL_CLIENT_ID` / `GMAIL_CLIENT_SECRET` / `GMAIL_REFRESH_TOKEN` (GitHub secrets nuevos, 2026-07-17): OAuth 2.0 con refresh_token para leer Gmail. Confirmado que la cuenta de servicio NO puede leer un Gmail personal (domain-wide delegation solo existe en Google Workspace). El refresh_token se generó una única vez de forma interactiva con `scripts/get_gmail_refresh_token.py` (corrido localmente por el usuario). Reusar los mismos 3 secrets para MyInvestor.
+- `ANTHROPIC_API_KEY` (GitHub secret): ya en uso por Movimientos y Peerberry, reusar.
 - `NOTION_TOKEN` (GitHub secret): ya en uso.
 
 **Idea pendiente de evaluar (propuesta por el usuario, no implementada):** alerta en el dashboard que detecte si falta subir la nómina de un mes (por tiempo transcurrido, o cruzando contra el ingreso de nómina esperado en Movimientos). En `docs/ROADMAP.md`.
 
 **Notas sobre Make (exploración, no se usa en producción):** se armaron 2 escenarios de prueba en la cuenta de Make de Matías vía API (sin usar la interfaz, que tuvo una caída puntual el 17/07): "Emails financieros" (id 9538432, Peerberry+MyInvestor) y "Nóminas" (id 9538741). Ambos quedan creados pero **desactivados**. Conexiones creadas en Make sin uso: Gmail+Drive combinado (id 14438625), Anthropic Claude propio de Make (id 14438562, key distinta a la de GitHub). No hace falta tocarlos, pero tampoco borrarlos — sirven de referencia si en el futuro se reconsidera Make para otra cosa.
 
-**Pendiente general:** escribir los 3 scripts que faltan (Peerberry, MyInvestor, Nóminas), agregar los pasos a `sync-finance-data.yml`, resolver la autenticación de Gmail, validar cada uno con datos reales, y recién ahí seguir con el paso 4.5 (Talho Argentino) y los pasos 5-6 (validación en paralelo, apagado de Relay).
+**Pendiente general:** escribir los 2 scripts que faltan (MyInvestor, Nóminas — reusar la autenticación Gmail OAuth ya resuelta para Peerberry), agregar los pasos a `sync-finance-data.yml`, validar cada uno con datos reales comparando los agregados mensuales de `finance_data.json` contra una suma manual de las filas fuente (no alcanza con el log de "creado/duplicado" del script — lección del incidente de Peerberry, ver `DECISIONS.md` 2026-07-17), y recién ahí seguir con el paso 4.5 (Talho Argentino) y los pasos 5-6 (validación en paralelo, apagado de Relay).
 
 ---
 
