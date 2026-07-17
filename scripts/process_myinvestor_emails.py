@@ -41,7 +41,17 @@ RENDIMIENTO_DS_ID = "93eda06b-9207-4589-b3f0-66be10ab9caf"
 STATE_FILE = "processed_myinvestor_emails.json"
 CLAUDE_MODEL = "claude-sonnet-5"
 
-GMAIL_QUERY = 'from:(comunicaciones@myinvestor.es OR notificaciones@myinvestor.es) subject:"Rentabilidad de tu cartera"'
+
+# Cota de fecha: antes de dic 2024 el usuario tuvo varias cuentas/carteras
+# distintas en MyInvestor (confirmado 2026-07-17). Varios meses de 2024
+# tienen 2-3 emails con el mismo cierre de mes pero capital/ganancia muy
+# distintos entre si (cuentas separadas, no reenvios). El backfill oficial
+# de docs/DECISIONS.md ya habia elegido arrancar en diciembre 2024 por este
+# motivo. Sin este filtro, el control de duplicados (por fecha exacta)
+# elige arbitrariamente el primer email que procesa y descarta los demas
+# como si fueran duplicados, perdiendo datos reales de las otras cuentas.
+GMAIL_QUERY = ('from:(comunicaciones@myinvestor.es OR notificaciones@myinvestor.es) '
+               'subject:"Rentabilidad de tu cartera" after:2024/11/25')
 
 NOTION_HEADERS = {
     "Authorization": f"Bearer {NOTION_TOKEN}",
