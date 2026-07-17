@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17 16:08",
+  "generated_at": "2026-07-17 16:18",
   "movimientos": [
     {
       "fecha": "2026-07-16",
@@ -17976,7 +17976,7 @@
       },
       {
         "mes": "2026-05",
-        "peerberry": 5177.09,
+        "peerberry": 5168.78,
         "myinvestor": 8269
       },
       {
@@ -18073,17 +18073,17 @@
       },
       {
         "mes": "2026-05",
-        "peerberry": 0.46,
+        "peerberry": 55.06,
         "myinvestor": 5.45
       },
       {
         "mes": "2026-06",
-        "peerberry": 44.2,
+        "peerberry": 44.04,
         "myinvestor": 1.76
       },
       {
         "mes": "2026-07",
-        "peerberry": 13.36,
+        "peerberry": 13.22,
         "myinvestor": 0
       }
     ],
@@ -18243,25 +18243,25 @@
       },
       {
         "mes": "2026-05",
-        "peerberry": 23.63,
+        "peerberry": 2841.92,
         "myinvestor": 427.0,
-        "peerberry_aportes": 0.0,
+        "peerberry_aportes": null,
         "myinvestor_aportes": 438.0,
-        "peerberry_capital": 5177.09,
+        "peerberry_capital": 5168.78,
         "myinvestor_capital": 8269
       },
       {
         "mes": "2026-06",
-        "peerberry": 3730.1,
+        "peerberry": 3714.93,
         "myinvestor": 151.0,
-        "peerberry_aportes": 6500.0,
+        "peerberry_aportes": null,
         "myinvestor_aportes": 444.0,
         "peerberry_capital": 11702.99,
         "myinvestor_capital": 8864
       },
       {
         "mes": "2026-07",
-        "peerberry": 1565.33,
+        "peerberry": 1548.24,
         "myinvestor": 0.0,
         "peerberry_aportes": 0.0,
         "myinvestor_aportes": null,
@@ -18270,16 +18270,16 @@
       }
     ],
     "kpi": {
-      "pct_ultimo_mes": 22.82,
-      "pct_12m": 46.3,
-      "ganancia_12m": 6917.18,
+      "pct_ultimo_mes": 22.74,
+      "pct_12m": 76.84,
+      "ganancia_12m": 9720.3,
       "capital_actual": 20566.989999999998,
       "periodo_ultimo_mes": "2026-06",
       "por_plataforma": {
         "peerberry": {
-          "pct_ultimo_mes": 44.2,
-          "pct_12m": 54.98,
-          "ganancia_12m": 4107.18,
+          "pct_ultimo_mes": 44.04,
+          "pct_12m": 138.96,
+          "ganancia_12m": 6910.3,
           "capital_actual": 11702.99,
           "periodo_ultimo_mes": "2026-06"
         },
@@ -18499,23 +18499,23 @@
       },
       {
         "mes": "2026-05",
-        "peerberry": 0.46,
+        "peerberry": 55.06,
         "myinvestor": 5.45,
-        "total": 3.47,
-        "acumulado": 18.81,
-        "acumulado_anio": 9.78,
+        "total": 25.15,
+        "acumulado": 43.71,
+        "acumulado_anio": 32.78,
         "benchmark": 1.42,
         "benchmark_acumulado": 15.67,
-        "sin_aportes_pb": true,
+        "sin_aportes_pb": false,
         "sin_aportes_mi": false
       },
       {
         "mes": "2026-06",
-        "peerberry": 44.2,
+        "peerberry": 44.04,
         "myinvestor": 1.76,
-        "total": 22.82,
-        "acumulado": 45.92,
-        "acumulado_anio": 34.83,
+        "total": 22.74,
+        "acumulado": 76.38,
+        "acumulado_anio": 62.98,
         "benchmark": 0.9,
         "benchmark_acumulado": 16.71,
         "sin_aportes_pb": false,
