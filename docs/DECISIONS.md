@@ -1,3 +1,15 @@
+## [2026-07-17] Incidente y correccion: MyInvestor trajo emails de antes de dic 2024 con multiples cuentas conflictivas
+
+**Que paso:** la primera corrida real de `process_myinvestor_emails.py` encontro 29 emails historicos (Gmail tenia desde enero 2024, mas atras que el backfill oficial de dic 2024). Para abril y mayo de 2024 hubo 2-3 emails cada uno con el mismo cierre de mes pero Capital total muy distinto (ej. mayo 2024: 15.545e, 4.229e y 10.207e) -- confirmado por el usuario (2026-07-17): tuvo varias cuentas/carteras distintas en MyInvestor antes de dic 2024. El control de duplicados (por fecha exacta) no detecta esto como "distintas cuentas", elige arbitrariamente el primer email que procesa (el mas reciente, por el orden de Gmail) y descarta los demas como si fueran duplicados -- perdiendo datos reales de las otras cuentas. Se crearon 6 filas nuevas fuera de la ventana de backfill decidida (dic 2024-jun 2026): 2024-01, 04, 05, 09, 10, 11.
+
+**Correccion:** acotado el query de Gmail en `process_myinvestor_emails.py` con `after:2024/11/25`, respetando la ventana de backfill ya decidida en `docs/DECISIONS.md` (Migracion Inversiones, dic 2024 en adelante). El usuario borra manualmente las 6 filas creadas fuera de ventana.
+
+**Leccion:** al portar un flujo con historial largo, no asumir que "mas historia es mejor" -- verificar contra decisiones de scope ya tomadas (la ventana dic-2024 no fue arbitraria, reflejaba un cambio real de estructura de cuentas) antes de dejar que el script traiga todo lo que encuentre en Gmail.
+
+**Estado:** Corregido. Pendiente: usuario borra las 6 filas, re-correr el workflow y confirmar que los 19 meses conocidos (dic 2024-jun 2026) no cambiaron y que no aparecen mas meses de 2024.
+
+---
+
 ## [2026-07-17] Implementado: flujo de MyInvestor en GitHub Actions (reemplaza a Relay/Make)
 
 **Que se construyo:** `scripts/process_myinvestor_emails.py`, nuevo paso en `sync-finance-data.yml` ("Process MyInvestor emails"), corre despues del paso de Peerberry y antes de generar `finance_data.json`. Busca emails de `comunicaciones@myinvestor.es` / `notificaciones@myinvestor.es` (asunto "Rentabilidad de tu cartera"), pide solo la parte `text/plain` (evita el HTML pesado que bloqueaba a Make con `MaxFileSizeExceededError`), manda el texto a Claude con el prompt ya documentado (Ganancia, Aportes, Capital total, Fecha reporte = ultimo dia del mes), y crea una fila en Notion "Rendimiento Inversiones" (Plataforma=MyInvestor, Periodo=Mensual). Reusa las credenciales OAuth de Gmail ya generadas para Peerberry (`GMAIL_CLIENT_ID`/`GMAIL_CLIENT_SECRET`/`GMAIL_REFRESH_TOKEN`) — no hizo falta un secret nuevo. Control de duplicados por Plataforma+Periodo+Fecha reporte. Registro en `processed_myinvestor_emails.json`.
