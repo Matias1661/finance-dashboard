@@ -1,6 +1,55 @@
 {
-  "generated_at": "2026-07-17 11:53",
+  "generated_at": "2026-07-17 12:09",
   "movimientos": [
+    {
+      "fecha": "2026-07-16",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -22,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-16",
+      "concepto": "Asiento Guille",
+      "monto": -495.66,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-16",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-16",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 90,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-15",
+      "concepto": "WWW.AMAZON",
+      "monto": -15.45,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-15",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-15",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 40,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-07-13",
       "concepto": "E.S. APADIS",
