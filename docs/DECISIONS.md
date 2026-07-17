@@ -6,7 +6,7 @@
 
 **Leccion:** al portar un flujo con historial largo, no asumir que "mas historia es mejor" -- verificar contra decisiones de scope ya tomadas (la ventana dic-2024 no fue arbitraria, reflejaba un cambio real de estructura de cuentas) antes de dejar que el script traiga todo lo que encuentre en Gmail.
 
-**Estado:** Corregido. Pendiente: usuario borra las 6 filas, re-correr el workflow y confirmar que los 19 meses conocidos (dic 2024-jun 2026) no cambiaron y que no aparecen mas meses de 2024.
+**Estado:** Corregido y validado. Usuario borro las 6 filas; segunda corrida confirmo los 19 meses conocidos (dic 2024-jun 2026) identicos a la serie previa, sin meses adicionales de 2024. Flujo MyInvestor dado por cerrado.
 
 ---
 
