@@ -1,3 +1,7 @@
+## 2026-07-17 (7)
+
+- Flujo de Movimientos: primera validación con extracto real en paralelo con Relay. 7 movimientos extraídos, los 7 coincidieron exactamente con lo ya cargado por Relay (0 duplicados creados). Categorización idéntica. Ver `DECISIONS.md` 2026-07-17.
+
 ## 2026-07-17 (6)
 
 - Flujo de Movimientos en GitHub Actions: prueba de humo exitosa (run 29571518185). Google Drive API estaba deshabilitada en el proyecto de la cuenta de servicio, se habilitó. Los 25 extractos históricos ya en la carpeta se pre-cargaron como procesados para que el flujo no los reprocese. Falta probar con un extracto real nuevo. Ver `DECISIONS.md` 2026-07-17.

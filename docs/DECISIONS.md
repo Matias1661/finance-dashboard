@@ -11,7 +11,9 @@
 
 **Prueba de humo (2026-07-17):** primer intento falló por 403 (Google Drive API deshabilitada en el proyecto `finance-dashboard-498109`); habilitada por el usuario. Los 25 PDFs históricos ya en la carpeta (todos ya procesados por Relay en su momento) se pre-cargaron en `processed_bank_statements.json` para que el flujo nuevo no los reprocese. Run [29571518185](https://github.com/Matias1661/finance-dashboard/actions/runs/29571518185) corrió limpio de punta a punta (0 archivos nuevos, como se esperaba).
 
-**Estado:** Código funcionando en producción. Falta la prueba con un extracto real nuevo antes de dar el paso 1 por completado.
+**Validación con extracto real (2026-07-17):** primer extracto real subido después de la prueba de humo, procesado en paralelo con Relay (run [29572494978](https://github.com/Matias1661/finance-dashboard/actions/runs/29572494978)). Extrajo 7 movimientos; los 7 coincidieron exactamente (Fecha+Concepto+Monto) con lo que Relay ya había creado — 0 duplicados creados, categorización idéntica. Primera validación en paralelo exitosa (paso 5 del plan, en curso — falta repetir con más extractos antes de apagar este flujo específico en Relay).
+
+**Estado:** Código funcionando en producción, primera validación real exitosa. Seguir en paralelo con Relay unos extractos más antes de considerar el paso 1 completado.
 
 ---
 
