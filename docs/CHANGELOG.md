@@ -1,3 +1,7 @@
+## 2026-07-17 (13)
+
+- MyInvestor: corregida la ventana de Gmail (`after:2024/11/25`) tras detectar que el historial traia meses de 2024 con multiples cuentas/carteras conflictivas (confirmado por el usuario). Filas fuera de ventana borradas en Notion; segunda corrida valido los 19 meses conocidos (dic 2024-jun 2026) identicos, sin cambios. Flujo MyInvestor implementado y cerrado. Ver `DECISIONS.md` 2026-07-17.
+
 ## 2026-07-17 (12)
 
 - MyInvestor: escrito `scripts/process_myinvestor_emails.py` + paso nuevo en `sync-finance-data.yml`, reusando las credenciales OAuth de Gmail ya generadas para Peerberry. A diferencia de Peerberry, el flujo de Relay/Make para MyInvestor nunca corrio en produccion (solo tests), asi que el riesgo de duplicados por fecha es menor. Validacion con corrida real pendiente. Ver `DECISIONS.md` 2026-07-17.
