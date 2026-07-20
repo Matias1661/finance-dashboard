@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20 10:56",
+  "generated_at": "2026-07-20 11:39",
   "movimientos": [
     {
       "fecha": "2026-07-19",
@@ -13,14 +13,14 @@
       "concepto": "Amazon.es",
       "monto": -8.25,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Rowenta Pure Pop - cuota pago mensual"
     },
     {
       "fecha": "2026-07-19",
       "concepto": "BIZUM ENVIADO",
       "monto": -35,
-      "categoria": "A revisar",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Hotel Granada"
     },
     {
       "fecha": "2026-07-18",
