@@ -230,6 +230,7 @@ const TRIP_WINDOWS = [
   { name: '45 Aniversario París',     start: '2026-04-18', end: '2026-04-18' },
   { name: 'Málaga',                   start: '2026-05-01', end: '2026-05-03' },
   { name: 'Viaje a Portugal',         start: '2026-05-08', end: '2026-05-11' },
+  { name: 'Viaje a Granada',          start: '2026-07-18', end: '2026-07-19' },
 ];
 
 function tripSubcategory(concepto) {
