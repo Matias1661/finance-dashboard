@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20 11:39",
+  "generated_at": "2026-07-20 11:50",
   "movimientos": [
     {
       "fecha": "2026-07-19",
@@ -26,8 +26,8 @@
       "fecha": "2026-07-18",
       "concepto": "SANSE I",
       "monto": -23.52,
-      "categoria": "Combustible",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Combustible viaje Granada"
     },
     {
       "fecha": "2026-07-18",
