@@ -1,6 +1,62 @@
 {
-  "generated_at": "2026-07-20 10:35",
+  "generated_at": "2026-07-20 10:56",
   "movimientos": [
+    {
+      "fecha": "2026-07-19",
+      "concepto": "ANTHROPIC",
+      "monto": -6.05,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-19",
+      "concepto": "Amazon.es",
+      "monto": -8.25,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-19",
+      "concepto": "BIZUM ENVIADO",
+      "monto": -35,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-18",
+      "concepto": "SANSE I",
+      "monto": -23.52,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-18",
+      "concepto": "Klarna*Motea",
+      "monto": -112.76,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-17",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-17",
+      "concepto": "WWW.AMAZON",
+      "monto": -9.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-17",
+      "concepto": "Gastos conjuntos",
+      "monto": -50,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
     {
       "fecha": "2026-07-16",
       "concepto": "APPLE.COM/BILL",
@@ -33,8 +89,8 @@
       "fecha": "2026-07-15",
       "concepto": "WWW.AMAZON",
       "monto": -15.45,
-      "categoria": "Compras",
-      "nota": null
+      "categoria": "Salud y Belleza",
+      "nota": "PhD Products Diluyente Bacteriostático 10ml (pedido 171-3379939-8354760)"
     },
     {
       "fecha": "2026-07-15",
