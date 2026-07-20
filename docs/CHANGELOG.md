@@ -1,3 +1,7 @@
+## 2026-07-20 (1)
+
+- Organizar Movimientos: agregado `{ name: 'Viaje a Granada', start: '2026-07-18', end: '2026-07-19' }` a `TRIP_WINDOWS` en `js/app.js`, tomado del evento "Viaje a Granada" en Google Calendar (creado 18/07, no existía cuando arrancó el viaje). Reclasificados a Viajes: BIZUM ENVIADO -35€ 19/07 (nota "Hotel Granada") y SANSE I -23,52€ 18/07 (nota "Combustible viaje Granada"). **Causa raíz de por qué no se detectó solo:** la Fase 4 (Viajes) del flujo depende de que `TRIP_WINDOWS` ya tenga la ventana cargada — no hay chequeo automático contra Google Calendar. A partir de ahora, antes de correr Fase 4 hay que revisar Calendar por viajes nuevos no reflejados todavía en `TRIP_WINDOWS`. Quedan pendientes más cargos del viaje a Granada que aparecerán en los próximos días (dentro del buffer de 3 días desde el 19/07 se detectan solos; más tarde, avisar explícitamente).
+
 ## 2026-07-17 (13)
 
 - MyInvestor: corregida la ventana de Gmail (`after:2024/11/25`) tras detectar que el historial traia meses de 2024 con multiples cuentas/carteras conflictivas (confirmado por el usuario). Filas fuera de ventana borradas en Notion; segunda corrida valido los 19 meses conocidos (dic 2024-jun 2026) identicos, sin cambios. Flujo MyInvestor implementado y cerrado. Ver `DECISIONS.md` 2026-07-17.
