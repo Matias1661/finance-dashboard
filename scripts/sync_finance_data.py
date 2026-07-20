@@ -344,6 +344,44 @@ def _extract_rendimiento_row(page):
     }
 
 
+def _peerberry_semanal_con_retorno(semanal_peerberry_rows):
+    """Corrige el bug documentado en DECISIONS.md [2026-07-20]: el campo
+    'Ganancia' de las filas Semanal de Peerberry es el Profit acumulado desde
+    el origen de la cuenta (confirmado por DECISIONS.md 2026-07-06: la cadena
+    737,82 -> 745,70 -> 751,33 -> 752,99 ya validada contra los mails), no la
+    ganancia de esa semana. Sumar esas filas crudas (como hacia el codigo
+    anterior) inflaba brutalmente el mes cuando no habia fila Mensual de
+    respaldo (mayo-julio 2026: 2.841 EUR y 55% de rentabilidad en vez de
+    ~31 EUR y ~0,6%).
+
+    Ordena las filas por 'Fecha reporte' y calcula para cada una:
+    - ganancia_real: delta del Profit acumulado respecto a la fila anterior
+      de la serie (None en la primera fila, sin referencia previa -- ese caso
+      solo afecta a meses ya cubiertos por una fila Mensual de respaldo).
+    - retorno: ganancia_real / saldo medio semanal (promedio de Capital total
+      entre la fila anterior y la actual). Encadenar estos retornos semanales
+      (TWR) dentro de un mes evita que un aporte grande a mitad de mes
+      distorsione el % mensual, a diferencia de promediar solo capital de
+      inicio/fin de mes (limitacion aceptada para MyInvestor en DECISIONS.md
+      2026-07-08 por falta de granularidad semanal -- Peerberry si la tiene).
+    """
+    rows_sorted = sorted(semanal_peerberry_rows, key=lambda r: r["fecha"])
+    out = []
+    prev = None
+    for r in rows_sorted:
+        ganancia_real = None
+        retorno = None
+        if prev is not None and r["ganancia"] is not None and prev["ganancia"] is not None:
+            ganancia_real = r["ganancia"] - prev["ganancia"]
+            if prev["capital"] is not None and r["capital"] is not None:
+                avg_cap = (prev["capital"] + r["capital"]) / 2
+                if avg_cap:
+                    retorno = ganancia_real / avg_cap
+        out.append({**r, "ganancia_real": ganancia_real, "retorno": retorno})
+        prev = r
+    return out
+
+
 def _aggregate_rendimiento_by_month(pages):
     """Agrega filas de 'Rendimiento Inversiones' por mes calendario y plataforma.
 
@@ -360,12 +398,22 @@ def _aggregate_rendimiento_by_month(pages):
     - Aportes: se suman igual que Ganancia. Las filas Mensuales cargadas
       antes de este cambio no tienen Aportes (aportes_known=False); el
       consumidor puede aproximarlo como delta de capital menos ganancia.
+    - Peerberry Semanal: la Ganancia sumada es 'ganancia_real' (delta del
+      Profit acumulado, ver _peerberry_semanal_con_retorno), no el campo
+      crudo. Ademas se guarda 'retornos_semanales' (lista de retorno por
+      semana) para permitir un TWR encadenado en vez del promedio de 2 puntos
+      cuando se consuma este mes (fix DECISIONS.md 2026-07-20).
 
     Devuelve { mes: { "peerberry": {...}, "myinvestor": {...} } }.
     """
     rows = [r for r in (_extract_rendimiento_row(p) for p in pages) if r]
     mensual = [r for r in rows if r["periodo"] == "Mensual"]
     semanal = [r for r in rows if r["periodo"] == "Semanal"]
+
+    semanal_peerberry_enriquecido = _peerberry_semanal_con_retorno(
+        [r for r in semanal if r["plataforma"] == "Peerberry"]
+    )
+    retorno_por_fecha = {r["fecha"]: r for r in semanal_peerberry_enriquecido}
 
     by_month = {}
     mensual_keys = set()
@@ -376,7 +424,7 @@ def _aggregate_rendimiento_by_month(pages):
     def ensure(mk):
         if mk not in by_month:
             by_month[mk] = {
-                "peerberry":  {"ganancia": 0.0, "aportes": 0.0, "aportes_known": False, "capital": None, "capital_fecha": None},
+                "peerberry":  {"ganancia": 0.0, "aportes": 0.0, "aportes_known": False, "capital": None, "capital_fecha": None, "retornos_semanales": []},
                 "myinvestor": {"ganancia": 0.0, "aportes": 0.0, "aportes_known": False, "capital": None, "capital_fecha": None},
             }
         return by_month[mk]
@@ -400,7 +448,14 @@ def _aggregate_rendimiento_by_month(pages):
         if (mk, pk) in mensual_keys:
             continue
         entry = ensure(mk)[pk]
-        entry["ganancia"] += r["ganancia"] or 0.0
+        if pk == "peerberry":
+            enriquecido = retorno_por_fecha.get(r["fecha"])
+            ganancia_semana = (enriquecido["ganancia_real"] if enriquecido else None) or 0.0
+            entry["ganancia"] += ganancia_semana
+            if enriquecido and enriquecido["retorno"] is not None:
+                entry["retornos_semanales"].append(enriquecido["retorno"])
+        else:
+            entry["ganancia"] += r["ganancia"] or 0.0
         if r["aportes"] is not None:
             entry["aportes"] += r["aportes"]
             entry["aportes_known"] = True
@@ -637,7 +692,17 @@ def build_rendimiento_mensual(by_month, benchmark_prices=None):
                 pct_mi = round(cur["myinvestor"]["ganancia"] / avg_capital_mi * 100, 2)
 
         pct_pb = None
-        if prev is not None and prev["peerberry"]["capital"] is not None and cur["peerberry"]["capital"] is not None:
+        retornos_pb = cur["peerberry"].get("retornos_semanales")
+        if retornos_pb:
+            # TWR encadenado semana a semana (fix DECISIONS.md 2026-07-20):
+            # evita que un aporte grande a mitad de mes distorsione el %,
+            # a diferencia del promedio de 2 puntos usado abajo como fallback
+            # (meses con fila Mensual de respaldo, sin detalle semanal).
+            acc_pb = 1.0
+            for ret in retornos_pb:
+                acc_pb *= (1 + ret)
+            pct_pb = round((acc_pb - 1) * 100, 2)
+        elif prev is not None and prev["peerberry"]["capital"] is not None and cur["peerberry"]["capital"] is not None:
             avg_capital = (prev["peerberry"]["capital"] + cur["peerberry"]["capital"]) / 2
             if avg_capital:
                 pct_pb = round(cur["peerberry"]["ganancia"] / avg_capital * 100, 2)
@@ -792,7 +857,13 @@ def build_inversiones(by_month):
         cur = by_month[mk]
 
         pct_pb = None
-        if prev and prev["peerberry"]["capital"] is not None and cur["peerberry"]["capital"] is not None:
+        retornos_pb = cur["peerberry"].get("retornos_semanales")
+        if retornos_pb:
+            acc_pb = 1.0
+            for ret in retornos_pb:
+                acc_pb *= (1 + ret)
+            pct_pb = round((acc_pb - 1) * 100, 2)
+        elif prev and prev["peerberry"]["capital"] is not None and cur["peerberry"]["capital"] is not None:
             avg = (prev["peerberry"]["capital"] + cur["peerberry"]["capital"]) / 2
             if avg:
                 pct_pb = round(cur["peerberry"]["ganancia"] / avg * 100, 2)
