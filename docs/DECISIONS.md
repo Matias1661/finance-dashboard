@@ -1,4 +1,23 @@
-## [2026-07-17] Incidente y correccion: MyInvestor trajo emails de antes de dic 2024 con multiples cuentas conflictivas
+## [2026-07-20] Corregido bug critico: Ganancia acumulada de Peerberry sumada como si fuera semanal (inflaba mes y rentabilidad)
+
+**Contexto:** Matias reporto que la rentabilidad de Peerberry en el tab Inversiones parecia distorsionada por los aportes y pidio mejorarla. Al verificar contra la DB Notion "Rendimiento Inversiones" antes de tocar el repo, se encontro un bug mas grave que la distorsion por aportes: el campo "Ganancia" de las filas Semanal de Peerberry es el Profit acumulado desde el origen de la cuenta (confirmado por la entrada 2026-07-06 de este mismo archivo, que valido la cadena 737,82 -> 745,70 -> 751,33 -> 752,99 contra los correos), no la ganancia de esa semana. `_aggregate_rendimiento_by_month()` sumaba esas filas crudas cuando no habia fila Mensual de respaldo (mayo 2026 en adelante), inflando el mes.
+
+**Efecto en produccion (verificado contra Notion antes del fix):** mayo 2026 mostraba 2.841,92€ de ganancia y 55,06% de rentabilidad mensual; junio, 3.714,93€ y 44,04%. La ganancia real (delta de Profit acumulado entre reportes consecutivos) es de 31-34€/mes, coherente con el resto del historico (35-45€/mes tipico).
+
+**Correccion previa erronea:** la entrada del 09/07 de este archivo etiqueto el salto de mayo (23,63€ -> 2.841,92€) como "esperado, no un bug", y el CHANGELOG del 2026-07-17 (11) dio por "verificado" el valor de 2.841,92€ sumando las semanas individuales -- esa verificacion sumaba el mismo campo acumulado contra si mismo, sin detectar el problema de fondo. Ambas conclusiones quedan corregidas por esta entrada.
+
+**Fix implementado en `scripts/sync_finance_data.py`:**
+1. Nueva funcion `_peerberry_semanal_con_retorno()`: ordena las filas Semanal de Peerberry por Fecha reporte y calcula `ganancia_real` (delta del Profit acumulado contra la fila anterior de la serie, None en la primera sin referencia) y `retorno` (ganancia_real / saldo medio semanal).
+2. `_aggregate_rendimiento_by_month()`: usa `ganancia_real` en vez del campo crudo para sumar la Ganancia mensual de Peerberry cuando el mes viene de filas Semanal; guarda la lista de retornos semanales en `retornos_semanales`.
+3. `build_rendimiento_mensual()` y `build_inversiones()`: el % de Peerberry ahora encadena (TWR) los retornos semanales cuando estan disponibles, en vez de promediar solo capital de cierre de mes anterior/actual. Esto tambien resuelve, de forma secundaria, la distorsion por aportes grandes a mitad de mes que motivo el pedido original (ej. junio 2026: 0,58% encadenando semanas vs 0,41% con el promedio de 2 puntos sobre la ganancia ya corregida). Meses con fila Mensual de respaldo (historico verificado, sin datos semanales) siguen usando el promedio de 2 puntos, sin cambios.
+
+**Validado:** recalculo local contra los datos reales de Notion (todas las filas Peerberry, dic 2024-jul 2026) antes de subir el fix. Mayo: 31,09€ / 0,60%. Junio: 34,21€ / 0,58%. Julio (parcial, mes en curso): 34,19€. Meses feb-abr 2026 (con fila Mensual) sin cambios: 46,79€/24,87€/43,86€.
+
+**Limitacion conocida:** la primera fila Semanal de la serie (2026-03-02) no tiene referencia previa dentro del regimen acumulado, asi que su `ganancia_real` es `None` (contribuye 0 al mes) -- sin impacto porque marzo 2026 tiene fila Mensual de respaldo. Si en el futuro un mes sin Mensual arrancara justo en la primera fila Semanal disponible, esa semana quedaria subestimada; no aplica hoy.
+
+---
+
+
 
 **Que paso:** la primera corrida real de `process_myinvestor_emails.py` encontro 29 emails historicos (Gmail tenia desde enero 2024, mas atras que el backfill oficial de dic 2024). Para abril y mayo de 2024 hubo 2-3 emails cada uno con el mismo cierre de mes pero Capital total muy distinto (ej. mayo 2024: 15.545e, 4.229e y 10.207e) -- confirmado por el usuario (2026-07-17): tuvo varias cuentas/carteras distintas en MyInvestor antes de dic 2024. El control de duplicados (por fecha exacta) no detecta esto como "distintas cuentas", elige arbitrariamente el primer email que procesa (el mas reciente, por el orden de Gmail) y descarta los demas como si fueran duplicados -- perdiendo datos reales de las otras cuentas. Se crearon 6 filas nuevas fuera de la ventana de backfill decidida (dic 2024-jun 2026): 2024-01, 04, 05, 09, 10, 11.
 
