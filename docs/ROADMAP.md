@@ -16,7 +16,8 @@
 - [x] Migración de capital/rendimiento del tab Inversiones de Google Sheets a Notion (elimina dependencia de GOOGLE_SERVICE_ACCOUNT, 2026-07-10)
 
 ## Alta prioridad
-- [ ] Arreglar botón "Actualizar" en `index.html`: hoy tiene un token de GitHub hardcodeado (viejo, ya revocado — el botón está roto). **Actualizado 17/07:** ya no aplica la idea original de un webhook de Make (Make quedó fuera de la arquitectura, ver `DECISIONS.md`); evaluar una alternativa server-side sin Make (ej. un endpoint propio, o simplemente dejar el botón disparando el workflow por `gh workflow run` manual hasta decidir algo mejor).
+- [x] Botón "Actualizar" en `index.html`: eliminado 21/07 (tenía un token de GitHub hardcodeado, revocado, y seguía expuesto en texto plano en el archivo). Los workflows de sync se disparan manualmente vía `gh workflow run` o la UI de GitHub Actions. Ver `DECISIONS.md` 2026-07-21.
+- [ ] Evaluar si conviene reintroducir un botón de refresh con una alternativa server-side (ej. endpoint propio) que no dependa de un token en el cliente. Sin fecha.
 - [ ] Migración Relay → GitHub Actions, flujos pendientes de implementar (ver `PROJECT_MEMORY.md`, sección "Migración en curso", y `DECISIONS.md` 2026-07-17 para prompts ya probados):
   - [x] Peerberry: script Python + paso en `sync-finance-data.yml`, validado con datos reales (incidente de duplicados detectado y corregido, ver `DECISIONS.md` 2026-07-17). Flujo de Relay para Peerberry dado de baja.
   - [x] MyInvestor: script Python pidiendo `text/plain` a la API de Gmail, validado con datos reales (incidente de cuentas conflictivas pre-dic-2024 detectado y corregido, ver `DECISIONS.md` 2026-07-17)
