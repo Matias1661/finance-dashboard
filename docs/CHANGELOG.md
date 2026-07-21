@@ -1,3 +1,7 @@
+## 2026-07-21 (1)
+
+- Eliminado el boton "Actualizar" de `index.html` (HTML, CSS y el bloque `<script>` con `GH_REPO`/`GH_WF`/`GH_TOKEN`/`triggerRefresh()`). Estaba roto desde antes (token revocado, ver `ROADMAP.md`) y el token seguia expuesto en texto plano en el archivo pese a estar revocado; se elimino sin reemplazarlo. Header simplificado a fecha de ultima actualizacion + link a Sheets. Los workflows de sync se disparan manualmente via `gh workflow run` o la UI de GitHub Actions mientras no se decida una alternativa server-side. Ver `DECISIONS.md` 2026-07-21.
+
 ## 2026-07-20 (2)
 
 - Corregido bug critico en `scripts/sync_finance_data.py`: la Ganancia mensual de Peerberry (mayo 2026 en adelante, meses sin fila Mensual de respaldo) sumaba el Profit acumulado crudo de cada semana en vez de la ganancia real de esa semana. En produccion esto mostraba mayo=2.841,92€/55,06% y junio=3.714,93€/44,04% de rentabilidad; corregido a mayo=31,09€/0,60% y junio=34,21€/0,58%. Nueva funcion `_peerberry_semanal_con_retorno()` calcula el delta real y el retorno semanal; `build_rendimiento_mensual()` y `build_inversiones()` ahora encadenan (TWR) esos retornos semanales para el % de Peerberry en vez de promediar solo capital de inicio/fin de mes, lo que de paso reduce la distorsion por aportes grandes a mitad de mes (pedido original de Matias). Validado contra los datos reales de Notion antes de subir. Ver `DECISIONS.md` 2026-07-20.
