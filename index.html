@@ -185,25 +185,6 @@
       .tab { font-size: 11px; }
     }
 
-    /* ── Refresh button ── */
-    .btn-refresh {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 5px 12px;
-      font-size: 12px; font-family: 'DM Sans', sans-serif;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--surface);
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      white-space: nowrap;
-    }
-    .btn-refresh:hover { background: var(--bg); color: var(--text); }
-    .btn-refresh.loading { opacity: 0.6; cursor: default; }
-    .refresh-msg {
-      font-family: 'DM Mono'; font-size: 11px;
-      color: var(--amber); display: none;
-    }
     .header-right { display: flex; align-items: center; gap: 12px; }
   </style>
 </head>
@@ -216,10 +197,8 @@
 <header class="header">
   <span class="header-title">Finance Dashboard</span>
   <div class="header-right">
-    <span class="refresh-msg" id="refreshMsg"></span>
     <span class="header-meta" id="last-updated"></span>
     <a href="https://docs.google.com/spreadsheets/d/1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI" target="_blank" rel="noopener" style="font-family:'DM Mono';font-size:12px;color:var(--text-secondary);text-decoration:none;opacity:0.7" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">↗ Sheets</a>
-    <button class="btn-refresh" id="btnRefresh" onclick="triggerRefresh()">↻ Actualizar</button>
   </div>
 </header>
 
@@ -509,48 +488,6 @@
 </main>
 </div>
 
-<script>
-const GH_REPO  = 'Matias1661/finance-dashboard';
-const GH_WF    = ['286832931', '301444283'];
-const GH_TOKEN = 'ghp_mwdGMZMC6lu' + 'nVud1n9EGxOl12dtYS52cpX1C';
-
-async function triggerRefresh(){
-  const btn = document.getElementById('btnRefresh');
-  const msg = document.getElementById('refreshMsg');
-  btn.classList.add('loading');
-  btn.textContent = '↻ Enviando…';
-  msg.style.display = 'inline';
-  let ok = 0;
-  for(const wf of GH_WF){
-    try{
-      const r = await fetch(`https://api.github.com/repos/${GH_REPO}/actions/workflows/${wf}/dispatches`,{
-        method: 'POST',
-        headers: { 'Authorization': `token ${GH_TOKEN}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ref: 'main' })
-      });
-      if(r.status === 204) ok++;
-      else console.warn(`Workflow ${wf} returned ${r.status}`);
-    } catch(e){ console.warn(`Workflow ${wf} error:`, e); }
-  }
-  if(ok === GH_WF.length){
-    btn.textContent = '↻ Lanzado';
-    let secs = 90;
-    msg.textContent = `Sincronizando · recargando en ${secs}s`;
-    const cd = setInterval(() => {
-      secs--;
-      msg.textContent = `Sincronizando · recargando en ${secs}s`;
-      if(secs <= 0) clearInterval(cd);
-    }, 1000);
-    setTimeout(() => { location.href = location.pathname + '?v=' + Date.now(); }, 90000);
-    setTimeout(() => { btn.textContent = '↻ Actualizar'; btn.classList.remove('loading'); }, 5000);
-  } else {
-    btn.textContent = '↻ Error';
-    msg.textContent = 'Token caducado o sin permisos.';
-    btn.classList.remove('loading');
-    setTimeout(() => { btn.textContent = '↻ Actualizar'; msg.style.display = 'none'; }, 6000);
-  }
-}
-</script>
 <script src="js/state.js"></script>
 <script src="js/filters.js"></script>
 <script src="js/insights.js"></script>
