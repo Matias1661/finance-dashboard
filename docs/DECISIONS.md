@@ -1,3 +1,15 @@
+## [2026-07-21] Eliminado boton "Actualizar" de index.html (token expuesto y revocado)
+
+**Contexto:** Matias recordaba que el boton "Actualizar" ya no funcionaba y pidio confirmarlo y eliminarlo si era el caso. Se verifico contra `docs/ROADMAP.md` (fuente de verdad): el boton dependia de un token de GitHub hardcodeado, revocado, sin reemplazo decidido tras descartarse la idea original de un webhook de Make (ver entrada de arquitectura Make -> GitHub Actions).
+
+**Hallazgo adicional:** al revisar `index.html` via API autenticada (no CDN, para evitar cache stale) se confirmo que el token seguia presente en texto plano en el archivo (ofuscado como dos strings concatenados: `'ghp_mwdGMZMC6lu' + 'nVud1n9EGxOl12dtYS52cpX1C'`), pese a estar revocado. Se elimino sin re-exponerlo en ningun documento.
+
+**Cambio implementado:** eliminado de `index.html`: boton `#btnRefresh`, span `#refreshMsg`, CSS `.btn-refresh`/`.refresh-msg`, y el bloque `<script>` completo con `GH_REPO`/`GH_WF`/`GH_TOKEN`/`triggerRefresh()`. Nada de esto se referenciaba desde `js/app.js` ni otros modulos, por lo que la remocion es autocontenida. El header ahora solo muestra fecha de ultima actualizacion y el link a Sheets.
+
+**Pendiente:** disparar los workflows de sync sigue siendo posible manualmente via `gh workflow run` o desde la UI de GitHub Actions. Una alternativa server-side (endpoint propio) para restaurar un boton de refresh queda abierta en `ROADMAP.md`, sin fecha.
+
+---
+
 ## [2026-07-20] Corregido bug critico: Ganancia acumulada de Peerberry sumada como si fuera semanal (inflaba mes y rentabilidad)
 
 **Contexto:** Matias reporto que la rentabilidad de Peerberry en el tab Inversiones parecia distorsionada por los aportes y pidio mejorarla. Al verificar contra la DB Notion "Rendimiento Inversiones" antes de tocar el repo, se encontro un bug mas grave que la distorsion por aportes: el campo "Ganancia" de las filas Semanal de Peerberry es el Profit acumulado desde el origen de la cuenta (confirmado por la entrada 2026-07-06 de este mismo archivo, que valido la cadena 737,82 -> 745,70 -> 751,33 -> 752,99 contra los correos), no la ganancia de esa semana. `_aggregate_rendimiento_by_month()` sumaba esas filas crudas cuando no habia fila Mensual de respaldo (mayo 2026 en adelante), inflando el mes.
