@@ -4,7 +4,7 @@ Reemplazo del flujo de Relay "Pasar extracto bancario a Notion".
 Revisa la carpeta de Drive "Extractos para Notion" en busca de PDFs nuevos,
 le pide a Claude que extraiga cada movimiento (concepto, monto, fecha,
 categoria) usando el mismo prompt de categorizacion que vive en la DB Notion
-"Prompts para Relay" (se lee en vivo, no hay copia local que se desactualice),
+"Prompts" (se lee en vivo, no hay copia local que se desactualice),
 y crea una pagina por movimiento en la DB Movimientos.
 
 Lleva un registro de que archivos ya proceso en processed_bank_statements.json
@@ -79,8 +79,7 @@ def download_file(drive_token, file_id):
 
 
 def fetch_categorizacion_prompt():
-    """Lee en vivo el texto de categorizacion desde la DB Notion 'Prompts para
-    Relay', igual que hacia el workflow de Relay. Si no lo encuentra, falla
+    """Lee en vivo el texto de categorizacion desde la DB Notion 'Prompts', igual que hacia el workflow de Relay. Si no lo encuentra, falla
     fuerte (mejor frenar que categorizar sin las reglas actualizadas)."""
     url = f"https://api.notion.com/v1/data_sources/{PROMPTS_RELAY_DS_ID}/query"
     payload = {
@@ -95,7 +94,7 @@ def fetch_categorizacion_prompt():
     if not results:
         raise RuntimeError(
             "No se encontro el prompt 'Pasar extracto bancario a Notion' en "
-            "la DB Notion 'Prompts para Relay'.")
+            "la DB Notion 'Prompts'.")
     texto_prop = results[0]["properties"]["Texto"]
     return "".join(t["plain_text"] for t in texto_prop.get("rich_text", []))
 
