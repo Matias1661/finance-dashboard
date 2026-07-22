@@ -1,3 +1,53 @@
+## [2026-07-22] Implementado flujo Nominas: Drive (subida manual) -> extraccion Claude -> Notion
+
+**Contexto:** paso 4 del plan de migracion Relay -> GitHub Actions (ver PROJECT_MEMORY.md).
+El diseno de este flujo ya habia cambiado antes (Matias sube el PDF a mano a la carpeta
+Drive "Nominas" en vez de que se lea el email de Beatriz), pero faltaba escribir el script.
+
+**Verificacion previa (antes de escribir nada):** se reviso la carpeta Drive "Nominas"
+completa (38 archivos) contra la DB Notion Nominas (37 filas) -- las 37 filas ya
+corresponden 1 a 1 a archivos existentes en la carpeta, incluida la nomina mas reciente
+(junio 2026, subida 02/07). El unico archivo sin fila en Notion es una subida duplicada
+del mismo PDF de mayo 2026 con distinto file ID (`1GD7pwdd844j5wPu18ntfq87sOq0R4e15`,
+subido unas horas despues del original el mismo dia). Conclusion: no hace falta backfill
+manual, y se agrego un chequeo de duplicados por Fecha de pago en Notion (ademas del
+registro por file ID) como defensa ante este tipo de subida repetida.
+
+**Hallazgo de formato de PDF:** las nominas de BETWEEN TECHNOLOGY (hasta mayo 2026) tienen
+texto seleccionable. Las de LUZUTANIA GROUP (empleador actual, mayo-junio 2026 en adelante)
+son PDFs escaneados/imagen -- Drive no devuelve texto util, solo el nombre de archivo
+original embebido (ej. `062026_NOMINAS PTC ES.pdf`). El script manda el PDF completo a la
+API de Claude como bloque `document` en ambos casos (OCR nativo via vision), igual que ya
+hace `process_bank_statements.py` con extractos bancarios.
+
+**Inconsistencia de datos encontrada:** las dos filas mas recientes de la DB Nominas
+(mayo y junio 2026) tienen el nombre de empresa cargado de forma distinta:
+`LUZUTANIAES GROUP SLU` y `LUZUTANIAESP GROUP SLU`. Matias confirmo (22/07) que el nombre
+correcto a usar de aqui en adelante es `LUZUTANIA GROUP`. El prompt nuevo normaliza
+cualquier variante de OCR de ese nombre a ese valor exacto; las dos filas historicas
+quedan sin corregir por ahora (no se toco data historica sin decision explicita).
+
+**Implementado:**
+1. Prompt "Extraer datos de nomina" creado en la DB Notion "Prompts para Relay"
+   (https://app.notion.com/p/3a533ce50e68816487dffe4325ed97f1): pide Empresa (normalizada a
+   "LUZUTANIA GROUP" si aplica), Fecha de pago (ultimo dia del periodo de liquidacion,
+   YYYY-MM-DD) y Total (Liquido a percibir), como JSON.
+2. `scripts/process_nominas.py`: mismo patron que `process_bank_statements.py` (Drive via
+   cuenta de servicio, registro `processed_nominas.json` por file ID, prompt leido en vivo
+   de Notion, chequeo de duplicados por Fecha de pago antes de crear la pagina).
+3. `processed_nominas.json` sembrado con los 38 file IDs ya existentes en la carpeta Drive
+   hoy (incluido el duplicado), para que el script solo actue sobre la proxima nomina que
+   se suba.
+4. Paso agregado a `sync-finance-data.yml` ("Process new nominas (Drive -> Notion)"),
+   reusando los secrets `NOTION_TOKEN`, `ANTHROPIC_API_KEY`, `GOOGLE_SERVICE_ACCOUNT` ya
+   existentes. `processed_nominas.json` agregado al `git add` del paso de commit.
+
+**Pendiente de validar:** con la proxima nomina real que Matias suba (julio 2026). Hasta
+entonces, la fila 4 del plan de migracion en Notion ("Flujo Nominas") queda en "En curso",
+no "Completado" -- mismo criterio que se uso para Peerberry/MyInvestor.
+
+---
+
 ## [2026-07-22] Skill "organizar-movimientos" para no volver a omitir la fase de viajes
 
 **Contexto:** Al correr el flujo "Organizar Movimientos" se detectó que la fase de cruce
