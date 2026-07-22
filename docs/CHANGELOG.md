@@ -1,3 +1,15 @@
+## 2026-07-22 — Validacion real Talho Argentino + fix + carga manual
+
+- Validado `process_gastos_talho.py` con los 33 comprobantes reales de la carpeta Drive:
+  29 duplicados detectados correctamente, 1 creado bien, 3 marcados para revision manual.
+- Fix: un comprobante sin fecha extraible frenaba todo el script (crash en consulta a
+  Notion con fecha null) y salteaba el resto del workflow. Ahora se maneja por archivo,
+  sin frenar el batch, y avisa con `::warning::` en el log.
+- Cargados a mano en Notion los 3 comprobantes que necesitaban revision (fecha 27/06/2026,
+  confirmada por el usuario) y actualizado `processed_gastos_talho.json`.
+- Usuario corrigio a mano la fecha de "Pinturas Muller" (habia quedado en 2026-01-01).
+
+
 ## 2026-07-22 — Flujo Gastos Talho Argentino (paso 4.5 migracion Relay)
 
 - Nuevo `scripts/process_gastos_talho.py`: reemplaza el flujo de Relay que crea gastos en
