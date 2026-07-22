@@ -1,9 +1,27 @@
 [
   {
+    "fecha": "2026-06-27",
+    "concepto": "Pedido online numero 217573 - compra varios",
+    "costo": 445.75,
+    "pagado": "Willy"
+  },
+  {
+    "fecha": "2026-06-27",
+    "concepto": "Leroy Merlin Alcorcon - mobiliario y decoracion",
+    "costo": 23.98,
+    "pagado": "Willy"
+  },
+  {
+    "fecha": "2026-06-27",
+    "concepto": "Obramat - placas de yeso laminado",
+    "costo": 272.8,
+    "pagado": "Willy"
+  },
+  {
     "fecha": "2026-07-09",
     "concepto": "Pinturas Muller - material pintura",
     "costo": 52.73,
-    "pagado": null
+    "pagado": "Willy"
   },
   {
     "fecha": "2024-01-01",
