@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22 10:05",
+  "generated_at": "2026-07-22 10:23",
   "movimientos": [
     {
       "fecha": "2026-07-21",
@@ -12,22 +12,22 @@
       "fecha": "2026-07-21",
       "concepto": "PUERTO L PICE - D",
       "monto": -19.09,
-      "categoria": "A revisar",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Viaje a Granada"
     },
     {
       "fecha": "2026-07-21",
       "concepto": "SAN LUCAS",
       "monto": -23.34,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Viaje a Granada"
     },
     {
       "fecha": "2026-07-21",
       "concepto": "BIZUM RECIBIDO",
       "monto": 200,
-      "categoria": "A revisar",
-      "nota": null
+      "categoria": "Guille",
+      "nota": "Bizum de Guille (viaje a Granada)"
     },
     {
       "fecha": "2026-07-21",
