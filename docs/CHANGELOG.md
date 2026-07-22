@@ -1,3 +1,7 @@
+## 2026-07-22 (2)
+
+- Implementado el flujo Nominas (paso 4 del plan de migracion Relay -> GitHub Actions): nuevo `scripts/process_nominas.py` (mismo patron que `process_bank_statements.py`), prompt "Extraer datos de nomina" creado en la DB Notion "Prompts para Relay", `processed_nominas.json` sembrado con los 38 archivos ya existentes en la carpeta Drive "Nominas" (no hace falta backfill, ya estaban todos cargados en la DB Nominas salvo un duplicado de subida). Se agrego ademas un chequeo de duplicados por Fecha de pago en Notion, y se fijo el nombre de empresa a "LUZUTANIA GROUP" (habia inconsistencia entre las dos filas mas recientes: "LUZUTANIAES GROUP SLU" vs "LUZUTANIAESP GROUP SLU"). Paso agregado a `sync-finance-data.yml`. Pendiente de validar con la proxima nomina real (julio 2026). Ver `DECISIONS.md` 2026-07-22.
+
 ## 2026-07-22 (1)
 
 - Flujo "Organizar Movimientos": procesados 58 movimientos pendientes (16/12/2024 en adelante hasta 20/07/2026). Se detectó que la fase de cruce contra `TRIP_WINDOWS` (viajes) se había estado omitiendo — se aplicó ahora para el viaje "Granada" (18-19/07, buffer 3 días): 6 movimientos recategorizados a "Viajes" (Repsol Waylet, E.S. Orellana Per, Orellana Perdiz, La Cueva de 1900, Bonif. 2% Galp, Bonif.3%Shelldisa). Resueltos también 2 pares de reembolso: WWW.AMAZON ±9.99€ (Kindle Unlimited, cargo/reembolso del mes) y Kerastase ±47€ (cargo duplicado del 02/07, reembolsado el mismo día; queda un -47€ del 29/06 como compra real "Regalo Joha"). `reviewed_movements.json` actualizado con las 58 claves.
