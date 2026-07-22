@@ -10,7 +10,7 @@ desde el telefono, sin control sobre el nombre del archivo. Este script:
    file ID, no por nombre de archivo -- los nombres son arbitrarios).
 3. Para cada archivo nuevo, le pide a Claude que extraiga Empresa, Fecha de
    pago y Total usando el prompt "Extraer datos de nomina" de la DB Notion
-   "Prompts para Relay" (se lee en vivo, mismo patron que process_bank_statements.py).
+   "Prompts" (se lee en vivo, mismo patron que process_bank_statements.py).
 4. Antes de crear la pagina, chequea si ya existe una fila en Notion con esa
    misma Fecha de pago (defensa extra contra subidas duplicadas del mismo PDF
    con distinto file ID -- ya paso una vez en la carpeta, ver DECISIONS.md).
@@ -87,8 +87,7 @@ def download_file(drive_token, file_id):
 
 
 def fetch_extraccion_prompt():
-    """Lee en vivo el texto de extraccion desde la DB Notion 'Prompts para
-    Relay'. Si no lo encuentra, falla fuerte (mejor frenar que inventar
+    """Lee en vivo el texto de extraccion desde la DB Notion 'Prompts'. Si no lo encuentra, falla fuerte (mejor frenar que inventar
     reglas de extraccion)."""
     url = f"https://api.notion.com/v1/data_sources/{PROMPTS_RELAY_DS_ID}/query"
     payload = {
@@ -103,7 +102,7 @@ def fetch_extraccion_prompt():
     if not results:
         raise RuntimeError(
             "No se encontro el prompt 'Extraer datos de nomina' en la DB "
-            "Notion 'Prompts para Relay'.")
+            "Notion 'Prompts'.")
     texto_prop = results[0]["properties"]["Texto"]
     return "".join(t["plain_text"] for t in texto_prop.get("rich_text", []))
 
