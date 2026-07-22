@@ -1,3 +1,28 @@
+## [2026-07-22] Skill "organizar-movimientos" para no volver a omitir la fase de viajes
+
+**Contexto:** Al correr el flujo "Organizar Movimientos" se detectó que la fase de cruce
+contra `TRIP_WINDOWS` (viajes) se había estado omitiendo — no vive en ningún doc central,
+solo en la memoria de la sesión de cada agente, y por eso se perdía. Matías pidió una forma
+de que esto no vuelva a pasar.
+
+**Decisión:** Crear un skill (`docs/skills/organizar-movimientos/SKILL.md` +
+`scripts/find_pending.py`) que:
+1. Fija el orden completo de fases del flujo (PayPal → Uber → Amazon → Viajes → residual)
+   en un documento que se carga automáticamente al iniciar el flujo, en vez de depender de
+   la memoria de sesión.
+2. Incluye un script que hace el cruce contra `finance_data.json`, `reviewed_movements.json`
+   y `TRIP_WINDOWS` (parseado directo de `js/app.js`) de forma mecánica — el listado de
+   pendientes ya sale con la columna de viaje resuelta, no hay paso manual que saltear.
+
+Se descartó dejarlo solo documentado en `PROJECT_MEMORY.md` (ya tenía info equivalente en
+memoria de sesión y aun así se omitió) — un skill con script fuerza el chequeo en vez de
+depender de que se lea y recuerde un párrafo de texto.
+
+**Alcance de esta sesión (2026-07-22):** aplicado sobre el viaje "Granada" (18-19/07/2026),
+recategorizando 6 movimientos a "Viajes". Resueltos también reembolsos de Kindle Unlimited
+(WWW.AMAZON ±9.99€) y un cargo duplicado de Kerastase (±47€, 02/07). Detalle completo en
+`CHANGELOG.md` 2026-07-22.
+
 ## [2026-07-21] Eliminado boton "Actualizar" de index.html (token expuesto y revocado)
 
 **Contexto:** Matias recordaba que el boton "Actualizar" ya no funcionaba y pidio confirmarlo y eliminarlo si era el caso. Se verifico contra `docs/ROADMAP.md` (fuente de verdad): el boton dependia de un token de GitHub hardcodeado, revocado, sin reemplazo decidido tras descartarse la idea original de un webhook de Make (ver entrada de arquitectura Make -> GitHub Actions).
