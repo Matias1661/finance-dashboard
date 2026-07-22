@@ -201,11 +201,16 @@ def crear_gasto_notion(concepto, costo, fecha):
     resp.raise_for_status()
 
 
+FECHA_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
 def load_state():
     if os.path.exists(STATE_FILE):
         with open(STATE_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {"processed_file_ids": []}
+            state = json.load(f)
+            state.setdefault("requiere_revision", [])
+            return state
+    return {"processed_file_ids": [], "requiere_revision": []}
 
 
 def save_state(state):
@@ -216,12 +221,15 @@ def save_state(state):
 if __name__ == "__main__":
     state = load_state()
     processed_ids = set(state["processed_file_ids"])
+    ya_flaggeados = {r["file_id"] for r in state["requiere_revision"]}
+    revision_nueva = []
 
     print("Autenticando con Google Drive (cuenta de servicio)...")
     drive_token = get_drive_access_token()
 
     print("Buscando comprobantes nuevos en Drive...")
-    new_files = list_new_files(drive_token, processed_ids)
+    new_files = [f for f in list_new_files(drive_token, processed_ids)
+                 if f["id"] not in ya_flaggeados]
     print(f"  {len(new_files)} archivo(s) nuevo(s)")
 
     if not new_files:
@@ -231,21 +239,43 @@ if __name__ == "__main__":
 
         for f in new_files:
             print(f"Procesando {f['name']} ({f['id']}, {f['mimeType']})...")
-            file_bytes = download_file(drive_token, f["id"])
-            datos = extraer_datos_gasto(file_bytes, f["mimeType"], extraccion_prompt)
-            concepto = datos["concepto"]
-            costo = float(datos["costo"])
-            fecha = datos["fecha"]
-            print(f"  Concepto={concepto} Costo={costo} Fecha={fecha}")
+            try:
+                file_bytes = download_file(drive_token, f["id"])
+                datos = extraer_datos_gasto(file_bytes, f["mimeType"], extraccion_prompt)
+                concepto = datos.get("concepto")
+                costo = datos.get("costo")
+                fecha = datos.get("fecha")
 
-            if ya_existe_en_notion(fecha, costo):
-                print(f"  Ya existe un gasto con Fecha={fecha} Costo={costo}, se omite.")
-            else:
-                crear_gasto_notion(concepto, costo, fecha)
-                print("  Creado en Notion (Pagado por queda sin completar).")
+                if not concepto or costo is None or not fecha or not FECHA_RE.match(str(fecha)):
+                    raise ValueError(
+                        f"extraccion incompleta o invalida (concepto={concepto!r} "
+                        f"costo={costo!r} fecha={fecha!r})")
 
-            processed_ids.add(f["id"])
+                costo = float(costo)
+                print(f"  Concepto={concepto} Costo={costo} Fecha={fecha}")
+
+                if ya_existe_en_notion(fecha, costo):
+                    print(f"  Ya existe un gasto con Fecha={fecha} Costo={costo}, se omite.")
+                else:
+                    crear_gasto_notion(concepto, costo, fecha)
+                    print("  Creado en Notion (Pagado por queda sin completar).")
+
+                processed_ids.add(f["id"])
+
+            except Exception as e:
+                # Un comprobante problematico (ej. sin fecha legible) no debe
+                # frenar el resto del batch ni el resto del workflow. Se deja
+                # marcado para revision manual en vez de reintentar por
+                # siempre (mismo archivo, mismo resultado).
+                print(f"  ::warning::No se pudo procesar {f['name']} ({f['id']}): {e}")
+                revision_nueva.append({
+                    "file_id": f["id"], "name": f["name"], "error": str(e)
+                })
 
         state["processed_file_ids"] = sorted(processed_ids)
+        state["requiere_revision"] = state["requiere_revision"] + revision_nueva
         save_state(state)
         print("processed_gastos_talho.json actualizado.")
+        if revision_nueva:
+            print(f"::warning::{len(revision_nueva)} comprobante(s) necesitan revision manual "
+                  f"(ver 'requiere_revision' en {STATE_FILE}).")
