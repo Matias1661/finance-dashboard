@@ -1,3 +1,52 @@
+## [2026-07-22] Implementado flujo Gastos Talho Argentino (paso 4.5 del plan Relay): Drive -> extraccion Claude -> Notion
+
+**Contexto:** paso 4.5 del plan de migracion Relay -> GitHub Actions (ver
+PROJECT_MEMORY.md). El README de export de Relay (`docs/relay-export/README.md`)
+documenta 2 sub-flujos para este paso:
+1. Comprobante subido a Drive ("Gastos Talho Argentino") -> IA extrae Concepto/Costo/Fecha
+   -> crea pagina en "Gastos del local" sin completar "Pagado por".
+2. Pagina creada/editada a mano en "Gastos del local" (con "Pagado por" incluido) -> dispara
+   GitHub Actions "Sync Sociedad Data".
+
+**Hallazgo clave:** el sub-flujo 2 no necesita reemplazo con codigo nuevo. El workflow
+`sync-sociedad-data.yml` ya corre `scripts/sync_sociedad_data.py` en un cron diario
+(07:30) + dispatch manual, y ese script lee toda la DB "Gastos del local" cada vez.
+Cualquier edicion manual en Notion (incluyendo "Pagado por") ya queda reflejada en
+`sociedad_data.json` al dia siguiente sin necesidad de replicar el trigger instantaneo
+de Relay sobre ediciones de pagina.
+
+**Verificacion previa:** la carpeta Drive "Gastos Talho Argentino"
+(`1rlmEnN35OFcVmpWHylY9G3-qsK14-s0s`) esta vacia hoy -- los comprobantes que ya generaron
+filas en "Gastos del local" (via Relay) ya no estan en la carpeta. No hace falta sembrar
+`processed_gastos_talho.json` con file IDs existentes; arranca vacio.
+
+**Implementado:**
+1. Prompt "Extraer gastos Talho Argentino" creado en la DB Notion "Prompts"
+   (https://app.notion.com/p/3a533ce50e6881c89d0aed70db054eec): pide Concepto (proveedor
+   y/o motivo), Costo (positivo, punto decimal) y Fecha (YYYY-MM-DD), como JSON.
+2. `scripts/process_gastos_talho.py`: mismo patron que `process_nominas.py` (Drive via
+   cuenta de servicio, registro `processed_gastos_talho.json` por file ID, prompt leido en
+   vivo de Notion). A diferencia de Nominas, el comprobante puede ser imagen (foto de
+   ticket) ademas de PDF -- el script arma un bloque `image` o `document` segun el
+   `mimeType` que devuelve Drive. Chequeo de duplicados por Fecha+Costo antes de crear la
+   pagina (equivalente al chequeo por Fecha de pago de Nominas). Crea la pagina dejando
+   "Pagado por" vacio, igual que hacia Relay -- Willy o Matias lo completan a mano.
+3. `sync-sociedad-data.yml`: agregado paso "Process new gastos Talho Argentino" antes de
+   generar `sociedad_data.json`, con instalacion de `requests`+`google-auth` (el workflow
+   no las instalaba porque `sync_sociedad_data.py` solo usa `urllib` estandar). Se agrega
+   `processed_gastos_talho.json` al `git add` del commit.
+
+**Pendiente de accion manual del usuario:** compartir la carpeta Drive "Gastos Talho
+Argentino" con el email de la cuenta de servicio de `GOOGLE_SERVICE_ACCOUNT` (mismo email
+ya usado para compartir "Nominas" y "Extractos para Notion") -- Matias no recordaba
+haberla compartido y esta herramienta no tiene forma de leer el `client_email` del secret
+ni de otorgar permisos de Drive directamente. Sin este paso, el script no podra listar
+archivos de la carpeta (fallara con 404 o lista vacia silenciosa).
+
+**Pendiente del plan general:** este era el ultimo sub-flujo del paso 4.5. Falta: validar
+con un comprobante real subido a Drive, y luego seguir con los pasos 5-6 del plan
+(validacion en paralelo, apagado de los flujos de Relay que sigan activos).
+
 ## [2026-07-22] Implementado flujo Nominas: Drive (subida manual) -> extraccion Claude -> Notion
 
 **Contexto:** paso 4 del plan de migracion Relay -> GitHub Actions (ver PROJECT_MEMORY.md).
