@@ -1,1 +1,51 @@
-{"processed_file_ids": []}
+{
+  "processed_file_ids": [
+    "1-0accGYAstfmzOs1OamBIkc43kSczwS0",
+    "10FJgIst7MwCnsFoB5k5ho-ZH2r4klzzd",
+    "117kXYKbeAgiT7rD6pUcIo8Qf8YLQ3bl2",
+    "12jc7-KdBwhW67MVbpCrysnuBLsLkmI_T",
+    "14Eob8frG98vv86PcQ_ptfn1_AzBfLWGh",
+    "18094Joz9EqkjbP-C2vQf_zdGcGViVqes",
+    "1ABwo0QGyTi-XkAe-XogqaVBLt9uP2PrG",
+    "1AhNvLg767KTEDISAVh2UbpvpBiNdNUnH",
+    "1ESg0U45gnilAFMbV8MYskeXYEi7VqCZZ",
+    "1IAY7xzm2QTDvbUBj05u9hSodLxOVE_yL",
+    "1K0xoKyFIpVzmeH8cgSYfflourJUxtb27",
+    "1Mf62-CCC74b9QIDtOSGNkzFIxagLi95Q",
+    "1QUdv6UxuFCBrtFjt1qsVFa5cITP3wQZ4",
+    "1ULTLbcWHEZfln-CKV6i19U7nAmeyle4m",
+    "1WICsC9pqaXcm1esmbvZJo_M-vdfVr0Rh",
+    "1WpkAGVPOjYxrnt1iB5sripRcsKOlusAm",
+    "1WwfM4aOLaBH4rbXcoZc3R4i92YGSh8Jv",
+    "1ZGk7bOUWEcPRuSXwpE51FeCBpU8PW_Zn",
+    "1ZzB-oUG37NRgmsu5sQTPdj-ew9lTWcCL",
+    "1_Y-O1m723tCNosmkUmbcUClNHrnG-Xqa",
+    "1h7OuxVJcd17M_MlL-dSbd-4Op-4sRr_6",
+    "1juzuV3gvCYARvBRuyHHoIiPTRAF0si-w",
+    "1lDyka670p1LVdsfVz2nXp8jcZyRpbTK8",
+    "1o_kT8Zz9QzzSnxlJOdkvss1oH0dAf1fP",
+    "1qSwInySnDSOYafO6rmD_3s6b5ejTViPW",
+    "1s0lAUL7fqnGVHTkjj04v5FjWZCMoKmmW",
+    "1t1Epy6Urds6dYBTvfXDzboG7t9P9yPDN",
+    "1tRA7Ow0psXCtg8A7TEDBLO563yHk3e_f",
+    "1te1mxFDJynFIrECA3ydMYkcQlHd1YTtE",
+    "1xitsEcZXkZga0JTjj686QpAs6_7_NXxE"
+  ],
+  "requiere_revision": [
+    {
+      "file_id": "1KUeRMuIIjktdtw92cxT-3X75WaLDYyfw",
+      "name": "PHOTO-2026-07-09-11-00-53.jpg",
+      "error": "extraccion incompleta o invalida (concepto='Pedido online numero 217573 - compra varios' costo=445.75 fecha='')"
+    },
+    {
+      "file_id": "1t5shIRiSjR4CrIf9H8-nms_0KJrWK6jC",
+      "name": "PHOTO-2026-07-09-11-14-28.jpg",
+      "error": "extraccion incompleta o invalida (concepto='Leroy Merlin Alcorcon - mobiliario y decoracion' costo=23.98 fecha='')"
+    },
+    {
+      "file_id": "1BMymNAVyBlU2zU0xk3-Qf6uv8aEB1QnG",
+      "name": "PHOTO-2026-07-10-12-45-30.jpg",
+      "error": "extraccion incompleta o invalida (concepto='Obramat - placas de yeso laminado' costo=272.8 fecha='')"
+    }
+  ]
+}

@@ -1,5 +1,71 @@
 [
   {
+    "fecha": "2026-01-01",
+    "concepto": "Pinturas Muller - material pintura",
+    "costo": 52.73,
+    "pagado": null
+  },
+  {
+    "fecha": "2024-01-01",
+    "concepto": "Pedido online #217573 - compra varios articulos",
+    "costo": 445.75,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-02",
+    "concepto": "Ayuntamiento Boadilla del Monte - fianza gestion de residuos",
+    "costo": 150,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-02",
+    "concepto": "Ayuntamiento Boadilla del Monte - ICIO impuesto construcciones y obras",
+    "costo": 322,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-02",
+    "concepto": "Ayuntamiento Boadilla del Monte - Tasa actividades apertura y funcionamiento",
+    "costo": 400,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-06-26",
+    "concepto": "Obramat - materiales construccion",
+    "costo": 90.22,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-06-27",
+    "concepto": "Bricoman - material electrico",
+    "costo": 146.51,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-06-27",
+    "concepto": "Supermercado Boadilla - cinta aislante y detergente",
+    "costo": 3.9,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-06-01",
+    "concepto": "Roberto Jimenez Gago - Deposito local Calle Isabel de Farnesio 18",
+    "costo": 2600,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-06-01",
+    "concepto": "Alquiler local Calle Isabel de Farnesio 18 - Roberto Jimenez Gago",
+    "costo": 1300,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-06-01",
+    "concepto": "Arquitecta Flor - pago factura F11/T2/2026",
+    "costo": 605,
+    "pagado": null
+  },
+  {
     "fecha": "2026-07-01",
     "concepto": "Carterl lumisoso tahlo argentino madrid",
     "costo": 410,
