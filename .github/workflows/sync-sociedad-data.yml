@@ -26,6 +26,16 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install dependencies
+        run: pip install requests google-auth
+
+      - name: Process new gastos Talho Argentino (Drive -> Notion)
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+        run: python3 scripts/process_gastos_talho.py
+
       - name: Fetch Notion data and generate sociedad_data.json
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
@@ -39,7 +49,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/Matias1661/finance-dashboard.git
-          git add sociedad_data.json
+          git add sociedad_data.json processed_gastos_talho.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: sync sociedad data [$(date +'%Y-%m-%d')]"
             git pull --rebase origin main
