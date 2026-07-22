@@ -1,3 +1,8 @@
+## 2026-07-22 (1)
+
+- Flujo "Organizar Movimientos": procesados 58 movimientos pendientes (16/12/2024 en adelante hasta 20/07/2026). Se detectó que la fase de cruce contra `TRIP_WINDOWS` (viajes) se había estado omitiendo — se aplicó ahora para el viaje "Granada" (18-19/07, buffer 3 días): 6 movimientos recategorizados a "Viajes" (Repsol Waylet, E.S. Orellana Per, Orellana Perdiz, La Cueva de 1900, Bonif. 2% Galp, Bonif.3%Shelldisa). Resueltos también 2 pares de reembolso: WWW.AMAZON ±9.99€ (Kindle Unlimited, cargo/reembolso del mes) y Kerastase ±47€ (cargo duplicado del 02/07, reembolsado el mismo día; queda un -47€ del 29/06 como compra real "Regalo Joha"). `reviewed_movements.json` actualizado con las 58 claves.
+- Nuevo: skill `docs/skills/organizar-movimientos/` (con script `find_pending.py`) para que el cruce de pendientes, incluyendo la fase de viajes, se haga mecánicamente en toda sesión futura y no dependa de que el agente se acuerde. Ver `DECISIONS.md` 2026-07-22.
+
 ## 2026-07-21 (1)
 
 - Eliminado el boton "Actualizar" de `index.html` (HTML, CSS y el bloque `<script>` con `GH_REPO`/`GH_WF`/`GH_TOKEN`/`triggerRefresh()`). Estaba roto desde antes (token revocado, ver `ROADMAP.md`) y el token seguia expuesto en texto plano en el archivo pese a estar revocado; se elimino sin reemplazarlo. Header simplificado a fecha de ultima actualizacion + link a Sheets. Los workflows de sync se disparan manualmente via `gh workflow run` o la UI de GitHub Actions mientras no se decida una alternativa server-side. Ver `DECISIONS.md` 2026-07-21.
