@@ -1,3 +1,18 @@
+## 2026-07-22 — Flujo Gastos Talho Argentino (paso 4.5 migracion Relay)
+
+- Nuevo `scripts/process_gastos_talho.py`: reemplaza el flujo de Relay que crea gastos en
+  la DB "Gastos del local" a partir de un comprobante subido a Drive (imagen o PDF).
+  Extraccion via Claude con prompt nuevo en Notion "Prompts" ("Extraer gastos Talho
+  Argentino"). Deja "Pagado por" sin completar, igual que Relay. Registro de duplicados
+  por Drive file ID (`processed_gastos_talho.json`) + chequeo por Fecha+Costo en Notion.
+- `sync-sociedad-data.yml`: agregado el paso nuevo antes de generar `sociedad_data.json`,
+  mas instalacion de `requests`/`google-auth`.
+- Hallazgo: el otro sub-flujo de Relay para este paso (edicion manual en Notion con
+  "Pagado por") no necesita reemplazo -- ya lo cubre el cron diario existente de
+  `sync_sociedad_data.py`.
+- Pendiente accion manual: compartir la carpeta Drive "Gastos Talho Argentino" con la
+  cuenta de servicio de `GOOGLE_SERVICE_ACCOUNT`. Ver `DECISIONS.md`.
+
 ## 2026-07-22 (2)
 
 - Implementado el flujo Nominas (paso 4 del plan de migracion Relay -> GitHub Actions): nuevo `scripts/process_nominas.py` (mismo patron que `process_bank_statements.py`), prompt "Extraer datos de nomina" creado en la DB Notion "Prompts para Relay", `processed_nominas.json` sembrado con los 38 archivos ya existentes en la carpeta Drive "Nominas" (no hace falta backfill, ya estaban todos cargados en la DB Nominas salvo un duplicado de subida). Se agrego ademas un chequeo de duplicados por Fecha de pago en Notion, y se fijo el nombre de empresa a "LUZUTANIA GROUP" (habia inconsistencia entre las dos filas mas recientes: "LUZUTANIAES GROUP SLU" vs "LUZUTANIAESP GROUP SLU"). Paso agregado a `sync-finance-data.yml`. Pendiente de validar con la proxima nomina real (julio 2026). Ver `DECISIONS.md` 2026-07-22.
