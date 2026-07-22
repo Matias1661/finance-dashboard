@@ -1,54 +1,89 @@
 {
-  "generated_at": "2026-07-21 17:11",
+  "generated_at": "2026-07-22 10:05",
   "movimientos": [
+    {
+      "fecha": "2026-07-21",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 90,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-21",
+      "concepto": "PUERTO L PICE - D",
+      "monto": -19.09,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-21",
+      "concepto": "SAN LUCAS",
+      "monto": -23.34,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-21",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 200,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-21",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-07-20",
       "concepto": "REPSOL WAYLET",
       "monto": -25.67,
-      "categoria": "Combustible",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Viaje a Granada"
     },
     {
       "fecha": "2026-07-20",
       "concepto": "E.S. ORELLANA PER",
       "monto": -17.64,
-      "categoria": "Combustible",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Viaje a Granada"
     },
     {
       "fecha": "2026-07-20",
       "concepto": "ORELLANA PERDIZ",
       "monto": -43.2,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Viaje a Granada"
     },
     {
       "fecha": "2026-07-20",
       "concepto": "LA CUEVA DE 1900",
       "monto": -60.85,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Viaje a Granada"
     },
     {
       "fecha": "2026-07-20",
       "concepto": "WWW.AMAZON",
       "monto": 9.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Reembolso Kindle Unlimited"
     },
     {
       "fecha": "2026-07-20",
       "concepto": "BONIF. 2% GALP",
       "monto": 0.38,
-      "categoria": "Combustible",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Viaje a Granada"
     },
     {
       "fecha": "2026-07-20",
       "concepto": "BONIF.3%SHELLDISA",
       "monto": 0.7,
-      "categoria": "Combustible",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Viaje a Granada"
     },
     {
       "fecha": "2026-07-19",
@@ -97,7 +132,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -9.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Kindle Unlimited"
     },
     {
       "fecha": "2026-07-17",
@@ -517,14 +552,14 @@
       "concepto": "Kerastase",
       "monto": 47,
       "categoria": "Compras",
-      "nota": "Regalo Joha"
+      "nota": "Reembolso cargo duplicado Kerastase"
     },
     {
       "fecha": "2026-07-02",
       "concepto": "Kerastase",
       "monto": -47,
       "categoria": "Compras",
-      "nota": "Regalo Joha"
+      "nota": "Regalo Joha - cargo duplicado, reembolsado el mismo día"
     },
     {
       "fecha": "2026-07-01",
@@ -18621,8 +18656,8 @@
         "total": 1.09,
         "acumulado": 20.17,
         "acumulado_anio": 11.04,
-        "benchmark": -0.22,
-        "benchmark_acumulado": 15.41,
+        "benchmark": 0.1,
+        "benchmark_acumulado": 15.79,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
