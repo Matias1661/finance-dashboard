@@ -55,6 +55,13 @@ jobs:
           GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
         run: python scripts/process_myinvestor_emails.py
 
+      - name: Process new nominas (Drive -> Notion)
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+        run: python scripts/process_nominas.py
+
       - name: Generate finance_data.json
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
@@ -70,7 +77,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/Matias1661/finance-dashboard.git
-          git add finance_data.json processed_bank_statements.json processed_peerberry_emails.json processed_myinvestor_emails.json
+          git add finance_data.json processed_bank_statements.json processed_peerberry_emails.json processed_myinvestor_emails.json processed_nominas.json
           if ! git diff --cached --quiet; then
             git commit -m "chore: sync finance data [$(date +'%Y-%m-%d')]"
             git pull --rebase origin main
