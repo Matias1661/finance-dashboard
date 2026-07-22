@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22 10:23",
+  "generated_at": "2026-07-22 11:30",
   "movimientos": [
     {
       "fecha": "2026-07-21",
@@ -18911,7 +18911,7 @@
       "pagos": 2,
       "detalle": [
         {
-          "empresa": "Luzutania Group SLU",
+          "empresa": "LUZUTANIA GROUP",
           "monto": 1236.19
         },
         {
@@ -18924,18 +18924,18 @@
     },
     {
       "mes": "2026-06",
-      "empresa": "Luzutania Group SLU",
+      "empresa": "LUZUTANIA GROUP",
       "monto": 3268.53,
       "irpf": true,
       "pagos": 1,
       "detalle": [
         {
-          "empresa": "Luzutania Group SLU",
+          "empresa": "LUZUTANIA GROUP",
           "monto": 2648.99
         }
       ],
       "estimado": false,
-      "etapa": "Luzutania Group SLU"
+      "etapa": "LUZUTANIA GROUP"
     }
   ]
 }
