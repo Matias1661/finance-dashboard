@@ -21,7 +21,7 @@
 - [ ] Migración Relay → GitHub Actions, flujos pendientes de implementar (ver `PROJECT_MEMORY.md`, sección "Migración en curso", y `DECISIONS.md` 2026-07-17 para prompts ya probados):
   - [x] Peerberry: script Python + paso en `sync-finance-data.yml`, validado con datos reales (incidente de duplicados detectado y corregido, ver `DECISIONS.md` 2026-07-17). Flujo de Relay para Peerberry dado de baja.
   - [x] MyInvestor: script Python pidiendo `text/plain` a la API de Gmail, validado con datos reales (incidente de cuentas conflictivas pre-dic-2024 detectado y corregido, ver `DECISIONS.md` 2026-07-17)
-  - [ ] Nóminas: script Python que vigile la carpeta Drive "Nominas" (carga manual del PDF, ya no lee el email automáticamente)
+  - [x] Nóminas: `scripts/process_nominas.py` implementado (vigila la carpeta Drive "Nominas", carga manual del PDF), prompt de extracción nuevo en la DB Notion "Prompts para Relay", registro `processed_nominas.json` sembrado con los 38 archivos ya existentes. Pendiente de validar con la próxima nómina real (ver `DECISIONS.md` 2026-07-22).
   - [x] Resolver autenticación de Gmail API: OAuth 2.0 con refresh_token (cuenta de servicio no sirve para Gmail personal). Secrets `GMAIL_CLIENT_ID`/`GMAIL_CLIENT_SECRET`/`GMAIL_REFRESH_TOKEN` ya cargados, reusar para MyInvestor.
   - [ ] Talho Argentino / Gastos del local (paso 4.5 del plan): script + workflow, cubre comprobante en Drive + cambios en DB Notion
   - [ ] Validar cada flujo con datos reales antes de apagar Relay (paso 5 del plan)
