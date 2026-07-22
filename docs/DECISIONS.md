@@ -1,3 +1,21 @@
+## [2026-07-22] Decision de apagado de Relay para Talho Argentino (paso 4.5)
+
+**Decision del usuario:**
+1. Flujo Relay "Gastos de Talho Argentino de Drive en Notion" (comprobante -> Notion):
+   se apaga. Ya esta validado con datos reales (ver entrada anterior de esta misma fecha)
+   y reemplazado por `scripts/process_gastos_talho.py`. Accion manual del usuario en
+   Relay.app, pendiente/en curso.
+2. Flujo Relay "Actualizar gastos local en GH" (edicion manual en Notion -> dispara Sync
+   Sociedad Data al instante): **se deja activo** hasta que Relay deje de funcionar
+   (15/08/2026 plan gratuito o 14/09/2026 plan de pago). Motivo: el reemplazo (cron diario
+   de `sync-sociedad-data.yml`) no da refresh instantaneo, y no tiene sentido resignar esa
+   funcionalidad mientras Relay siga disponible sin costo. Cuando Relay se apague solo, el
+   refresh pasa a ser diario (07:30) o manual via GitHub Actions.
+
+**Estado consolidado paso 4.5:** un sub-flujo apagado (reemplazado), el otro en uso hasta
+el cierre natural de Relay. No requiere mas trabajo de implementacion de este lado.
+
+
 ## [2026-07-22] Validacion real de Gastos Talho Argentino + fix de bug + resolucion manual
 
 **Validacion:** se disparo `sync-sociedad-data.yml` manualmente contra los 33 comprobantes
