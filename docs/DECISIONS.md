@@ -1,3 +1,21 @@
+## [2026-07-22] Nuevo repo `automatizaciones-personales` para flujos no financieros
+
+**Contexto:** al revisar el backup completo de Relay (14 workflows), Matias
+pidio mantener "Archivar documentos importantes" (sin relacion al dashboard
+de finanzas). En vez de sumarlo a este repo, se creo un repo nuevo dedicado.
+
+**Decision:** repo privado `Matias1661/automatizaciones-personales` para
+automatizaciones personales que no tienen relacion con el finance-dashboard.
+Cualquier futuro flujo de Relay sin relacion a finanzas (ej. "Articulos Holy
+Death", scraper semanal de holydeath.com, todavia activo y sin migrar) va
+ahi, no a este repo.
+
+**Nota para continuidad entre agentes:** si alguien pregunta por
+"Archivar documentos importantes" o busca reemplazar mas flujos de Relay no
+financieros, la respuesta esta en `Matias1661/automatizaciones-personales`,
+no en este repo. Detalle completo en su propio `docs/DECISIONS.md`.
+
+
 ## [2026-07-22] Decision de apagado de Relay para Talho Argentino (paso 4.5)
 
 **Decision del usuario:**
