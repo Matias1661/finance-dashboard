@@ -1,3 +1,37 @@
+## [2026-07-22] Validacion real de Gastos Talho Argentino + fix de bug + resolucion manual
+
+**Validacion:** se disparo `sync-sociedad-data.yml` manualmente contra los 33 comprobantes
+reales de la carpeta Drive "Gastos Talho Argentino" (confirmado que ya estaba compartida
+con la cuenta de servicio). Resultado: 29 ya existian en Notion (creados antes por Relay)
+y se detectaron correctamente como duplicados por Fecha+Costo; 1 comprobante nuevo se creo
+bien ("Pinturas Muller", 52.73€); 3 quedaron marcados en `requiere_revision` porque Claude
+no pudo leer una fecha en la foto.
+
+**Bug encontrado y corregido:** la primera corrida crasheo el script completo (y por lo
+tanto salteo la generacion de `sociedad_data.json`, el commit y el deploy) al llegar a un
+comprobante sin fecha extraible -- `ya_existe_en_notion()` mandaba `date.equals: null` a la
+API de Notion, que devuelve 400. Fix en `scripts/process_gastos_talho.py`: cada comprobante
+se procesa dentro de un try/except; si la extraccion no trae concepto/costo/fecha validos
+(fecha valida = matchea `YYYY-MM-DD`), se registra en `requiere_revision` (con motivo) y se
+sigue con el resto del batch en vez de frenar todo el workflow. Se emite un
+`::warning::` de GitHub Actions por cada comprobante problematico, visible en el resumen del
+run sin marcar el job como fallido.
+
+**Resolucion manual (confirmada por el usuario):** los 3 comprobantes de
+`requiere_revision` correspondian a Fecha=2026-06-27 (confirmado por Matias). Se crearon
+las 3 paginas a mano en "Gastos del local" (Concepto+Costo ya extraidos correctamente por
+Claude, solo faltaba la fecha) y se actualizo `processed_gastos_talho.json` moviendo esos 3
+file IDs de `requiere_revision` a `processed_file_ids`.
+
+**Nota aparte:** el comprobante "Pinturas Muller" se habia creado con Fecha=2026-01-01
+(sospechosa, probable fecha por defecto de la extraccion). El usuario confirmo haberla
+corregido a mano en Notion directamente.
+
+**Conclusion:** paso 4.5 (Talho Argentino) validado con datos reales. Los 2 sub-flujos de
+Relay para este paso quedan en condiciones de apagarse (ver seccion de decision sobre
+apagado de Relay mas abajo / DECISIONS.md siguiente entrada si aplica).
+
+
 ## [2026-07-22] Implementado flujo Gastos Talho Argentino (paso 4.5 del plan Relay): Drive -> extraccion Claude -> Notion
 
 **Contexto:** paso 4.5 del plan de migracion Relay -> GitHub Actions (ver
