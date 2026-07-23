@@ -1,3 +1,35 @@
+## [2026-07-23] Confirmado: Relay "Movimientos" seguia activo en paralelo, no bug de dedup
+
+**Investigacion:** al revisar por que los movimientos del 21/07 aparecian triplicados en
+Notion, se revisaron los logs reales de las 3 corridas de `sync-finance-data.yml`
+(run 29902572058 PDF, run 29935768934 CSV crasheado, run 30005108919 CSV con el fix):
+las tres reportaron correctamente "0 creado(s), N duplicado(s) omitido(s)" para estos
+movimientos. `ya_existe_en_notion()` nunca fallo.
+
+La causa real: las paginas de Notion se creaban ~9 segundos despues de subir el archivo
+a Drive (ej. archivo subido 08:03:26, pagina creada 08:03:35) — demasiado rapido para
+el pipeline de GitHub Actions (que tarda minutos). Eso es reaccion instantanea tipica
+de Relay. El usuario confirmo que el flujo Relay "Movimientos" seguia activo en paralelo
+y lo desactivo el 2026-07-23. Relay no tiene el mismo control de duplicados que
+`ya_existe_en_notion()`, asi que creaba una entrada nueva por cada archivo (PDF, CSV del
+22, CSV del 23) sin detectar que ya existian.
+
+**Accion:** se removieron de la DB Movimientos las 10 paginas duplicadas (2 de cada uno
+de los 5 movimientos del 21/07), conservando la copia mas antigua de cada una (las que
+ya tenian la Nota de "Organizar Movimientos" cargada, cuando existia). Se movieron (no
+se borraron) a la pagina "Duplicados removidos de Movimientos (limpieza Relay+CSV,
+2026-07-23)" bajo Finance Tracker, por si hace falta revisarlas. Verificado con SQL
+sobre la DB que no quedan duplicados (todos los conceptos del 21-23/07 tienen count=1).
+
+**Cierre relacionado:** issue de GitHub #2 (crash del run del 22/07 15:57, causado por
+el codigo viejo mandando un CSV a la funcion de extraccion de PDF) cerrado — el fix del
+mismo dia ya corrio exitosamente sobre ese mismo archivo.
+
+**Conclusion para la migracion CSV:** el codigo de `process_bank_statements.py` esta
+validado — su deduplicacion funciono en las 3 corridas reales. Con Relay ya desactivado,
+no deberian volver a aparecer duplicados nuevos por esta causa.
+
+
 ## [2026-07-23] Migracion de extraccion PDF a CSV en process_bank_statements.py (en paralelo)
 
 **Contexto:** el flujo Movimientos leia PDFs de extractos bancarios subidos a mano a
