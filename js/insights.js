@@ -195,6 +195,34 @@ function renderSuscripciones(){
   `;
 }
 
+// ---------- Alerta de nómina faltante ----------
+
+// La nómina se cobra el último día hábil del mes. Se comprueba el mes
+// calendario anterior al actual (ya cerrado), con un margen de gracia en
+// días para no alertar en falso mientras la carga/sincronización del mes
+// recién cerrado todavía está en curso. Ver docs/ROADMAP.md (propuesta
+// 17/07/2026) y docs/DECISIONS.md.
+const NOMINA_GRACIA_DIAS = 5;
+
+// Devuelve el mes (YYYY-MM) sin nómina registrada, o null si no aplica
+// alertar todavía (dentro del margen de gracia) o si el mes esperado ya
+// tiene registro en window.FINANCE_STATE.nominas (poblado por build_nominas()
+// en sync_finance_data.py, que ya combina DB Notion "Nominas" y el fallback
+// de Movimientos categoría "Nomina").
+function checkNominaFaltante(){
+  const nominas = window.FINANCE_STATE?.nominas || [];
+  if(!nominas.length) return null; // sin datos de nóminas cargados aún, no alertar en falso
+
+  const hoy = new Date();
+  if(hoy.getDate() <= NOMINA_GRACIA_DIAS) return null; // aún dentro del margen del mes en curso
+
+  const mesEsperadoDate = new Date(hoy.getFullYear(), hoy.getMonth() - 1, 1);
+  const mesEsperado = `${mesEsperadoDate.getFullYear()}-${String(mesEsperadoDate.getMonth() + 1).padStart(2, '0')}`;
+
+  const existe = nominas.some(n => n.mes === mesEsperado);
+  return existe ? null : mesEsperado;
+}
+
 // ---------- Insights mensuales ----------
 
 // Gasto neto por categoría y mes, con la misma lógica de reembolsables que charts.js:
@@ -275,8 +303,21 @@ function renderInsights(){
   const el = document.getElementById('insights-card');
   if(!el) return;
   const ins = computeInsights();
-  if(!ins){ el.style.display = 'none'; return; }
+  const mesNominaFaltante = checkNominaFaltante();
+  if(!ins && !mesNominaFaltante){ el.style.display = 'none'; return; }
   el.style.display = '';
+
+  const nominaLine = mesNominaFaltante ? `
+    <div style="margin-bottom:12px;padding:8px 10px;background:rgba(201,74,48,0.08);border-radius:8px;font-size:13px">
+      <span style="color:var(--red);font-weight:600">Nómina sin cargar:</span>
+      no hay registro de nómina de ${mesNominaFaltante} (se cobra el último día hábil del mes).
+      Verificar si falta subir el PDF a Drive.
+    </div>` : '';
+
+  if(!ins){
+    el.innerHTML = `<div class="card-title">Insights</div>${nominaLine}`;
+    return;
+  }
 
   const diff = ins.totalRef - ins.totalPrev;
   const pct = ins.totalPrev > 0 ? Math.round(Math.abs(diff) / ins.totalPrev * 100) : null;
@@ -304,6 +345,7 @@ function renderInsights(){
 
   el.innerHTML = `
     <div class="card-title">Insights · ${ins.mesRef} vs ${ins.mesPrev}</div>
+    ${nominaLine}
     <div style="font-size:14px">${totalLine}</div>
     ${deltaLines ? `<ul style="list-style:none;padding:0;margin:10px 0 0">${deltaLines}</ul>` : ''}
     ${alertLines ? `<ul style="list-style:none;padding:0;margin:10px 0 0">${alertLines}</ul>` : ''}
