@@ -1,14 +1,24 @@
 """
 Reemplazo del flujo de Relay "Pasar extracto bancario a Notion".
 
-Revisa la carpeta de Drive "Extractos para Notion" en busca de PDFs nuevos,
-le pide a Claude que extraiga cada movimiento (concepto, monto, fecha,
-categoria) usando el mismo prompt de categorizacion que vive en la DB Notion
-"Prompts" (se lee en vivo, no hay copia local que se desactualice),
-y crea una pagina por movimiento en la DB Movimientos.
+Revisa la carpeta de Drive "Extractos para Notion" en busca de archivos
+nuevos (PDF o CSV) y crea una pagina por movimiento en la DB Movimientos.
+
+- PDF: le pide a Claude que extraiga cada movimiento (concepto, monto, fecha)
+  Y lo categorice en un solo paso, usando el prompt de categorizacion que
+  vive en la DB Notion "Prompts" (se lee en vivo, no hay copia local que se
+  desactualice).
+- CSV (columnas Concepto;Fecha;Importe;Saldo): parseo deterministico local,
+  sin Claude, y despues categorizacion via Claude sobre los datos ya
+  parseados (ver parse_csv_extracto() / categorizar_movimientos()).
+  Migracion en curso, en paralelo con el PDF; ver docs/DECISIONS.md
+  2026-07-23.
 
 Lleva un registro de que archivos ya proceso en processed_bank_statements.json
-(en la raiz del repo) para no reprocesar el mismo PDF dos veces.
+(en la raiz del repo) para no reprocesar el mismo archivo dos veces. El
+control de duplicados por movimiento (fecha|concepto|monto) contra Notion en
+ya_existe_en_notion() es el que evita duplicar entradas cuando el CSV trae
+historial solapado entre exports.
 
 Variables de entorno requeridas:
   NOTION_TOKEN            - ya existe como secret
@@ -18,7 +28,8 @@ Variables de entorno requeridas:
 Ver docs/DECISIONS.md 2026-07-17 (paso 1 del plan de migracion de Relay).
 """
 
-import os, json, base64, re
+import os, json, base64, re, csv, io
+from datetime import datetime
 import requests
 
 NOTION_TOKEN = os.environ["NOTION_TOKEN"]
@@ -147,6 +158,97 @@ def extraer_movimientos(pdf_bytes, categorizacion_prompt):
     return parsed.get("movimientos", [])
 
 
+def _parse_importe(valor):
+    """Convierte '+50,00EUR' o '-23,34EUR' a float. El signo ya viene en el texto."""
+    return float(valor.strip().replace("EUR", "").replace(",", "."))
+
+
+def parse_csv_extracto(csv_bytes):
+    """Parsea un extracto en CSV (columnas Concepto;Fecha;Importe;Saldo) de
+    forma deterministica, sin pasar por Claude. Alternativa al PDF para el
+    mismo flujo; ver docs/DECISIONS.md 2026-07-23.
+
+    El export del banco trae varios dias de historial acumulado (no solo el
+    delta), por eso el control de duplicados en ya_existe_en_notion() sigue
+    siendo imprescindible para cada movimiento, igual que con el PDF.
+    """
+    texto = csv_bytes.decode("utf-8-sig")
+    filas = list(csv.DictReader(io.StringIO(texto), delimiter=";"))
+
+    movimientos = []
+    for r in filas:
+        movimientos.append({
+            "concepto": r["Concepto"].strip(),
+            "monto": _parse_importe(r["Importe"]),
+            "fecha": datetime.strptime(r["Fecha"].strip(), "%d/%m/%Y").strftime("%Y-%m-%d"),
+            "saldo": _parse_importe(r["Saldo"]),
+        })
+
+    # Chequeo de integridad, no bloqueante: saldo[n] - monto[n] debe ser el
+    # saldo de la fila siguiente (el banco entrega mas reciente primero).
+    for i in range(len(movimientos) - 1):
+        esperado = round(movimientos[i]["saldo"] - movimientos[i]["monto"], 2)
+        real = movimientos[i + 1]["saldo"]
+        if abs(esperado - real) > 0.01:
+            print(f"  ADVERTENCIA: discontinuidad de saldo en fila {i} "
+                  f"({movimientos[i]['concepto']} {movimientos[i]['fecha']}): "
+                  f"esperado {esperado}, real {real}. Puede indicar filas faltantes en el export.")
+
+    return movimientos
+
+
+def categorizar_movimientos(movimientos, categorizacion_prompt):
+    """Le pide a Claude UNICAMENTE la categoria de cada movimiento ya parseado
+    (concepto/monto/fecha vienen del CSV, deterministicos, no de una lectura
+    de Claude). A diferencia de extraer_movimientos(), aca no hay extraccion
+    de datos, solo categorizacion sobre datos ya confiables."""
+    entrada = [{"concepto": m["concepto"], "monto": m["monto"], "fecha": m["fecha"]} for m in movimientos]
+
+    system_prompt = (
+        "Sos un categorizador de movimientos bancarios. Te paso una lista de "
+        "movimientos ya extraidos (concepto, monto, fecha) en JSON. Tu unica "
+        "tarea es asignarle una categoria a cada uno, en el mismo orden, "
+        "siguiendo EXACTAMENTE estas reglas:\n\n"
+        f"{categorizacion_prompt}\n\n"
+        "Respondé ÚNICAMENTE con un JSON valido, sin texto adicional, sin "
+        "backticks, con este formato exacto:\n"
+        '{"categorias": ["...", "..."]}'
+    )
+
+    resp = requests.post(
+        "https://api.anthropic.com/v1/messages",
+        headers={
+            "x-api-key": ANTHROPIC_API_KEY,
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+        },
+        json={
+            "model": CLAUDE_MODEL,
+            "max_tokens": 4096,
+            "system": system_prompt,
+            "messages": [{"role": "user", "content": json.dumps(entrada, ensure_ascii=False)}],
+        },
+        timeout=120,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    text = "".join(b["text"] for b in data["content"] if b["type"] == "text")
+    text = re.sub(r"^```(json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
+    parsed = json.loads(text)
+    categorias = parsed.get("categorias", [])
+
+    if len(categorias) != len(movimientos):
+        raise RuntimeError(
+            f"categorizar_movimientos devolvio {len(categorias)} categorias "
+            f"para {len(movimientos)} movimientos: no coinciden, no se puede "
+            "asociar con seguridad.")
+
+    for m, cat in zip(movimientos, categorias):
+        m["categoria"] = cat
+
+    return movimientos
+
+
 def ya_existe_en_notion(concepto, monto, fecha):
     """Control de duplicados: mismo criterio que reviewed_movements.json
     (fecha|concepto|monto)."""
@@ -208,8 +310,14 @@ if __name__ == "__main__":
 
         for f in new_files:
             print(f"Procesando {f['name']} ({f['id']})...")
-            pdf_bytes = download_file(drive_token, f["id"])
-            movimientos = extraer_movimientos(pdf_bytes, categorizacion_prompt)
+            file_bytes = download_file(drive_token, f["id"])
+
+            if f["name"].lower().endswith(".csv"):
+                movimientos = parse_csv_extracto(file_bytes)
+                movimientos = categorizar_movimientos(movimientos, categorizacion_prompt)
+            else:
+                movimientos = extraer_movimientos(file_bytes, categorizacion_prompt)
+
             print(f"  {len(movimientos)} movimiento(s) extraido(s)")
 
             creados, duplicados = 0, 0
