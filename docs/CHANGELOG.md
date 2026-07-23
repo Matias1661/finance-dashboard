@@ -1,3 +1,13 @@
+## 2026-07-23 (4) — Fix rango de semanas en grafico Talho Argentino (Sociedad)
+
+- `js/app.js` (`renderSociedad()`): `firstDate` ahora se calcula solo sobre
+  filas con `pagado` en (Mati, Willy), no sobre todo `sociedad_data.json`.
+- Causa: un registro con fecha `2024-01-01` y `pagado: null` arrastraba el
+  inicio del grafico casi año y medio antes del primer gasto real. Ese
+  registro sigue apareciendo en la alerta de "sin responsable asignado".
+- Ver docs/DECISIONS.md 2026-07-23 (4).
+
+
 ## 2026-07-23 (3) — CSV unico formato en Movimientos, se elimina rama PDF
 
 - `scripts/process_bank_statements.py`: eliminada `extraer_movimientos()`
