@@ -1,3 +1,16 @@
+## 2026-07-23 (3) — CSV unico formato en Movimientos, se elimina rama PDF
+
+- `scripts/process_bank_statements.py`: eliminada `extraer_movimientos()`
+  (extraccion via Claude leyendo el PDF) e import de `base64` sin uso.
+- El loop principal ya no rama por extension: archivos que no sean `.csv`
+  se omiten con un aviso en el log, sin marcarse como procesados.
+- Docstrings actualizados (modulo, `parse_csv_extracto`,
+  `categorizar_movimientos`) para reflejar que CSV es el unico camino.
+- Corregida la tabla de estado de la migracion Relay en `PROJECT_MEMORY.md`:
+  Movimientos ya tenia su flujo de Relay dado de baja desde el mismo 23/07,
+  la tabla no lo reflejaba. Ver docs/DECISIONS.md 2026-07-23 (3).
+
+
 ## 2026-07-23 (2) — Alerta de nomina faltante en Insights
 
 - Nueva funcion `checkNominaFaltante()` en `js/insights.js`: compara el mes
