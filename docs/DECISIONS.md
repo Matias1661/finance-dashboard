@@ -1,3 +1,38 @@
+## [2026-07-23] Migracion de extraccion PDF a CSV en process_bank_statements.py (en paralelo)
+
+**Contexto:** el flujo Movimientos leia PDFs de extractos bancarios subidos a mano a
+Drive y le pedia a Claude extraer datos y categorizar en un solo paso. El PDF depende
+de que Claude lea bien montos y fechas desde una imagen/texto libre. Matias probo
+subir un CSV exportado por CaixaBank (columnas Concepto;Fecha;Importe;Saldo) y se
+verifico que se puede parsear de forma deterministica (27 filas, 0 discontinuidades
+en el chequeo de continuidad de Saldo).
+
+**Hallazgo relevante:** el CSV trae varios dias de historial acumulado en cada
+export, no solo el delta del dia (a diferencia del PDF). El control de duplicados
+existente por movimiento (fecha|concepto|monto) en `ya_existe_en_notion()` ya cubre
+este caso sin cambios.
+
+**Decision:** agregar una rama de procesamiento para archivos `.csv` en
+`process_bank_statements.py`, en paralelo con la rama `.pdf` existente (no se
+reemplaza todavia):
+- `parse_csv_extracto()`: parseo deterministico local (sin Claude) de
+  concepto/monto/fecha/saldo, con chequeo de continuidad de Saldo como
+  advertencia no bloqueante.
+- `categorizar_movimientos()`: sigue usando Claude, pero solo para asignar
+  categoria sobre los datos ya parseados (no para extraerlos). Esto **no
+  elimina la llamada a la API de Claude**, elimina el riesgo de que Claude
+  lea mal un monto o una fecha desde el PDF.
+- El resto del pipeline (`ya_existe_en_notion`, `crear_movimiento_notion`,
+  estado en `processed_bank_statements.json` por `file_id`) se reutiliza sin
+  cambios.
+
+**Pendiente:** correr unos dias subiendo PDF y CSV en paralelo, verificar que
+ambas rutas generan las mismas entradas en Notion (los duplicados que salte
+`ya_existe_en_notion()` en la segunda subida son la señal de que coinciden)
+antes de dar de baja la rama PDF y el paso "Actualizar gastos" equivalente si
+aplica. Ver docs/ROADMAP.md.
+
+
 ## [2026-07-22] Nuevo repo `automatizaciones-personales` para flujos no financieros
 
 **Contexto:** al revisar el backup completo de Relay (14 workflows), Matias
