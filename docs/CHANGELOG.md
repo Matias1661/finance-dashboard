@@ -1,3 +1,16 @@
+## 2026-07-23 (2) — Alerta de nomina faltante en Insights
+
+- Nueva funcion `checkNominaFaltante()` en `js/insights.js`: compara el mes
+  calendario anterior con `window.FINANCE_STATE.nominas`; si falta, devuelve
+  el mes sin cubrir (margen de gracia de 5 dias desde el inicio del mes en
+  curso).
+- `renderInsights()` integra el aviso dentro de `#insights-card` (no una
+  tarjeta nueva); ahora se muestra tambien cuando solo hay alerta de nomina
+  aunque `computeInsights()` devuelva null.
+- Sin cambios en el backend: reutiliza el campo `nominas` que ya genera
+  `sync_finance_data.py`. Ver docs/DECISIONS.md 2026-07-23 (2).
+
+
 ## 2026-07-23 — Soporte CSV en process_bank_statements.py (en paralelo con PDF)
 
 - Nuevas funciones `parse_csv_extracto()` (parseo deterministico local, sin Claude,
