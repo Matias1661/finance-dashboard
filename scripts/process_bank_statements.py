@@ -2,17 +2,17 @@
 Reemplazo del flujo de Relay "Pasar extracto bancario a Notion".
 
 Revisa la carpeta de Drive "Extractos para Notion" en busca de archivos
-nuevos (PDF o CSV) y crea una pagina por movimiento en la DB Movimientos.
+nuevos y crea una pagina por movimiento en la DB Movimientos.
 
-- PDF: le pide a Claude que extraiga cada movimiento (concepto, monto, fecha)
-  Y lo categorice en un solo paso, usando el prompt de categorizacion que
-  vive en la DB Notion "Prompts" (se lee en vivo, no hay copia local que se
-  desactualice).
-- CSV (columnas Concepto;Fecha;Importe;Saldo): parseo deterministico local,
-  sin Claude, y despues categorizacion via Claude sobre los datos ya
-  parseados (ver parse_csv_extracto() / categorizar_movimientos()).
-  Migracion en curso, en paralelo con el PDF; ver docs/DECISIONS.md
-  2026-07-23.
+Formato soportado: CSV exportado por CaixaBank (columnas
+Concepto;Fecha;Importe;Saldo). Parseo deterministico local, sin Claude, y
+despues categorizacion via Claude sobre los datos ya parseados (ver
+parse_csv_extracto() / categorizar_movimientos()).
+
+La rama de extraccion via PDF (Claude leyendo el extracto como documento)
+se probo en paralelo y se elimino el 2026-07-23: el CSV es deterministico
+y no depende de que Claude lea bien montos/fechas de una imagen. Ver
+docs/DECISIONS.md 2026-07-23 (3).
 
 Lleva un registro de que archivos ya proceso en processed_bank_statements.json
 (en la raiz del repo) para no reprocesar el mismo archivo dos veces. El
@@ -22,13 +22,13 @@ historial solapado entre exports.
 
 Variables de entorno requeridas:
   NOTION_TOKEN            - ya existe como secret
-  ANTHROPIC_API_KEY       - ya existe como secret (agregado 2026-07-17)
+  ANTHROPIC_API_KEY       - ya existe como secret (agregado 2026-07-17, usado solo para categorizar)
   GOOGLE_SERVICE_ACCOUNT  - JSON completo de la cuenta de servicio (secret nuevo, pendiente)
 
 Ver docs/DECISIONS.md 2026-07-17 (paso 1 del plan de migracion de Relay).
 """
 
-import os, json, base64, re, csv, io
+import os, json, re, csv, io
 from datetime import datetime
 import requests
 
@@ -110,54 +110,6 @@ def fetch_categorizacion_prompt():
     return "".join(t["plain_text"] for t in texto_prop.get("rich_text", []))
 
 
-def extraer_movimientos(pdf_bytes, categorizacion_prompt):
-    """Manda el PDF a Claude y pide una lista estructurada de movimientos."""
-    pdf_b64 = base64.b64encode(pdf_bytes).decode("utf-8")
-
-    system_prompt = (
-        "Sos un extractor de movimientos bancarios. Te paso un extracto en PDF. "
-        "Tu tarea tiene dos partes:\n"
-        "1. Extraer cada movimiento del extracto: concepto (texto tal cual aparece), "
-        "monto (numero, negativo si es gasto, positivo si es ingreso), y fecha "
-        "(formato YYYY-MM-DD).\n"
-        "2. Asignarle una categoria a cada movimiento siguiendo EXACTAMENTE estas reglas:\n\n"
-        f"{categorizacion_prompt}\n\n"
-        "Respondé ÚNICAMENTE con un JSON valido, sin texto adicional, sin backticks, "
-        "con este formato exacto:\n"
-        '{"movimientos": [{"concepto": "...", "monto": -12.34, "fecha": "2026-07-01", "categoria": "..."}]}'
-    )
-
-    resp = requests.post(
-        "https://api.anthropic.com/v1/messages",
-        headers={
-            "x-api-key": ANTHROPIC_API_KEY,
-            "anthropic-version": "2023-06-01",
-            "content-type": "application/json",
-        },
-        json={
-            "model": CLAUDE_MODEL,
-            "max_tokens": 4096,
-            "system": system_prompt,
-            "messages": [{
-                "role": "user",
-                "content": [
-                    {"type": "document", "source": {
-                        "type": "base64", "media_type": "application/pdf", "data": pdf_b64
-                    }},
-                    {"type": "text", "text": "Extrae y categoriza todos los movimientos de este extracto."}
-                ]
-            }]
-        },
-        timeout=120,
-    )
-    resp.raise_for_status()
-    data = resp.json()
-    text = "".join(b["text"] for b in data["content"] if b["type"] == "text")
-    text = re.sub(r"^```(json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
-    parsed = json.loads(text)
-    return parsed.get("movimientos", [])
-
-
 def _parse_importe(valor):
     """Convierte '+50,00EUR' o '-23,34EUR' a float. El signo ya viene en el texto."""
     return float(valor.strip().replace("EUR", "").replace(",", "."))
@@ -165,8 +117,8 @@ def _parse_importe(valor):
 
 def parse_csv_extracto(csv_bytes):
     """Parsea un extracto en CSV (columnas Concepto;Fecha;Importe;Saldo) de
-    forma deterministica, sin pasar por Claude. Alternativa al PDF para el
-    mismo flujo; ver docs/DECISIONS.md 2026-07-23.
+    forma deterministica, sin pasar por Claude. Unico formato soportado desde
+    el 2026-07-23 (la rama PDF se elimino); ver docs/DECISIONS.md 2026-07-23 (3).
 
     El export del banco trae varios dias de historial acumulado (no solo el
     delta), por eso el control de duplicados en ya_existe_en_notion() sigue
@@ -200,8 +152,8 @@ def parse_csv_extracto(csv_bytes):
 def categorizar_movimientos(movimientos, categorizacion_prompt):
     """Le pide a Claude UNICAMENTE la categoria de cada movimiento ya parseado
     (concepto/monto/fecha vienen del CSV, deterministicos, no de una lectura
-    de Claude). A diferencia de extraer_movimientos(), aca no hay extraccion
-    de datos, solo categorizacion sobre datos ya confiables."""
+    de Claude). No hay extraccion de datos, solo categorizacion sobre datos
+    ya confiables."""
     entrada = [{"concepto": m["concepto"], "monto": m["monto"], "fecha": m["fecha"]} for m in movimientos]
 
     system_prompt = (
@@ -310,13 +262,16 @@ if __name__ == "__main__":
 
         for f in new_files:
             print(f"Procesando {f['name']} ({f['id']})...")
-            file_bytes = download_file(drive_token, f["id"])
 
-            if f["name"].lower().endswith(".csv"):
-                movimientos = parse_csv_extracto(file_bytes)
-                movimientos = categorizar_movimientos(movimientos, categorizacion_prompt)
-            else:
-                movimientos = extraer_movimientos(file_bytes, categorizacion_prompt)
+            if not f["name"].lower().endswith(".csv"):
+                print(f"  AVISO: {f['name']} no es .csv -- formato no soportado "
+                      f"(la rama PDF se elimino el 2026-07-23). Volver a exportar "
+                      f"el extracto como CSV. Se omite, no se marca como procesado.")
+                continue
+
+            file_bytes = download_file(drive_token, f["id"])
+            movimientos = parse_csv_extracto(file_bytes)
+            movimientos = categorizar_movimientos(movimientos, categorizacion_prompt)
 
             print(f"  {len(movimientos)} movimiento(s) extraido(s)")
 
