@@ -1,3 +1,29 @@
+## [2026-07-23] (2) Alerta de nomina faltante en tab Resumen
+
+**Contexto:** propuesta pendiente desde el 17/07 (ver ROADMAP.md), sin diseno hasta
+ahora. El usuario confirmo que la nomina se cobra el ultimo dia habil del mes.
+
+**Diseno elegido:** se comprueba el mes calendario anterior al actual contra
+`window.FINANCE_STATE.nominas` (poblado por `build_nominas()` en
+`sync_finance_data.py`, que ya combina la DB Notion "Nominas" con el fallback de
+Movimientos categoria "Nomina" -- no hace falta una fuente nueva). Si ese mes no
+tiene entrada, se muestra un aviso. Margen de gracia de 5 dias desde el inicio
+del mes en curso antes de alertar, para no marcar falso positivo mientras la
+carga/sync del mes recien cerrado todavia esta en curso.
+
+Se descarto la alternativa de cruzar contra el ingreso esperado en Movimientos
+como mecanismo separado: `nominas` ya incorpora ese fallback internamente, asi
+que comprobar huecos en ese array cubre ambos casos sin duplicar logica.
+
+**Ubicacion en UI:** dentro del bloque Insights existente (`#insights-card`),
+no una tarjeta nueva -- decision del usuario. `renderInsights()` ahora se
+muestra tambien cuando solo hay alerta de nomina y `computeInsights()` devolvio
+null (mes sin transacciones de gasto, por ejemplo).
+
+**Implementacion:** `js/insights.js` -- nueva funcion `checkNominaFaltante()`
+y aviso integrado en `renderInsights()`. Sin cambios en `sync_finance_data.py`
+ni en `finance_data.json` (el campo `nominas` ya existia).
+
 ## [2026-07-23] Confirmado: Relay "Movimientos" seguia activo en paralelo, no bug de dedup
 
 **Investigacion:** al revisar por que los movimientos del 21/07 aparecian triplicados en
