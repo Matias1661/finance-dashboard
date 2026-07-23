@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-23 15:42",
+  "generated_at": "2026-07-23 15:56",
   "movimientos": [
     {
       "fecha": "2026-07-23",
@@ -48,55 +48,6 @@
       "concepto": "TRANSFER INMEDIATA",
       "monto": 50,
       "categoria": "Guille",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-20",
-      "concepto": "REPSOL WAYLET",
-      "monto": -25.67,
-      "categoria": "Combustible",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-20",
-      "concepto": "E.S. ORELLANA PER",
-      "monto": -17.64,
-      "categoria": "Combustible",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-20",
-      "concepto": "ORELLANA PERDIZ",
-      "monto": -43.2,
-      "categoria": "Comer afuera",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-20",
-      "concepto": "LA CUEVA DE 1900",
-      "monto": -60.85,
-      "categoria": "Comer afuera",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-20",
-      "concepto": "WWW.AMAZON",
-      "monto": 9.99,
-      "categoria": "Suscripciones",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-20",
-      "concepto": "BONIF. 2% GALP",
-      "monto": 0.38,
-      "categoria": "Combustible",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-20",
-      "concepto": "BONIF.3%SHELLDISA",
-      "monto": 0.7,
-      "categoria": "Combustible",
       "nota": null
     },
     {
@@ -160,27 +111,6 @@
       "concepto": "Amazon.es",
       "monto": -8.25,
       "categoria": "Compras",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-19",
-      "concepto": "BIZUM ENVIADO",
-      "monto": -35,
-      "categoria": "A revisar",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-19",
-      "concepto": "ANTHROPIC",
-      "monto": -6.05,
-      "categoria": "Suscripciones",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-19",
-      "concepto": "Amazon.es",
-      "monto": -8.25,
-      "categoria": "Compras",
       "nota": "Rowenta Pure Pop - cuota pago mensual"
     },
     {
@@ -194,20 +124,6 @@
       "fecha": "2026-07-18",
       "concepto": "SANSE I",
       "monto": -23.52,
-      "categoria": "Combustible",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-18",
-      "concepto": "Klarna*Motea",
-      "monto": -112.76,
-      "categoria": "Gastos moto",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-18",
-      "concepto": "SANSE I",
-      "monto": -23.52,
       "categoria": "Viajes",
       "nota": "Combustible viaje Granada"
     },
@@ -216,27 +132,6 @@
       "concepto": "Klarna*Motea",
       "monto": -112.76,
       "categoria": "Gastos moto",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-17",
-      "concepto": "TRANSF. A SU FAVOR",
-      "monto": 45,
-      "categoria": "Guille",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-17",
-      "concepto": "WWW.AMAZON",
-      "monto": -9.99,
-      "categoria": "Suscripciones",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-17",
-      "concepto": "Gastos conjuntos",
-      "monto": -50,
-      "categoria": "Gastos en conjunto",
       "nota": null
     },
     {
@@ -285,55 +180,6 @@
       "fecha": "2026-07-16",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 90,
-      "categoria": "Guille",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-16",
-      "concepto": "APPLE.COM/BILL",
-      "monto": -22,
-      "categoria": "Suscripciones",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-16",
-      "concepto": "Asiento Guille",
-      "monto": -495.66,
-      "categoria": "Guille",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-16",
-      "concepto": "TRANSFER. EN DIV.",
-      "monto": 50,
-      "categoria": "Guille",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-16",
-      "concepto": "TRANSFER INMEDIATA",
-      "monto": 90,
-      "categoria": "Guille",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-15",
-      "concepto": "WWW.AMAZON",
-      "monto": -15.45,
-      "categoria": "Compras",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-15",
-      "concepto": "TRANSFER. EN DIV.",
-      "monto": 50,
-      "categoria": "Guille",
-      "nota": null
-    },
-    {
-      "fecha": "2026-07-15",
-      "concepto": "TRANSFER INMEDIATA",
-      "monto": 40,
       "categoria": "Guille",
       "nota": null
     },
