@@ -1340,7 +1340,11 @@ async function renderSociedad() {
 
   const now        = new Date();
   const lastMonday = mondayOf(now);
-  const firstDate  = allRows.map(r => r.fecha).sort()[0];
+  // Solo filas con responsable asignado (Mati/Willy) definen el inicio del rango.
+  // Registros sin "pagado" válido (ver alerta más abajo) no deben arrastrar el
+  // gráfico a fechas anteriores al primer gasto real.
+  const assignedRows = allRows.filter(r => r.pagado === 'Mati' || r.pagado === 'Willy');
+  const firstDate  = (assignedRows.length ? assignedRows : allRows).map(r => r.fecha).sort()[0];
   const firstMonday = mondayOf(new Date(firstDate + 'T00:00:00Z'));
 
   const weeks = [];
@@ -1711,6 +1715,7 @@ async function init(){
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
 
 
 
