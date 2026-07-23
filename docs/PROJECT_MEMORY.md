@@ -68,7 +68,7 @@ Ante cualquier duda sobre alcance, preguntar antes de asumir.
 - `ANTHROPIC_API_KEY` (GitHub secret): ya en uso por Movimientos y Peerberry, reusar.
 - `NOTION_TOKEN` (GitHub secret): ya en uso.
 
-**Idea pendiente de evaluar (propuesta por el usuario, no implementada):** alerta en el dashboard que detecte si falta subir la nómina de un mes (por tiempo transcurrido, o cruzando contra el ingreso de nómina esperado en Movimientos). En `docs/ROADMAP.md`.
+**Alerta de nómina faltante (implementada 2026-07-23):** ver sección "Módulos" → `js/insights.js` → `checkNominaFaltante()`, y `docs/DECISIONS.md` entrada `[2026-07-23] (2)`.
 
 **Notas sobre Make (exploración, no se usa en producción):** se armaron 2 escenarios de prueba en la cuenta de Make de Matías vía API (sin usar la interfaz, que tuvo una caída puntual el 17/07): "Emails financieros" (id 9538432, Peerberry+MyInvestor) y "Nóminas" (id 9538741). Ambos quedan creados pero **desactivados**. Conexiones creadas en Make sin uso: Gmail+Drive combinado (id 14438625), Anthropic Claude propio de Make (id 14438562, key distinta a la de GitHub). No hace falta tocarlos, pero tampoco borrarlos — sirven de referencia si en el futuro se reconsidera Make para otra cosa.
 
@@ -227,7 +227,8 @@ Sin bloques `<script>` inline con lógica de negocio.
 - `renderSuscripciones()` — sección en Resumen (`#subs-card`).
 - `computeInsights()` / `renderInsights()` — último mes completo vs. previo, top variaciones, alertas media+2σ (`#insights-card`).
 - `getRendimientoLastMonths(n)` — suma `inversiones.ganancia` (EUR, Notion "Rendimiento Inversiones") de los últimos n meses. `getAportesLastMonths(n)` — helpers del KPI Ahorro real.
-- Detalle de reglas en `docs/DECISIONS.md`, entrada `[2026-07-03] Fase 2 analítica`.
+- `checkNominaFaltante()` (añadido 2026-07-23) — compara el mes calendario anterior al actual contra `window.FINANCE_STATE.nominas`; si no tiene entrada, devuelve ese mes (YYYY-MM) para que `renderInsights()` muestre un aviso en `#insights-card`. Margen de gracia de 5 días desde el inicio del mes en curso (nómina se cobra el último día hábil del mes). No requiere fuente de datos nueva: `nominas` ya combina la DB Notion "Nominas" con el fallback de Movimientos categoría "Nomina" vía `build_nominas()` en `sync_finance_data.py`.
+- Detalle de reglas en `docs/DECISIONS.md`, entrada `[2026-07-03] Fase 2 analítica` y `[2026-07-23] (2)` para la alerta de nómina.
 
 **js/charts.js**
 - `formatEUR(v)` — fuente única del formateador EUR. No duplicar en otros módulos.
