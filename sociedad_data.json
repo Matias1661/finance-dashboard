@@ -1,5 +1,35 @@
 [
   {
+    "fecha": "2026-07-16",
+    "concepto": "Obramat - materiales de bricolaje",
+    "costo": 36.81,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-17",
+    "concepto": "Obramat - materiales bricolaje (paletina, alargo telescopico, capazo)",
+    "costo": 13.89,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-16",
+    "concepto": "Bricoman - trampilla metal antihumedad",
+    "costo": 28.31,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-23",
+    "concepto": "Obramat - materiales pintura y ferreteria",
+    "costo": 39.07,
+    "pagado": null
+  },
+  {
+    "fecha": "2026-07-23",
+    "concepto": "Pinturas Sanguino - pintura PYMA",
+    "costo": 25.51,
+    "pagado": null
+  },
+  {
     "fecha": "2026-06-27",
     "concepto": "Pedido online numero 217573 - compra varios",
     "costo": 445.75,
