@@ -1,3 +1,15 @@
+## 2026-07-23 — Soporte CSV en process_bank_statements.py (en paralelo con PDF)
+
+- Nuevas funciones `parse_csv_extracto()` (parseo deterministico local, sin Claude,
+  con chequeo de continuidad de Saldo) y `categorizar_movimientos()` (categorizacion
+  via Claude sobre datos ya parseados, no sobre el PDF crudo).
+- El loop principal ahora rama por extension de archivo (`.csv` vs `.pdf`); la rama
+  PDF sigue exactamente igual.
+- Probado con extracto real de CaixaBank (27 movimientos, 0 discontinuidades de Saldo).
+- Pendiente: validacion en paralelo unos dias antes de dar de baja la rama PDF. Ver
+  docs/DECISIONS.md 2026-07-23 y docs/ROADMAP.md.
+
+
 ## 2026-07-22 — Validacion real Talho Argentino + fix + carga manual
 
 - Validado `process_gastos_talho.py` con los 33 comprobantes reales de la carpeta Drive:
