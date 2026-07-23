@@ -1,4 +1,26 @@
-## [2026-07-23] (3) CSV como unico formato en Movimientos; se descarta el PDF
+## [2026-07-23] (4) Grafico Talho Argentino (Sociedad) empieza en semanas vacias por registro mal fechado
+
+**Problema:** el grafico `chart-sociedad-bars` (pestaña Talho Argentino,
+`renderSociedad()` en `js/app.js`) mostraba decenas de semanas en 0 antes del
+primer gasto real. La causa: `firstDate` se calculaba como la fecha minima
+de todo `sociedad_data.json`, y ese archivo tiene un registro con fecha
+`2024-01-01` y `pagado: null` ("Pedido online #217573 - compra varios
+articulos", 445.75€), muy anterior al inicio real de gastos de la sociedad.
+Ese registro ya estaba detectado por la alerta existente de "gasto sin
+responsable asignado", pero igual se usaba para el calculo del rango.
+
+**Decision del usuario:** no corregir la fecha en origen; ajustar la logica
+del grafico para que `firstDate` se calcule solo sobre filas con `pagado`
+igual a "Mati" o "Willy", ignorando filas sin responsable asignado a los
+efectos del rango de semanas (siguen contando para la alerta de "sin
+responsable asignado", que es independiente).
+
+**Cambio en `js/app.js` (`renderSociedad()`):** se agrega `assignedRows =
+allRows.filter(r => r.pagado === 'Mati' || r.pagado === 'Willy')` y
+`firstDate` se calcula sobre `assignedRows` (con fallback a `allRows` si
+`assignedRows` estuviera vacio). Sin cambios en el resto de la funcion.
+
+
 
 **Decision del usuario:** saltar la validacion en paralelo de la rama PDF en
 `process_bank_statements.py` (ver "Migracion de extraccion PDF a CSV",
