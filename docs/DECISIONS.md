@@ -1,3 +1,33 @@
+## [2026-07-23] (3) CSV como unico formato en Movimientos; se descarta el PDF
+
+**Decision del usuario:** saltar la validacion en paralelo de la rama PDF en
+`process_bank_statements.py` (ver "Migracion de extraccion PDF a CSV",
+entrada anterior del mismo dia) y adoptar CSV como unico formato soportado
+de aqui en mas, enfocando el trabajo de pulido en ese flujo.
+
+**Cambios en `scripts/process_bank_statements.py`:**
+- Eliminada `extraer_movimientos()` (extraccion de movimientos via Claude
+  leyendo el PDF como documento) y el import de `base64` (solo se usaba ahi).
+- El loop principal ya no rama por extension: si el archivo nuevo en Drive
+  no termina en `.csv`, se imprime un aviso (`AVISO: ... no es .csv --
+  formato no soportado`) y se omite sin marcarlo como procesado en
+  `processed_bank_statements.json` (para que vuelva a aparecer en la
+  proxima corrida hasta que se resuba en CSV).
+- `parse_csv_extracto()` y `categorizar_movimientos()` sin cambios de logica,
+  solo se actualizaron sus docstrings para reflejar que ya no son una rama
+  alternativa sino el unico camino.
+- Docstring del modulo actualizado: ya no describe una migracion en curso
+  con dos ramas, sino CSV como formato unico y una nota de que el PDF se
+  probo y se descarto.
+
+**Correccion de documentacion relacionada:** la tabla de estado de
+"MIGRACION EN CURSO: Relay -> GitHub Actions" en `PROJECT_MEMORY.md` decia
+que a Movimientos le faltaba "seguir en paralelo unos dias mas antes de
+apagar en Relay", pero el usuario ya habia dado de baja ese flujo de Relay
+el mismo 23/07 (ver entrada anterior "Confirmado: Relay Movimientos seguia
+activo en paralelo"). La tabla no se habia actualizado en ese momento;
+corregida ahora para reflejar el estado real.
+
 ## [2026-07-23] (2) Alerta de nomina faltante en tab Resumen
 
 **Contexto:** propuesta pendiente desde el 17/07 (ver ROADMAP.md), sin diseno hasta
