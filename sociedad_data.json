@@ -54,12 +54,6 @@
     "pagado": "Willy"
   },
   {
-    "fecha": "2024-01-01",
-    "concepto": "Pedido online #217573 - compra varios articulos",
-    "costo": 445.75,
-    "pagado": null
-  },
-  {
     "fecha": "2026-07-02",
     "concepto": "Ayuntamiento Boadilla del Monte - fianza gestion de residuos",
     "costo": 150,
