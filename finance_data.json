@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-24 10:27",
+  "generated_at": "2026-07-24 11:24",
   "movimientos": [
     {
       "fecha": "2026-07-23",
@@ -160,7 +160,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -22,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Claude Pro"
     },
     {
       "fecha": "2026-07-16",
@@ -251,7 +251,7 @@
       "concepto": "APPLE.COM/BILL",
       "monto": -2.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "iCloud+"
     },
     {
       "fecha": "2026-07-11",
