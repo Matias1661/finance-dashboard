@@ -1,3 +1,15 @@
+## 2026-07-27 — Fix reintegro no visible en Gastos moto
+
+- `js/state.js`: `reimbursableCategories` ahora incluye "Gastos moto"
+  (antes: Viajes, Club, Combustible, Comer afuera, Salidas, Gastos en
+  conjunto).
+- Causa: `renderCatTxTable()` en js/app.js solo muestra montos positivos de
+  una categoria si esta en `reimbursableCategories`; el reintegro de
+  Klarna*Motea (+117.66e, 25/07/2026) no aparecia en la lista ni restaba del
+  total de la categoria en el tab Categorias.
+- Ver docs/DECISIONS.md 2026-07-27.
+
+
 ## 2026-07-23 (4) — Fix rango de semanas en grafico Talho Argentino (Sociedad)
 
 - `js/app.js` (`renderSociedad()`): `firstDate` ahora se calcula solo sobre
