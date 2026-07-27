@@ -1,3 +1,28 @@
+## [2026-07-27] Gastos moto agregada a reimbursableCategories
+
+**Problema detectado:** en el tab Categorias, `renderCatTxTable()` (js/app.js)
+filtra las transacciones de una categoria con
+`Number(r.monto) < 0 || (isReimbursableCat && Number(r.monto) > 0)`. Como
+"Gastos moto" no estaba en `reimbursableCategories` (js/state.js), un
+reintegro real (Klarna*Motea, +117.66e, 25/07/2026, reembolso de un cargo de
+-117.66e del 04/07/2026) quedaba filtrado silenciosamente: no aparecia en la
+lista de transacciones de la categoria ni restaba del total mostrado en el
+grafico de categorias (netExpenseByCategory). El dato en finance_data.json
+era correcto (categoria "Gastos moto", verificado); el bug era exclusivamente
+de frontend.
+
+**Decision del usuario (27/07/2026):** agregar "Gastos moto" a
+`reimbursableCategories` en js/state.js, igual tratamiento que
+Combustible/Viajes/etc. Confirmado tambien que el movimiento MGP*Vinted del
+04/07/2026 (-115.09e) esta correctamente categorizado como "Gastos moto" (no
+es un error de categorizacion, solo coincidia en la misma vista con el bug
+del reintegro).
+
+**Cambio:** `reimbursableCategories` pasa de
+`['Viajes', 'Club', 'Combustible', 'Comer afuera', 'Salidas', 'Gastos en conjunto']`
+a
+`['Viajes', 'Club', 'Combustible', 'Comer afuera', 'Salidas', 'Gastos en conjunto', 'Gastos moto']`.
+
 ## [2026-07-23] (4) Grafico Talho Argentino (Sociedad) empieza en semanas vacias por registro mal fechado
 
 **Problema:** el grafico `chart-sociedad-bars` (pestaña Talho Argentino,
