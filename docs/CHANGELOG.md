@@ -1,3 +1,11 @@
+## 2026-07-27 (2) — Fix grafico Evolucion por categoria no restaba reembolsos
+
+- `js/charts.js` (`renderCategoryTrend()`): `monthTotals` ahora se calcula
+  con `netExpenseByCategory()` por mes en vez de sumar solo montos negativos.
+- Afecta la linea principal del grafico y "Promedio anual"; el rombo "Ritmo
+  promedio" ya restaba reembolsos y no cambio.
+- Ver docs/DECISIONS.md 2026-07-27 (2).
+
 ## 2026-07-27 — Fix reintegro no visible en Gastos moto
 
 - `js/state.js`: `reimbursableCategories` ahora incluye "Gastos moto"
