@@ -1,3 +1,22 @@
+## [2026-07-27] (2) Grafico Evolucion por categoria no restaba reembolsos
+
+**Problema:** `renderCategoryTrend()` (js/charts.js) calculaba el total
+mensual de la categoria seleccionada sumando solo los montos negativos
+(`Math.abs(v)` para `v < 0`), ignorando por completo los ingresos/reembolsos
+del mismo mes — incluso en categorias reembolsables. Esto afectaba tanto a
+la linea principal del grafico como a "Promedio anual" (que se deriva de los
+mismos totales mensuales). El rombo "Ritmo promedio" ya restaba reembolsos
+correctamente (logica separada, sin cambios).
+
+**Decision del usuario (27/07/2026):** que el grafico tenga en cuenta los
+reembolsos, consistente con el resto del dashboard (netExpenseByCategory,
+tabla de transacciones).
+
+**Cambio:** el calculo de `monthTotals` ahora reusa la funcion canonica
+`netExpenseByCategory(data)` (ya existente en charts.js) filtrando `allData`
+por cada mes, en vez de sumar montos negativos a mano. Sin funciones nuevas
+ni logica de netting duplicada.
+
 ## [2026-07-27] Gastos moto agregada a reimbursableCategories
 
 **Problema detectado:** en el tab Categorias, `renderCatTxTable()` (js/app.js)
