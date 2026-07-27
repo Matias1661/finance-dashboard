@@ -334,12 +334,13 @@ function renderCategoryTrend(){
   const monthTotals = {};
   months.forEach(m => monthTotals[m] = 0);
 
-  allData.forEach(r => {
-    if((r.categoria || 'Sin categoría') !== selectedCat) return;
-    const v = Number(r.monto);
-    if(v >= 0) return;
-    const key = r.fecha ? r.fecha.slice(0,7) : '';
-    if(key in monthTotals) monthTotals[key] += Math.abs(v);
+  // Gasto neto por mes para la categoría seleccionada: en categorías
+  // reembolsables (ver reimbursableCategories) los reintegros restan del
+  // gasto bruto de ese mes, misma lógica que netExpenseByCategory().
+  months.forEach(m => {
+    const monthData = allData.filter(r => r.fecha && r.fecha.slice(0,7) === m);
+    const net = netExpenseByCategory(monthData);
+    monthTotals[m] = net[selectedCat] || 0;
   });
 
   const labels = months.map(m => {
@@ -828,4 +829,5 @@ function renderNominaTrend(){
     }
   });
 }
+
 
