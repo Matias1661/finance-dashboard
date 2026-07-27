@@ -6,7 +6,7 @@ window.FINANCE_STATE = {
   nominas: [],
   excludedCategories: ['Guille', 'Inversion', 'Talho Argentino'],
   // Categorías donde un ingreso puede ser reembolso de un gasto
-  reimbursableCategories: ['Viajes', 'Club', 'Combustible', 'Comer afuera', 'Salidas', 'Gastos en conjunto'],
+  reimbursableCategories: ['Viajes', 'Club', 'Combustible', 'Comer afuera', 'Salidas', 'Gastos en conjunto', 'Gastos moto'],
   activePeriod: 6,
   activeMonth: null
 };
@@ -34,3 +34,4 @@ function fillForwardCapital(arr) {
     return { mes: d.mes, peerberry: lastPB, myinvestor: lastMI };
   });
 }
+
