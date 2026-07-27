@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-07-27 10:44",
+  "generated_at": "2026-07-27 12:48",
   "movimientos": [
     {
       "fecha": "2026-07-25",
       "concepto": "Klarna*Motea",
       "monto": 117.66,
       "categoria": "Gastos moto",
-      "nota": null
+      "nota": "Reintegro primer respaldo"
     },
     {
       "fecha": "2026-07-25",
@@ -26,7 +26,7 @@
       "fecha": "2026-07-25",
       "concepto": "CAJERO AJENO",
       "monto": -70,
-      "categoria": "A revisar",
+      "categoria": "Salud y Belleza",
       "nota": null
     },
     {
@@ -34,7 +34,7 @@
       "concepto": "MGP*Vinted",
       "monto": -7.55,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Short Adidas"
     },
     {
       "fecha": "2026-07-24",
