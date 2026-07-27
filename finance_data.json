@@ -1,6 +1,55 @@
 {
-  "generated_at": "2026-07-26 11:18",
+  "generated_at": "2026-07-27 10:25",
   "movimientos": [
+    {
+      "fecha": "2026-07-25",
+      "concepto": "Klarna*Motea",
+      "monto": 117.66,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-25",
+      "concepto": "ANTHROPIC",
+      "monto": -22.08,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-25",
+      "concepto": "10067 - GOIKO CC",
+      "monto": -50.5,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-25",
+      "concepto": "CAJERO AJENO",
+      "monto": -70,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-24",
+      "concepto": "MGP*Vinted",
+      "monto": -7.55,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-24",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 41,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-24",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-07-23",
       "concepto": "ANTHROPIC",
@@ -18140,7 +18189,7 @@
       },
       {
         "mes": "2026-07",
-        "peerberry": 11737.18,
+        "peerberry": 11752.18,
         "myinvestor": 0
       }
     ],
@@ -18237,7 +18286,7 @@
       },
       {
         "mes": "2026-07",
-        "peerberry": 0.29,
+        "peerberry": 0.42,
         "myinvestor": 0
       }
     ],
@@ -18415,11 +18464,11 @@
       },
       {
         "mes": "2026-07",
-        "peerberry": 34.19,
+        "peerberry": 49.19,
         "myinvestor": 0.0,
         "peerberry_aportes": 0.0,
         "myinvestor_aportes": null,
-        "peerberry_capital": 11737.18,
+        "peerberry_capital": 11752.18,
         "myinvestor_capital": null
       }
     ],
