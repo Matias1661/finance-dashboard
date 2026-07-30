@@ -1,6 +1,118 @@
 {
-  "generated_at": "2026-07-30 11:33",
+  "generated_at": "2026-07-30 13:59",
   "movimientos": [
+    {
+      "fecha": "2026-07-29",
+      "concepto": "Ad free for Prime",
+      "monto": -1.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-28",
+      "concepto": "VOLKSWAGEN RENTIN",
+      "monto": -29.5,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-28",
+      "concepto": "REPSOL WAYLET",
+      "monto": -22.33,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-28",
+      "concepto": "YELLOWSTONE FOODS",
+      "monto": -3.8,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-28",
+      "concepto": "PASIONES ARGENTIN",
+      "monto": -71.52,
+      "categoria": "Talho Argentino",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-28",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 100,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-27",
+      "concepto": "LEROY MERLIN SSRR",
+      "monto": -1.79,
+      "categoria": "Departamento",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-27",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -3.49,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-27",
+      "concepto": "FARMACIA CASALS-L",
+      "monto": -13.51,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-27",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-27",
+      "concepto": "Gastos conjuntos",
+      "monto": -80,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-26",
+      "concepto": "DREAMS HOUSE",
+      "monto": -5.2,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-26",
+      "concepto": "S.SEBASTIAN DE LO",
+      "monto": -12.94,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-26",
+      "concepto": "COSTE USO CAJERO",
+      "monto": -3.25,
+      "categoria": "Otros",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-26",
+      "concepto": "Gastos club",
+      "monto": -36.15,
+      "categoria": "Club",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-26",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 35,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-07-25",
       "concepto": "Klarna*Motea",
