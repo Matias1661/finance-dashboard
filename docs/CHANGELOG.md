@@ -1,3 +1,18 @@
+## 2026-07-31 — Hallazgo: duplicado en Nominas por Relay no desactivado
+
+- Al validar el flujo de Nominas con la nomina real de julio 2026, aparecieron
+  dos paginas en la DB Notion "Nominas" (mismo mes, mismo total). Diagnostico
+  del usuario: los flujos de Relay para Nominas (email de Beatriz -> Drive,
+  y Drive -> Notion) nunca fueron desactivados en Relay.app; Relay proceso el
+  PDF automaticamente y luego el usuario lo subio de nuevo a mano, disparando
+  tambien `process_nominas.py` via GitHub Actions.
+- `scripts/process_nominas.py` no tiene bug confirmado — no se pudo validar
+  de forma aislada porque Relay siguio escribiendo en paralelo.
+- Fila 4 (Nominas) del plan de migracion de Relay sigue sin marcarse
+  Completado. Pendiente: usuario desactiva ambos flujos de Nominas en
+  Relay.app, luego se repite la validacion solo con GitHub Actions.
+- Ver docs/DECISIONS.md 2026-07-31.
+
 ## 2026-07-27 (2) — Fix grafico Evolucion por categoria no restaba reembolsos
 
 - `js/charts.js` (`renderCategoryTrend()`): `monthTotals` ahora se calcula
