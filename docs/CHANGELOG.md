@@ -1,3 +1,14 @@
+## 2026-07-31 (3) — Reforzado prompt "Extraer datos de nomina" (normalizacion Empresa)
+
+- Prompt en DB Notion "Prompts" ya tenia la regla de normalizar variantes de
+  "LUZUTANIA GROUP", pero la corrida del 31/07 la ignoro y devolvio
+  "LUZUTANIAES GROUP SLU" tal cual. Se reescribio la regla con enfasis
+  explicito ("OBLIGATORIA", "SIEMPRE", sin excepcion) y un paso de
+  autoverificacion antes de generar el JSON final.
+- No se corrigio retroactivamente el valor "LUZUTANIAES GROUP SLU" ya
+  guardado en la pagina de Nominas de julio 2026 (pendiente si se quiere
+  consistencia con meses anteriores).
+
 ## 2026-07-31 (2) — Fila 4 (Nominas) del plan de migracion Relay: Completado
 
 - Usuario borro la pagina duplicada en Notion y desactivo en Relay.app los
