@@ -1,3 +1,14 @@
+## 2026-07-31 (2) — Fila 4 (Nominas) del plan de migracion Relay: Completado
+
+- Usuario borro la pagina duplicada en Notion y desactivo en Relay.app los
+  dos flujos de Nominas (email de Beatriz -> Drive, Drive -> Notion).
+- Se disparo manualmente `sync-finance-data` (run #413) para validar:
+  todos los pasos en success, sin duplicados nuevos.
+- Fila 4 (Nominas) del plan de migracion Relay -> GitHub Actions: Completado.
+- Pendiente menor: revisar normalizacion de "Empresa" en el prompt de
+  extraccion (salio "LUZUTANIAES GROUP SLU" en vez de "LUZUTANIA GROUP").
+- Ver docs/DECISIONS.md 2026-07-31 (2).
+
 ## 2026-07-31 — Hallazgo: duplicado en Nominas por Relay no desactivado
 
 - Al validar el flujo de Nominas con la nomina real de julio 2026, aparecieron
