@@ -1,3 +1,33 @@
+## [2026-07-31] Duplicado en Nominas: Relay no estaba desactivado, no la defensa anti-duplicado
+
+**Diagnostico inicial (incorrecto):** al verificar el flujo con la nomina real
+de julio 2026, aparecieron dos paginas en la DB Notion "Nominas" para la misma
+Fecha de pago (2026-07-31, 2.648,99e), con Archivo apuntando a dos file IDs
+de Drive distintos (mismo PDF, 476.172 bytes, subidos con 2h06 de diferencia).
+Se interpreto en un primer momento que `ya_existe_en_notion()` en
+`scripts/process_nominas.py` habia fallado.
+
+**Causa real (confirmada por el usuario):** los dos flujos de Relay para
+Nominas (lectura del email de Beatriz -> subida a Drive, y Drive -> Notion)
+**nunca fueron desactivados** en Relay.app, pese a que `PROJECT_MEMORY.md`
+(seccion Nominas, entrada 22/07/2026) documentaba el diseno como si Matias
+subiera el PDF a mano en reemplazo de esa lectura automatica. En la practica:
+Relay subio la primera copia del PDF a Drive automaticamente (14:12 UTC) y
+la proceso a Notion via su propio flujo; luego Matias subio el mismo PDF a
+mano sin saber que Relay ya lo habia hecho (16:19 UTC), y el GitHub Action
+(`process_nominas.py`) proceso esa segunda copia por separado.
+
+**Conclusion:** `process_nominas.py` como reemplazo de Relay para Nominas
+**todavia no fue validado de forma aislada** — ambos sistemas siguieron
+escribiendo en paralelo en la DB Nominas. La fila 4 del plan de migracion de
+Relay sigue sin poder marcarse Completado hasta que el usuario desactive
+manualmente ambos flujos de Nominas en Relay.app y se confirme una corrida
+limpia solo con GitHub Actions.
+
+**Accion pendiente del usuario:** desactivar en Relay.app los dos flujos de
+Nominas (lectura de email de Beatriz -> Drive, y Drive -> Notion). El usuario
+borra manualmente la pagina duplicada en Notion.
+
 ## [2026-07-27] (2) Grafico Evolucion por categoria no restaba reembolsos
 
 **Problema:** `renderCategoryTrend()` (js/charts.js) calculaba el total
