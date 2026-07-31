@@ -1,3 +1,31 @@
+## [2026-07-31] (2) Fila 4 (Nominas) del plan de migracion Relay -> Completado
+
+**Contexto:** ver entrada [2026-07-31] arriba (duplicado por Relay no
+desactivado).
+
+**Acciones del usuario:** borro la pagina duplicada en Notion y desactivo en
+Relay.app los dos flujos de Nominas (email de Beatriz -> Drive, y Drive ->
+Notion).
+
+**Validacion:** se disparo manualmente `sync-finance-data`
+(`POST .../actions/workflows/286832931/dispatches`, run #413,
+https://github.com/Matias1661/finance-dashboard/actions/runs/30647435998).
+Los 6 pasos de procesamiento terminaron en success, incluido "Process new
+nominas (Drive -> Notion)". La DB Notion "Nominas" quedo con una sola pagina
+para 2026-07-31 (2.648,99e) — sin duplicado nuevo, sin interferencia de
+Relay.
+
+**Decision:** fila 4 (Nominas) del plan de migracion Relay -> GitHub Actions
+se marca Completado. `scripts/process_nominas.py` queda validado como unico
+flujo activo para Nominas.
+
+**Pendiente sin cerrar:** el campo Empresa se extrajo como
+"LUZUTANIAES GROUP SLU" en vez de "LUZUTANIA GROUP" (ver entrada anterior).
+No bloquea la validacion del flujo pero conviene revisar el prompt "Extraer
+datos de nomina" en la DB Notion "Prompts" para normalizar el nombre de
+nuevo, y corregir manualmente el valor en la pagina existente si se desea
+consistencia con meses anteriores.
+
 ## [2026-07-31] Duplicado en Nominas: Relay no estaba desactivado, no la defensa anti-duplicado
 
 **Diagnostico inicial (incorrecto):** al verificar el flujo con la nomina real
