@@ -1,3 +1,18 @@
+## 2026-08-03 (5) — Nuevo tab "Prestamos"
+
+- Nueva DB Notion "Prestamos" (bajo Finance Tracker) con los 4 prestamos
+  personales activos encontrados en Drive (MicroBank, CaixaBank x2, Sabadell
+  Consumer Finance). Ver docs/DECISIONS.md [2026-08-03] (5) para el detalle.
+- scripts/sync_finance_data.py: fetch_prestamos_notion() + build_prestamos(),
+  nueva clave "prestamos" en finance_data.json.
+- .github/workflows/sync-finance-data.yml: nueva env var
+  NOTION_PRESTAMOS_DATA_SOURCE_ID.
+- index.html: nuevo tab "Prestamos" (#tab-prestamos, #prestamos-kpis,
+  #prestamos-list).
+- js/app.js: computeAmortizacion(), capitalPendienteHoy(), renderPrestamos(),
+  togglePrestamoTabla(). Cuadro de amortizacion y capital pendiente
+  calculados en el cliente (sistema frances), no sincronizados desde Notion.
+
 ## 2026-08-03 (4) — Recategorizacion: aporte pareja alquiler y devolucion fianza
 
 - Movimiento BIZUM RECIBIDO 500e (2025-12-01): recategorizado de Departamento
