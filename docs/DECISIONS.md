@@ -1,3 +1,18 @@
+## [2026-08-03] Aclaracion: categoria "Gastos en conjunto" es cuenta con pareja, no Talho/sociedad
+
+**Contexto:** durante "Organizar Movimientos" aparecio un movimiento con concepto
+"Gastos conjuntos" (-50.00, categoria "Gastos en conjunto"). Por el nombre podia
+confundirse con Talho Argentino / Gastos de la Sociedad.
+
+**Aclaracion del usuario:** "Gastos conjuntos" / categoria "Gastos en conjunto"
+corresponde a transferencias a la cuenta compartida con su pareja. No tiene
+relacion con la DB Notion "Gastos de la Sociedad" (Talho, socios Mati y Willy).
+
+**Decision:** se agrego una Nota aclaratoria en la pagina de Notion del
+movimiento ("Cuenta compartida con pareja (no Talho/sociedad)"). Para futuras
+sesiones: si aparece esta categoria, no cruzarla contra la DB de Gastos de la
+Sociedad.
+
 ## [2026-07-31] (2) Fila 4 (Nominas) del plan de migracion Relay -> Completado
 
 **Contexto:** ver entrada [2026-07-31] arriba (duplicado por Relay no
