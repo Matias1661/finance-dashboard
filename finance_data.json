@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-03 17:36",
+  "generated_at": "2026-08-03 18:18",
   "movimientos": [
     {
       "fecha": "2026-08-02",
@@ -19311,6 +19311,68 @@
       ],
       "estimado": false,
       "etapa": "LUZUTANIA GROUP"
+    }
+  ],
+  "prestamos": [
+    {
+      "nombre": "CaixaBank - Préstamo abono inmediato",
+      "entidad": "CaixaBank",
+      "capital_inicial": 10000,
+      "cuota_mensual": 277.95,
+      "tin": 0.1493,
+      "plazo_meses": 48,
+      "fecha_inicio": "2023-10-25",
+      "fecha_fin": "2027-11-01",
+      "numero_prestamo": "",
+      "finalidad_declarada": "Prestamo para comprar la moto de Guille ",
+      "uso_real": "Otro",
+      "estado": "Activo",
+      "notas": "Se descuenta de los ingresos de Guille"
+    },
+    {
+      "nombre": "Sabadell Consumer Finance - VW Golf",
+      "entidad": "Sabadell Consumer Finance",
+      "capital_inicial": 16761.37,
+      "cuota_mensual": 218.12,
+      "tin": 0.0799,
+      "plazo_meses": 108,
+      "fecha_inicio": "2025-07-25",
+      "fecha_fin": "2034-08-01",
+      "numero_prestamo": "202507000343303 / 6051762",
+      "finalidad_declarada": "Volkswagen Golf 1.4 TSI eHybrid 150kW (Flexicar Internacional)",
+      "uso_real": "Vehículo",
+      "estado": "Activo",
+      "notas": ""
+    },
+    {
+      "nombre": "MicroBank - Préstamo personal",
+      "entidad": "MicroBank (CaixaBank)",
+      "capital_inicial": 15000,
+      "cuota_mensual": 246.83,
+      "tin": 0.0575,
+      "plazo_meses": 72,
+      "fecha_inicio": "2024-04-01",
+      "fecha_fin": "2030-04-01",
+      "numero_prestamo": "9620.801.941896-97",
+      "finalidad_declarada": "No especificada en el contrato",
+      "uso_real": "Vehículo",
+      "estado": "Activo",
+      "notas": ""
+    },
+    {
+      "nombre": "CaixaBank - Financiación vehículo (uso: Talho Argentino)",
+      "entidad": "CaixaBank",
+      "capital_inicial": 15000,
+      "cuota_mensual": 193.49,
+      "tin": 0.055,
+      "plazo_meses": 96,
+      "fecha_inicio": "2026-05-01",
+      "fecha_fin": "2034-05-01",
+      "numero_prestamo": "9620.326.640311-37",
+      "finalidad_declarada": "Vehículos - adquisición/reparación",
+      "uso_real": "Talho Argentino",
+      "estado": "Activo",
+      "notas": "El contrato figura a nombre de financiación de vehículo (motivo original de la solicitud), pero el importe se desvió a financiar Talho Argentino. Confirmado por el usuario el 03/08/2026."
     }
   ]
 }
