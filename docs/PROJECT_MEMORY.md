@@ -3,7 +3,7 @@
 ## Propósito
 Memoria técnica central del proyecto. Cualquier agente de IA o desarrollador debe poder reconstruir el estado completo del proyecto leyendo solo este documento y los demás archivos en `docs/`.
 
-Última actualización: 2026-07-17
+Última actualización: 2026-08-03
 
 ---
 
@@ -275,6 +275,7 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 | Categorías | renderCategorias() | Selector mes, barras horizontales, tabla resumen por cat, lista transacciones |
 | Transacciones | renderTransacciones() | Selector mes + categoría, tabla completa |
 | Guille | renderGuille() | KPIs (3), chart mixto dual-Y, selector mes, tabla movimientos |
+| Préstamos | renderPrestamos() | KPIs (3: capital pendiente total, cuota mensual total, préstamos activos), tarjeta por préstamo con barra de progreso y cuadro de amortización colapsable |
 
 ---
 
@@ -488,6 +489,30 @@ Patrones CSS establecidos:
 - Desde 10/07/2026: % = ganancia del mes / saldo medio (promedio capital mes anterior/actual), fuente DB Notion "Rendimiento Inversiones". Antes venía de la columna "Rendimiento %" del Sheet (mezclaba depósitos con rentabilidad real).
 
 **Ventana temporal:** dinámica — todos los meses disponibles en la DB Notion "Rendimiento Inversiones" (desde diciembre 2024). Se extiende automáticamente con cada sync.
+
+---
+
+## Tab Préstamos — implementado 2026-08-03
+
+**Objetivo:** seguimiento de préstamos personales pendientes (capital, cuota, capital pendiente, cuadro de amortización).
+
+**DB Notion "Prestamos"** (bajo Finance Tracker, data source `ddce76bd-0a56-4b41-8721-92af35bcd83f`):
+Schema: Nombre (title), Entidad (rich text), Capital inicial (number, €), Cuota mensual (number, €), TIN (number, formato percent — se guarda como fracción, ej. 0.055 = 5,5%), Plazo meses (number), Fecha inicio (date), Fecha fin (date), Nº préstamo (rich text), Finalidad declarada (rich text), Uso real (select: Talho Argentino/Vehículo/Personal/Otro), Estado (select: Activo/Cancelado), Notas (rich text).
+
+**Préstamos activos cargados (03/08/2026):**
+1. MicroBank (CaixaBank) — 15.000€, cuota 246,83€, TIN 5,75%, fin 04/2030, uso Personal.
+2. CaixaBank — 15.000€, cuota 193,49€, TIN 5,5%, fin 05/2034. Finalidad declarada en el contrato: Vehículos. Uso real: Talho Argentino (confirmado por el usuario — coincide con `PRES.32664031137` ya categorizado como financiación de Talho en las reglas de "Organizar Movimientos"; no hay conflicto entre ambas fuentes, solo aclaración documental sobre el destino real del dinero vs. el motivo original de la solicitud).
+3. CaixaBank abono inmediato — 10.000€, cuota 277,95€, TIN 14,93%, fin 11/2027, uso Personal.
+4. Sabadell Consumer Finance (financiación VW Golf vía Flexicar) — 16.761,37€, cuota 218,12€, TIN 7,99%, fin 08/2034, uso Vehículo.
+
+**Sync (`scripts/sync_finance_data.py`):** `fetch_prestamos_notion()` + `build_prestamos()` leen la DB vía API REST y excluyen préstamos con Estado = Cancelado. Salida: clave `prestamos` en `finance_data.json`, un array de objetos `{nombre, entidad, capital_inicial, cuota_mensual, tin, plazo_meses, fecha_inicio, fecha_fin, numero_prestamo, finalidad_declarada, uso_real, estado, notas}`. Requiere env var `NOTION_PRESTAMOS_DATA_SOURCE_ID` (ya seteada en `sync-finance-data.yml`).
+
+**Cálculo del cuadro de amortización — decisión clave:** no se sincronizan las cuotas individuales desde Notion (evita cientos de filas por préstamo). En su lugar, `js/app.js` calcula todo en el cliente:
+- `computeAmortizacion(prestamo)`: sistema francés estándar — interés mensual = saldo × (TIN/12), amortización = cuota − interés, iterando `plazo_meses` veces desde `fecha_inicio`. Puede diferir en céntimos del cuadro real del banco por convenciones de conteo de días, aceptado como suficiente para seguimiento personal.
+- `capitalPendienteHoy(prestamo, schedule)`: recorre el cuadro calculado y devuelve el saldo de la última cuota con fecha ≤ hoy.
+- `renderPrestamos()`: pinta KPIs agregados (capital pendiente total, cuota mensual total, préstamos activos) y una tarjeta por préstamo (barra de progreso, cuota, TIN, fecha fin, notas si existen, botón para expandir/colapsar el cuadro de amortización completo vía `togglePrestamoTabla()`).
+
+**Mantenimiento:** no hay sync automático de bancos — actualizar manualmente en Notion si cambian las condiciones de un préstamo (refinanciación, amortización anticipada) o al dar de alta uno nuevo (Estado = Activo se sincroniza; Cancelado se excluye).
 
 ---
 
