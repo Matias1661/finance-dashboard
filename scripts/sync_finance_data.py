@@ -57,6 +57,7 @@ from zoneinfo import ZoneInfo
 NOTION_TOKEN               = os.environ["NOTION_TOKEN"]
 NOTION_DATA_SOURCE_ID      = os.environ["NOTION_MOVIMIENTOS_DATA_SOURCE_ID"]
 NOTION_RENDIMIENTO_DS_ID   = os.environ.get("NOTION_RENDIMIENTO_DATA_SOURCE_ID")
+NOTION_PRESTAMOS_DS_ID     = os.environ.get("NOTION_PRESTAMOS_DATA_SOURCE_ID")
 # DB "Nominas" (detalle Empresa/Total por recibo). ID no sensible (no es un
 # secret real de acceso, es solo el identificador de la data source), por eso
 # se hardcodea con fallback en vez de requerir un nuevo secret de GitHub
@@ -189,6 +190,82 @@ def fetch_nominas_notion():
         payload["start_cursor"] = data["next_cursor"]
 
     return results
+
+
+def fetch_prestamos_notion():
+    """Lee todas las paginas de la DB Notion 'Prestamos' via API REST."""
+    url = f"https://api.notion.com/v1/data_sources/{NOTION_PRESTAMOS_DS_ID}/query"
+    headers = {
+        "Authorization": f"Bearer {NOTION_TOKEN}",
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json"
+    }
+    payload = {"page_size": 100}
+
+    results = []
+    while True:
+        resp = requests.post(url, headers=headers, json=payload, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+        results.extend(data.get("results", []))
+        if not data.get("has_more"):
+            break
+        payload["start_cursor"] = data["next_cursor"]
+
+    return results
+
+
+def build_prestamos(pages):
+    """Convierte las paginas de la DB Notion 'Prestamos' en una lista de dicts
+    para finance_data.json. El cuadro de amortizacion y el capital pendiente
+    NO se calculan aqui: se derivan en el cliente (js/app.js,
+    computeAmortizacion()) a partir de capital_inicial/tin/cuota_mensual/
+    fecha_inicio, para evitar tener que sincronizar cientos de filas de cuotas.
+    Excluye prestamos con Estado = Cancelado."""
+
+    def _title(props, key):
+        arr = (props.get(key) or {}).get("title", [])
+        return "".join(t.get("plain_text", "") for t in arr)
+
+    def _text(props, key):
+        arr = (props.get(key) or {}).get("rich_text", [])
+        return "".join(t.get("plain_text", "") for t in arr)
+
+    def _number(props, key):
+        return (props.get(key) or {}).get("number")
+
+    def _date(props, key):
+        d = (props.get(key) or {}).get("date")
+        return d.get("start") if d else None
+
+    def _select(props, key):
+        s = (props.get(key) or {}).get("select")
+        return s.get("name") if s else None
+
+    out = []
+    for p in pages:
+        props = p.get("properties", {})
+        estado = _select(props, "Estado")
+        if estado == "Cancelado":
+            continue
+
+        out.append({
+            "nombre": _title(props, "Nombre"),
+            "entidad": _text(props, "Entidad"),
+            "capital_inicial": _number(props, "Capital inicial"),
+            "cuota_mensual": _number(props, "Cuota mensual"),
+            "tin": _number(props, "TIN"),
+            "plazo_meses": _number(props, "Plazo meses"),
+            "fecha_inicio": _date(props, "Fecha inicio"),
+            "fecha_fin": _date(props, "Fecha fin"),
+            "numero_prestamo": _text(props, "Nº préstamo"),
+            "finalidad_declarada": _text(props, "Finalidad declarada"),
+            "uso_real": _select(props, "Uso real"),
+            "estado": estado,
+            "notas": _text(props, "Notas"),
+        })
+
+    return out
 
 
 def build_nominas(pages, movimientos=None):
@@ -1036,6 +1113,17 @@ if __name__ == "__main__":
             print(f"  AVISO: no se pudo leer Nominas: {nom_err}")
             nominas = []
 
+        print("Leyendo Prestamos (Notion)...")
+        try:
+            if not NOTION_PRESTAMOS_DS_ID:
+                raise RuntimeError("falta env var NOTION_PRESTAMOS_DATA_SOURCE_ID")
+            prestamos_pages = fetch_prestamos_notion()
+            prestamos = build_prestamos(prestamos_pages)
+            print(f"  {len(prestamos)} prestamos activos")
+        except Exception as prest_err:
+            print(f"  AVISO: no se pudo leer Prestamos: {prest_err}")
+            prestamos = []
+
         sanity_check(movimientos, inversiones)
 
         if rend_read_ok:
@@ -1049,7 +1137,8 @@ if __name__ == "__main__":
             "generated_at": datetime.now(ZoneInfo("Europe/Madrid")).strftime("%Y-%m-%d %H:%M"),
             "movimientos": movimientos,
             "inversiones": inversiones,
-            "nominas": nominas
+            "nominas": nominas,
+            "prestamos": prestamos
         }
 
         with open("finance_data.json", "w", encoding="utf-8") as f:
