@@ -1,3 +1,15 @@
+## 2026-08-03 — Organizar Movimientos: 15 movimientos revisados
+
+- Sync-finance-data disparado y validado (success) antes de correr find_pending.py.
+- 15 movimientos pendientes cruzados: sin coincidencias PayPal/Uber, sin ventanas
+  de viaje activas.
+- Amazon (WWW.AMAZON -14.99, AMAZON.ES -16.56) verificados por Gmail: no son la
+  suscripcion Kindle Unlimited (-9.99), sino un pedido fisico (ROXUN Mangas de
+  Brazo) y una compra puntual de ebook Kindle. Notas agregadas en Notion.
+- Aclarado con el usuario: "Gastos conjuntos" es cuenta compartida con pareja,
+  no Talho/sociedad (ver DECISIONS.md). Nota agregada en Notion.
+- reviewed_movements.json actualizado: 2335 -> 2350 claves.
+
 ## 2026-07-31 (3) — Reforzado prompt "Extraer datos de nomina" (normalizacion Empresa)
 
 - Prompt en DB Notion "Prompts" ya tenia la regla de normalizar variantes de
