@@ -1,3 +1,56 @@
+## [2026-08-03] (5) Nuevo tab "Prestamos": seguimiento de prestamos personales pendientes
+
+**Contexto:** el usuario pidio agregar al dashboard un seguimiento de los
+prestamos personales pendientes. Se reviso la memoria del proyecto (sin
+seguimiento previo de prestamos) y se buscaron contratos en la carpeta Drive
+"Documentos importantes". Se encontraron 4 prestamos activos:
+- MicroBank (CaixaBank), 15.000e, cuota 246,83e, TIN 5,75%, fin 04/2030.
+- CaixaBank, 15.000e, cuota 193,49e, TIN 5,50%, fin 05/2034. El contrato dice
+  finalidad "Vehiculos" pero el usuario confirmo que el importe se desvio a
+  financiar Talho Argentino (coincide con PRES.32664031137 ya categorizado
+  como Talho en las reglas de "Organizar Movimientos" — no hay conflicto,
+  solo aclaracion documental).
+- CaixaBank abono inmediato, 10.000e, cuota 277,95e, TIN 14,93%, fin 11/2027.
+- Sabadell Consumer Finance (financiacion VW Golf via Flexicar), 16.761,37e,
+  cuota 218,12e, TIN 7,99%, fin 08/2034.
+
+**Decision de arquitectura:** Notion como fuente + dashboard como
+visualizacion (eleccion del usuario). Se creo DB Notion "Prestamos" (bajo
+Finance Tracker, data source ddce76bd-0a56-4b41-8721-92af35bcd83f) con
+campos: Nombre, Entidad, Capital inicial, Cuota mensual, TIN, Plazo meses,
+Fecha inicio, Fecha fin, Nº prestamo, Finalidad declarada, Uso real (select:
+Talho Argentino/Vehiculo/Personal/Otro), Estado (select: Activo/Cancelado),
+Notas. Los 4 prestamos se cargaron como paginas.
+
+**Decision sobre el cuadro de amortizacion:** en vez de almacenar cientos de
+filas de cuotas en Notion (108 meses x 4 prestamos), el cuadro de
+amortizacion completo y el capital pendiente se calculan en el cliente
+(js/app.js, funcion computeAmortizacion()) a partir de capital inicial, TIN,
+cuota mensual y fecha inicio, usando el sistema frances estandar (interes
+mensual = saldo x TIN/12; amortizacion = cuota - interes). Esto puede diferir
+en centimos del cuadro real del banco por convenciones de conteo de dias,
+pero es suficiente para seguimiento personal y evita escrituras masivas a
+Notion. capitalPendienteHoy() recorre el cuadro calculado y devuelve el
+saldo de la ultima cuota ya vencida a la fecha actual.
+
+**Implementacion:**
+- `scripts/sync_finance_data.py`: nuevas funciones `fetch_prestamos_notion()`
+  y `build_prestamos()`, que leen la DB y excluyen prestamos con Estado =
+  Cancelado. Nueva clave `prestamos` en `finance_data.json`.
+- `.github/workflows/sync-finance-data.yml`: nueva env var
+  `NOTION_PRESTAMOS_DATA_SOURCE_ID` en el paso "Generate finance_data.json".
+- `index.html`: nuevo tab "Prestamos" (boton + panel `#tab-prestamos`) con
+  KPIs (`#prestamos-kpis`) y lista de tarjetas (`#prestamos-list`).
+- `js/app.js`: `computeAmortizacion()`, `capitalPendienteHoy()`,
+  `renderPrestamos()`, `togglePrestamoTabla()`. `switchTab()` actualizado
+  para llamar a `renderPrestamos()`. `init()` actualizado para poblar
+  `window.FINANCE_STATE.prestamos` desde `finance_data.json`.
+
+**Pendiente:** validar el primer dispatch de `sync-finance-data` tras este
+cambio (confirmar que `prestamos` aparece en `finance_data.json` sin romper
+el resto del pipeline). Actualizar Notion manualmente cuando cambien las
+condiciones de un prestamo (no hay sync automatico de bancos para esto).
+
 ## [2026-08-03] (4) Aporte pareja alquiler y devolucion de fianza: recategorizacion
 
 **Contexto:** revisando ingresos no-Nomina de los ultimos 12 meses aparecieron
