@@ -1614,6 +1614,149 @@ async function renderSociedad() {
   }
 }
 
+/* ── Préstamos ──
+ * El cuadro de amortización y el capital pendiente se calculan en el
+ * cliente (sistema francés estándar: interés mensual = saldo x TIN/12,
+ * amortización = cuota - interés) a partir de los datos de la DB Notion
+ * "Prestamos" (capital_inicial, cuota_mensual, tin, plazo_meses,
+ * fecha_inicio). Puede diferir en céntimos del cuadro real del banco por
+ * convenciones de conteo de días, pero es suficiente para seguimiento
+ * personal. Ver docs/DECISIONS.md, entrada [2026-08-03] (5).
+ */
+function computeAmortizacion(prestamo){
+  const capital0 = Number(prestamo.capital_inicial) || 0;
+  const cuota = Number(prestamo.cuota_mensual) || 0;
+  const tasaMensual = (Number(prestamo.tin) || 0) / 12;
+  const plazo = Number(prestamo.plazo_meses) || 0;
+
+  const schedule = [];
+  if(!prestamo.fecha_inicio || plazo <= 0) return schedule;
+
+  let saldo = capital0;
+  const inicio = new Date(prestamo.fecha_inicio + 'T00:00:00');
+
+  for(let i = 1; i <= plazo && saldo > 0.01; i++){
+    const interes = saldo * tasaMensual;
+    let amort = cuota - interes;
+    if(amort > saldo) amort = saldo;
+    if(amort < 0) amort = 0;
+    saldo = Math.max(0, saldo - amort);
+
+    const fechaCuota = new Date(inicio);
+    fechaCuota.setMonth(inicio.getMonth() + i);
+
+    schedule.push({
+      numero: i,
+      fecha: fechaCuota.toISOString().slice(0, 10),
+      cuota: interes + amort,
+      interes,
+      amortizacion: amort,
+      saldo
+    });
+  }
+  return schedule;
+}
+
+function capitalPendienteHoy(prestamo, schedule){
+  let saldo = Number(prestamo.capital_inicial) || 0;
+  const hoy = new Date();
+  for(const c of schedule){
+    if(new Date(c.fecha + 'T00:00:00') <= hoy) saldo = c.saldo;
+    else break;
+  }
+  return saldo;
+}
+
+function togglePrestamoTabla(id){
+  const div = document.getElementById(id);
+  if(div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
+}
+
+function renderPrestamos(){
+  const prestamos = window.FINANCE_STATE?.prestamos || [];
+  const listEl = document.getElementById('prestamos-list');
+  const kpiEl = document.getElementById('prestamos-kpis');
+  if(!listEl) return;
+
+  if(prestamos.length === 0){
+    listEl.innerHTML = '<div class="card">No hay préstamos cargados en Notion.</div>';
+    if(kpiEl) kpiEl.innerHTML = '';
+    return;
+  }
+
+  let totalPendiente = 0;
+  let totalCuotas = 0;
+
+  const cards = prestamos.map((p, idx) => {
+    const schedule = computeAmortizacion(p);
+    const pendiente = schedule.length > 0 ? capitalPendienteHoy(p, schedule) : (Number(p.capital_inicial) || 0);
+    totalPendiente += pendiente;
+    totalCuotas += Number(p.cuota_mensual) || 0;
+
+    const capitalInicial = Number(p.capital_inicial) || 0;
+    const pctAmortizado = capitalInicial > 0 ? Math.max(0, Math.min(100, 100 - (pendiente / capitalInicial * 100))) : 0;
+    const tinPct = p.tin !== null && p.tin !== undefined ? (Number(p.tin) * 100).toFixed(2) + '%' : '—';
+    const tablaId = `prestamo-tabla-${idx}`;
+
+    return `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+        <div>
+          <div class="card-title" style="margin-bottom:2px">${p.nombre || p.entidad || 'Préstamo'}</div>
+          <div style="font-size:12px;color:var(--text-secondary)">${p.entidad || ''}${p.uso_real ? ' · ' + p.uso_real : ''}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:20px;font-weight:600;color:var(--blue)">${formatEUR(pendiente)}</div>
+          <div style="font-size:11px;color:var(--text-secondary)">pendiente de ${formatEUR(capitalInicial)}</div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;height:6px;background:var(--bg);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${pctAmortizado.toFixed(1)}%;background:var(--green)"></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;font-size:12px;color:var(--text-secondary)">
+        <div><div>Cuota mensual</div><div style="font-family:'DM Mono';font-size:14px;color:var(--text)">${formatEUR(Number(p.cuota_mensual) || 0)}</div></div>
+        <div><div>TIN</div><div style="font-family:'DM Mono';font-size:14px;color:var(--text)">${tinPct}</div></div>
+        <div><div>Fecha fin</div><div style="font-family:'DM Mono';font-size:14px;color:var(--text)">${p.fecha_fin || '—'}</div></div>
+      </div>
+
+      ${p.notas ? `<div style="margin-top:10px;font-size:12px;color:var(--amber);background:rgba(154,98,0,0.08);padding:8px 10px;border-radius:8px">${p.notas}</div>` : ''}
+
+      <div style="margin-top:12px">
+        <button onclick="togglePrestamoTabla('${tablaId}')" style="font-size:12px;background:none;border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer;color:var(--text-secondary)">Ver cuadro de amortización</button>
+        <div id="${tablaId}" style="display:none;margin-top:10px;max-height:300px;overflow:auto">
+          <table class="tx-table">
+            <thead><tr><th>#</th><th>Fecha</th><th>Cuota</th><th>Interés</th><th>Amortización</th><th>Saldo</th></tr></thead>
+            <tbody>
+              ${schedule.map(c => `<tr><td>${c.numero}</td><td>${c.fecha}</td><td>${formatEUR(c.cuota)}</td><td>${formatEUR(c.interes)}</td><td>${formatEUR(c.amortizacion)}</td><td>${formatEUR(c.saldo)}</td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  listEl.innerHTML = cards;
+
+  if(kpiEl){
+    kpiEl.innerHTML = `
+    <div class="card">
+      <div class="card-title">Capital pendiente total</div>
+      <div style="font-size:22px;font-weight:600;color:var(--blue)">${formatEUR(totalPendiente)}</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Cuota mensual total</div>
+      <div style="font-size:22px;font-weight:600;color:var(--red)">${formatEUR(totalCuotas)}</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Préstamos activos</div>
+      <div style="font-size:22px;font-weight:600">${prestamos.length}</div>
+    </div>
+  `;
+  }
+}
+
 function switchTab(tab, el){
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1628,6 +1771,7 @@ function switchTab(tab, el){
   if(tab === 'guille')        renderGuille();
   if(tab === 'inversiones')   renderInversiones();
   if(tab === 'talho')           { renderTalho(); renderSociedad(); }
+  if(tab === 'prestamos')       renderPrestamos();
 }
 
 function populateTxMonthSelector(){
@@ -1691,6 +1835,7 @@ async function init(){
     if(window.FINANCE_STATE){
       window.FINANCE_STATE.inversiones  = rawData.inversiones  || { capital: [], rendimiento: [], ganancia: [], kpi: null };
       window.FINANCE_STATE.nominas      = rawData.nominas      || [];
+      window.FINANCE_STATE.prestamos    = rawData.prestamos    || [];
       window.FINANCE_STATE.generatedAt  = rawData.generated_at || '—';
     }
   }
