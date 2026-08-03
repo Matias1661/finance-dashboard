@@ -1,3 +1,13 @@
+## 2026-08-03 (4) — Recategorizacion: aporte pareja alquiler y devolucion fianza
+
+- Movimiento BIZUM RECIBIDO 500e (2025-12-01): recategorizado de Departamento
+  a Gastos en conjunto (aporte de la pareja al alquiler). Nota agregada en
+  Notion.
+- Movimiento ANUL.DEVOL.BE CAS 1000e (2026-02-10): categoria sin cambios,
+  nota agregada en Notion aclarando que es devolucion de fianza (no ingreso
+  recurrente).
+- Ver docs/DECISIONS.md [2026-08-03] (4).
+
 ## 2026-08-03 (3) — Linea de promedio de gastos (12 meses completos)
 
 - js/charts.js, renderMonthly(): agregado dataset Promedio gastos (12m),
