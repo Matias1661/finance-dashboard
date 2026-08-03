@@ -14,6 +14,7 @@
 - [x] Eje Y del gráfico mensual en EUR
 - [x] Gráfico de rentabilidad mensual por plataforma en tab Inversiones (barras agrupadas + acumulado TWR, 2026-07-08)
 - [x] Migración de capital/rendimiento del tab Inversiones de Google Sheets a Notion (elimina dependencia de GOOGLE_SERVICE_ACCOUNT, 2026-07-10)
+- [x] Tab "Préstamos": seguimiento de préstamos personales pendientes (DB Notion + cuadro de amortización calculado en cliente, 2026-08-03)
 
 ## Alta prioridad
 - [x] Botón "Actualizar" en `index.html`: eliminado 21/07 (tenía un token de GitHub hardcodeado, revocado, y seguía expuesto en texto plano en el archivo). Los workflows de sync se disparan manualmente vía `gh workflow run` o la UI de GitHub Actions. Ver `DECISIONS.md` 2026-07-21.
