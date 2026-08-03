@@ -1,3 +1,10 @@
+## 2026-08-03 (3) — Linea de promedio de gastos (12 meses completos)
+
+- js/charts.js, renderMonthly(): agregado dataset Promedio gastos (12m),
+  linea horizontal punteada gris, calculada excluyendo el mes actual
+  (currentMonthIdx) del array expense.
+- Deploy-pages disparado para publicar.
+
 ## 2026-08-03 (2) — Grafico mensual Ingresos vs Gastos: barras -> lineas
 
 - Cambio pedido por el usuario tras ver una preview en el chat con lineas
