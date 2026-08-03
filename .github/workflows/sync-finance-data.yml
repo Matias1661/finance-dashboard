@@ -67,6 +67,7 @@ jobs:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_MOVIMIENTOS_DATA_SOURCE_ID: "367d58ce-928b-4e31-832d-07707f876365"
           NOTION_RENDIMIENTO_DATA_SOURCE_ID: "93eda06b-9207-4589-b3f0-66be10ab9caf"
+          NOTION_PRESTAMOS_DATA_SOURCE_ID: "ddce76bd-0a56-4b41-8721-92af35bcd83f"
         run: python scripts/sync_finance_data.py
 
       - name: Commit and push if changed
