@@ -1,3 +1,20 @@
+## [2026-08-03] (2) Grafico mensual Ingresos vs Gastos: barras -> lineas
+
+**Contexto:** el usuario pidio ver como quedaria el grafico "Ingresos vs Gastos
+mensuales · ultimos 12 meses" con lineas en vez de barras. Se genero una
+preview en el chat (Visualizer) con datos aproximados leidos de una captura
+del dashboard, y el usuario confirmo implementarlo.
+
+**Decision:** en `js/charts.js`, funcion `renderMonthly()`, el chart tipo
+`bar` paso a tipo `line` para los datasets "Ingresos" y "Gastos netos"
+(borderColor solido, relleno transparente 0.08 opacidad, tension 0.25,
+puntos radio 3). El dataset del rombo "Ritmo promedio" (scatter, rectRot)
+no se toco.
+
+**Pendiente:** verificar visualmente en GitHub Pages tras el proximo deploy
+que las lineas se vean bien con 13 puntos (12 meses + actual) y que el rombo
+del mes en curso siga superpuesto correctamente.
+
 ## [2026-08-03] Aclaracion: categoria "Gastos en conjunto" es cuenta con pareja, no Talho/sociedad
 
 **Contexto:** durante "Organizar Movimientos" aparecio un movimiento con concepto
