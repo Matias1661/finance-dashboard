@@ -1687,7 +1687,13 @@ function renderPrestamos(){
   let totalPendiente = 0;
   let totalCuotas = 0;
 
-  const cards = prestamos.map((p, idx) => {
+  const prestamosOrdenados = [...prestamos].sort((a, b) => {
+    if(!a.fecha_fin) return 1;
+    if(!b.fecha_fin) return -1;
+    return a.fecha_fin.localeCompare(b.fecha_fin);
+  });
+
+  const cards = prestamosOrdenados.map((p, idx) => {
     const schedule = computeAmortizacion(p);
     const pendiente = schedule.length > 0 ? capitalPendienteHoy(p, schedule) : (Number(p.capital_inicial) || 0);
     totalPendiente += pendiente;
@@ -1714,6 +1720,7 @@ function renderPrestamos(){
       <div style="margin-top:10px;height:6px;background:var(--bg);border-radius:4px;overflow:hidden">
         <div style="height:100%;width:${pctAmortizado.toFixed(1)}%;background:var(--green)"></div>
       </div>
+      <div style="margin-top:4px;font-size:11px;color:var(--text-secondary)">${pctAmortizado.toFixed(1)}% pagado</div>
 
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;font-size:12px;color:var(--text-secondary)">
         <div><div>Cuota mensual</div><div style="font-family:'DM Mono';font-size:14px;color:var(--text)">${formatEUR(Number(p.cuota_mensual) || 0)}</div></div>
