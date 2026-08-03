@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-03 18:35",
+  "generated_at": "2026-08-03 18:40",
   "movimientos": [
     {
       "fecha": "2026-08-02",
@@ -19345,7 +19345,7 @@
       "notas": ""
     },
     {
-      "nombre": "MicroBank - SEAT",
+      "nombre": "MicroBank - SEAT Ibiza",
       "entidad": "MicroBank (CaixaBank)",
       "capital_inicial": 15000,
       "cuota_mensual": 246.83,
