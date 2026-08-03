@@ -231,6 +231,13 @@ function renderMonthly(){
     return null;
   });
 
+  // Promedio de gastos de los últimos 12 meses completos (excluye el mes actual)
+  const completeMonthsExpense = expense.filter((_, idx) => idx !== currentMonthIdx);
+  const avgExpense12m = completeMonthsExpense.length > 0
+    ? completeMonthsExpense.reduce((a,b) => a+b, 0) / completeMonthsExpense.length
+    : null;
+  const avgExpenseLine = avgExpense12m !== null ? labels.map(() => avgExpense12m) : null;
+
   const ctx = document.getElementById('chart-monthly');
   if(!ctx) return;
 
@@ -243,6 +250,16 @@ function renderMonthly(){
       datasets: [
         { label:'Ingresos', data: income, borderColor: 'rgba(13,138,82,1)', backgroundColor: 'rgba(13,138,82,0.08)', borderWidth: 2, tension: 0.25, pointRadius: 3, pointBackgroundColor: 'rgba(13,138,82,1)', fill: false },
         { label:'Gastos netos', data: expense, borderColor: 'rgba(201,74,48,1)', backgroundColor: 'rgba(201,74,48,0.08)', borderWidth: 2, tension: 0.25, pointRadius: 3, pointBackgroundColor: 'rgba(201,74,48,1)', fill: false },
+        ...(avgExpenseLine !== null ? [{
+          label: 'Promedio gastos (12m)',
+          data: avgExpenseLine,
+          borderColor: 'rgba(120,120,120,0.9)',
+          borderDash: [6,4],
+          borderWidth: 1.5,
+          pointRadius: 0,
+          fill: false,
+          tension: 0
+        }] : []),
         ...(avgDiamond !== null ? [{
           label: `Ritmo promedio (día ${currentDay})`,
           type: 'scatter',
