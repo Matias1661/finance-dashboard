@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-03 18:18",
+  "generated_at": "2026-08-03 18:35",
   "movimientos": [
     {
       "fecha": "2026-08-02",
@@ -19345,7 +19345,7 @@
       "notas": ""
     },
     {
-      "nombre": "MicroBank - Préstamo personal",
+      "nombre": "MicroBank - SEAT",
       "entidad": "MicroBank (CaixaBank)",
       "capital_inicial": 15000,
       "cuota_mensual": 246.83,
@@ -19360,7 +19360,7 @@
       "notas": ""
     },
     {
-      "nombre": "CaixaBank - Financiación vehículo (uso: Talho Argentino)",
+      "nombre": "CaixaBank - Talho Argentino",
       "entidad": "CaixaBank",
       "capital_inicial": 15000,
       "cuota_mensual": 193.49,
@@ -19372,7 +19372,7 @@
       "finalidad_declarada": "Vehículos - adquisición/reparación",
       "uso_real": "Talho Argentino",
       "estado": "Activo",
-      "notas": "El contrato figura a nombre de financiación de vehículo (motivo original de la solicitud), pero el importe se desvió a financiar Talho Argentino. Confirmado por el usuario el 03/08/2026."
+      "notas": "El contrato figura a nombre de financiación de vehículo (motivo original de la solicitud), pero el importe se desvió a financiar Talho Argentino."
     }
   ]
 }
