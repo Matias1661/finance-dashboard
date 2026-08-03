@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-03 10:38",
+  "generated_at": "2026-08-03 12:48",
   "movimientos": [
     {
       "fecha": "2026-08-02",
@@ -62,14 +62,14 @@
       "concepto": "WWW.AMAZON",
       "monto": -14.99,
       "categoria": "Compras",
-      "nota": null
+      "nota": "ROXUN Mangas de Brazo (compresión deportiva)"
     },
     {
       "fecha": "2026-08-01",
       "concepto": "AMAZON.ES",
       "monto": -16.56,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Kindle - Growing Wings: The inside story of Red Bull Racing"
     },
     {
       "fecha": "2026-08-01",
@@ -90,7 +90,7 @@
       "concepto": "Gastos conjuntos",
       "monto": -50,
       "categoria": "Gastos en conjunto",
-      "nota": null
+      "nota": "Cuenta compartida con pareja (no Talho/sociedad)"
     },
     {
       "fecha": "2026-08-01",
