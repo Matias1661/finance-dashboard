@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-03 10:31",
+  "generated_at": "2026-08-03 10:34",
   "movimientos": [
     {
       "fecha": "2026-08-02",
       "concepto": "BIZUM ENVIADO",
       "monto": -36,
-      "categoria": "A revisar",
+      "categoria": "Salidas",
       "nota": null
     },
     {
