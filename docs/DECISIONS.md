@@ -1,3 +1,30 @@
+## [2026-08-03] (4) Aporte pareja alquiler y devolucion de fianza: recategorizacion
+
+**Contexto:** revisando ingresos no-Nomina de los ultimos 12 meses aparecieron
+dos movimientos grandes: BIZUM RECIBIDO 500e (2025-12-01, cat. Departamento)
+y ANUL.DEVOL.BE CAS 1000e (2026-02-10, cat. Departamento).
+
+**Aclaracion del usuario:**
+- Los 500e son el aporte de su pareja al alquiler. Antes se debitaba el total
+  (~1200e) de esta cuenta y ella reembolsaba su parte por Bizum. Actualmente
+  el proceso cambio: el transfiere 700e y ella 500e directo a una cuenta
+  conjunta, por lo que este patron (Bizum recibido en cuenta personal) no
+  deberia repetirse.
+- Los 1000e son la devolucion de la fianza del departamento anterior, un
+  ingreso puntual no recurrente.
+
+**Decision:**
+- El movimiento de 500e se recategorizo de Departamento a Gastos en conjunto
+  (ya es categoria reembolsable), con nota aclaratoria en Notion.
+- El movimiento de 1000e se dejo en su categoria original (Departamento), solo
+  se agrego nota aclaratoria en Notion indicando que es devolucion de fianza
+  y no ingreso recurrente. No se creo categoria nueva ni se cambio la logica
+  de excludedCategories/reimbursableCategories.
+- Pendiente: si en el futuro vuelve a aparecer un ingreso puntual grande de
+  este tipo (devoluciones, indemnizaciones), evaluar crear una categoria
+  excluida dedicada (ej. Extraordinarios) en vez de dejarlo mezclado con
+  Departamento.
+
 ## [2026-08-03] (3) Linea de promedio de gastos (12 meses completos)
 
 **Contexto:** el usuario pidio agregar al grafico mensual una linea de
