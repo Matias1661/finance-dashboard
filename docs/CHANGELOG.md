@@ -1,3 +1,12 @@
+## 2026-08-03 (2) — Grafico mensual Ingresos vs Gastos: barras -> lineas
+
+- Cambio pedido por el usuario tras ver una preview en el chat con lineas
+  en vez de barras.
+- js/charts.js, renderMonthly(): datasets Ingresos y Gastos netos pasan de
+  type bar a type line (linea solida, relleno transparente, tension 0.25,
+  puntos radio 3). El rombo de Ritmo promedio (scatter) no se modifico.
+- Pendiente: confirmar visualmente en GitHub Pages tras el proximo deploy.
+
 ## 2026-08-03 — Organizar Movimientos: 15 movimientos revisados
 
 - Sync-finance-data disparado y validado (success) antes de correr find_pending.py.
