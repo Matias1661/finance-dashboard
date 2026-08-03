@@ -237,12 +237,12 @@ function renderMonthly(){
   if(window.monthChart) window.monthChart.destroy();
 
   window.monthChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: {
       labels,
       datasets: [
-        { label:'Ingresos', data: income, backgroundColor: 'rgba(13,138,82,0.75)' },
-        { label:'Gastos netos', data: expense, backgroundColor: 'rgba(201,74,48,0.75)' },
+        { label:'Ingresos', data: income, borderColor: 'rgba(13,138,82,1)', backgroundColor: 'rgba(13,138,82,0.08)', borderWidth: 2, tension: 0.25, pointRadius: 3, pointBackgroundColor: 'rgba(13,138,82,1)', fill: false },
+        { label:'Gastos netos', data: expense, borderColor: 'rgba(201,74,48,1)', backgroundColor: 'rgba(201,74,48,0.08)', borderWidth: 2, tension: 0.25, pointRadius: 3, pointBackgroundColor: 'rgba(201,74,48,1)', fill: false },
         ...(avgDiamond !== null ? [{
           label: `Ritmo promedio (día ${currentDay})`,
           type: 'scatter',
