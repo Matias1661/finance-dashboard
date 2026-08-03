@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-03 12:48",
+  "generated_at": "2026-08-03 17:36",
   "movimientos": [
     {
       "fecha": "2026-08-02",
@@ -4801,7 +4801,7 @@
       "concepto": "ANUL.DEVOL.BE CAS",
       "monto": 1000,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Devolucion de fianza del departamento anterior. No es ingreso recurrente; excluir mentalmente del analisis de ingresos regulares."
     },
     {
       "fecha": "2026-02-10",
@@ -6809,8 +6809,8 @@
       "fecha": "2025-12-01",
       "concepto": "BIZUM RECIBIDO",
       "monto": 500,
-      "categoria": "Departamento",
-      "nota": null
+      "categoria": "Gastos en conjunto",
+      "nota": "Aporte de la pareja al alquiler (antes se debitaba el total ~1200€ de esta cuenta). Recategorizado desde Departamento el 2026-08-03."
     },
     {
       "fecha": "2025-11-30",
