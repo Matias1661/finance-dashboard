@@ -1,3 +1,15 @@
+## [2026-08-03] (3) Linea de promedio de gastos (12 meses completos)
+
+**Contexto:** el usuario pidio agregar al grafico mensual una linea de
+promedio de gastos de los ultimos 12 meses completos, sin contar el mes en
+curso.
+
+**Decision:** en js/charts.js, funcion renderMonthly(), se agrego el calculo
+completeMonthsExpense (array expense excluyendo el indice currentMonthIdx) y
+un dataset horizontal punteado Promedio gastos (12m) con ese valor constante
+en todos los labels. Se ubica antes del rombo Ritmo promedio en el orden de
+datasets.
+
 ## [2026-08-03] (2) Grafico mensual Ingresos vs Gastos: barras -> lineas
 
 **Contexto:** el usuario pidio ver como quedaria el grafico "Ingresos vs Gastos
