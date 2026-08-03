@@ -1,6 +1,160 @@
 {
-  "generated_at": "2026-08-02 11:12",
+  "generated_at": "2026-08-03 10:31",
   "movimientos": [
+    {
+      "fecha": "2026-08-02",
+      "concepto": "BIZUM ENVIADO",
+      "monto": -36,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-02",
+      "concepto": "ODG EL CA#AVERAL",
+      "monto": -4.5,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-02",
+      "concepto": "SOFER ACCESORIOS",
+      "monto": -43,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-02",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-01",
+      "concepto": "T. VISA CLASSIC",
+      "monto": -100,
+      "categoria": "Tarjeta",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-01",
+      "concepto": "PRES.32334358886",
+      "monto": -277.95,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-01",
+      "concepto": "PRES.32664031137",
+      "monto": -193.49,
+      "categoria": "Talho Argentino",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-01",
+      "concepto": "PRES.80194189697",
+      "monto": -246.82,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-01",
+      "concepto": "WWW.AMAZON",
+      "monto": -14.99,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-01",
+      "concepto": "AMAZON.ES",
+      "monto": -16.56,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-01",
+      "concepto": "KRUSS STUDIO",
+      "monto": -26,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-01",
+      "concepto": "RECIBO UNICO MYBOX",
+      "monto": -114.38,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-01",
+      "concepto": "Gastos conjuntos",
+      "monto": -50,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-01",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-01",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-31",
+      "concepto": "NOMINA (TRF)",
+      "monto": 2648.99,
+      "categoria": "Nomina",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-31",
+      "concepto": "PAG NOMINAS",
+      "monto": -700,
+      "categoria": "Departamento",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-31",
+      "concepto": "TRASPASO",
+      "monto": 40,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-31",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-30",
+      "concepto": "CAIXABANK PAYMENT",
+      "monto": -12.9,
+      "categoria": "Tarjeta",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-30",
+      "concepto": "SkyShowtime Limit",
+      "monto": -4.49,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-07-30",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-07-29",
       "concepto": "Ad free for Prime",
@@ -18302,6 +18456,11 @@
       {
         "mes": "2026-07",
         "peerberry": 11752.18,
+        "myinvestor": 2799
+      },
+      {
+        "mes": "2026-08",
+        "peerberry": 10278.1,
         "myinvestor": 0
       }
     ],
@@ -18399,6 +18558,11 @@
       {
         "mes": "2026-07",
         "peerberry": 0.42,
+        "myinvestor": -0.84
+      },
+      {
+        "mes": "2026-08",
+        "peerberry": 0.24,
         "myinvestor": 0
       }
     ],
@@ -18577,33 +18741,42 @@
       {
         "mes": "2026-07",
         "peerberry": 49.19,
-        "myinvestor": 0.0,
+        "myinvestor": -49.0,
         "peerberry_aportes": 0.0,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": -6016.0,
         "peerberry_capital": 11752.18,
+        "myinvestor_capital": 2799
+      },
+      {
+        "mes": "2026-08",
+        "peerberry": 25.92,
+        "myinvestor": 0.0,
+        "peerberry_aportes": null,
+        "myinvestor_aportes": null,
+        "peerberry_capital": 10278.1,
         "myinvestor_capital": null
       }
     ],
     "kpi": {
-      "pct_ultimo_mes": 1.09,
-      "pct_12m": 20.48,
-      "ganancia_12m": 3228.75,
-      "capital_actual": 20566.989999999998,
-      "periodo_ultimo_mes": "2026-06",
+      "pct_ultimo_mes": 0.0,
+      "pct_12m": 18.62,
+      "ganancia_12m": 2928.36,
+      "capital_actual": 14551.18,
+      "periodo_ultimo_mes": "2026-07",
       "por_plataforma": {
         "peerberry": {
-          "pct_ultimo_mes": 0.41,
-          "pct_12m": 8.07,
-          "ganancia_12m": 418.75,
-          "capital_actual": 11702.99,
-          "periodo_ultimo_mes": "2026-06"
+          "pct_ultimo_mes": 0.42,
+          "pct_12m": 7.76,
+          "ganancia_12m": 435.36,
+          "capital_actual": 11752.18,
+          "periodo_ultimo_mes": "2026-07"
         },
         "myinvestor": {
-          "pct_ultimo_mes": 1.76,
-          "pct_12m": 26.76,
-          "ganancia_12m": 2810.0,
-          "capital_actual": 8864,
-          "periodo_ultimo_mes": "2026-06"
+          "pct_ultimo_mes": -0.84,
+          "pct_12m": 23.41,
+          "ganancia_12m": 2493.0,
+          "capital_actual": 2799,
+          "periodo_ultimo_mes": "2026-07"
         }
       }
     },
@@ -18834,6 +19007,18 @@
         "benchmark": -0.72,
         "benchmark_acumulado": 14.84,
         "sin_aportes_pb": false,
+        "sin_aportes_mi": false
+      },
+      {
+        "mes": "2026-07",
+        "peerberry": 0.42,
+        "myinvestor": -0.84,
+        "total": 0.0,
+        "acumulado": 20.17,
+        "acumulado_anio": 11.04,
+        "benchmark": null,
+        "benchmark_acumulado": null,
+        "sin_aportes_pb": true,
         "sin_aportes_mi": false
       }
     ]
