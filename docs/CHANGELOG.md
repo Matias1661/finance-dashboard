@@ -1,3 +1,14 @@
+## 2026-08-04 (1) — Soporte de tercer socio (Miguel) en tab Sociedad
+
+- js/app.js (renderSociedad()): reemplazados los 4 bloques hardcodeados a
+  "Mati"/"Willy" (rango de fechas, grafico de barras semanal, alerta de
+  sin-responsable + pie chart, tabla de transacciones) por un array
+  `SOCIOS` generico. Agrega a Miguel (color rosa) sin duplicar codigo.
+- Verificado contra el schema de Notion (DB "Gastos del local") que el
+  valor exacto del select es "Miguel".
+- Sin cambios en sync_finance_data.py ni en sociedad_data.json.
+- Ver docs/DECISIONS.md [2026-08-04] (1).
+
 ## 2026-08-03 (5) — Nuevo tab "Prestamos"
 
 - Nueva DB Notion "Prestamos" (bajo Finance Tracker) con los 4 prestamos
