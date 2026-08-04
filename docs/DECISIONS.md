@@ -1,3 +1,36 @@
+## [2026-08-04] (3) Rediseño de datalabels del pie de Sociedad a etiquetas internas
+
+**Contexto:** el fix (2) (clamp:true + mas padding) no resolvio el problema
+de fondo. Con Willy dominando el pie (71.3%), su bisectriz apunta derecho
+hacia abajo, exactamente donde esta la leyenda — clamp mantiene la etiqueta
+dentro del canvas pero no evita que coincida con la posicion de la leyenda.
+Ademas la etiqueta de Miguel (arriba a la izquierda) seguia cortandose
+contra el borde superior del canvas.
+
+**Decision:** en vez de seguir ajustando offset/padding/clamp de etiquetas
+externas (enfoque fragil: cualquier redistribucion futura de gastos entre
+socios puede volver a generar superposicion), se cambio a etiquetas
+**dentro del anillo** (anchor/align 'center'), mostrando unicamente el
+porcentaje en blanco con stroke oscuro para contraste. Al estar contenidas
+en el propio arco, no pueden salirse del canvas ni pisar la leyenda sin
+importar la proporcion entre socios. El nombre completo queda en la
+leyenda (bottom) y el monto exacto en el tooltip al pasar el mouse.
+Slices con menos de 6% no muestran etiqueta interna (evita amontonamiento
+de texto en arcos angostos); el dato sigue disponible en leyenda y tooltip.
+
+**Implementacion:** `js/app.js`, config de `window.sociedadPieChart`
+(seccion "Pie chart — porcentaje por socio" dentro de renderSociedad()).
+Layout padding vuelto a un valor minimo (10px) ya que las etiquetas
+externas y su necesidad de aire extra dejaron de existir.
+
+**Alternativas descartadas:**
+- Reintentar con mas padding/offset en etiquetas externas — mismo problema
+  de fondo (el punto de anclaje de la slice dominante siempre cae en la
+  misma zona que la leyenda), solo pospone la falla.
+- Quitar la leyenda para liberar espacio — se descarto porque la leyenda es
+  la forma mas clara de mapear color-socio para alguien que recien mira el
+  grafico.
+
 ## [2026-08-04] (2) Fix superposicion de datalabels en pie chart de Sociedad
 
 **Contexto:** al agregar a Miguel como tercer socio (ver [2026-08-04] (1)),
