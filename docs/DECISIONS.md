@@ -1,3 +1,41 @@
+## [2026-08-04] (1) Soporte de tercer socio (Miguel) en graficos de Talho Argentino
+
+**Contexto:** se sumo un tercer socio al negocio Talho Argentino (Miguel),
+ademas de Mati y Willy. El usuario ya agrego "Miguel" como opcion del select
+"Pagado por" en la DB Notion "Gastos del local" (bajo Talho Argentino, data
+source 38933ce5-0e68-80ba-9e03-000b001f2431) y cargo filas con ese valor.
+
+**Verificacion:** se confirmo contra el schema de Notion que el valor exacto
+del select es "Miguel" (opciones actuales: Miguel, Willy, Mati).
+
+**Problema encontrado:** el tab "Sociedad" (renderSociedad() en js/app.js)
+tenia "Mati" y "Willy" hardcodeados en 4 lugares independientes: filtro de
+rango de fechas del grafico, datasets del grafico de barras semanal, alerta
+de filas sin responsable + pie chart, y tabla de transacciones con footer de
+totales. Las filas con pagado = "Miguel" quedaban excluidas de todos los
+graficos y caian en la alerta de "sin responsable asignado".
+
+**Decision de arquitectura:** en vez de agregar un tercer bloque de codigo
+duplicado (lo que hubiera dejado el problema sin resolver de raiz para un
+cuarto socio futuro), se genero un array `SOCIOS` (nombre, color de barra,
+color solido, color de fondo) al inicio de renderSociedad(), y las 4
+secciones se reescribieron para iterar sobre ese array en vez de referenciar
+nombres fijos. Agregar o quitar un socio en el futuro requiere editar
+unicamente ese array.
+
+**Implementacion:**
+- `js/app.js` (renderSociedad()): array `SOCIOS` con Mati (rojo), Willy
+  (verde, igual que antes) y Miguel (rosa, alineado con el color de la
+  opcion en Notion). Grafico de barras, alerta de sin-responsable, pie chart
+  y tabla de transacciones generalizados a partir de `SOCIOS` /
+  `NOMBRES_SOCIOS`.
+- Sin cambios en `scripts/sync_finance_data.py` ni en el schema de
+  `sociedad_data.json`: el campo "pagado" ya viaja como texto libre desde
+  Notion, no requeria cambios en el sync.
+
+**Alternativas descartadas:** agregar un tercer bloque hardcodeado para
+Miguel (mas rapido pero repite el problema si se suma un cuarto socio).
+
 ## [2026-08-03] (5) Nuevo tab "Prestamos": seguimiento de prestamos personales pendientes
 
 **Contexto:** el usuario pidio agregar al dashboard un seguimiento de los
