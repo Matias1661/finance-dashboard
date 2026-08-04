@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-03 18:40",
+  "generated_at": "2026-08-04 10:42",
   "movimientos": [
     {
       "fecha": "2026-08-02",
@@ -19315,7 +19315,7 @@
   ],
   "prestamos": [
     {
-      "nombre": "CaixaBank - Préstamo abono inmediato",
+      "nombre": "CaixaBank - Moto de Guille",
       "entidad": "CaixaBank",
       "capital_inicial": 10000,
       "cuota_mensual": 277.95,
