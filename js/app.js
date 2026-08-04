@@ -1511,7 +1511,7 @@ async function renderSociedad() {
       options: {
         responsive: true,
         cutout: '60%',
-        layout: { padding: { top: 30, bottom: 10, left: 60, right: 60 } },
+        layout: { padding: { top: 30, bottom: 40, left: 60, right: 60 } },
         plugins: {
           legend: {
             display: true,
@@ -1535,7 +1535,8 @@ async function renderSociedad() {
           datalabels: {
             anchor: 'end',
             align: 'end',
-            offset: 10,
+            offset: 8,
+            clamp: true,
             color: '#1a1a17',
             font: { family: 'DM Sans', size: 12, weight: '600' },
             formatter: (value, ctx) => {
