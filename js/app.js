@@ -1338,12 +1338,23 @@ async function renderSociedad() {
     return `${String(d.getUTCDate()).padStart(2,'0')}/${String(d.getUTCMonth()+1).padStart(2,'0')}`;
   }
 
+  // Socios de la sociedad — colores alineados con las opciones del select
+  // "Pagado por" en Notion (DB "Gastos del local"). Agregar/quitar un socio
+  // aquí es el único cambio necesario: el resto del bloque es genérico.
+  const SOCIOS = [
+    { nombre: 'Mati',   bar: 'rgba(220,38,38,0.75)',   solid: '#dc2626', bg: 'rgba(220,38,38,0.12)'   },
+    { nombre: 'Willy',  bar: 'rgba(13,138,82,0.75)',   solid: 'var(--green)', bg: 'rgba(13,138,82,0.12)' },
+    { nombre: 'Miguel', bar: 'rgba(219,39,119,0.75)',  solid: '#db2777', bg: 'rgba(219,39,119,0.12)' }
+  ];
+  const NOMBRES_SOCIOS = SOCIOS.map(s => s.nombre);
+  const socioStyle = nombre => SOCIOS.find(s => s.nombre === nombre);
+
   const now        = new Date();
   const lastMonday = mondayOf(now);
-  // Solo filas con responsable asignado (Mati/Willy) definen el inicio del rango.
-  // Registros sin "pagado" válido (ver alerta más abajo) no deben arrastrar el
-  // gráfico a fechas anteriores al primer gasto real.
-  const assignedRows = allRows.filter(r => r.pagado === 'Mati' || r.pagado === 'Willy');
+  // Solo filas con responsable asignado (algún socio de SOCIOS) definen el
+  // inicio del rango. Registros sin "pagado" válido (ver alerta más abajo)
+  // no deben arrastrar el gráfico a fechas anteriores al primer gasto real.
+  const assignedRows = allRows.filter(r => NOMBRES_SOCIOS.includes(r.pagado));
   const firstDate  = (assignedRows.length ? assignedRows : allRows).map(r => r.fecha).sort()[0];
   const firstMonday = mondayOf(new Date(firstDate + 'T00:00:00Z'));
 
@@ -1352,9 +1363,9 @@ async function renderSociedad() {
     weeks.push(new Date(d));
   }
 
-  const matiTotals  = [];
-  const willyTotals = [];
-  const cumulative  = [];
+  const totalsBySocio = {};
+  NOMBRES_SOCIOS.forEach(n => totalsBySocio[n] = []);
+  const cumulative = [];
   let running = 0;
 
   for (const mon of weeks) {
@@ -1363,11 +1374,13 @@ async function renderSociedad() {
       const rd = new Date(r.fecha + 'T00:00:00Z');
       return rd >= mon && rd <= sun;
     });
-    const mati  = weekRows.filter(r => r.pagado === 'Mati').reduce((a, r) => a + r.costo, 0);
-    const willy = weekRows.filter(r => r.pagado === 'Willy').reduce((a, r) => a + r.costo, 0);
-    matiTotals.push(mati);
-    willyTotals.push(willy);
-    running += mati + willy;
+    let weekTotal = 0;
+    NOMBRES_SOCIOS.forEach(n => {
+      const total = weekRows.filter(r => r.pagado === n).reduce((a, r) => a + r.costo, 0);
+      totalsBySocio[n].push(total);
+      weekTotal += total;
+    });
+    running += weekTotal;
     cumulative.push(running);
   }
 
@@ -1386,26 +1399,16 @@ async function renderSociedad() {
       data: {
         labels,
         datasets: [
-          {
+          ...SOCIOS.map(s => ({
             type: 'bar',
-            label: 'Mati',
-            data: matiTotals,
-            backgroundColor: 'rgba(13,138,82,0.75)',
+            label: s.nombre,
+            data: totalsBySocio[s.nombre],
+            backgroundColor: s.bar,
             borderRadius: 4,
             borderSkipped: false,
             stack: 'gastos',
             yAxisID: 'y'
-          },
-          {
-            type: 'bar',
-            label: 'Willy',
-            data: willyTotals,
-            backgroundColor: 'rgba(8,145,178,0.75)',
-            borderRadius: 4,
-            borderSkipped: false,
-            stack: 'gastos',
-            yAxisID: 'y'
-          },
+          })),
           {
             type: 'line',
             label: 'Acumulado',
@@ -1470,7 +1473,7 @@ async function renderSociedad() {
   }
 
   // Alerta: filas sin pagado válido (no aparecen en ningún gráfico)
-  const sinPagado = allRows.filter(r => r.pagado !== 'Mati' && r.pagado !== 'Willy');
+  const sinPagado = allRows.filter(r => !NOMBRES_SOCIOS.includes(r.pagado));
   const alertEl = document.getElementById('sociedad-alert');
   if (alertEl) {
     if (sinPagado.length > 0) {
@@ -1488,19 +1491,18 @@ async function renderSociedad() {
   }
 
   // Pie chart — porcentaje por socio
-  const matiTotal_all  = allRows.filter(r => r.pagado === 'Mati').reduce((a,r)=>a+r.costo,0);
-  const willyTotal_all = allRows.filter(r => r.pagado === 'Willy').reduce((a,r)=>a+r.costo,0);
+  const totalesPorSocio = SOCIOS.map(s => allRows.filter(r => r.pagado === s.nombre).reduce((a,r)=>a+r.costo,0));
   const ctxPie = document.getElementById('chart-sociedad-pie');
   if (ctxPie) {
     if (window.sociedadPieChart) window.sociedadPieChart.destroy();
     window.sociedadPieChart = new Chart(ctxPie, {
       type: 'doughnut',
       data: {
-        labels: ['Mati', 'Willy'],
+        labels: NOMBRES_SOCIOS,
         datasets: [{
-          data: [matiTotal_all, willyTotal_all],
-          backgroundColor: ['rgba(13,138,82,0.8)', 'rgba(8,145,178,0.8)'],
-          borderColor: ['#ffffff','#ffffff'],
+          data: totalesPorSocio,
+          backgroundColor: SOCIOS.map(s => s.bar.replace(',0.75)', ',0.8)')),
+          borderColor: SOCIOS.map(() => '#ffffff'),
           borderWidth: 3,
           hoverOffset: 6
         }]
@@ -1571,9 +1573,9 @@ async function renderSociedad() {
     if (txData.length === 0) {
       listEl.innerHTML = '<div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Sin transacciones</div>';
     } else {
-      const matiTotal  = txData.filter(r => r.pagado === 'Mati').reduce((a,r)=>a+r.costo, 0);
-      const willyTotal = txData.filter(r => r.pagado === 'Willy').reduce((a,r)=>a+r.costo, 0);
-      const total = matiTotal + willyTotal;
+      const totalesTxPorSocio = SOCIOS.map(s => txData.filter(r => r.pagado === s.nombre).reduce((a,r)=>a+r.costo, 0));
+      const total = totalesTxPorSocio.reduce((a,v)=>a+v, 0);
+      const footerSocios = SOCIOS.map((s,i) => `<span style="color:${s.solid};font-weight:600">${s.nombre}</span> ${fmtFull(totalesTxPorSocio[i])}`).join(' &nbsp;·&nbsp; ');
       listEl.innerHTML = `<div style="overflow:hidden;border-radius:6px;border:1px solid var(--border)">
         <table class="tx-table" style="font-size:13px;table-layout:fixed;width:100%;margin:0">
           <colgroup>
@@ -1593,10 +1595,13 @@ async function renderSociedad() {
               const [,_m,_d] = r.fecha.split('-');
               const _mn = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
               const _f = _d + ' ' + _mn[parseInt(_m,10)-1];
+              const style = socioStyle(r.pagado);
+              const bg = style ? style.bg : 'rgba(0,0,0,0.06)';
+              const fg = style ? style.solid : 'var(--text-secondary)';
               return `<tr>
               <td style="font-family:'DM Mono';font-size:12px;white-space:nowrap;color:var(--text-secondary)">${_f}</td>
               <td title="${r.concepto}">${r.concepto}</td>
-              <td><span style="font-size:11px;padding:2px 5px;border-radius:4px;background:${r.pagado==='Mati'?'rgba(13,138,82,0.12)':'rgba(8,145,178,0.12)'};color:${r.pagado==='Mati'?'var(--green)':'#0891b2'};white-space:nowrap">${r.pagado}</span></td>
+              <td><span style="font-size:11px;padding:2px 5px;border-radius:4px;background:${bg};color:${fg};white-space:nowrap">${r.pagado}</span></td>
               <td style="text-align:right;font-family:'DM Mono';font-size:12px;white-space:nowrap">${fmtFull(r.costo)}</td>
             </tr>`;
             }).join('')}
@@ -1604,7 +1609,7 @@ async function renderSociedad() {
           <tfoot>
             <tr style="border-top:2px solid var(--border)">
               <td colspan="4" style="padding-top:8px;padding-bottom:4px;font-size:11px;color:var(--text-secondary)">
-                <span style="color:var(--green);font-weight:600">Mati</span> ${fmtFull(matiTotal)} &nbsp;·&nbsp; <span style="color:#0891b2;font-weight:600">Willy</span> ${fmtFull(willyTotal)} &nbsp;·&nbsp; <strong>Total ${fmtFull(total)}</strong>
+                ${footerSocios} &nbsp;·&nbsp; <strong>Total ${fmtFull(total)}</strong>
               </td>
             </tr>
           </tfoot>
