@@ -1,3 +1,25 @@
+## [2026-08-04] (2) Fix superposicion de datalabels en pie chart de Sociedad
+
+**Contexto:** al agregar a Miguel como tercer socio (ver [2026-08-04] (1)),
+el pie chart de porcentaje por socio (tab Sociedad) mostraba las etiquetas
+externas (nombre + porcentaje + monto, 3 lineas) superpuestas con la leyenda
+ubicada debajo del grafico. Con 2 socios el padding inferior de 10px del
+canvas alcanzaba; con 3 socios las etiquetas de 3 lineas se salian del area
+de dibujo y pisaban la leyenda.
+
+**Decision:** agregar `clamp: true` a la config de datalabels
+(chartjs-plugin-datalabels), que restringe la posicion final de la etiqueta
+al area del canvas aunque anchor/align/offset la empujarian mas afuera.
+Se subio ademas el padding inferior del layout de 10 a 40px para dar mas
+aire entre el grafico y la leyenda, y se redujo el offset de 10 a 8.
+
+**Implementacion:** `js/app.js`, config de `window.sociedadPieChart`
+(seccion "Pie chart — porcentaje por socio" dentro de renderSociedad()).
+
+**Alternativas descartadas:** acortar el texto de la etiqueta (quitar linea
+de monto o porcentaje) — se prefirio mantener la info completa y resolver
+via clamp/padding, que es mas robusto ante un cuarto socio futuro.
+
 ## [2026-08-04] (1) Soporte de tercer socio (Miguel) en graficos de Talho Argentino
 
 **Contexto:** se sumo un tercer socio al negocio Talho Argentino (Miguel),
