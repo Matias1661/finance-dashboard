@@ -1,3 +1,12 @@
+## 2026-08-04 (3) — Rediseño de datalabels del pie de Sociedad (etiquetas internas)
+
+- js/app.js: el fix (2) (clamp + padding) no alcanzo — Willy (71.3%) sigue
+  cayendo sobre la leyenda y Miguel se cortaba arriba. Se reemplazan las
+  etiquetas externas por etiquetas dentro del anillo (solo %, blanco con
+  stroke oscuro). Nombre completo → leyenda; monto exacto → tooltip.
+  Slices <6% no muestran etiqueta interna. Layout padding vuelto a 10px.
+- Ver docs/DECISIONS.md [2026-08-04] (3).
+
 ## 2026-08-04 (2) — Fix superposicion de etiquetas en pie chart de Sociedad
 
 - js/app.js: pie chart "porcentaje por socio" (tab Sociedad) — agregado
