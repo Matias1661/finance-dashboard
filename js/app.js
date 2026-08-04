@@ -1511,7 +1511,7 @@ async function renderSociedad() {
       options: {
         responsive: true,
         cutout: '60%',
-        layout: { padding: { top: 30, bottom: 40, left: 60, right: 60 } },
+        layout: { padding: { top: 10, bottom: 10, left: 10, right: 10 } },
         plugins: {
           legend: {
             display: true,
@@ -1533,17 +1533,25 @@ async function renderSociedad() {
             }
           },
           datalabels: {
-            anchor: 'end',
-            align: 'end',
-            offset: 8,
-            clamp: true,
-            color: '#1a1a17',
-            font: { family: 'DM Sans', size: 12, weight: '600' },
+            // Etiquetas dentro del anillo: quedan siempre contenidas en el
+            // propio arco, sin riesgo de superponerse con la leyenda de abajo
+            // (a diferencia de las etiquetas externas, que se rompían al
+            // sumar un tercer/cuarto socio). El monto exacto queda en el tooltip.
+            anchor: 'center',
+            align: 'center',
+            color: '#ffffff',
+            font: { family: 'DM Sans', size: 12, weight: '700' },
+            textStrokeColor: 'rgba(0,0,0,0.25)',
+            textStrokeWidth: 2,
             formatter: (value, ctx) => {
               const total = ctx.dataset.data.reduce((a, v) => a + v, 0);
-              const pct = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
-              const name = ctx.chart.data.labels[ctx.dataIndex];
-              return name + '\n' + pct + '%\n' + fmtFull(value);
+              const pct = total > 0 ? (value / total) * 100 : 0;
+              // Slices muy chicas (<6%) no muestran etiqueta interna para
+              // evitar texto amontonado; el dato sigue disponible en la
+              // leyenda y el tooltip. Una sola línea (solo %) para que
+              // siempre entre dentro del arco, incluso en slices angostas.
+              if (pct < 6) return '';
+              return pct.toFixed(1) + '%';
             },
             textAlign: 'center'
           }
