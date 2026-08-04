@@ -1,3 +1,11 @@
+## 2026-08-04 (2) — Fix superposicion de etiquetas en pie chart de Sociedad
+
+- js/app.js: pie chart "porcentaje por socio" (tab Sociedad) — agregado
+  `clamp: true` a datalabels para que las etiquetas no se salgan del area
+  del canvas y pisen la leyenda. Padding inferior del layout: 10px → 40px.
+  Offset de datalabels: 10 → 8.
+- Ver docs/DECISIONS.md [2026-08-04] (2).
+
 ## 2026-08-04 (1) — Soporte de tercer socio (Miguel) en tab Sociedad
 
 - js/app.js (renderSociedad()): reemplazados los 4 bloques hardcodeados a
