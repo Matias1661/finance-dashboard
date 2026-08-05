@@ -1,6 +1,97 @@
 {
-  "generated_at": "2026-08-05 11:40",
+  "generated_at": "2026-08-05 13:09",
   "movimientos": [
+    {
+      "fecha": "2026-08-04",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-04",
+      "concepto": "RECIBO VIVAGYM",
+      "monto": -34.9,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-04",
+      "concepto": "MGP*Vinted",
+      "monto": 7.55,
+      "categoria": "Otros",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-04",
+      "concepto": "MOMBASA CAF",
+      "monto": -18,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-04",
+      "concepto": "www.groupon.es",
+      "monto": -32.49,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-03",
+      "concepto": "SABADELL CONSUMER",
+      "monto": -218.12,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-03",
+      "concepto": "PAYPAL *PAGO 3 PL",
+      "monto": -40.25,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-03",
+      "concepto": "SANSE I",
+      "monto": -24.37,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-03",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 90,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-03",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 1500,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-03",
+      "concepto": "Gastos conjuntos",
+      "monto": -100,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-03",
+      "concepto": "Guille",
+      "monto": -400,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-03",
+      "concepto": "TRASPASO",
+      "monto": 40,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-08-02",
       "concepto": "BIZUM ENVIADO",
@@ -138,8 +229,8 @@
       "fecha": "2026-07-30",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -12.9,
-      "categoria": "Tarjeta",
-      "nota": null
+      "categoria": "Departamento",
+      "nota": "Compra IKEA"
     },
     {
       "fecha": "2026-07-30",
@@ -677,8 +768,8 @@
       "fecha": "2026-07-07",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -15.18,
-      "categoria": "Tarjeta",
-      "nota": null
+      "categoria": "Departamento",
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2026-07-07",
@@ -950,8 +1041,8 @@
       "fecha": "2026-06-30",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -12.9,
-      "categoria": "Tarjeta",
-      "nota": null
+      "categoria": "Departamento",
+      "nota": "Compra IKEA"
     },
     {
       "fecha": "2026-06-30",
@@ -1587,8 +1678,8 @@
       "fecha": "2026-06-05",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -15.18,
-      "categoria": "Tarjeta",
-      "nota": null
+      "categoria": "Departamento",
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2026-06-05",
@@ -1699,8 +1790,8 @@
       "fecha": "2026-06-01",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -12.9,
-      "categoria": "Tarjeta",
-      "nota": null
+      "categoria": "Departamento",
+      "nota": "Compra IKEA"
     },
     {
       "fecha": "2026-06-01",
@@ -2518,8 +2609,8 @@
       "fecha": "2026-05-06",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -15.18,
-      "categoria": "Tarjeta",
-      "nota": null
+      "categoria": "Departamento",
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2026-05-06",
@@ -2644,8 +2735,8 @@
       "fecha": "2026-05-01",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -12.9,
-      "categoria": "Otros",
-      "nota": null
+      "categoria": "Departamento",
+      "nota": "Compra IKEA"
     },
     {
       "fecha": "2026-05-01",
@@ -3373,7 +3464,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -15.18,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2026-04-09",
@@ -3604,7 +3695,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -12.9,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Compra IKEA"
     },
     {
       "fecha": "2026-04-01",
@@ -4149,8 +4240,8 @@
       "fecha": "2026-03-06",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -43.39,
-      "categoria": "Gastos coche",
-      "nota": null
+      "categoria": "Departamento",
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2026-03-05",
@@ -4240,8 +4331,8 @@
       "fecha": "2026-03-03",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -12.9,
-      "categoria": "Otros",
-      "nota": null
+      "categoria": "Departamento",
+      "nota": "Compra IKEA"
     },
     {
       "fecha": "2026-03-03",
@@ -4899,7 +4990,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -29.57,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2026-02-06",
@@ -5157,8 +5248,8 @@
       "fecha": "2026-01-31",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -12.9,
-      "categoria": "Compras",
-      "nota": null
+      "categoria": "Departamento",
+      "nota": "Compra IKEA"
     },
     {
       "fecha": "2026-01-31",
@@ -5865,7 +5956,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -19.08,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2026-01-07",
@@ -6537,7 +6628,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -63.71,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2025-12-06",
@@ -7544,8 +7635,8 @@
       "fecha": "2025-11-06",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -25.26,
-      "categoria": "Otros",
-      "nota": null
+      "categoria": "Departamento",
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2025-11-06",
@@ -8525,7 +8616,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -25.26,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2025-10-08",
@@ -9519,7 +9610,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -25.26,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2025-09-06",
@@ -10597,7 +10688,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -25.26,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2025-08-06",
@@ -11430,7 +11521,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -25.26,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2025-07-08",
@@ -12578,7 +12669,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -25.33,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2025-06-06",
@@ -13586,7 +13677,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -16.68,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2025-05-07",
@@ -14573,7 +14664,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -16.68,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2025-04-08",
@@ -15336,7 +15427,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -16.68,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2025-03-06",
