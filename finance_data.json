@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-05 13:11",
+  "generated_at": "2026-08-05 15:03",
   "movimientos": [
     {
       "fecha": "2026-08-04",
@@ -13,49 +13,49 @@
       "concepto": "RECIBO VIVAGYM",
       "monto": -34.9,
       "categoria": "Salud y Belleza",
-      "nota": null
+      "nota": "Cuota mensual gimnasio"
     },
     {
       "fecha": "2026-08-04",
       "concepto": "MGP*Vinted",
       "monto": 7.55,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Reembolso Short Adidas (cargo -7,55 del 24/07)"
     },
     {
       "fecha": "2026-08-04",
       "concepto": "MOMBASA CAF",
       "monto": -18,
       "categoria": "Comer afuera",
-      "nota": null
+      "nota": "Revisado"
     },
     {
       "fecha": "2026-08-04",
       "concepto": "www.groupon.es",
       "monto": -32.49,
       "categoria": "Comer afuera",
-      "nota": null
+      "nota": "Revisado"
     },
     {
       "fecha": "2026-08-03",
       "concepto": "SABADELL CONSUMER",
       "monto": -218.12,
       "categoria": "Gastos coche",
-      "nota": null
+      "nota": "Revisado"
     },
     {
       "fecha": "2026-08-03",
       "concepto": "PAYPAL *PAGO 3 PL",
       "monto": -40.25,
       "categoria": "Gastos moto",
-      "nota": null
+      "nota": "Cuota 1/3 Martimotos, pago en 3 plazos PayPal (pedido EAKLIYDQT, total 120,74)"
     },
     {
       "fecha": "2026-08-03",
       "concepto": "SANSE I",
       "monto": -24.37,
       "categoria": "Combustible",
-      "nota": null
+      "nota": "Revisado"
     },
     {
       "fecha": "2026-08-03",
@@ -76,7 +76,7 @@
       "concepto": "Gastos conjuntos",
       "monto": -100,
       "categoria": "Gastos en conjunto",
-      "nota": null
+      "nota": "Revisado"
     },
     {
       "fecha": "2026-08-03",
@@ -18552,7 +18552,7 @@
       {
         "mes": "2026-08",
         "peerberry": 10278.1,
-        "myinvestor": 0
+        "myinvestor": 2950
       }
     ],
     "rendimiento": [
@@ -18654,7 +18654,7 @@
       {
         "mes": "2026-08",
         "peerberry": 0.24,
-        "myinvestor": 0
+        "myinvestor": 0.0
       }
     ],
     "ganancia": [
@@ -18845,7 +18845,7 @@
         "peerberry_aportes": null,
         "myinvestor_aportes": null,
         "peerberry_capital": 10278.1,
-        "myinvestor_capital": null
+        "myinvestor_capital": 2950
       }
     ],
     "kpi": {
@@ -19110,6 +19110,18 @@
         "benchmark": null,
         "benchmark_acumulado": null,
         "sin_aportes_pb": true,
+        "sin_aportes_mi": false
+      },
+      {
+        "mes": "2026-08",
+        "peerberry": 0.24,
+        "myinvestor": 0.0,
+        "total": 0.19,
+        "acumulado": 20.4,
+        "acumulado_anio": 11.24,
+        "benchmark": null,
+        "benchmark_acumulado": null,
+        "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
     ]
