@@ -1,3 +1,14 @@
+## 2026-08-05 (2) — Fix Ganancia semanal Peerberry (Profit acumulado -> Interest income)
+
+- scripts/process_peerberry_emails.py: EXTRACTION_PROMPT corregido. Ganancia
+  ahora extrae "Interest income" de la seccion Account summary del email, no
+  "Profit" de la seccion Portfolio (que es un acumulado historico desde el
+  inicio de la cuenta, no la ganancia del periodo).
+- DB Notion Rendimiento Inversiones: recalculadas las filas semanales
+  (Periodo=Semanal, Plataforma=Peerberry) desde 2026-03-02 hasta 2026-08-03
+  con el Interest income real de cada email original.
+- Ver docs/DECISIONS.md [2026-08-05] (2).
+
 ## 2026-08-05 — Categorización de cuotas IKEA (financiación fija + tarjeta revolving)
 
 - DB Notion Movimientos: corregidos 7 movimientos de la financiación fija
