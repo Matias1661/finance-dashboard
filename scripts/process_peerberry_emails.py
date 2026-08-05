@@ -1,9 +1,15 @@
 """
 Reemplazo del flujo de Relay/Make para Peerberry: lee el email semanal
-"Account summary overview" (info@peerberry.com), extrae Capital total,
-Ganancia y Fecha reporte de la seccion Portfolio con Claude (prompt ya
-validado en Make el 13/07/2026), y crea la fila correspondiente en la DB
-Notion "Rendimiento Inversiones".
+"Account summary overview" (info@peerberry.com), extrae Ganancia (Interest
+income, seccion Account summary), Capital total (Invested funds +
+Available balance, seccion Portfolio) y Fecha reporte (Portfolio updated
+on) con Claude, y crea la fila correspondiente en la DB Notion
+"Rendimiento Inversiones".
+
+FIX 2026-08-05: el prompt original (validado en Make el 13/07/2026) usaba
+"Profit" de la seccion Portfolio para Ganancia. Ese campo es un acumulado
+historico de Peerberry, no la ganancia del periodo — ver docs/DECISIONS.md
+[2026-08-05] (2).
 
 Autenticacion con Gmail: OAuth 2.0 con refresh_token, NO cuenta de servicio.
 matiaso81@gmail.com es una cuenta personal, no Google Workspace, y las
@@ -50,9 +56,9 @@ NOTION_HEADERS = {
     "Content-Type": "application/json",
 }
 
-EXTRACTION_PROMPT = """Extrae del email semanal de Peerberry: Capital total = Invested funds + Available balance de la seccion Portfolio (NUNCA Balance on), Ganancia del periodo, Fecha reporte (YYYY-MM-DD).
+EXTRACTION_PROMPT = """Extrae del email semanal de Peerberry: Ganancia del periodo, Capital total = Invested funds + Available balance de la seccion Portfolio (NUNCA Balance on), Fecha reporte (YYYY-MM-DD).
 
-Este email de Peerberry tiene DOS secciones con fechas y montos distintos: (1) un resumen de cuenta arriba, con varias lineas 'Balance on <fecha>' e 'Interest income'; (2) una seccion 'Portfolio' mas abajo, con 'Portfolio updated on <fecha>', 'Invested funds', 'Available balance' y 'Profit'. IGNORA COMPLETAMENTE la seccion (1). Usa UNICAMENTE la seccion Portfolio: Capital total = Invested funds + Available balance. Ganancia = el valor de 'Profit' (NO 'Interest income'). Fecha reporte = la fecha de 'Portfolio updated on' (NO ninguna fecha 'Balance on'), formato YYYY-MM-DD.
+Este email de Peerberry tiene DOS secciones con fechas y montos distintos: (1) un resumen de cuenta arriba ('Account summary'), con varias lineas 'Balance on <fecha>' e 'Interest income'; (2) una seccion 'Portfolio' mas abajo, con 'Portfolio updated on <fecha>', 'Invested funds', 'Available balance' y 'Profit'. OJO: 'Profit' en la seccion Portfolio es un acumulado historico desde el inicio de la cuenta, NO la ganancia del periodo — nunca lo uses para Ganancia. Ganancia = el valor de 'Interest income' de la seccion (1) Account summary. Capital total = Invested funds + Available balance de la seccion (2) Portfolio (nunca 'Balance on'). Fecha reporte = la fecha de 'Portfolio updated on' de la seccion (2) (NO ninguna fecha 'Balance on'), formato YYYY-MM-DD.
 
 Respondé ÚNICAMENTE con un JSON valido, sin texto adicional, sin backticks, con este formato exacto:
 {"ganancia": number, "capital_total": number, "fecha_reporte": "YYYY-MM-DD"}"""
