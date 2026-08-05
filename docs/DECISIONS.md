@@ -1,3 +1,34 @@
+## [2026-08-05] (2) Corrección de Ganancia en filas semanales de Peerberry
+
+**Contexto:** se detecto que la curva de rendimiento de Peerberry no servia
+para comparar contra Cartera/MSCI World: el campo Ganancia de las filas
+semanales (Periodo=Semanal, DB Rendimiento Inversiones) crecia de forma
+monotonica en vez de reflejar la ganancia de cada semana.
+
+**Causa raiz:** scripts/process_peerberry_emails.py, EXTRACTION_PROMPT,
+instruye extraer Ganancia = campo "Profit" de la seccion Portfolio del
+email. Verificado contra el email original: ese "Profit" es un acumulado
+historico desde el inicio de la cuenta (dato que Peerberry manda asi, no
+un calculo propio). La seccion "Account summary" del mismo email trae por
+separado "Interest income", que si es la ganancia del periodo (verificado:
+Profit_semana_actual - Profit_semana_anterior = Interest income de esa
+semana, en las 4 semanas de marzo 2026 revisadas).
+
+**Decision:** Ganancia (filas semanales) = "Interest income" de la seccion
+Account summary. Capital total sigue igual (Invested funds + Available
+balance, seccion Portfolio) — eso ya estaba correcto.
+
+**Implementacion:** edicion quirurgica del EXTRACTION_PROMPT en
+process_peerberry_emails.py. Recalculo retroactivo de las filas semanales
+ya cargadas en Notion desde 2026-03-02 hasta 2026-08-03 usando el valor de
+"Interest income" de cada email original.
+
+**Alternativas descartadas:**
+- Calcular Ganancia como delta entre Profit consecutivos en vez de leer
+  Interest income directamente: mismo resultado numerico, pero mas fragil
+  (depende de no perder ninguna fila intermedia y de que no haya reinicios
+  del contador de Profit por parte de Peerberry).
+
 ## [2026-08-05] Reglas de categorización para cuotas recurrentes IKEA (CAIXABANK PAYMENT)
 
 **Contexto:** se identificaron dos productos financieros distintos de IKEA
