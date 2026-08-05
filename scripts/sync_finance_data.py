@@ -422,23 +422,26 @@ def _extract_rendimiento_row(page):
 
 
 def _peerberry_semanal_con_retorno(semanal_peerberry_rows):
-    """Corrige el bug documentado en DECISIONS.md [2026-07-20]: el campo
-    'Ganancia' de las filas Semanal de Peerberry es el Profit acumulado desde
-    el origen de la cuenta (confirmado por DECISIONS.md 2026-07-06: la cadena
-    737,82 -> 745,70 -> 751,33 -> 752,99 ya validada contra los mails), no la
-    ganancia de esa semana. Sumar esas filas crudas (como hacia el codigo
-    anterior) inflaba brutalmente el mes cuando no habia fila Mensual de
-    respaldo (mayo-julio 2026: 2.841 EUR y 55% de rentabilidad en vez de
-    ~31 EUR y ~0,6%).
+    """FIX 2026-08-05 (ver DECISIONS.md [2026-08-05] (4)): esta funcion asumia
+    que 'Ganancia' en las filas Semanal de Peerberry era el Profit acumulado
+    desde el origen de la cuenta (bug documentado en DECISIONS.md
+    [2026-07-20]) y calculaba ganancia_real como delta contra la fila
+    anterior de la serie. Desde el fix de DECISIONS.md [2026-08-05] (2), el
+    prompt de extraccion en process_peerberry_emails.py guarda directamente
+    el Interest income de la semana (ya es la ganancia del periodo, no un
+    acumulado), y las filas historicas en Notion se recalcularon con el
+    mismo criterio. Si esta funcion siguiera restando la fila anterior,
+    aplicaria la correccion dos veces y daria numeros sin sentido. Ahora
+    ganancia_real = r['ganancia'] tal cual viene de Notion.
 
     Ordena las filas por 'Fecha reporte' y calcula para cada una:
-    - ganancia_real: delta del Profit acumulado respecto a la fila anterior
-      de la serie (None en la primera fila, sin referencia previa -- ese caso
-      solo afecta a meses ya cubiertos por una fila Mensual de respaldo).
+    - ganancia_real: la Ganancia de esa semana, directa (ya no hay delta que
+      calcular).
     - retorno: ganancia_real / saldo medio semanal (promedio de Capital total
-      entre la fila anterior y la actual). Encadenar estos retornos semanales
-      (TWR) dentro de un mes evita que un aporte grande a mitad de mes
-      distorsione el % mensual, a diferencia de promediar solo capital de
+      entre la fila anterior y la actual), None si no hay fila anterior con
+      capital (primera semana de la serie). Encadenar estos retornos
+      semanales (TWR) dentro de un mes evita que un aporte grande a mitad de
+      mes distorsione el % mensual, a diferencia de promediar solo capital de
       inicio/fin de mes (limitacion aceptada para MyInvestor en DECISIONS.md
       2026-07-08 por falta de granularidad semanal -- Peerberry si la tiene).
     """
@@ -446,14 +449,12 @@ def _peerberry_semanal_con_retorno(semanal_peerberry_rows):
     out = []
     prev = None
     for r in rows_sorted:
-        ganancia_real = None
+        ganancia_real = r["ganancia"]
         retorno = None
-        if prev is not None and r["ganancia"] is not None and prev["ganancia"] is not None:
-            ganancia_real = r["ganancia"] - prev["ganancia"]
-            if prev["capital"] is not None and r["capital"] is not None:
-                avg_cap = (prev["capital"] + r["capital"]) / 2
-                if avg_cap:
-                    retorno = ganancia_real / avg_cap
+        if prev is not None and ganancia_real is not None and prev["capital"] is not None and r["capital"] is not None:
+            avg_cap = (prev["capital"] + r["capital"]) / 2
+            if avg_cap:
+                retorno = ganancia_real / avg_cap
         out.append({**r, "ganancia_real": ganancia_real, "retorno": retorno})
         prev = r
     return out
@@ -475,11 +476,12 @@ def _aggregate_rendimiento_by_month(pages):
     - Aportes: se suman igual que Ganancia. Las filas Mensuales cargadas
       antes de este cambio no tienen Aportes (aportes_known=False); el
       consumidor puede aproximarlo como delta de capital menos ganancia.
-    - Peerberry Semanal: la Ganancia sumada es 'ganancia_real' (delta del
-      Profit acumulado, ver _peerberry_semanal_con_retorno), no el campo
-      crudo. Ademas se guarda 'retornos_semanales' (lista de retorno por
-      semana) para permitir un TWR encadenado en vez del promedio de 2 puntos
-      cuando se consuma este mes (fix DECISIONS.md 2026-07-20).
+    - Peerberry Semanal: la Ganancia sumada es 'ganancia_real', que desde el
+      fix de DECISIONS.md [2026-08-05] (4) es igual al campo crudo (ya no
+      hace falta restar la fila anterior, ver _peerberry_semanal_con_retorno).
+      Ademas se guarda 'retornos_semanales' (lista de retorno por semana)
+      para permitir un TWR encadenado en vez del promedio de 2 puntos cuando
+      se consuma este mes (fix DECISIONS.md 2026-07-20, vigente).
 
     Devuelve { mes: { "peerberry": {...}, "myinvestor": {...} } }.
     """
