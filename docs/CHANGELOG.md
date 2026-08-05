@@ -1,3 +1,18 @@
+## 2026-08-05 — Categorización de cuotas IKEA (financiación fija + tarjeta revolving)
+
+- DB Notion Movimientos: corregidos 7 movimientos de la financiación fija
+  IKEA (-12,90 €, día 30, ene-jul 2026) → Categoria=Departamento,
+  Nota="Compra IKEA".
+- DB Notion Movimientos: corregidos 17 movimientos de la tarjeta revolving
+  IKEA (importe variable, día 5-9, mar 2025-jul 2026) → Categoria=
+  Departamento, Nota="Tarjeta IKEA". Verificado contra capturas del
+  calendario de cuotas de la app de la entidad.
+- DB Notion Prompts ("Pasar extracto bancario a Notion"): agregadas dos
+  reglas duras para CAIXABANK PAYMENT distinguidas por día de cargo (día
+  30 = financiación fija; días 5-9 = revolving), para categorizar
+  automáticamente las próximas cuotas.
+- Ver docs/DECISIONS.md [2026-08-05].
+
 ## 2026-08-04 (3) — Rediseño de datalabels del pie de Sociedad (etiquetas internas)
 
 - js/app.js: el fix (2) (clamp + padding) no alcanzo — Willy (71.3%) sigue
