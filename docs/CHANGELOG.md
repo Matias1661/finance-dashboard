@@ -1,3 +1,11 @@
+## 2026-08-05 (4) — Ajuste sync_finance_data.py: Ganancia semanal Peerberry ya no se resta contra la fila anterior
+
+- scripts/sync_finance_data.py: `_peerberry_semanal_con_retorno()` ya no
+  calcula delta (ganancia_real = r["ganancia"] directo). Necesario porque
+  el fix (2) de hoy ya corrigio el dato en origen (Notion) y la resta
+  duplicaba la correccion.
+- Ver docs/DECISIONS.md [2026-08-05] (4).
+
 ## 2026-08-05 (3) — Correccion retroactiva completa y archivado de duplicados Peerberry
 
 - DB Notion Rendimiento Inversiones: las 23 filas semanales de Peerberry
