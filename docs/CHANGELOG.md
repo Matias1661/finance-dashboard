@@ -1,3 +1,16 @@
+## 2026-08-05 (3) — Correccion retroactiva completa y archivado de duplicados Peerberry
+
+- DB Notion Rendimiento Inversiones: las 23 filas semanales de Peerberry
+  (2026-03-02 a 2026-08-03) recalculadas con el Interest income real de
+  cada email (antes tenian el Profit acumulado de Portfolio, ver (2)).
+- Nueva DB Notion "Staging - Filas archivadas" (bajo Finance Tracker) para
+  paginas removidas de otras DBs sin poder borrarlas via API.
+- Movidas ahi 2 filas Mensuales de Peerberry (marzo y abril 2026) que
+  duplicaban informacion ya cubierta por las filas semanales de esos
+  meses. Pendiente: Matias borra la DB de staging manualmente cuando
+  quiera.
+- Ver docs/DECISIONS.md [2026-08-05] (2).
+
 ## 2026-08-05 (2) — Fix Ganancia semanal Peerberry (Profit acumulado -> Interest income)
 
 - scripts/process_peerberry_emails.py: EXTRACTION_PROMPT corregido. Ganancia
