@@ -1,3 +1,33 @@
+## [2026-08-05] (4) Ajuste de sync_finance_data.py tras el fix (2): ya no restar Ganancia semanal Peerberry contra la fila anterior
+
+**Contexto:** el fix (2) de esta misma fecha corrigio el prompt de
+process_peerberry_emails.py para que Ganancia (filas Semanal de Peerberry)
+sea el Interest income de la semana, no el Profit acumulado (bug que
+DECISIONS.md [2026-07-20] ya habia detectado y resuelto de otra forma). Esa
+entrada del 07-20 no se releyo completa antes de implementar el fix (2), lo
+que dejo una inconsistencia: `_peerberry_semanal_con_retorno()` en
+sync_finance_data.py seguia calculando `ganancia_real` como delta contra la
+fila anterior — logica correcta cuando Ganancia era acumulada, pero que
+ahora restaria la correccion dos veces sobre datos ya corregidos en Notion.
+
+**Decision:** `_peerberry_semanal_con_retorno()` ya no calcula delta.
+`ganancia_real = r["ganancia"]` directo. El calculo de `retorno` (para el
+TWR encadenado semanal, fix DECISIONS.md 2026-07-20, sigue vigente) no
+cambia: sigue usando el promedio de Capital total entre la fila anterior y
+la actual.
+
+**Efecto:** el primer valor de la serie semanal (2026-03-02) ya no queda en
+None por falta de referencia previa — ahora contribuye su Ganancia real
+directamente, sin necesitar delta.
+
+**Leccion:** antes de implementar un fix sobre un sintoma ya visto, buscar
+en DECISIONS.md si ya hubo una entrada sobre el mismo campo/bug, no solo
+revisar el encabezado del archivo. Un mismo sintoma (curva de Peerberry
+sin sentido) puede tener ya una causa raiz documentada con una solucion
+distinta a la que parece obvia en el momento.
+
+---
+
 ## [2026-08-05] (2) Corrección de Ganancia en filas semanales de Peerberry
 
 **Contexto:** se detecto que la curva de rendimiento de Peerberry no servia
