@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-05 13:09",
+  "generated_at": "2026-08-05 13:11",
   "movimientos": [
     {
       "fecha": "2026-08-04",
@@ -19,7 +19,7 @@
       "fecha": "2026-08-04",
       "concepto": "MGP*Vinted",
       "monto": 7.55,
-      "categoria": "Otros",
+      "categoria": "Compras",
       "nota": null
     },
     {
@@ -33,7 +33,7 @@
       "fecha": "2026-08-04",
       "concepto": "www.groupon.es",
       "monto": -32.49,
-      "categoria": "A revisar",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -47,7 +47,7 @@
       "fecha": "2026-08-03",
       "concepto": "PAYPAL *PAGO 3 PL",
       "monto": -40.25,
-      "categoria": "Compras",
+      "categoria": "Gastos moto",
       "nota": null
     },
     {
@@ -68,7 +68,7 @@
       "fecha": "2026-08-03",
       "concepto": "TRANSFER. EN DIV.",
       "monto": 1500,
-      "categoria": "Guille",
+      "categoria": "Inversion",
       "nota": null
     },
     {
