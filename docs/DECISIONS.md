@@ -1,3 +1,36 @@
+## [2026-08-05] Reglas de categorización para cuotas recurrentes IKEA (CAIXABANK PAYMENT)
+
+**Contexto:** se identificaron dos productos financieros distintos de IKEA
+que llegan a Notion Movimientos bajo el mismo concepto genérico
+"CAIXABANK PAYMENT", lo que generaba categorización inconsistente
+(Departamento, Tarjeta, Otros, Gastos coche según el mes):
+
+1. Financiación fija: -12,90 €, cargo el día 30 de cada mes, iniciada
+   31/01/2026.
+2. Tarjeta revolving: importe variable según saldo usado (16,68 € a
+   63,71 € históricamente, estabilizada en 15,18 € desde abril 2026),
+   cargo entre el día 5 y el día 9 de cada mes, con historial desde
+   marzo 2025. Verificado contra el "Calendario de cuotas" de la app de
+   la entidad (capturas de Matias): 17 cuotas, importes coincidentes.
+
+**Decisión:** ambos productos se categorizan como Departamento (gasto del
+piso, ya que la compra de origen es mobiliario del hogar), diferenciados
+por nota: "Compra IKEA" para la financiación fija y "Tarjeta IKEA" para la
+revolving. Se corrigieron retroactivamente 7 movimientos (financiación
+fija, ene-jul 2026) y 17 movimientos (tarjeta revolving, mar 2025-jul
+2026).
+
+**Implementación:** dos reglas duras nuevas en el prompt de categorización
+"Pasar extracto bancario a Notion" (DB Notion Prompts), distinguidas por
+día del mes de cargo (día 30 = financiación fija; días 5-9 = revolving),
+ya que el importe de la revolving no es constante y no sirve como
+discriminador.
+
+**Alternativas descartadas:**
+- Usar rango de importe para identificar la revolving — descartado porque
+  el rango histórico (15,18 € a 63,71 €) se solapa con otras categorías
+  legítimas de CAIXABANK PAYMENT (ej. cuota de tarjeta ordinaria).
+
 ## [2026-08-04] (3) Rediseño de datalabels del pie de Sociedad a etiquetas internas
 
 **Contexto:** el fix (2) (clamp:true + mas padding) no resolvio el problema
