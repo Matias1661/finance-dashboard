@@ -1,3 +1,35 @@
+## [2026-08-07] Nueva categoria "Donativos" para donaciones puntuales, separada de "Inversion"
+
+**Contexto:** el concepto "TRASPASO DONATIVO" (donaciones puntuales, sin
+contrapartida ni retorno) estaba categorizado como "Inversion" en Notion
+"Movimientos" y en el prompt de categorizacion. DECISIONS.md ya habia
+identificado (2026-07-06, retiro de "Aportado (12m)") que "Inversion" mezcla
+conceptos heterogeneos, entre ellos donativos, distorsionando el KPI de
+aportes a inversion.
+
+**Decision:** crear categoria "Donativos" como opcion nueva del select
+"Categoria" en la base Notion "Movimientos" (color marron), incluida en el
+analisis principal de gastos (no excluida como "Guille"/"Inversion", ya que
+es salida de dinero real aunque no sea consumo).
+
+**Cambios aplicados:**
+- Notion "Movimientos": schema del select "Categoria" actualizado con la
+  opcion "Donativos".
+- Notion "Movimientos": recategorizados los 2 movimientos historicos de
+  "TRASPASO DONATIVO" (-2.300 EUR del 27/10/2025 y -350 EUR del 08/07/2026),
+  de "Inversion" a "Donativos".
+- Notion "Prompts para Relay": agregada "Donativos" a la lista de categorias
+  validas; agregada regla dura "TRASPASO DONATIVO" -> Donativos; removida
+  esa keyword de la lista semi-dura de "Inversion"; agregada nota en
+  categorias abiertas y en casos especiales.
+
+**Pendiente:** el dashboard (js/app.js, sync_finance_data.py) no requiere
+cambios de codigo — "Donativos" ya cae dentro del calculo estandar de
+ingresos/gastos (que excluye solo "Guille" e "Inversion"). Verificar en el
+proximo sync que el tab Categorias del dashboard la muestre correctamente.
+
+---
+
 ## [2026-08-05] (4) Ajuste de sync_finance_data.py tras el fix (2): ya no restar Ganancia semanal Peerberry contra la fila anterior
 
 **Contexto:** el fix (2) de esta misma fecha corrigio el prompt de
