@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-07 10:35",
+  "generated_at": "2026-08-07 10:38",
   "movimientos": [
     {
       "fecha": "2026-08-06",
@@ -54,7 +54,7 @@
       "fecha": "2026-08-05",
       "concepto": "ARBITRADE MADRID",
       "monto": -2,
-      "categoria": "Gastos coche",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -19217,8 +19217,8 @@
         "total": 0.19,
         "acumulado": 20.47,
         "acumulado_anio": 11.31,
-        "benchmark": 0.07,
-        "benchmark_acumulado": 18.64,
+        "benchmark": 0.1,
+        "benchmark_acumulado": 18.68,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
