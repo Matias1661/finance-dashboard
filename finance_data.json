@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-07 10:34",
+  "generated_at": "2026-08-07 10:35",
   "movimientos": [
     {
       "fecha": "2026-08-06",
@@ -12,14 +12,14 @@
       "fecha": "2026-08-06",
       "concepto": "PAYPAL EUROPE S.",
       "monto": -1818.31,
-      "categoria": "Compras",
+      "categoria": "Guille",
       "nota": null
     },
     {
       "fecha": "2026-08-06",
       "concepto": "TRANSFER. EN DIV.",
       "monto": 450,
-      "categoria": "Guille",
+      "categoria": "Inversion",
       "nota": null
     },
     {
@@ -61,7 +61,7 @@
       "fecha": "2026-08-05",
       "concepto": "www.groupon.es",
       "monto": -9.89,
-      "categoria": "A revisar",
+      "categoria": "Compras",
       "nota": null
     },
     {
@@ -75,14 +75,14 @@
       "fecha": "2026-08-05",
       "concepto": "PAGO TRANSFERENCIAS",
       "monto": -550,
-      "categoria": "A revisar",
+      "categoria": "Inversion",
       "nota": null
     },
     {
       "fecha": "2026-08-05",
       "concepto": "TRANSF. A SU FAVOR",
       "monto": 6298.98,
-      "categoria": "Guille",
+      "categoria": "Inversion",
       "nota": null
     },
     {
@@ -19217,8 +19217,8 @@
         "total": 0.19,
         "acumulado": 20.47,
         "acumulado_anio": 11.31,
-        "benchmark": 0.08,
-        "benchmark_acumulado": 18.65,
+        "benchmark": 0.07,
+        "benchmark_acumulado": 18.64,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
