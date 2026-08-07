@@ -1,3 +1,16 @@
+## 2026-08-07 — Nueva categoria "Donativos" en Movimientos, separada de "Inversion"
+
+- Notion "Movimientos": agregada opcion "Donativos" al select "Categoria".
+- Notion "Movimientos": recategorizados los 2 movimientos historicos de
+  "TRASPASO DONATIVO" (-2.300 EUR 27/10/2025, -350 EUR 08/07/2026), de
+  "Inversion" a "Donativos".
+- Notion "Prompts para Relay": prompt de categorizacion actualizado —
+  "Donativos" agregada a categorias validas y regla dura para
+  "TRASPASO DONATIVO"; removida de la lista de keywords de "Inversion".
+- Sin cambios de codigo: "Donativos" cae dentro del calculo estandar de
+  gastos del dashboard (excluye solo "Guille" e "Inversion").
+- Ver docs/DECISIONS.md [2026-08-07].
+
 ## 2026-08-05 (4) — Ajuste sync_finance_data.py: Ganancia semanal Peerberry ya no se resta contra la fila anterior
 
 - scripts/sync_finance_data.py: `_peerberry_semanal_con_retorno()` ya no
