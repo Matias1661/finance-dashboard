@@ -1,6 +1,104 @@
 {
-  "generated_at": "2026-08-07 10:17",
+  "generated_at": "2026-08-07 10:34",
   "movimientos": [
+    {
+      "fecha": "2026-08-06",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 100,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-06",
+      "concepto": "PAYPAL EUROPE S.",
+      "monto": -1818.31,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-06",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 450,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-05",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-05",
+      "concepto": "CAIXABANK PAYMENT",
+      "monto": -15.35,
+      "categoria": "Departamento",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-05",
+      "concepto": "SANITAS S A SEG.",
+      "monto": -79.97,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-05",
+      "concepto": "Amazon Prime",
+      "monto": -4.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-05",
+      "concepto": "ARBITRADE MADRID",
+      "monto": -2,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-05",
+      "concepto": "www.groupon.es",
+      "monto": -9.89,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-05",
+      "concepto": "E.S.EL JUNCAL-ALC",
+      "monto": -28.05,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-05",
+      "concepto": "PAGO TRANSFERENCIAS",
+      "monto": -550,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-05",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 6298.98,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-05",
+      "concepto": "Heladeras Talho A",
+      "monto": -6723.97,
+      "categoria": "Talho Argentino",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-05",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-08-04",
       "concepto": "TRANSF. A SU FAVOR",
@@ -19119,8 +19217,8 @@
         "total": 0.19,
         "acumulado": 20.47,
         "acumulado_anio": 11.31,
-        "benchmark": 0.07,
-        "benchmark_acumulado": 18.64,
+        "benchmark": 0.08,
+        "benchmark_acumulado": 18.65,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
