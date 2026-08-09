@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-08 09:52",
+  "generated_at": "2026-08-09 09:55",
   "movimientos": [
     {
       "fecha": "2026-08-06",
@@ -19205,8 +19205,8 @@
         "total": 0.0,
         "acumulado": 20.24,
         "acumulado_anio": 11.1,
-        "benchmark": 3.13,
-        "benchmark_acumulado": 18.43,
+        "benchmark": 3.56,
+        "benchmark_acumulado": 18.92,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -19217,7 +19217,7 @@
         "total": 0.19,
         "acumulado": 20.47,
         "acumulado_anio": 11.31,
-        "benchmark": 0.41,
+        "benchmark": 0.0,
         "benchmark_acumulado": 18.92,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
