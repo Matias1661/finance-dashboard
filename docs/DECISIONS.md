@@ -1,3 +1,36 @@
+## [2026-08-15] Tabla "Resumen de promedios por categoría": promedio sobre meses transcurridos reales, no solo meses con movimientos
+
+**Contexto:** el usuario noto que el promedio Ø 2026 de "Donativos" (350€)
+coincidia exactamente con el gasto de julio, pese a haber solo 2 donaciones
+en todo 2026. Causa: `renderCategoryAvgTable()` en `js/charts.js` calculaba
+el promedio dividiendo la suma solo entre los meses que tenian al menos un
+movimiento en esa categoria (`withData.length`), ignorando los meses sin
+gasto. Con un solo mes con datos, el "promedio" terminaba siendo igual al
+valor de ese mes. El mismo sesgo (al alza) afectaba a todas las categorias,
+mas notorio cuanto mas esporadica la categoria.
+
+**Decision:** el promedio ahora se calcula como suma de gasto del periodo /
+meses TRANSCURRIDOS reales (incluye meses sin gasto en el denominador):
+- Ø año anterior: 12 meses fijos (año completo; los datos globales arrancan
+  en dic-2024, por lo que cualquier año anterior completo ya esta cubierto).
+- Ø año actual: meses transcurridos de enero al mes anterior al actual
+  (`now.getMonth()`, 0-indexed = cantidad de meses completos previos),
+  excluyendo el mes en curso por datos incompletos.
+- Si la suma del periodo es 0 (sin movimientos en esa categoria en todo el
+  año), el promedio devuelve `null` (se muestra "—"), igual que antes.
+
+**Cambio aplicado:** `js/charts.js`, funcion `renderCategoryAvgTable()`,
+funcion interna `avg()` reemplazada: antes `avg(year, minMonths)` exigia un
+minimo de meses CON datos; ahora `avg(year, elapsedMonths)` divide siempre
+entre los meses transcurridos del periodo.
+
+**Efecto:** los promedios bajan para categorias esporadicas (ej. Donativos
+2026 pasa de 350€ a 350€/7 ≈ 50€, reflejando que solo hubo gasto en 1 de los
+7 meses transcurridos). Categorias con gasto regular en casi todos los meses
+cambian poco.
+
+---
+
 ## [2026-08-07] Nueva categoria "Donativos" para donaciones puntuales, separada de "Inversion"
 
 **Contexto:** el concepto "TRASPASO DONATIVO" (donaciones puntuales, sin
