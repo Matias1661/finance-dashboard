@@ -522,15 +522,20 @@ function renderCategoryAvgTable(){
       if(k) byMonth[k] = (byMonth[k] || 0) + Math.abs(Number(r.monto));
     });
 
-    const avg = (year, minMonths = 3) => {
+    // Promedio sobre meses TRANSCURRIDOS reales (incluye meses sin gasto en el
+    // denominador), no solo sobre los meses con movimientos. Año anterior: 12
+    // meses fijos (año completo). Año actual: meses de enero al mes anterior
+    // al actual (excluye el mes en curso, con datos incompletos).
+    const avg = (year, elapsedMonths) => {
+      if(elapsedMonths <= 0) return null;
       const months = Object.keys(byMonth).filter(m => m.startsWith(year) && m !== currentMonth);
-      const withData = months.filter(m => byMonth[m] > 0);
-      if(withData.length < minMonths) return null;
-      return withData.reduce((s, m) => s + byMonth[m], 0) / withData.length;
+      const sum = months.reduce((s, m) => s + byMonth[m], 0);
+      if(sum === 0) return null;
+      return sum / elapsedMonths;
     };
 
-    const avgPrevYear = avg(lastYear, 3);
-    const avgThisYear = avg(thisYear, 1); // año actual: mínimo 1 mes
+    const avgPrevYear = avg(lastYear, 12);
+    const avgThisYear = avg(thisYear, now.getMonth()); // meses transcurridos (ene..mes anterior)
     const lastMonthVal = byMonth[prevMonth] || 0;
 
     // Mostrar solo si hay algo útil
