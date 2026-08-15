@@ -1,3 +1,14 @@
+## 2026-08-15 — Fix: promedio por categoría (Resumen) calculado sobre meses transcurridos reales
+
+- `js/charts.js`, `renderCategoryAvgTable()`: el promedio Ø año anterior / Ø
+  año actual ahora divide la suma entre los meses TRANSCURRIDOS del periodo
+  (12 fijos para año anterior completo; enero..mes anterior para año actual),
+  en vez de dividir solo entre los meses que tuvieron movimientos en esa
+  categoria. Corrige el sesgo al alza en categorias esporadicas (detectado
+  con "Donativos": Ø2026 coincidia exactamente con el gasto de julio por
+  tener un solo mes con datos).
+- Ver `docs/DECISIONS.md` [2026-08-15] para el detalle completo.
+
 ## 2026-08-07 — Nueva categoria "Donativos" en Movimientos, separada de "Inversion"
 
 - Notion "Movimientos": agregada opcion "Donativos" al select "Categoria".
