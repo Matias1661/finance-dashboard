@@ -43,7 +43,14 @@
     "1t5shIRiSjR4CrIf9H8-nms_0KJrWK6jC",
     "1tRA7Ow0psXCtg8A7TEDBLO563yHk3e_f",
     "1te1mxFDJynFIrECA3ydMYkcQlHd1YTtE",
+    "1x7Q46uJlyjKR0BziCgy4DtW7hN7gH5ZE",
     "1xitsEcZXkZga0JTjj686QpAs6_7_NXxE"
   ],
-  "requiere_revision": []
+  "requiere_revision": [
+    {
+      "file_id": "1zyoxY8vc0FeyRgQPY40aCBpDafdbT9bR",
+      "name": "PHOTO-2026-08-18-15-13-29.jpg",
+      "error": "extraccion incompleta o invalida (concepto='IKEA - funda de sofá/producto hogar' costo=19.89 fecha='')"
+    }
+  ]
 }

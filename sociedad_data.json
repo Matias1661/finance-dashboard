@@ -1,5 +1,11 @@
 [
   {
+    "fecha": "2026-08-18",
+    "concepto": "Leroy Merlin - materiales carpinteria, electricidad y ferreteria",
+    "costo": 43.98,
+    "pagado": null
+  },
+  {
     "fecha": "2025-05-30",
     "concepto": "Diego Rotulos - montaje",
     "costo": 180,
