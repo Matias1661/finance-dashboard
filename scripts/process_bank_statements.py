@@ -149,11 +149,18 @@ def parse_csv_extracto(csv_bytes):
     return movimientos
 
 
-def categorizar_movimientos(movimientos, categorizacion_prompt):
+def categorizar_movimientos(movimientos, categorizacion_prompt, max_intentos=3):
     """Le pide a Claude UNICAMENTE la categoria de cada movimiento ya parseado
     (concepto/monto/fecha vienen del CSV, deterministicos, no de una lectura
     de Claude). No hay extraccion de datos, solo categorizacion sobre datos
-    ya confiables."""
+    ya confiables.
+
+    Reintenta hasta max_intentos veces si la respuesta no es JSON valido o
+    no trae una categoria por movimiento (fallo transitorio de la API, ver
+    docs/DECISIONS.md 2026-08-22). Si se agotan los intentos, levanta
+    RuntimeError para que el llamador decida como manejarlo (en
+    process_bank_statements.py, el archivo se salta sin marcarse como
+    procesado, en vez de frenar todo el job)."""
     entrada = [{"concepto": m["concepto"], "monto": m["monto"], "fecha": m["fecha"]} for m in movimientos]
 
     system_prompt = (
@@ -167,38 +174,50 @@ def categorizar_movimientos(movimientos, categorizacion_prompt):
         '{"categorias": ["...", "..."]}'
     )
 
-    resp = requests.post(
-        "https://api.anthropic.com/v1/messages",
-        headers={
-            "x-api-key": ANTHROPIC_API_KEY,
-            "anthropic-version": "2023-06-01",
-            "content-type": "application/json",
-        },
-        json={
-            "model": CLAUDE_MODEL,
-            "max_tokens": 4096,
-            "system": system_prompt,
-            "messages": [{"role": "user", "content": json.dumps(entrada, ensure_ascii=False)}],
-        },
-        timeout=120,
-    )
-    resp.raise_for_status()
-    data = resp.json()
-    text = "".join(b["text"] for b in data["content"] if b["type"] == "text")
-    text = re.sub(r"^```(json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
-    parsed = json.loads(text)
-    categorias = parsed.get("categorias", [])
+    ultimo_error = None
+    for intento in range(1, max_intentos + 1):
+        resp = requests.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={
+                "x-api-key": ANTHROPIC_API_KEY,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            },
+            json={
+                "model": CLAUDE_MODEL,
+                "max_tokens": 4096,
+                "system": system_prompt,
+                "messages": [{"role": "user", "content": json.dumps(entrada, ensure_ascii=False)}],
+            },
+            timeout=120,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        text = "".join(b["text"] for b in data["content"] if b["type"] == "text")
+        text = re.sub(r"^```(json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
 
-    if len(categorias) != len(movimientos):
-        raise RuntimeError(
-            f"categorizar_movimientos devolvio {len(categorias)} categorias "
-            f"para {len(movimientos)} movimientos: no coinciden, no se puede "
-            "asociar con seguridad.")
+        try:
+            if not text:
+                raise json.JSONDecodeError("respuesta vacia", text, 0)
+            parsed = json.loads(text)
+            categorias = parsed.get("categorias", [])
+            if len(categorias) != len(movimientos):
+                raise RuntimeError(
+                    f"devolvio {len(categorias)} categorias para "
+                    f"{len(movimientos)} movimientos: no coinciden.")
+        except (json.JSONDecodeError, RuntimeError) as e:
+            ultimo_error = e
+            print(f"  AVISO: intento {intento}/{max_intentos} de categorizacion "
+                  f"fallo ({e}).")
+            continue
 
-    for m, cat in zip(movimientos, categorias):
-        m["categoria"] = cat
+        for m, cat in zip(movimientos, categorias):
+            m["categoria"] = cat
+        return movimientos
 
-    return movimientos
+    raise RuntimeError(
+        f"categorizar_movimientos: se agotaron los {max_intentos} intentos, "
+        f"ultimo error: {ultimo_error}")
 
 
 def ya_existe_en_notion(concepto, monto, fecha):
@@ -269,9 +288,15 @@ if __name__ == "__main__":
                       f"el extracto como CSV. Se omite, no se marca como procesado.")
                 continue
 
-            file_bytes = download_file(drive_token, f["id"])
-            movimientos = parse_csv_extracto(file_bytes)
-            movimientos = categorizar_movimientos(movimientos, categorizacion_prompt)
+            try:
+                file_bytes = download_file(drive_token, f["id"])
+                movimientos = parse_csv_extracto(file_bytes)
+                movimientos = categorizar_movimientos(movimientos, categorizacion_prompt)
+            except Exception as e:
+                print(f"  ERROR: fallo el procesamiento de {f['name']}: {e}. "
+                      f"Se omite, no se marca como procesado (se reintenta en "
+                      f"la proxima corrida).")
+                continue
 
             print(f"  {len(movimientos)} movimiento(s) extraido(s)")
 
