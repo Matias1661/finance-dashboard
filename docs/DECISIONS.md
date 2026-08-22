@@ -1,3 +1,67 @@
+## [2026-08-22] Relay.app retirado por completo; Guard G eliminado; fix de reintentos en categorizar_movimientos
+
+**Contexto:** el usuario confirmó que Relay.app ya no está en uso (no solo
+Movimientos, que se había dado de baja el 23/07 — el cierre real del
+servicio, planeado para 15/08 o 14/09 según el plan, ya se dio). El flujo
+vigente de Movimientos es: usuario exporta el extracto del banco a CSV y lo
+sube a mano a la carpeta Drive "Extractos para Notion"; `process_bank_statements.py`
+(GitHub Actions, `sync-finance-data.yml`) lo procesa sin cadencia fija.
+
+**Hallazgo del bug real (no relacionado con Relay):** el run de
+`sync-finance-data` venía fallando el 21 y 22/08 en el paso "Process new
+bank statements" — `categorizar_movimientos()` en `process_bank_statements.py`
+recibía una respuesta vacía/no-JSON de la API de Anthropic al categorizar
+`CaixaBank_digital_CaixaBankNow_20260820.csv`, y `json.loads()` sobre esa
+respuesta vacía crasheaba el script completo, salteando también Peerberry,
+MyInvestor, nóminas, generación de `finance_data.json` y deploy — no solo el
+paso de Movimientos.
+
+**Decisiones del usuario:**
+1. Sacar el Guard G de `check_relay_gaps()` (avisaba si no había movimiento
+   nuevo en Notion Movimientos hace más de 5 días) — dependía del supuesto de
+   una cadencia de carga regular (diaria, vía Relay), que ya no aplica con
+   subida manual de CSV sin frecuencia fija.
+2. En `categorizar_movimientos()`: reintentar la llamada a la API hasta 3
+   veces si la respuesta no es JSON válido o no trae una categoría por
+   movimiento, antes de darla por fallida.
+3. En el loop principal de `process_bank_statements.py`: si
+   `categorizar_movimientos()` sigue fallando tras los reintentos (o
+   cualquier otro paso de procesamiento de ese archivo falla), loguear el
+   error y saltear ESE archivo sin marcarlo como procesado (se reintenta en
+   la próxima corrida), sin frenar el resto del job — Peerberry, MyInvestor,
+   nóminas y la generación de `finance_data.json` siguen corriendo igual.
+
+**Cambios aplicados:**
+- `scripts/sync_finance_data.py`: `check_relay_gaps()` pierde el parámetro
+  `movimientos` y el bloque de Guard G. Guards E (Peerberry Semanal) y F
+  (MyInvestor Mensual) quedan sin cambios de lógica — siguen vigentes porque
+  ambas plataformas se cargan vía scripts propios en GitHub Actions (no
+  Relay), y un hueco ahí sigue siendo una señal válida de fallo real.
+  Docstring actualizado para reflejar que Relay ya no es parte del pipeline.
+- `scripts/process_bank_statements.py`: `categorizar_movimientos()` ahora
+  reintenta hasta 3 veces (parámetro `max_intentos`) ante JSON inválido o
+  conteo de categorías que no coincide con el de movimientos, antes de
+  levantar `RuntimeError`. El loop principal envuelve
+  `download_file()`/`parse_csv_extracto()`/`categorizar_movimientos()` en un
+  try/except: cualquier excepción se loguea como `ERROR: fallo el
+  procesamiento de {archivo}` y el archivo se saltea (no se agrega a
+  `processed_file_ids`), continuando con el resto de archivos nuevos y el
+  resto del workflow.
+
+**Pendiente/riesgo aceptado:** las 4 fotos (.jpg) de extractos que estaban
+acumuladas en Drive desde antes de este fix (27/07, 10/08, 13/08 x2) siguen
+sin procesarse — formato no soportado desde el 23/07 (solo CSV). El usuario
+debe volver a exportarlas como CSV si quiere que se carguen esos movimientos.
+
+**No tocado en esta entrada (fuera de alcance de lo pedido):** los mensajes
+de Guard E y F en `check_relay_gaps()` todavía dicen "Relay puede haber
+dejado de cargar..." — técnicamente desactualizado ya que Peerberry/MyInvestor
+se cargan por script propio, no Relay. Se deja así porque el usuario no pidió
+tocar esos guards, solo el G. Revisar si se quiere corregir la redacción en
+una sesión futura.
+
+---
+
 ## [2026-08-15] Tabla "Resumen de promedios por categoría": promedio sobre meses transcurridos reales, no solo meses con movimientos
 
 **Contexto:** el usuario noto que el promedio Ø 2026 de "Donativos" (350€)
