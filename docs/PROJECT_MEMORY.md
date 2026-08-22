@@ -38,9 +38,11 @@ Ante cualquier duda sobre alcance, preguntar antes de asumir.
 
 ---
 
-## 🔄 MIGRACIÓN EN CURSO: Relay → GitHub Actions (iniciada 17/07/2026)
+## ✅ MIGRACIÓN COMPLETA: Relay → GitHub Actions (iniciada 17/07/2026, Relay retirado por completo 22/08/2026)
 
-**Motivo:** Relay.app cierra el 15/08/2026 (plan gratuito) o 14/09/2026 (plan de pago). Todos los flujos de Relay siguen corriendo hasta esa fecha.
+**Estado (22/08/2026):** Relay.app ya no está en uso — confirmado por el usuario. Los 4 flujos (Movimientos, Peerberry, MyInvestor, Nóminas) y Talho Argentino corren en GitHub Actions. Movimientos se ingesta por CSV exportado del banco y subido a mano a Drive por el usuario, sin cadencia fija (ver `docs/DECISIONS.md` 2026-08-22, que también elimina el Guard G que asumía carga regular). Cualquier mención de "Relay.app sigue activo" en secciones más abajo de este documento es historia de la migración, no el estado actual.
+
+**Motivo original de la migración:** Relay.app cerraba el 15/08/2026 (plan gratuito) o 14/09/2026 (plan de pago).
 
 **Plan completo:** DB Notion "Plan de migración Relay → nueva plataforma" (bajo Finance Tracker). Filas: 0 (export, Completado) → 1 Movimientos → 2 Peerberry → 3 MyInvestor → 4 Nóminas → 4.5 Talho Argentino/Sync Sociedad Data → 5 validación en paralelo → 6 apagado de Relay.
 
@@ -49,11 +51,11 @@ Ante cualquier duda sobre alcance, preguntar antes de asumir.
 **Estado de implementación por flujo (repasar esto primero al retomar):**
 | Flujo | Estado |
 |---|---|
-| **Movimientos** | ✅ Implementado (`scripts/process_bank_statements.py` + paso en `sync-finance-data.yml`) y validado con un extracto real en paralelo con Relay (0 duplicados, categorización idéntica). **Flujo de Relay "Movimientos" dado de baja por el usuario el 23/07** (ver `DECISIONS.md` 2026-07-23, "Confirmado: Relay Movimientos seguía activo en paralelo"). Formato de entrada: solo CSV (columnas Concepto;Fecha;Importe;Saldo) — la rama de extracción por PDF vía Claude se probó en paralelo y se eliminó del script el 23/07 (decisión del usuario, ver `DECISIONS.md` 2026-07-23 (3)); si algún mes solo se dispone de PDF, hay que volver a exportar el extracto como CSV antes de subirlo. |
-| **Peerberry** | ✅ Implementado (`scripts/process_peerberry_emails.py` + paso en `sync-finance-data.yml`), autenticación Gmail vía OAuth con refresh_token (no cuenta de servicio — Gmail personal no soporta domain-wide delegation, ver `docs/DECISIONS.md` 2026-07-17). Validado con datos reales: la primera corrida detectó 5 filas duplicadas heredadas de un bug del propio flujo de Relay (Ganancia = Interest income en vez de Profit, fecha de Balance on en vez de Portfolio updated on); corregido borrando las filas viejas en Notion, `finance_data.json` verificado contra suma manual. **Flujo de Relay "Peerberry a Notion" dado de baja por el usuario el 17/07** (el de Movimientos sigue activo, en validación paralela). |
+| **Movimientos** | ✅ Implementado y en producción (`scripts/process_bank_statements.py` + paso en `sync-finance-data.yml`). Relay "Movimientos" dado de baja por el usuario el 23/07 (ver `DECISIONS.md` 2026-07-23). Formato de entrada: solo CSV (columnas Concepto;Fecha;Importe;Saldo), subido a mano a Drive sin cadencia fija — la rama de extracción por PDF se eliminó el 23/07 (ver `DECISIONS.md` 2026-07-23 (3)); si algún mes solo se dispone de PDF, hay que volver a exportar el extracto como CSV. `categorizar_movimientos()` reintenta hasta 3 veces ante respuesta no-JSON de la API antes de saltear el archivo sin frenar el resto del workflow (fix 2026-08-22, ver `DECISIONS.md`). |
+| **Peerberry** | ✅ Implementado (`scripts/process_peerberry_emails.py` + paso en `sync-finance-data.yml`), autenticación Gmail vía OAuth con refresh_token (no cuenta de servicio — Gmail personal no soporta domain-wide delegation, ver `docs/DECISIONS.md` 2026-07-17). Validado con datos reales: la primera corrida detectó 5 filas duplicadas heredadas de un bug del propio flujo de Relay (Ganancia = Interest income en vez de Profit, fecha de Balance on en vez de Portfolio updated on); corregido borrando las filas viejas en Notion, `finance_data.json` verificado contra suma manual. Relay "Peerberry a Notion" dado de baja por el usuario el 17/07. |
 | **MyInvestor** | ✅ Implementado (`scripts/process_myinvestor_emails.py` + paso en `sync-finance-data.yml`), reusa las credenciales OAuth de Gmail ya generadas para Peerberry. Primera corrida trajo emails de antes de dic 2024 con múltiples cuentas/carteras conflictivas (confirmado por el usuario); corregido acotando el query de Gmail con `after:2024/11/25`. Segunda corrida validada: los 19 meses conocidos (dic 2024–jun 2026) idénticos, sin cambios. |
 | **Nóminas** | ✅ Implementado y validado (`scripts/process_nominas.py`). El 31/07/2026 se detectó un duplicado en Notion causado por los dos flujos de Relay para Nóminas (email de Beatriz → Drive, y Drive → Notion) que seguían activos en Relay.app pese a que esta sección asumía que Matías subía el PDF a mano en su reemplazo. El usuario borró la página duplicada y desactivó ambos flujos en Relay.app; se validó con un dispatch manual de `sync-finance-data` (run #413, 31/07/2026) sin duplicados nuevos. Ver `docs/DECISIONS.md` 2026-07-31 y 2026-07-31 (2). **Pendiente menor:** el prompt de extracción "Extraer datos de nómina" en la DB "Prompts" normaliza la empresa a "LUZUTANIA GROUP", pero en la corrida del 31/07 se extrajo como "LUZUTANIAES GROUP SLU" — revisar el prompt si se repite. `processed_nominas.json` sembrado con los 38 archivos ya existentes en la carpeta. Chequeo de duplicados por Fecha de pago en Notion como defensa extra. Nota técnica: las nóminas del empleador actual (LUZUTANIA GROUP) son PDFs escaneados/imagen, a diferencia de las de BETWEEN TECHNOLOGY (texto seleccionable); el script manda el PDF completo a Claude como documento en ambos casos. |
-| **Talho Argentino / Gastos del local (paso 4.5)** | ✅ Implementado y validado con datos reales (22/07/2026). Decision del usuario (22/07): flujo Relay "Gastos de Talho Argentino de Drive en Notion" se apaga (reemplazado por `process_gastos_talho.py`). Flujo Relay "Actualizar gastos local en GH" (edicion manual en Notion → refresh instantaneo) **se deja activo** hasta que Relay deje de funcionar solo — no tiene reemplazo instantaneo (el cron de `sync_sociedad_data.py` es diario), y no hay motivo para resignar esa funcionalidad mientras siga disponible sin costo. |
+| **Talho Argentino / Gastos del local (paso 4.5)** | ✅ Implementado y validado con datos reales (22/07/2026), reemplazado por `process_gastos_talho.py`. El refresh instantáneo ante edición manual en Notion que daba Relay ya no existe (Relay retirado 22/08/2026); el refresh pasa a ser el cron diario (07:30) de `sync_sociedad_data.py` o dispatch manual. |
 
 **Export de Relay (paso 0, completado):** los 14 workflows originales de Relay revisados y documentados en `docs/relay-export/README.md`, con los JSON/CSV de cada uno en `docs/relay-export/<nombre-flujo>/`.
 
@@ -114,7 +116,7 @@ La hoja `Inversiones` de Google Sheets quedó obsoleta el 10/07/2026: `build_inv
 4. ✅ Desplegado directo a producción (sin fase de comparación en paralelo, ver "Decisión de secuencia" arriba). Workflow `sync-finance-data.yml` actualizado con secrets `NOTION_TOKEN` (ya existía en el repo) y env var `NOTION_MOVIMIENTOS_DATA_SOURCE_ID`. Validado con 3 dispatches manuales: 2 fallos diagnosticados y corregidos, 1 éxito confirmado generando 2473 movimientos.
 5. ✅ Relay configurado para escribir solo en Notion (no en paralelo — el usuario decidió cortar Sheets como destino directamente)
 6. ⬜ (Omitido por decisión del usuario) Validación de 1-2 semanas con ambos destinos activos — no aplica porque Sheets dejó de recibir escrituras de Relay
-7. ✅ Workflows `update-sheet-cells.yml` y `find-update-nota.yml` eliminados del repo (30/06/2026). **Relay.app sigue activo** escribiendo en Notion (corrección 09/07/2026: una versión anterior de este documento afirmaba erróneamente que fue dado de baja). `update-relay-prompt.yml` y `read-relay-prompt.yml` quedaron obsoletos porque el prompt de categorización ya no vive en `prompt_relay_current.txt` — se migró a una base de datos de Notion (https://app.notion.com/p/39833ce50e68801ab5a1fb9d6effa10f) que unifica todos los prompts de uso frecuente y es su única fuente activa (09/07/2026, ver `docs/DECISIONS.md`).
+7. ✅ Workflows `update-sheet-cells.yml` y `find-update-nota.yml` eliminados del repo (30/06/2026). Relay.app quedó retirado por completo el 22/08/2026 (ver sección "MIGRACIÓN COMPLETA" al inicio de este documento) — la mención "Relay.app sigue activo" que figuraba aquí corresponde al estado en 09/07/2026, ya no es actual. `update-relay-prompt.yml` y `read-relay-prompt.yml` quedaron obsoletos porque el prompt de categorización ya no vive en `prompt_relay_current.txt` — se migró a una base de datos de Notion (https://app.notion.com/p/39833ce50e68801ab5a1fb9d6effa10f) que unifica todos los prompts de uso frecuente y es su única fuente activa (09/07/2026, ver `docs/DECISIONS.md`).
 8. ✅ Flujo "Organizar Movimientos" actualizado: la escritura de categoría/nota ahora usa `notion-update-page` vía MCP, localizando la página por fecha+concepto+monto (`notion-query-data-sources`). Detalle completo en la sección "Flujo Organizar Movimientos" más abajo en este documento.
 
 ### Problemas encontrados y resueltos durante el despliegue del paso 4
@@ -122,7 +124,7 @@ La hoja `Inversiones` de Google Sheets quedó obsoleta el 10/07/2026: `build_inv
 2. **404 en la query pese a versión correcta**: la integración de Notion asociada al secret `NOTION_TOKEN` de GitHub (identificada como "Notion Talho", creada 24/06/2026 según fecha de creación del secret) no estaba conectada a la página Finance Tracker / DB Movimientos. Solo Relay.app y Zapier tenían conexión. Se resolvió conectándola manualmente desde Notion: `···` → Conexiones → Añadir conexión → Notion Talho. Lección: cualquier integración nueva que vaya a leer/escribir una DB de Notion debe conectarse explícitamente a esa página, no basta con tener el token.
 
 ### Lo que desaparece al completar la migración
-Workflow `update-sheet-cells.yml` (eliminado), workflow `find-update-nota.yml` (eliminado), el protocolo de pausar Relay antes de cualquier batch de escrituras (ya no aplica — las escrituras directas vía MCP no disparan runs de GitHub Actions). Relay.app sigue activo (escribe Movimientos y Rendimiento Inversiones directamente en Notion). `update-relay-prompt.yml` y `read-relay-prompt.yml` quedaron obsoletos porque el prompt de categorización se migró a una base de datos de Notion (09/07/2026), dejando de vivir en `prompt_relay_current.txt`.
+Workflow `update-sheet-cells.yml` (eliminado), workflow `find-update-nota.yml` (eliminado), el protocolo de pausar Relay antes de cualquier batch de escrituras (ya no aplica — las escrituras directas vía MCP no disparan runs de GitHub Actions). Relay.app quedó retirado por completo el 22/08/2026 (todos los flujos migraron a GitHub Actions). `update-relay-prompt.yml` y `read-relay-prompt.yml` quedaron obsoletos porque el prompt de categorización se migró a una base de datos de Notion (09/07/2026), dejando de vivir en `prompt_relay_current.txt`.
 
 ### Estado de Sheets tras la migración
 El Google Sheet (`1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI`) deja de recibir movimientos nuevos de Relay desde el 30/06/2026. Queda como archivo histórico de solo lectura para la hoja Movimientos. La hoja Inversiones sigue activa y en uso normal (Peerberry/MyInvestor, actualización manual mensual) — su migración a Notion es una fase futura sin fecha definida, según decisión explícita del usuario.
@@ -141,9 +143,11 @@ El Google Sheet (`1c0pyDHR_vvb_HD7LqH8Z5rCZ-W2DKVB7pNqAMKZ__OI`) deja de recibir
 ## Pipeline de datos
 
 ```
-Extracto bancario (banco) + correos Peerberry/MyInvestor
+Extracto bancario (CSV, exportado y subido a mano a Drive) + correos Peerberry/MyInvestor (Gmail)
         ↓
-   Relay (categorización automática / extracción de reportes)
+   Scripts propios en GitHub Actions (process_bank_statements.py,
+   process_peerberry_emails.py, process_myinvestor_emails.py — categorización/
+   extracción vía API de Anthropic)
         ↓
    Notion: DB Movimientos (367d58ce...) y DB Rendimiento Inversiones (93eda06b...)
         ↓
@@ -152,9 +156,9 @@ Extracto bancario (banco) + correos Peerberry/MyInvestor
    Dashboard (index.html consume finance_data.json en runtime)
 ```
 
-Actualizado 10/07/2026: el pipeline anterior (Relay→Google Sheets, más una GitHub Action de verificación) quedó obsoleto — Sheets ya no es destino de Relay ni fuente de ningún dato del sync. `build_inversiones()` lee capital/rendimiento (%) de la DB Notion "Rendimiento Inversiones" desde el 10/07/2026 (ver sección "Migración Inversiones"). El script ya no depende de Google Sheets API ni del secret GOOGLE_SERVICE_ACCOUNT.
+Actualizado 22/08/2026: Relay.app quedó retirado por completo (confirmado por el usuario) — el diagrama ya no lo incluye. Movimientos se ingesta por CSV subido a mano a Drive, sin cadencia fija (por eso se eliminó el Guard G de `check_relay_gaps()`, que asumía carga regular vía Relay — ver `docs/DECISIONS.md` 2026-08-22). Peerberry y MyInvestor se cargan vía Gmail con los scripts propios ya migrados (ver tabla de estado más arriba).
 
-Una sola cuenta bancaria. Relay extrae: concepto, fecha (YYYY-MM-DD), importe (negativo=gasto, positivo=ingreso), categoría.
+Una sola cuenta bancaria. La categorización (concepto, fecha YYYY-MM-DD, importe negativo=gasto/positivo=ingreso, categoría) la hace `process_bank_statements.py` vía API de Anthropic, siguiendo el prompt vivo en la DB Notion "Prompts".
 
 ---
 
