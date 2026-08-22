@@ -1,6 +1,503 @@
 {
-  "generated_at": "2026-08-11 10:11",
+  "generated_at": "2026-08-22 10:58",
   "movimientos": [
+    {
+      "fecha": "2026-08-19",
+      "concepto": "AUTOROUTES ASF",
+      "monto": -1.4,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-19",
+      "concepto": "SHELL BOUTIQUE",
+      "monto": -2.6,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-19",
+      "concepto": "AUTOROUTES ASF",
+      "monto": -3,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-19",
+      "concepto": "TOTAL",
+      "monto": -4.25,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-19",
+      "concepto": "AUTOROUTES ASF",
+      "monto": -8.3,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-19",
+      "concepto": "ESCOTA VINCI",
+      "monto": -8.4,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-19",
+      "concepto": "MC DONALD'S",
+      "monto": -9,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-19",
+      "concepto": "TOTAL",
+      "monto": -20,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-19",
+      "concepto": "INGRESO CAJERO",
+      "monto": 950,
+      "categoria": "Nomina",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-19",
+      "concepto": "Gastos conjuntos",
+      "monto": -100,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-18",
+      "concepto": "Amazon.es",
+      "monto": -8.24,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-18",
+      "concepto": "TICKET FOOD COFFE",
+      "monto": -19.4,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-18",
+      "concepto": "BELLA VITA",
+      "monto": -45,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-17",
+      "concepto": "TICKET FOOD COFFE",
+      "monto": -24.4,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-17",
+      "concepto": "CUSTOM CULTURE A",
+      "monto": -30,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-17",
+      "concepto": "HOTEL BEAUSEJOU",
+      "monto": -33,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-17",
+      "concepto": "Klarna*Motea",
+      "monto": -112.76,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-16",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -22,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-16",
+      "concepto": "LES SABLETTES",
+      "monto": -50,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-16",
+      "concepto": "UBR* PENDING.UBER",
+      "monto": -54.97,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-16",
+      "concepto": "UBR* PENDING.UBER",
+      "monto": -76.93,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "TOTAL",
+      "monto": -0.99,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "SHELL BOUTIQUE",
+      "monto": -1.7,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "AUTOROUTES ASF",
+      "monto": -3,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "TOTAL",
+      "monto": -3.5,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "SHELL BOUTIQUE",
+      "monto": -3.5,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "TOTAL",
+      "monto": -5.99,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "ESCOTA VINCI",
+      "monto": -8.4,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "STATION AVIA",
+      "monto": -8.9,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "BP VALLROMANES",
+      "monto": -14.34,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "AUTOROUTES ASF",
+      "monto": -17.6,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "TOTAL",
+      "monto": -19.56,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-15",
+      "concepto": "STATION AVIA",
+      "monto": -20,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-14",
+      "concepto": "YEGO* RIDE 33 MIN",
+      "monto": -11.88,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-14",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-14",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-14",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-14",
+      "concepto": "TRASPASO",
+      "monto": 40,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-13",
+      "concepto": "REPSOL WAYLET",
+      "monto": -17.14,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-13",
+      "concepto": "ZARAGOZA - A2 DIR",
+      "monto": -17.36,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-13",
+      "concepto": "MOEVE AREA 103 II",
+      "monto": -21.33,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-12",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 41,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-12",
+      "concepto": "WWW.AMAZON",
+      "monto": -79.9,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-12",
+      "concepto": "BKT-MAD-PARK-O-CA",
+      "monto": -0.7,
+      "categoria": "Salidas",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-12",
+      "concepto": "BKT-MAD-PARK-O-CA",
+      "monto": -5.45,
+      "categoria": "Salidas",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-12",
+      "concepto": "BKT-MAD-PARK-O-CA",
+      "monto": -7.1,
+      "categoria": "Salidas",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-12",
+      "concepto": "DECATHLON SAN SEB",
+      "monto": -15.48,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-12",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 1216.87,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-12",
+      "concepto": "BONIF. 2% GALP",
+      "monto": 0.35,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-11",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-11",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -2.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-11",
+      "concepto": "062-FEU VERT",
+      "monto": -8.95,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-11",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-11",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 0.01,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-10",
+      "concepto": "YOIGO XFERA MOVIL",
+      "monto": -47.55,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-10",
+      "concepto": "BEMTOURS",
+      "monto": -300,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-10",
+      "concepto": "BE CASA SS DE LOS",
+      "monto": -30,
+      "categoria": "Departamento",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-10",
+      "concepto": "CARREF ALCOBENDAS",
+      "monto": -39.61,
+      "categoria": "Supermercado",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-10",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-10",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 464.59,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-09",
+      "concepto": "Gastos conjuntos",
+      "monto": -100,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-09",
+      "concepto": "Gastos club",
+      "monto": -150,
+      "categoria": "Club",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-09",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-07",
+      "concepto": "SOFER ACCESORIOS",
+      "monto": 43,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-07",
+      "concepto": "WWW.AMAZON",
+      "monto": -14.95,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-07",
+      "concepto": "CAIXABANK PAYMENT",
+      "monto": 1000,
+      "categoria": "Tarjeta",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-07",
+      "concepto": "TRASPASO DONATIVO",
+      "monto": -350,
+      "categoria": "Donativos",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-07",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50.5,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-07",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-07",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 80,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-07",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-08-06",
       "concepto": "TRANSF. A SU FAVOR",
@@ -18649,7 +19146,7 @@
       },
       {
         "mes": "2026-08",
-        "peerberry": 9839.6,
+        "peerberry": 9868.55,
         "myinvestor": 2950
       }
     ],
@@ -18751,7 +19248,7 @@
       },
       {
         "mes": "2026-08",
-        "peerberry": 0.35,
+        "peerberry": 0.64,
         "myinvestor": 0.0
       }
     ],
@@ -18938,11 +19435,11 @@
       },
       {
         "mes": "2026-08",
-        "peerberry": 37.42,
+        "peerberry": 66.37,
         "myinvestor": 0.0,
         "peerberry_aportes": null,
         "myinvestor_aportes": null,
-        "peerberry_capital": 9839.6,
+        "peerberry_capital": 9868.55,
         "myinvestor_capital": 2950
       }
     ],
@@ -19205,20 +19702,20 @@
         "total": 0.0,
         "acumulado": 20.24,
         "acumulado_anio": 11.1,
-        "benchmark": 3.56,
-        "benchmark_acumulado": 18.92,
+        "benchmark": 1.57,
+        "benchmark_acumulado": 16.64,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
       {
         "mes": "2026-08",
-        "peerberry": 0.35,
+        "peerberry": 0.64,
         "myinvestor": 0.0,
-        "total": 0.27,
-        "acumulado": 20.57,
-        "acumulado_anio": 11.41,
-        "benchmark": 0.09,
-        "benchmark_acumulado": 19.02,
+        "total": 0.48,
+        "acumulado": 20.83,
+        "acumulado_anio": 11.64,
+        "benchmark": 0.26,
+        "benchmark_acumulado": 16.94,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
