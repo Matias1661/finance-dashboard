@@ -964,12 +964,14 @@ def build_inversiones(by_month):
     return {"capital": capital, "rendimiento": rendimiento}
 
 
-def check_relay_gaps(movimientos, rend_pages, now, n_dias_movimientos=5):
-    """Monitoreo de huecos en la carga automática de Relay (auditoria 2026-07,
-    fila 2, agregado 2026-07-13). Relay carga Movimientos y Rendimiento
-    Inversiones en Notion automaticamente; sin este chequeo, un lunes sin fila
-    Semanal de Peerberry o un mes sin reporte Mensual de MyInvestor pasa
-    desapercibido hasta que alguien mira el dashboard.
+def check_relay_gaps(rend_pages, now):
+    """Monitoreo de huecos en la carga automatica de Peerberry/MyInvestor
+    (auditoria 2026-07, fila 2, agregado 2026-07-13). Peerberry y MyInvestor
+    se cargan via scripts propios en GitHub Actions (process_peerberry_emails.py,
+    process_myinvestor_emails.py, ver docs/DECISIONS.md 2026-07-17); sin este
+    chequeo, un lunes sin fila Semanal de Peerberry o un mes sin reporte
+    Mensual de MyInvestor pasa desapercibido hasta que alguien mira el
+    dashboard.
 
     Guards (distintos de sanity_check: aqui el problema es un hueco de datos
     de origen, no una caida del propio sync):
@@ -977,9 +979,12 @@ def check_relay_gaps(movimientos, rend_pages, now, n_dias_movimientos=5):
          dias.
       F) si hoy es dia >=10 del mes, no hay fila MyInvestor Mensual para el
          mes calendario anterior.
-      G) el movimiento mas reciente en Movimientos tiene mas de
-         n_dias_movimientos dias (default 5, confirmado por el usuario
-         2026-07-13).
+
+    Guard G (movimiento mas reciente en Movimientos) se elimino el
+    2026-08-22: dependia del canal de Relay, retirado por completo (ver
+    docs/DECISIONS.md 2026-08-22). La ingesta de Movimientos ahora es CSV
+    subido a mano a Drive por el usuario, sin cadencia fija — un umbral de
+    dias sin movimiento nuevo ya no es una señal confiable de fallo.
 
     Cada guard levanta RuntimeError con prefijo "HUECO RELAY:" para
     distinguirlo en el mensaje de fallo de un error de sync propiamente dicho
@@ -1017,17 +1022,6 @@ def check_relay_gaps(movimientos, rend_pages, now, n_dias_movimientos=5):
                 f"HUECO RELAY (Guard F): no hay fila Mensual de MyInvestor "
                 f"para {mes_anterior} y ya estamos a dia {hoy.day} del mes "
                 f"actual.")
-
-    # Guard G: movimiento mas reciente
-    if movimientos:
-        ultima_fecha_mov = movimientos[0]["fecha"]  # movimientos viene ordenado desc
-        dias_mov = (hoy - datetime.strptime(ultima_fecha_mov, "%Y-%m-%d").date()).days
-        if dias_mov > n_dias_movimientos:
-            raise RuntimeError(
-                f"HUECO RELAY (Guard G): el movimiento mas reciente en "
-                f"Movimientos es del {ultima_fecha_mov} ({dias_mov} dias, "
-                f"limite {n_dias_movimientos}) — Relay puede haber dejado de "
-                f"cargar movimientos bancarios.")
 
 
 def sanity_check(movimientos, inversiones):
@@ -1130,7 +1124,7 @@ if __name__ == "__main__":
 
         if rend_read_ok:
             print("Verificando huecos en la carga de Relay...")
-            check_relay_gaps(movimientos, rend_pages, datetime.now(ZoneInfo("Europe/Madrid")))
+            check_relay_gaps(rend_pages, datetime.now(ZoneInfo("Europe/Madrid")))
             print("  sin huecos detectados")
         else:
             print("Se omite verificacion de huecos de Relay: la lectura de Rendimiento Inversiones fallo (fallo de sync, no hueco de datos).")
