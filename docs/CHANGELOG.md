@@ -1,3 +1,24 @@
+## 2026-08-22 — Relay retirado por completo, Guard G eliminado, fix reintentos en categorizar_movimientos
+
+- Confirmado por el usuario: Relay.app ya no está en uso (no solo el flujo de
+  Movimientos, dado de baja el 23/07 — el cierre completo del servicio ya se
+  dio). Ingesta de Movimientos: CSV exportado del banco, subido a mano a
+  Drive, procesado por `process_bank_statements.py` sin cadencia fija.
+- **Bug encontrado (runs del 21 y 22/08 fallidos):** `categorizar_movimientos()`
+  recibía respuesta vacía/no-JSON de la API de Anthropic al categorizar un
+  CSV real, crasheando todo el script y salteando Peerberry, MyInvestor,
+  nóminas y el deploy.
+- `scripts/sync_finance_data.py`: eliminado el Guard G de `check_relay_gaps()`
+  (avisaba si Movimientos no tenía carga nueva hace >5 días — ya no aplica
+  sin cadencia fija de subida). Guards E (Peerberry) y F (MyInvestor) sin
+  cambios.
+- `scripts/process_bank_statements.py`: `categorizar_movimientos()` reintenta
+  hasta 3 veces ante JSON inválido; el loop principal salta el archivo (sin
+  marcarlo procesado) si sigue fallando, en vez de frenar todo el workflow.
+- Pendiente del usuario: 4 fotos de extractos acumuladas en Drive desde
+  julio/agosto siguen sin procesar (formato no soportado desde el 23/07) —
+  reexportar como CSV si se quieren cargar esos movimientos.
+
 ## 2026-08-15 — Fix: promedio por categoría (Resumen) calculado sobre meses transcurridos reales
 
 - `js/charts.js`, `renderCategoryAvgTable()`: el promedio Ø año anterior / Ø
