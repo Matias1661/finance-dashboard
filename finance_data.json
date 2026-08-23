@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-22 11:09",
+  "generated_at": "2026-08-23 09:37",
   "movimientos": [
     {
       "fecha": "2026-08-19",
@@ -76,7 +76,7 @@
       "concepto": "Amazon.es",
       "monto": -8.24,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Pago mensual final pedido Amazon 32,99€ (saldo 0) - confirmado por email"
     },
     {
       "fecha": "2026-08-18",
@@ -103,8 +103,8 @@
       "fecha": "2026-08-17",
       "concepto": "CUSTOM CULTURE A",
       "monto": -30,
-      "categoria": "A revisar",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Consumo en evento Hells Week"
     },
     {
       "fecha": "2026-08-17",
@@ -300,7 +300,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -79.9,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Thomson Go Cast 152 Dongle streaming - confirmado por email"
     },
     {
       "fecha": "2026-08-12",
@@ -446,15 +446,15 @@
       "fecha": "2026-08-07",
       "concepto": "SOFER ACCESORIOS",
       "monto": 43,
-      "categoria": "A revisar",
-      "nota": null
+      "categoria": "Gastos moto",
+      "nota": "Reembolso pedido cancelado Outlet Moto #493993"
     },
     {
       "fecha": "2026-08-07",
       "concepto": "WWW.AMAZON",
       "monto": -14.95,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Alpine MotoSafe Sport - tapones oídos moto - confirmado por email"
     },
     {
       "fecha": "2026-08-07",
@@ -19702,8 +19702,8 @@
         "total": 0.0,
         "acumulado": 20.24,
         "acumulado_anio": 11.1,
-        "benchmark": 1.57,
-        "benchmark_acumulado": 16.64,
+        "benchmark": 1.84,
+        "benchmark_acumulado": 16.94,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -19714,7 +19714,7 @@
         "total": 0.48,
         "acumulado": 20.83,
         "acumulado_anio": 11.64,
-        "benchmark": 0.26,
+        "benchmark": 0.0,
         "benchmark_acumulado": 16.94,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
