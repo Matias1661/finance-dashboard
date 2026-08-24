@@ -1,3 +1,17 @@
+## 2026-08-24 — Cierre formal del plan de migración Relay → GitHub Actions
+
+- Confirmado por el usuario que Relay.app dejó de funcionar definitivamente
+  (venció el plan gratuito, fecha límite 15/08/2026). La migración técnica ya
+  estaba documentada como completa desde el 22/08 (ver entrada de esa fecha).
+- DB Notion "Plan de migración Relay → nueva plataforma": filas 5 (Validación
+  en paralelo) y 6 (Apagado de Relay) pasadas a "Completado" — quedaban
+  abiertas pese a que MyInvestor y Nóminas ya estaban validados.
+- `docs/ROADMAP.md`: cerrado el checklist de migración Relay → GitHub Actions
+  (ítem principal y el paso 5 de validación).
+- Pendiente sin acción posible desde acá: confirmar si la cuenta de Relay
+  (run.relay.app) quedó borrada automáticamente al vencer el plan gratuito, o
+  si requiere borrado manual por el usuario.
+
 ## 2026-08-24 — Fix desglose de viajes: regex tripSubcategory() y recategorización BEMTOURS
 
 - `js/app.js`: ampliadas las regex de `tripSubcategory()` — Combustible
