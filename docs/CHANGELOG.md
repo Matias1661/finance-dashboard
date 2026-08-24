@@ -8,9 +8,8 @@
   abiertas pese a que MyInvestor y Nóminas ya estaban validados.
 - `docs/ROADMAP.md`: cerrado el checklist de migración Relay → GitHub Actions
   (ítem principal y el paso 5 de validación).
-- Pendiente sin acción posible desde acá: confirmar si la cuenta de Relay
-  (run.relay.app) quedó borrada automáticamente al vencer el plan gratuito, o
-  si requiere borrado manual por el usuario.
+- Confirmado por el usuario: la cuenta de Relay (run.relay.app) está borrada.
+  Plan de migración cerrado en su totalidad, sin pasos pendientes.
 
 ## 2026-08-24 — Fix desglose de viajes: regex tripSubcategory() y recategorización BEMTOURS
 
