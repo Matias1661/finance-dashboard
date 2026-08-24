@@ -1,15 +1,21 @@
 [
   {
+    "fecha": "2026-08-20",
+    "concepto": "Toldo del local",
+    "costo": 2020.85,
+    "pagado": "Willy"
+  },
+  {
     "fecha": "2026-08-18",
     "concepto": "Leroy Merlin - materiales carpinteria, electricidad y ferreteria",
     "costo": 43.98,
-    "pagado": null
+    "pagado": "Willy"
   },
   {
     "fecha": "2025-05-30",
     "concepto": "Diego Rotulos - montaje",
     "costo": 180,
-    "pagado": null
+    "pagado": "Willy"
   },
   {
     "fecha": "2026-08-05",
