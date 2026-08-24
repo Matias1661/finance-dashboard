@@ -1,3 +1,47 @@
+## [2026-08-24] Organizar Movimientos: financiación cruzada Talho Argentino vía Guille/Nómina; viaje "Hells Week 2026" agregado a TRIP_WINDOWS
+
+**Contexto:** en la revisión de movimientos del 24/08, `FACTURA N°330/202`
+(-2.020,85€, 20/08/2026) resultó ser el toldo del local de Talho Argentino,
+pagado desde la cuenta de Mati pero financiado por Willy con tres ingresos
+distintos: INGRESO CAJERO +950€ (19/08), BIZUM RECIBIDO +70,85€ (20/08) y
+TRANSFER INMEDIATA +1.000€ (20/08) — suma exacta 2.020,85€.
+
+**Decisión:** los tres ingresos se recategorizaron de "Nomina"/"Guille" a
+"Talho Argentino" (igual que el gasto), en vez de dejarlos en su categoría
+original con una nota aclaratoria. Motivo: "Talho Argentino" no está
+excluida de los totales principales, así que el gasto (-2.020,85) resta
+igual; recategorizar los ingresos hace que el neto de Talho Argentino dé
+~0 este mes en vez de restar del ahorro personal de Mati o inflar
+artificialmente ingresos de Guille. **Patrón a replicar:** cuando un gasto
+de Talho Argentino se paga desde la cuenta personal pero se financia con
+ingresos identificables de un socio, recategorizar también los ingresos a
+"Talho Argentino" (no dejar la compensación implícita).
+
+El gasto se cargó también en la DB Notion "Talho Argentino gastos"
+(`38933ce5-0e68-80ba-9e03-000b001f2431`): Concepto "Toldo del local", Costo
+2.020,85€, Fecha 20/08/2026, Pagado por: Willy.
+
+**Viaje "Hells Week 2026" (10-23/08/2026):** un clúster de movimientos con
+comercios franceses (CANTONI PATRICK, SARL TOUNAJ, HARICOT DROUO SC, KDO
+DKO, más TOTAL/AUTOROUTES ASF/CHEZ JULIETTE/LE TROUVERE que ya tenían
+categoría asignada) no caía en ninguna ventana de `TRIP_WINDOWS`. Confirmado
+por el usuario como viaje real; agregado a `TRIP_WINDOWS` en `js/app.js`.
+Los 4 movimientos en "A revisar" se recategorizaron a "Viajes"; también se
+unificaron CHEZ JULIETTE y LE TROUVERE (antes "Comer afuera") a "Viajes" por
+pedido explícito del usuario, para que todo el gasto del viaje quede bajo
+una sola categoría.
+
+**AliExpress -82,18€ (22/08):** cruzado contra Gmail — coincide exacto con
+2 pedidos confirmados el 20/08 (dashboard 4K + soporte manillar moto,
+75,14€ + 7,04€). Categorizado como "Guille" por pedido explícito del
+usuario (no "Gastos moto" como se había sugerido inicialmente).
+
+**TRANSF. A SU FAVOR +0,01€ (11/08):** recategorizado de "Combustible" (error
+evidente) a "Inversion" — el usuario indicó que probablemente es una
+transferencia automática residual de MyInvestor.
+
+---
+
 ## [2026-08-22] Relay.app retirado por completo; Guard G eliminado; fix de reintentos en categorizar_movimientos
 
 **Contexto:** el usuario confirmó que Relay.app ya no está en uso (no solo
