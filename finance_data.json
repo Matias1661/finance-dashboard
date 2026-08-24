@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-24 10:20",
+  "generated_at": "2026-08-24 14:43",
   "movimientos": [
     {
       "fecha": "2026-08-23",
@@ -26,8 +26,8 @@
       "fecha": "2026-08-23",
       "concepto": "BIZUM RECIBIDO",
       "monto": 16,
-      "categoria": "Guille",
-      "nota": null
+      "categoria": "Gastos en conjunto",
+      "nota": "Dinero de la pareja para compra en Amazon (pendiente de categorizar la compra correspondiente como Gastos en conjunto)"
     },
     {
       "fecha": "2026-08-22",
@@ -502,8 +502,8 @@
       "fecha": "2026-08-10",
       "concepto": "BEMTOURS",
       "monto": -300,
-      "categoria": "Viajes",
-      "nota": null
+      "categoria": "Guille",
+      "nota": "Recategorizado de Viajes a Guille — no relacionado con Hells Week 2026"
     },
     {
       "fecha": "2026-08-10",
@@ -19826,8 +19826,8 @@
         "total": 0.58,
         "acumulado": 20.94,
         "acumulado_anio": 11.74,
-        "benchmark": -0.24,
-        "benchmark_acumulado": 16.67,
+        "benchmark": -0.13,
+        "benchmark_acumulado": 16.79,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
