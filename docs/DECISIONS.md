@@ -1,3 +1,29 @@
+## [2026-08-24] Fix regex tripSubcategory(): Total/Avia, Escota, Yego no clasificaban en desglose de viajes
+
+**Contexto:** revisando el desglose de "Hells Week 2026" (10-23/08/2026) en
+la vista de Categorías, 624,54€ caían en el cajón "Comida y otros" de
+`tripSubcategory()` (js/app.js). De ese total, 121,56€ correspondían a
+gastos de combustible (TOTAL x5, STATION AVIA x2, marcas francesas no
+cubiertas por la regex), peajes (ESCOTA VINCI x2, operador francés) y
+transporte (YEGO* RIDE, moto/car-sharing) mal clasificados por vacíos en
+las regex, que solo cubrían marcas españolas y servicios listados
+explícitamente.
+
+**Decisión:** ampliar las regex de `tripSubcategory()`:
+- Combustible: agregado `\btotal\b`, `station avia`, `\bavia\b`
+- Peajes: agregado `escota`
+- Transporte: agregado `yego`
+
+No se agregó un patrón para "ZARAGOZA - A2 DIR" (-17,36€, probable peaje
+AP-2) por no tener confirmación del merchant exacto; queda en "Comida y
+otros" hasta verificar. **Patrón a replicar:** ante marcas de
+combustible/peaje/transporte extranjeras no cubiertas, ampliar regex
+puntualmente en vez de agregar patrones amplios que puedan generar falsos
+positivos (se descartó `\ba\d+\b` para autopistas por ese motivo).
+
+Además, BEMTOURS -300€ (10/08/2026) se recategorizó de "Viajes" a "Guille"
+por no estar relacionado con el viaje (confirmado por Mati).
+
 ## [2026-08-24] Organizar Movimientos: financiación cruzada Talho Argentino vía Guille/Nómina; viaje "Hells Week 2026" agregado a TRIP_WINDOWS
 
 **Contexto:** en la revisión de movimientos del 24/08, `FACTURA N°330/202`
