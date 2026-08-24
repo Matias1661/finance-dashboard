@@ -1,3 +1,19 @@
+## 2026-08-24 — Organizar Movimientos: 12 movimientos revisados, viaje Hells Week 2026 agregado
+
+- 12 movimientos pendientes (20/08–23/08 y 11/08) recategorizados en Notion:
+  AliExpress → Guille (con nota), 4 movimientos "A revisar" + 2 "Comer
+  afuera" del viaje a Francia → Viajes, factura del toldo (-2.020,85€) →
+  Talho Argentino, y los 3 ingresos que la financiaron (cajero+bizum+transf)
+  también recategorizados a Talho Argentino. TRANSF. A SU FAVOR de 0,01€ →
+  Inversion (corrección de error de categorización).
+- Nuevo gasto en DB "Talho Argentino gastos": Toldo del local, 2.020,85€,
+  pagado por Willy.
+- `TRIP_WINDOWS` en `js/app.js`: agregado "Hells Week 2026" (10-23/08/2026).
+- `reviewed_movements.json` actualizado con los 14 movimientos presentados.
+- Detalle completo del criterio de financiación cruzada en `docs/DECISIONS.md`.
+
+---
+
 ## 2026-08-22 — Relay retirado por completo, Guard G eliminado, fix reintentos en categorizar_movimientos
 
 - Confirmado por el usuario: Relay.app ya no está en uso (no solo el flujo de
