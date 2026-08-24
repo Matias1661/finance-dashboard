@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-24 10:00",
+  "generated_at": "2026-08-24 10:20",
   "movimientos": [
     {
       "fecha": "2026-08-23",
       "concepto": "CANTONI PATRICK",
       "monto": -4.65,
-      "categoria": "A revisar",
+      "categoria": "Viajes",
       "nota": null
     },
     {
@@ -19,7 +19,7 @@
       "fecha": "2026-08-23",
       "concepto": "SARL TOUNAJ",
       "monto": -30,
-      "categoria": "A revisar",
+      "categoria": "Viajes",
       "nota": null
     },
     {
@@ -33,15 +33,15 @@
       "fecha": "2026-08-22",
       "concepto": "HARICOT DROUO SC",
       "monto": -50,
-      "categoria": "A revisar",
+      "categoria": "Viajes",
       "nota": null
     },
     {
       "fecha": "2026-08-22",
       "concepto": "ALIEXPRESS.COM",
       "monto": -82.18,
-      "categoria": "Compras",
-      "nota": null
+      "categoria": "Guille",
+      "nota": "Dashboard 4K + soporte manillar moto (AliExpress)"
     },
     {
       "fecha": "2026-08-21",
@@ -54,7 +54,7 @@
       "fecha": "2026-08-21",
       "concepto": "CHEZ JULIETTE",
       "monto": -4,
-      "categoria": "Comer afuera",
+      "categoria": "Viajes",
       "nota": null
     },
     {
@@ -68,14 +68,14 @@
       "fecha": "2026-08-21",
       "concepto": "KDO DKO",
       "monto": -12.9,
-      "categoria": "A revisar",
+      "categoria": "Viajes",
       "nota": null
     },
     {
       "fecha": "2026-08-21",
       "concepto": "LE TROUVERE",
       "monto": -47.18,
-      "categoria": "Comer afuera",
+      "categoria": "Viajes",
       "nota": null
     },
     {
@@ -96,22 +96,22 @@
       "fecha": "2026-08-20",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 1000,
-      "categoria": "Guille",
+      "categoria": "Talho Argentino",
       "nota": null
     },
     {
       "fecha": "2026-08-20",
       "concepto": "BIZUM RECIBIDO",
       "monto": 70.85,
-      "categoria": "Guille",
+      "categoria": "Talho Argentino",
       "nota": null
     },
     {
       "fecha": "2026-08-20",
       "concepto": "FACTURA N°330/202",
       "monto": -2020.85,
-      "categoria": "A revisar",
-      "nota": null
+      "categoria": "Talho Argentino",
+      "nota": "Toldo del local"
     },
     {
       "fecha": "2026-08-19",
@@ -173,7 +173,7 @@
       "fecha": "2026-08-19",
       "concepto": "INGRESO CAJERO",
       "monto": 950,
-      "categoria": "Nomina",
+      "categoria": "Talho Argentino",
       "nota": null
     },
     {
@@ -348,7 +348,7 @@
       "fecha": "2026-08-14",
       "concepto": "YEGO* RIDE 33 MIN",
       "monto": -11.88,
-      "categoria": "Gastos moto",
+      "categoria": "Viajes",
       "nota": null
     },
     {
@@ -488,7 +488,7 @@
       "fecha": "2026-08-11",
       "concepto": "TRANSF. A SU FAVOR",
       "monto": 0.01,
-      "categoria": "Combustible",
+      "categoria": "Inversion",
       "nota": null
     },
     {
@@ -622,7 +622,7 @@
       "concepto": "PAYPAL EUROPE S.",
       "monto": -1818.31,
       "categoria": "Guille",
-      "nota": null
+      "nota": "Casa Frejus"
     },
     {
       "fecha": "2026-08-06",
@@ -19826,8 +19826,8 @@
         "total": 0.58,
         "acumulado": 20.94,
         "acumulado_anio": 11.74,
-        "benchmark": -0.2,
-        "benchmark_acumulado": 16.71,
+        "benchmark": -0.24,
+        "benchmark_acumulado": 16.67,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
