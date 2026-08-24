@@ -231,6 +231,7 @@ const TRIP_WINDOWS = [
   { name: 'Málaga',                   start: '2026-05-01', end: '2026-05-03' },
   { name: 'Viaje a Portugal',         start: '2026-05-08', end: '2026-05-11' },
   { name: 'Viaje a Granada',          start: '2026-07-18', end: '2026-07-19' },
+  { name: 'Hells Week 2026',          start: '2026-08-10', end: '2026-08-23' },
 ];
 
 function tripSubcategory(concepto) {
