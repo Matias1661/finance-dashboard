@@ -1,6 +1,118 @@
 {
-  "generated_at": "2026-08-23 09:37",
+  "generated_at": "2026-08-24 10:00",
   "movimientos": [
+    {
+      "fecha": "2026-08-23",
+      "concepto": "CANTONI PATRICK",
+      "monto": -4.65,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-23",
+      "concepto": "TOTAL",
+      "monto": -16.58,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-23",
+      "concepto": "SARL TOUNAJ",
+      "monto": -30,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-23",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 16,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-22",
+      "concepto": "HARICOT DROUO SC",
+      "monto": -50,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-22",
+      "concepto": "ALIEXPRESS.COM",
+      "monto": -82.18,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-21",
+      "concepto": "AUTOROUTES ASF",
+      "monto": -0.6,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-21",
+      "concepto": "CHEZ JULIETTE",
+      "monto": -4,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-21",
+      "concepto": "AUTOROUTES ASF",
+      "monto": -5.9,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-21",
+      "concepto": "KDO DKO",
+      "monto": -12.9,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-21",
+      "concepto": "LE TROUVERE",
+      "monto": -47.18,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-20",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-20",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 5,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-20",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 1000,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-20",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 70.85,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-20",
+      "concepto": "FACTURA N°330/202",
+      "monto": -2020.85,
+      "categoria": "A revisar",
+      "nota": null
+    },
     {
       "fecha": "2026-08-19",
       "concepto": "AUTOROUTES ASF",
@@ -334,7 +446,7 @@
       "fecha": "2026-08-12",
       "concepto": "TRANSF. A SU FAVOR",
       "monto": 1216.87,
-      "categoria": "Guille",
+      "categoria": "Inversion",
       "nota": null
     },
     {
@@ -376,7 +488,7 @@
       "fecha": "2026-08-11",
       "concepto": "TRANSF. A SU FAVOR",
       "monto": 0.01,
-      "categoria": "Guille",
+      "categoria": "Combustible",
       "nota": null
     },
     {
@@ -418,7 +530,7 @@
       "fecha": "2026-08-10",
       "concepto": "TRANSF. A SU FAVOR",
       "monto": 464.59,
-      "categoria": "Guille",
+      "categoria": "Inversion",
       "nota": null
     },
     {
@@ -19146,7 +19258,7 @@
       },
       {
         "mes": "2026-08",
-        "peerberry": 9868.55,
+        "peerberry": 9881.02,
         "myinvestor": 2950
       }
     ],
@@ -19248,7 +19360,7 @@
       },
       {
         "mes": "2026-08",
-        "peerberry": 0.64,
+        "peerberry": 0.77,
         "myinvestor": 0.0
       }
     ],
@@ -19435,11 +19547,11 @@
       },
       {
         "mes": "2026-08",
-        "peerberry": 66.37,
+        "peerberry": 78.84,
         "myinvestor": 0.0,
         "peerberry_aportes": null,
         "myinvestor_aportes": null,
-        "peerberry_capital": 9868.55,
+        "peerberry_capital": 9881.02,
         "myinvestor_capital": 2950
       }
     ],
@@ -19709,13 +19821,13 @@
       },
       {
         "mes": "2026-08",
-        "peerberry": 0.64,
+        "peerberry": 0.77,
         "myinvestor": 0.0,
-        "total": 0.48,
-        "acumulado": 20.83,
-        "acumulado_anio": 11.64,
-        "benchmark": 0.0,
-        "benchmark_acumulado": 16.94,
+        "total": 0.58,
+        "acumulado": 20.94,
+        "acumulado_anio": 11.74,
+        "benchmark": -0.2,
+        "benchmark_acumulado": 16.71,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
