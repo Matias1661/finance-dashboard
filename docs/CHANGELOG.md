@@ -1,3 +1,14 @@
+## 2026-08-24 — Fix desglose de viajes: regex tripSubcategory() y recategorización BEMTOURS
+
+- `js/app.js`: ampliadas las regex de `tripSubcategory()` — Combustible
+  ahora reconoce Total/Station Avia; Peajes reconoce Escota Vinci;
+  Transporte reconoce Yego. Antes caían en el cajón "Comida y otros".
+- Movimiento BEMTOURS (-300€, 10/08/2026) recategorizado de "Viajes" a
+  "Guille" en Notion (no relacionado con Hells Week 2026).
+- Efecto en el desglose de "Hells Week 2026": total baja de 875,51€ a
+  575,51€; "Comida y otros" baja de 624,54€ a ~203€ (tras mover 121,56€
+  a Combustible/Peajes/Transporte y 300€ a Guille).
+
 ## 2026-08-24 — Organizar Movimientos: 12 movimientos revisados, viaje Hells Week 2026 agregado
 
 - 12 movimientos pendientes (20/08–23/08 y 11/08) recategorizados en Notion:
