@@ -236,10 +236,10 @@ const TRIP_WINDOWS = [
 
 function tripSubcategory(concepto) {
   const c = (concepto || '').toLowerCase();
-  if (/repsol|shell|esso|moeve|sanse|ballenoil|p\.serv|certif|galp/.test(c)) return 'Combustible';
-  if (/autopista|bidegi|cofiroute|atlandes|autoroutes|ap-/.test(c))           return 'Peajes';
-  if (/hotel|airbnb|hostal|apartamento|booking/.test(c))                      return 'Alojamiento';
-  if (/iberia|vueling|ryanair|renfe|ouigo|blabla|uber|parking/.test(c))       return 'Transporte';
+  if (/repsol|shell|esso|moeve|sanse|ballenoil|p\.serv|certif|galp|\btotal\b|station avia|\bavia\b/.test(c)) return 'Combustible';
+  if (/autopista|bidegi|cofiroute|atlandes|autoroutes|ap-|escota/.test(c))                                    return 'Peajes';
+  if (/hotel|airbnb|hostal|apartamento|booking/.test(c))                                                       return 'Alojamiento';
+  if (/iberia|vueling|ryanair|renfe|ouigo|blabla|uber|yego|parking/.test(c))                                    return 'Transporte';
   return 'Comida y otros';
 }
 
