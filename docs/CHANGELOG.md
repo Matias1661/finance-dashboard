@@ -1,3 +1,17 @@
+## 2026-08-25 — Criterio unificado comida-en-viajes + recategorización retroactiva de 12 movimientos
+
+- Notion (Movimientos): 12 movimientos recategorizados de "Comer afuera" a
+  "Viajes" (Gijón x2, Hotel Natursun x1, Bagger Racing x2, Alojamiento en
+  Francia x1, Portugal x1, Hells Week 2026 x5), cada uno con nota indicando
+  el motivo y la verificación aplicada. Total recategorizado: 429,04€.
+- Nuevo criterio (ver DECISIONS.md 2026-08-25): comida dentro de ventana de
+  `TRIP_WINDOWS` (con buffer de 3 días) va a "Viajes"; excepción SERVIMATIC
+  (máquina expendedora trabajo anterior) permanece en "Comer afuera".
+- 5 movimientos evaluados y descartados explícitamente por no ser del viaje
+  pese a caer en la ventana con buffer (McDonald's Leganés, Café&Té Plaza
+  Norte 2, Bodega de los Secretos, New York Burger, Uber Eats límite de
+  buffer en Hotel Natursun) — quedan en "Comer afuera".
+
 ## 2026-08-24 — Cierre formal del plan de migración Relay → GitHub Actions
 
 - Confirmado por el usuario que Relay.app dejó de funcionar definitivamente
