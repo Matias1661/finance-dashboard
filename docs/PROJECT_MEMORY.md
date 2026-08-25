@@ -364,6 +364,8 @@ const TRIP_WINDOWS = [
 
 **Archivos a modificar:** solo `js/app.js` (añadir `TRIP_WINDOWS`, `tripSubcategory()`, y sección en `renderCategorias()`) e `index.html` si hace falta un contenedor HTML nuevo.
 
+**Criterio de categorización comida-en-viajes (2026-08-25, ver `DECISIONS.md`):** todo gasto de comida cuya fecha caiga dentro de una ventana de `TRIP_WINDOWS` (con el buffer de 3 días de `getTripForDate()`) va a categoría "Viajes", no "Comer afuera" — antes de esta fecha el criterio era inconsistente entre viajes. Excepción: SERVIMATIC (máquina expendedora de un trabajo anterior de Mati) permanece siempre en "Comer afuera". Antes de recategorizar un gasto de comida como parte de un viaje, verificar que el comercio tenga sede en el destino (cadenas con múltiples sucursales en España — McDonald's, Café&Té, New York Burger, etc. — son la fuente más común de falsos positivos por caer dentro del buffer sin ser del viaje real).
+
 ---
 
 ## Categorías reembolsables
