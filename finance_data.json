@@ -1,6 +1,34 @@
 {
-  "generated_at": "2026-08-25 09:49",
+  "generated_at": "2026-08-25 10:15",
   "movimientos": [
+    {
+      "fecha": "2026-08-24",
+      "concepto": "LA MIE DE PAIN",
+      "monto": -2.85,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-24",
+      "concepto": "LA MIE DE PAIN",
+      "monto": -5.6,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-24",
+      "concepto": "BONIF. 2% GALP",
+      "monto": 0.48,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-24",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-08-23",
       "concepto": "CANTONI PATRICK",
@@ -19826,8 +19854,8 @@
         "total": 0.58,
         "acumulado": 20.94,
         "acumulado_anio": 11.74,
-        "benchmark": 0.06,
-        "benchmark_acumulado": 17.02,
+        "benchmark": 0.0,
+        "benchmark_acumulado": 16.94,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
