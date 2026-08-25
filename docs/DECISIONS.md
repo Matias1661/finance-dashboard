@@ -1,3 +1,67 @@
+## [2026-08-25] Criterio unificado: comida durante viaje va a categoría "Viajes" (no "Comer afuera"); recategorización retroactiva
+
+**Contexto:** Mati notó que en el viaje "Hells Week 2026" había gastos de
+comida en "Comer afuera" y otros en "Viajes", dificultando calcular el
+costo total del viaje. Se verificó consistencia contra viajes anteriores
+(Gijón, Spain Run, Hotel Natursun, Bagger Racing, Toledo, Alojamiento en
+Francia, 45 Aniversario París, Málaga, Portugal, Granada): el criterio
+histórico era inconsistente — algunos viajes dejaban la comida en "Comer
+afuera" (Gijón, Toledo, Spain Run, Hotel Natursun, Málaga), otros la
+incluían en "Viajes" (Bagger Racing, Francia, Portugal, Granada). No hay
+una regla verificable aplicada uniformemente antes de esta fecha.
+
+**Decisión:**
+1. Nuevo criterio, vigente desde ahora: todo gasto de comida cuya fecha
+   caiga dentro de una ventana de `TRIP_WINDOWS` (js/app.js, con el
+   buffer de 3 días de retraso de tarjeta) va a categoría "Viajes", no
+   "Comer afuera". `tripSubcategory()` ya desglosa internamente estos
+   gastos en "Comida y otros" dentro del breakdown por viaje, así que no
+   se pierde el detalle.
+2. **Excepción:** cargos de SERVIMATIC (máquina expendedora del trabajo
+   anterior de Mati) permanecen siempre en "Comer afuera" aunque caigan
+   dentro de una ventana de viaje — no están relacionados con el viaje.
+3. Se recategorizaron retroactivamente 12 movimientos de "Comer afuera" a
+   "Viajes" tras verificar, comercio por comercio, que la ubicación
+   coincide con el destino del viaje (nombre del comercio + contexto de
+   gastos del mismo día, ej. peajes/combustible del país del viaje):
+
+   | Fecha | Concepto | Monto | Viaje |
+   |---|---|---|---|
+   | 2025-07-10 | RESTAURANTE AUGA | -191,10€ | Gijón |
+   | 2025-07-12 | RESTAURANTE EL AL[MACÉN] | -6,60€ | Gijón |
+   | 2025-10-27 | LOS PESCAITOS GOM[EZ] | -1,50€ | Hotel Natursun |
+   | 2025-11-08 | UBR* PENDING.UBER | -10,99€ | Bagger Racing |
+   | 2025-11-08 | UBR* PENDING.UBER | -13,49€ | Bagger Racing |
+   | 2026-03-27 | UBER * EATS PEN | -19,30€ | Alojamiento en Francia |
+   | 2026-05-09 | UBER * EATS PEN | -37,66€ | Viaje a Portugal |
+   | 2026-08-16 | LES SABLETTES | -50,00€ | Hells Week 2026 |
+   | 2026-08-17 | TICKET FOOD COFFE | -24,40€ | Hells Week 2026 |
+   | 2026-08-18 | BELLA VITA | -45,00€ | Hells Week 2026 |
+   | 2026-08-18 | TICKET FOOD COFFE | -19,40€ | Hells Week 2026 |
+   | 2026-08-19 | MC DONALD'S | -9,00€ | Hells Week 2026 |
+
+4. **Se descartaron explícitamente** (quedan en "Comer afuera" por no ser
+   del viaje, aunque caían dentro de la ventana con buffer):
+   - MC DONALDS-LEGANE (26/03/2026, -10,96€): Leganés, Madrid — no Francia.
+   - PZ NORTE CAFE Y T (10/12/2025, -7,20€): Café&Té en C.C. Plaza Norte 2,
+     San Sebastián de los Reyes (Madrid) — no Toledo.
+   - LOS SECRETOS (13/12/2025, -143,00€): cadena "Bodega de los Secretos",
+     solo tiene sede en Madrid, ninguna en Toledo.
+   - NEW YORK BURGER (01/05/2026, -49,20€): cadena solo Madrid/Barcelona,
+     sin local en Málaga.
+   - UBER * EATS PEN (29/10/2025, -17,68€, Hotel Natursun): cae en el
+     último día del buffer de 3 días sin contexto que confirme que Mati
+     seguía de viaje; se deja sin recategorizar por precaución.
+
+   **Patrón a replicar:** ante un gasto de comida dentro de una ventana de
+   viaje, no asumir automáticamente que es del viaje — verificar que el
+   nombre del comercio/cadena tenga sede en el destino, o que el contexto
+   del mismo día (peajes, combustible con sufijo geográfico) confirme la
+   ubicación. Cadenas con múltiples sedes en España (McDonald's, Café&Té,
+   New York Burger) son la fuente más común de falsos positivos por caer
+   dentro del buffer de tarjeta sin ser gasto real del viaje.
+
+
 ## [2026-08-24] Fix regex tripSubcategory(): Total/Avia, Escota, Yego no clasificaban en desglose de viajes
 
 **Contexto:** revisando el desglose de "Hells Week 2026" (10-23/08/2026) en
