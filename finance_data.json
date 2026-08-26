@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-08-25 10:15",
+  "generated_at": "2026-08-26 09:51",
   "movimientos": [
     {
       "fecha": "2026-08-24",
       "concepto": "LA MIE DE PAIN",
       "monto": -2.85,
-      "categoria": "Comer afuera",
+      "categoria": "Viajes",
       "nota": null
     },
     {
       "fecha": "2026-08-24",
       "concepto": "LA MIE DE PAIN",
       "monto": -5.6,
-      "categoria": "Comer afuera",
+      "categoria": "Viajes",
       "nota": null
     },
     {
@@ -187,8 +187,8 @@
       "fecha": "2026-08-19",
       "concepto": "MC DONALD'S",
       "monto": -9,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Verificado: mismo día que ESCOTA VINCI/AUTOROUTES ASF (peajes franceses), viaje Hells Week 2026."
     },
     {
       "fecha": "2026-08-19",
@@ -222,22 +222,22 @@
       "fecha": "2026-08-18",
       "concepto": "TICKET FOOD COFFE",
       "monto": -19.4,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Contexto: mismo día que peajes franceses, viaje Hells Week 2026."
     },
     {
       "fecha": "2026-08-18",
       "concepto": "BELLA VITA",
       "monto": -45,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Contexto: mismo día que peajes franceses, viaje Hells Week 2026."
     },
     {
       "fecha": "2026-08-17",
       "concepto": "TICKET FOOD COFFE",
       "monto": -24.4,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Contexto: mismo día que peajes franceses, viaje Hells Week 2026."
     },
     {
       "fecha": "2026-08-17",
@@ -271,8 +271,8 @@
       "fecha": "2026-08-16",
       "concepto": "LES SABLETTES",
       "monto": -50,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Verificado: topónimo francés (La Seyne-sur-Mer) + peajes franceses mismo día, viaje Hells Week 2026."
     },
     {
       "fecha": "2026-08-16",
@@ -3253,8 +3253,8 @@
       "fecha": "2026-05-09",
       "concepto": "UBER * EATS PEN",
       "monto": -37.66,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Fecha dentro del viaje real (Portugal)."
     },
     {
       "fecha": "2026-05-08",
@@ -4583,8 +4583,8 @@
       "fecha": "2026-03-27",
       "concepto": "UBER * EATS PEN",
       "monto": -19.3,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Fecha dentro del viaje real (Alojamiento en Francia)."
     },
     {
       "fecha": "2026-03-26",
@@ -8307,15 +8307,15 @@
       "fecha": "2025-11-08",
       "concepto": "UBR* PENDING.UBER",
       "monto": -10.99,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Fecha dentro del viaje real (Bagger Racing), mismo día que gasto ARAMARK JEREZ."
     },
     {
       "fecha": "2025-11-08",
       "concepto": "UBR* PENDING.UBER",
       "monto": -13.49,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Fecha dentro del viaje real (Bagger Racing), mismo día que gasto ARAMARK JEREZ."
     },
     {
       "fecha": "2025-11-08",
@@ -8783,8 +8783,8 @@
       "fecha": "2025-10-27",
       "concepto": "LOS PESCAITOS GOM",
       "monto": -1.5,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Verificado: Bar Los Pescaitos/Pensión Gómez, Torremolinos, coincide con Hotel Natursun."
     },
     {
       "fecha": "2025-10-27",
@@ -12136,8 +12136,8 @@
       "fecha": "2025-07-12",
       "concepto": "RESTAURANTE EL AL",
       "monto": -6.6,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Verificado: El Almacén, Gijón."
     },
     {
       "fecha": "2025-07-12",
@@ -12213,8 +12213,8 @@
       "fecha": "2025-07-10",
       "concepto": "RESTAURANTE AUGA",
       "monto": -191.1,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Recategorizado de Comer afuera a Viajes (25/08/2026): comida durante viaje va a Viajes. Verificado: restaurante en Gijón, coincide con viaje."
     },
     {
       "fecha": "2025-07-10",
@@ -19842,8 +19842,8 @@
         "total": 0.0,
         "acumulado": 20.24,
         "acumulado_anio": 11.1,
-        "benchmark": 1.84,
-        "benchmark_acumulado": 16.94,
+        "benchmark": 1.61,
+        "benchmark_acumulado": 16.69,
         "sin_aportes_pb": true,
         "sin_aportes_mi": false
       },
@@ -19854,8 +19854,8 @@
         "total": 0.58,
         "acumulado": 20.94,
         "acumulado_anio": 11.74,
-        "benchmark": 0.0,
-        "benchmark_acumulado": 16.94,
+        "benchmark": 0.24,
+        "benchmark_acumulado": 16.96,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
