@@ -1,3 +1,33 @@
+## [2026-08-31] Organizar Movimientos: verificación geográfica de falsos positivos en TRIP_WINDOWS y nueva ventana Lloret de Mar
+
+**Contexto:** Corrida periódica del flujo "Organizar Movimientos" (25 pendientes,
+14 dentro de la ventana "Hells Week 2026" + buffer 3 días). Dos movimientos
+tenían categoría dudosa por caer en la ventana pero sin verificación geográfica:
+`SARRAC N - DIR.MA` (-24.18€, 25/08) y `ADENOR ITZIAR 2` (-28.24€, 25/08).
+
+**Verificación:**
+- `SARRAC N - DIR.MA` = parada en Casa Picias, Sarracín (Burgos), en la N-I/A-1,
+  parada clásica en la ruta Madrid-norte. Confirmado como gasto del viaje de
+  vuelta (consistente con la decisión del 25/08 de categorizar comida de viaje
+  como "Viajes").
+- `ADENOR ITZIAR 2` = gasolinera E.S. Adenor en Itziar (Gipuzkoa), en la ruta
+  hacia el norte/frontera francesa. Confirmado como combustible del viaje.
+- Dos movimientos que SÍ caían en la ventana por coincidencia de fecha pero
+  NO son del viaje, verificados y dejados sin cambios: `FARMACIA TREBOL E`
+  (cadena con local en San Sebastián de los Reyes, zona habitual) y
+  `AYTO MADRID PAGO` (pago al ayuntamiento de Madrid, no viaje).
+
+**Decisión:** Recategorizar `SARRAC N - DIR.MA` y `ADENOR ITZIAR 2` a "Viajes"
+en Notion (Movimientos). Patrón a repetir en futuras corridas: un movimiento
+dentro de TRIP_WINDOWS no es automáticamente del viaje — verificar geografía
+del comercio (nombre + ubicación conocida) antes de recategorizar, sobre todo
+con cadenas que tienen locales tanto en el destino del viaje como cerca de casa.
+
+**Además:** se agregó nueva ventana a `TRIP_WINDOWS` en `js/app.js`:
+`Viaje a Lloret de Mar`, 2026-09-29 a 2026-10-04 (detectado por cargo
+`Klarna*Airbnb EU -128.00` del 30/08, pagado con antelación y fuera de
+cualquier ventana existente).
+
 ## [2026-08-25] Criterio unificado: comida durante viaje va a categoría "Viajes" (no "Comer afuera"); recategorización retroactiva
 
 **Contexto:** Mati notó que en el viaje "Hells Week 2026" había gastos de
