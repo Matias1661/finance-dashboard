@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31 10:16",
+  "generated_at": "2026-08-31 16:57",
   "movimientos": [
     {
       "fecha": "2026-08-30",
@@ -152,8 +152,8 @@
       "fecha": "2026-08-25",
       "concepto": "WWW.AMAZON",
       "monto": -16.72,
-      "categoria": "Compras",
-      "nota": null
+      "categoria": "Gastos en conjunto",
+      "nota": "Gorra Levi'S comprada con dinero de la pareja (ver Bizum +16.00 del 23/08)"
     },
     {
       "fecha": "2026-08-25",
@@ -194,15 +194,15 @@
       "fecha": "2026-08-25",
       "concepto": "SARRAC N - DIR.MA",
       "monto": -24.18,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Parada en Casa Picias, Sarracín (Burgos), N-I/A-1 dirección Madrid, vuelta de Hells Week 2026"
     },
     {
       "fecha": "2026-08-25",
       "concepto": "ADENOR ITZIAR 2",
       "monto": -28.24,
-      "categoria": "A revisar",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Gasolinera E.S. Adenor, Itziar (Gipuzkoa), ruta hacia el norte durante Hells Week 2026"
     },
     {
       "fecha": "2026-08-25",
@@ -20078,8 +20078,8 @@
         "total": 0.65,
         "acumulado": 21.03,
         "acumulado_anio": 11.83,
-        "benchmark": 0.31,
-        "benchmark_acumulado": 17.9,
+        "benchmark": -0.09,
+        "benchmark_acumulado": 17.42,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
