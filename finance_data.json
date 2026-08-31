@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31 10:07",
+  "generated_at": "2026-08-31 10:10",
   "movimientos": [
     {
       "fecha": "2026-08-30",
@@ -33,7 +33,7 @@
       "fecha": "2026-08-30",
       "concepto": "BINGX AU",
       "monto": -44.67,
-      "categoria": "Inversion",
+      "categoria": "Suscripciones",
       "nota": null
     },
     {
@@ -103,7 +103,7 @@
       "fecha": "2026-08-28",
       "concepto": "BIZUM RECIBIDO",
       "monto": 9,
-      "categoria": "Guille",
+      "categoria": "Gastos en conjunto",
       "nota": null
     },
     {
@@ -117,7 +117,7 @@
       "fecha": "2026-08-27",
       "concepto": "MI ALCAMPO S S DE",
       "monto": -31.22,
-      "categoria": "Supermercado",
+      "categoria": "Gastos en conjunto",
       "nota": null
     },
     {
@@ -208,7 +208,7 @@
       "fecha": "2026-08-25",
       "concepto": "AYTO MADRID PAGO",
       "monto": -45,
-      "categoria": "A revisar",
+      "categoria": "Gastos coche",
       "nota": null
     },
     {
@@ -20078,8 +20078,8 @@
         "total": 0.65,
         "acumulado": 21.03,
         "acumulado_anio": 11.83,
-        "benchmark": 0.25,
-        "benchmark_acumulado": 17.82,
+        "benchmark": 0.24,
+        "benchmark_acumulado": 17.81,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
