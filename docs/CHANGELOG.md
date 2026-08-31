@@ -1,3 +1,18 @@
+## 2026-08-31 — Organizar Movimientos: 25 pendientes revisados, 3 recategorizados, nueva ventana de viaje
+
+- Notion (Movimientos): 2 movimientos recategorizados de "A revisar"/"Comer
+  afuera" a "Viajes" (SARRAC N - DIR.MA -24.18€, ADENOR ITZIAR 2 -28.24€),
+  verificados geográficamente como parada y gasolinera de la vuelta de
+  "Hells Week 2026". 1 movimiento recategorizado de "Compras" a "Gastos en
+  conjunto" (WWW.AMAZON -16.72€, gorra Levi'S pagada por la pareja vía Bizum).
+- `js/app.js`: nueva entrada en TRIP_WINDOWS — "Viaje a Lloret de Mar"
+  (2026-09-29 a 2026-10-04).
+- `reviewed_movements.json`: 25 claves nuevas agregadas (total 2457).
+- `docs/DECISIONS.md`: registrado el criterio de verificación geográfica
+  para movimientos dentro de TRIP_WINDOWS que caen ahí solo por coincidencia
+  de fecha (Farmacia Trébol, Ayto Madrid Pago quedaron sin cambios tras
+  verificar que no son del viaje).
+
 ## 2026-08-25 — Criterio unificado comida-en-viajes + recategorización retroactiva de 12 movimientos
 
 - Notion (Movimientos): 12 movimientos recategorizados de "Comer afuera" a
