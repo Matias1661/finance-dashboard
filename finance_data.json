@@ -1,6 +1,230 @@
 {
-  "generated_at": "2026-08-30 14:41",
+  "generated_at": "2026-08-31 10:07",
   "movimientos": [
+    {
+      "fecha": "2026-08-30",
+      "concepto": "SKYSHOWTIME A06FC",
+      "monto": -4.49,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-30",
+      "concepto": "E.S.BARAJAS TIERR",
+      "monto": -70.3,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-30",
+      "concepto": "E.S. APADIS",
+      "monto": -3.5,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-30",
+      "concepto": "FARMACIA TREBOL E",
+      "monto": -13.96,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-30",
+      "concepto": "BINGX AU",
+      "monto": -44.67,
+      "categoria": "Inversion",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-30",
+      "concepto": "RESTAURANTE ORECA",
+      "monto": -61.5,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-30",
+      "concepto": "Klarna*Airbnb EU",
+      "monto": -128,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-29",
+      "concepto": "NOMINA (TRF)",
+      "monto": 2648.99,
+      "categoria": "Nomina",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-29",
+      "concepto": "Ad free for Prime",
+      "monto": -1.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-29",
+      "concepto": "Gastos conjuntos",
+      "monto": -100,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-28",
+      "concepto": "VOLKSWAGEN RENTIN",
+      "monto": -29.5,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-28",
+      "concepto": "LIDL SAN SEBASTI",
+      "monto": -7.89,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-28",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-28",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 55,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-28",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 9,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-27",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -3.49,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-27",
+      "concepto": "MI ALCAMPO S S DE",
+      "monto": -31.22,
+      "categoria": "Supermercado",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-27",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 41,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-27",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-27",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 100,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-26",
+      "concepto": "FARMACIA TREBOL E",
+      "monto": -13.96,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-25",
+      "concepto": "WWW.AMAZON",
+      "monto": -16.72,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-25",
+      "concepto": "WWW.AMAZON",
+      "monto": -45.99,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-25",
+      "concepto": "AUTOROUTES ASF",
+      "monto": -1.1,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-25",
+      "concepto": "AUTOROUTES ASF",
+      "monto": -1.2,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-25",
+      "concepto": "AUTOROUTES ASF",
+      "monto": -1.6,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-25",
+      "concepto": "LA MIE DE PAIN",
+      "monto": -9.8,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-25",
+      "concepto": "SARRAC N - DIR.MA",
+      "monto": -24.18,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-25",
+      "concepto": "ADENOR ITZIAR 2",
+      "monto": -28.24,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-25",
+      "concepto": "AYTO MADRID PAGO",
+      "monto": -45,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-25",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 40,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-25",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-08-24",
       "concepto": "LA MIE DE PAIN",
@@ -19286,7 +19510,7 @@
       },
       {
         "mes": "2026-08",
-        "peerberry": 9881.02,
+        "peerberry": 9891.83,
         "myinvestor": 2950
       }
     ],
@@ -19388,7 +19612,7 @@
       },
       {
         "mes": "2026-08",
-        "peerberry": 0.77,
+        "peerberry": 0.88,
         "myinvestor": 0.0
       }
     ],
@@ -19575,11 +19799,11 @@
       },
       {
         "mes": "2026-08",
-        "peerberry": 78.84,
+        "peerberry": 89.65,
         "myinvestor": 0.0,
         "peerberry_aportes": null,
         "myinvestor_aportes": null,
-        "peerberry_capital": 9881.02,
+        "peerberry_capital": 9891.83,
         "myinvestor_capital": 2950
       }
     ],
@@ -19849,13 +20073,13 @@
       },
       {
         "mes": "2026-08",
-        "peerberry": 0.77,
+        "peerberry": 0.88,
         "myinvestor": 0.0,
-        "total": 0.58,
-        "acumulado": 20.94,
-        "acumulado_anio": 11.74,
-        "benchmark": 0.85,
-        "benchmark_acumulado": 18.52,
+        "total": 0.65,
+        "acumulado": 21.03,
+        "acumulado_anio": 11.83,
+        "benchmark": 0.25,
+        "benchmark_acumulado": 17.82,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
@@ -20149,6 +20373,21 @@
       ],
       "estimado": false,
       "etapa": "LUZUTANIA GROUP"
+    },
+    {
+      "mes": "2026-08",
+      "empresa": null,
+      "monto": 2648.99,
+      "irpf": false,
+      "pagos": 1,
+      "detalle": [
+        {
+          "empresa": null,
+          "monto": 2648.99
+        }
+      ],
+      "estimado": false,
+      "etapa": "Sin nómina"
     }
   ],
   "prestamos": [
