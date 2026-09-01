@@ -1,9 +1,15 @@
 [
   {
+    "fecha": "2026-08-31",
+    "concepto": "Pixartprinting - folletos y flyers",
+    "costo": 62.34,
+    "pagado": null
+  },
+  {
     "fecha": "2025-08-25",
     "concepto": "Amazon - taquilla, tacho de basura, lavado portatil, oava electrica",
     "costo": 230,
-    "pagado": null
+    "pagado": "Willy"
   },
   {
     "fecha": "2026-08-25",
