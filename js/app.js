@@ -1103,8 +1103,12 @@ function renderTalho(){
   const fmt = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
   const fmtFull = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(v);
 
-  // All Talho movements (expenses only)
+  // Gastos (Matias) en categoría Talho Argentino
   const talhoAll = RAW.filter(r => r.categoria === 'Talho Argentino' && Number(r.monto) < 0);
+  // Ingresos en la misma categoría: reembolsos de socios (Willy/Miguel) o aportes.
+  // Se descuentan del gasto semanal para que lo que Matias adelantó y le
+  // devolvieron no cuente como gasto suyo.
+  const talhoIngresos = RAW.filter(r => r.categoria === 'Talho Argentino' && Number(r.monto) > 0);
 
   // Helper: ISO week number and Monday of that week
   function isoWeek(date) {
@@ -1142,15 +1146,23 @@ function renderTalho(){
     weeks.push(new Date(d));
   }
 
-  // Aggregate Talho spend by week
+  // Aggregate Talho spend by week, neto de reembolsos/aportes (ingresos)
+  // de la misma categoría en la misma semana.
   const weekTotals = weeks.map(mon => {
     const sun = new Date(mon); sun.setUTCDate(sun.getUTCDate() + 6);
-    return talhoAll
+    const gastos = talhoAll
       .filter(r => {
         const rd = new Date(r.fecha + 'T00:00:00Z');
         return rd >= mon && rd <= sun;
       })
       .reduce((acc, r) => acc + Math.abs(Number(r.monto)), 0);
+    const reembolsos = talhoIngresos
+      .filter(r => {
+        const rd = new Date(r.fecha + 'T00:00:00Z');
+        return rd >= mon && rd <= sun;
+      })
+      .reduce((acc, r) => acc + Number(r.monto), 0);
+    return gastos - reembolsos;
   });
 
   // Cumulative totals
