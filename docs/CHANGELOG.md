@@ -1,3 +1,14 @@
+## 2026-09-01 — Selector de rango también en gráfico semanal de la sociedad
+
+- `index.html`: agregado selector `sociedad-week-range` (6 / 12 / Todas
+  semanas) junto al título "Gastos de la sociedad por semana", mismo patrón
+  que el selector de Talho Argentino.
+- `js/app.js` (`renderSociedad`): gráfico usa arrays recortados
+  (`labelsDisplay`, `totalsBySocioDisplay`, `cumulativeDisplay`); la línea
+  de presupuesto se regenera con el largo visible. Acumulado sigue
+  calculado sobre el historial completo. Pie chart de % por socio no
+  afectado (usa `allRows` sin filtrar).
+
 ## 2026-09-01 — Selector de rango en gráfico semanal de Talho Argentino
 
 - `index.html`: agregado selector `talho-week-range` (6 / 12 / Todas
