@@ -1,3 +1,15 @@
+## 2026-09-01 — Gráfico "Gastos de Matias" (Talho Argentino) neto de reembolsos de socios
+
+- `js/app.js` (`renderTalho`): el gasto semanal ahora resta los ingresos de
+  categoría "Talho Argentino" (reembolsos/aportes de Willy o Miguel) dentro
+  de la misma semana calendario, en vez de contarlos como cero. Caso que lo
+  motivó: toldo del local (-2.020,85€, 20/08/2026) reembolsado íntegramente
+  por Willy vía 3 movimientos (950€ + 1.000€ + 70,85€ Bizum) — antes se
+  contaba como gasto propio de Matias.
+- Ver `docs/DECISIONS.md` (2026-09-01) para el criterio completo. Sin floor
+  en 0: una semana puede netear en cero o negativo si el reembolso supera el
+  gasto de esa semana.
+
 ## 2026-09-01 — Selector de rango también en gráfico semanal de la sociedad
 
 - `index.html`: agregado selector `sociedad-week-range` (6 / 12 / Todas
