@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-01 10:54",
+  "generated_at": "2026-09-01 12:15",
   "movimientos": [
     {
       "fecha": "2026-08-31",
@@ -19539,7 +19539,12 @@
       {
         "mes": "2026-08",
         "peerberry": 9891.83,
-        "myinvestor": 2950
+        "myinvestor": 0
+      },
+      {
+        "mes": "2026-09",
+        "peerberry": 0,
+        "myinvestor": 1670
       }
     ],
     "rendimiento": [
@@ -19641,7 +19646,7 @@
       {
         "mes": "2026-08",
         "peerberry": 0.88,
-        "myinvestor": 0.0
+        "myinvestor": 0
       }
     ],
     "ganancia": [
@@ -19832,29 +19837,38 @@
         "peerberry_aportes": null,
         "myinvestor_aportes": null,
         "peerberry_capital": 9891.83,
-        "myinvestor_capital": 2950
+        "myinvestor_capital": null
+      },
+      {
+        "mes": "2026-09",
+        "peerberry": 0.0,
+        "myinvestor": 0.0,
+        "peerberry_aportes": null,
+        "myinvestor_aportes": null,
+        "peerberry_capital": null,
+        "myinvestor_capital": 1670
       }
     ],
     "kpi": {
-      "pct_ultimo_mes": 0.65,
-      "pct_12m": 18.71,
-      "ganancia_12m": 2897.86,
-      "capital_actual": 12841.83,
-      "periodo_ultimo_mes": "2026-08",
+      "pct_ultimo_mes": 0.0,
+      "pct_12m": 18.69,
+      "ganancia_12m": 2933.2,
+      "capital_actual": 14551.18,
+      "periodo_ultimo_mes": "2026-07",
       "por_plataforma": {
         "peerberry": {
-          "pct_ultimo_mes": 0.83,
-          "pct_12m": 8.51,
-          "ganancia_12m": 518.86,
-          "capital_actual": 9891.83,
-          "periodo_ultimo_mes": "2026-08"
+          "pct_ultimo_mes": 0.42,
+          "pct_12m": 7.87,
+          "ganancia_12m": 440.2,
+          "capital_actual": 11752.18,
+          "periodo_ultimo_mes": "2026-07"
         },
         "myinvestor": {
-          "pct_ultimo_mes": 0.0,
-          "pct_12m": 22.48,
-          "ganancia_12m": 2379.0,
-          "capital_actual": 2950,
-          "periodo_ultimo_mes": "2026-08"
+          "pct_ultimo_mes": -0.84,
+          "pct_12m": 23.41,
+          "ganancia_12m": 2493.0,
+          "capital_actual": 2799,
+          "periodo_ultimo_mes": "2026-07"
         }
       }
     },
@@ -20100,12 +20114,12 @@
         "sin_aportes_mi": false
       },
       {
-        "mes": "2026-08",
-        "peerberry": 0.88,
-        "myinvestor": 0.0,
-        "total": 0.65,
-        "acumulado": 21.03,
-        "acumulado_anio": 11.83,
+        "mes": "2026-09",
+        "peerberry": null,
+        "myinvestor": null,
+        "total": 0.0,
+        "acumulado": 20.24,
+        "acumulado_anio": 11.1,
         "benchmark": null,
         "benchmark_acumulado": null,
         "sin_aportes_pb": false,
