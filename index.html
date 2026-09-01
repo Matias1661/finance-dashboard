@@ -437,7 +437,14 @@
   <div style="display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start;margin-bottom:32px">
 
     <div class="card">
-      <div class="card-title">Gastos Talho Argentino por semana</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="card-title" style="margin-bottom:0">Gastos Talho Argentino por semana</div>
+        <select id="talho-week-range" onchange="renderTalho()" style="font-size:13px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit">
+          <option value="6" selected>Últimas 6 semanas</option>
+          <option value="12">Últimas 12 semanas</option>
+          <option value="all">Todas</option>
+        </select>
+      </div>
       <div class="chart-wrap-tall">
         <canvas id="chart-talho-bars"></canvas>
       </div>
