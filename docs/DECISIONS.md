@@ -1,3 +1,16 @@
+## [2026-09-01] Selector de rango en gráfico semanal de Talho Argentino
+
+**Contexto:** El gráfico "Gastos Talho Argentino por semana" muestra todas las
+semanas desde el primer movimiento hasta hoy, lo que lo vuelve ilegible a
+medida que se acumulan semanas.
+
+**Decisión:** Agregar selector `talho-week-range` con opciones "Últimas 6
+semanas" (default), "Últimas 12 semanas" y "Todas". El filtro solo recorta lo
+que se muestra en el gráfico (barras + línea de acumulado); el cálculo interno
+de `weekTotals`/`cumulative` sigue construyéndose sobre el historial completo,
+de modo que el acumulado mostrado sigue siendo el acumulado real desde el
+inicio, no un acumulado reiniciado a la ventana visible.
+
 ## [2026-08-31] Organizar Movimientos: verificación geográfica de falsos positivos en TRIP_WINDOWS y nueva ventana Lloret de Mar
 
 **Contexto:** Corrida periódica del flujo "Organizar Movimientos" (25 pendientes,
