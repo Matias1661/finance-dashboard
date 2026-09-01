@@ -1402,6 +1402,20 @@ async function renderSociedad() {
     return `${fmtMonday(mon)} (Wk${String(wk).padStart(2,'0')})`;
   });
 
+  // Week range filter for chart display (full arrays above stay intact for cumulative calc)
+  const rangeSel = document.getElementById('sociedad-week-range');
+  const rangeVal = rangeSel?.value || '6';
+  let labelsDisplay = labels, cumulativeDisplay = cumulative, weeksDisplay = weeks;
+  const totalsBySocioDisplay = {};
+  NOMBRES_SOCIOS.forEach(n => totalsBySocioDisplay[n] = totalsBySocio[n]);
+  if (rangeVal !== 'all') {
+    const n = parseInt(rangeVal, 10);
+    labelsDisplay = labels.slice(-n);
+    cumulativeDisplay = cumulative.slice(-n);
+    weeksDisplay = weeks.slice(-n);
+    NOMBRES_SOCIOS.forEach(nombre => totalsBySocioDisplay[nombre] = totalsBySocio[nombre].slice(-n));
+  }
+
   const PRESUPUESTO = 75000;
 
   const ctx = document.getElementById('chart-sociedad-bars');
@@ -1410,12 +1424,12 @@ async function renderSociedad() {
     window.sociedadChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels,
+        labels: labelsDisplay,
         datasets: [
           ...SOCIOS.map(s => ({
             type: 'bar',
             label: s.nombre,
-            data: totalsBySocio[s.nombre],
+            data: totalsBySocioDisplay[s.nombre],
             backgroundColor: s.bar,
             borderRadius: 4,
             borderSkipped: false,
@@ -1425,7 +1439,7 @@ async function renderSociedad() {
           {
             type: 'line',
             label: 'Acumulado',
-            data: cumulative,
+            data: cumulativeDisplay,
             borderColor: 'rgba(37,99,190,0.9)',
             backgroundColor: 'rgba(37,99,190,0.08)',
             borderWidth: 2,
@@ -1441,7 +1455,7 @@ async function renderSociedad() {
           {
             type: 'line',
             label: 'Presupuesto',
-            data: Array(weeks.length).fill(PRESUPUESTO),
+            data: Array(weeksDisplay.length).fill(PRESUPUESTO),
             borderColor: 'rgba(13,138,82,0.85)',
             borderWidth: 2,
             borderDash: [6, 4],
