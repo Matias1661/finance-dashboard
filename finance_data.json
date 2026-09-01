@@ -1,6 +1,34 @@
 {
-  "generated_at": "2026-08-31 16:57",
+  "generated_at": "2026-09-01 10:42",
   "movimientos": [
+    {
+      "fecha": "2026-08-31",
+      "concepto": "SALUTARY FRESH FO",
+      "monto": -12.26,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-31",
+      "concepto": "PAG NOMINAS",
+      "monto": -700,
+      "categoria": "Departamento",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-31",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-08-31",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-08-30",
       "concepto": "SKYSHOWTIME A06FC",
@@ -19808,25 +19836,25 @@
       }
     ],
     "kpi": {
-      "pct_ultimo_mes": 0.0,
-      "pct_12m": 18.69,
-      "ganancia_12m": 2933.2,
-      "capital_actual": 14551.18,
-      "periodo_ultimo_mes": "2026-07",
+      "pct_ultimo_mes": 0.65,
+      "pct_12m": 18.71,
+      "ganancia_12m": 2897.86,
+      "capital_actual": 12841.83,
+      "periodo_ultimo_mes": "2026-08",
       "por_plataforma": {
         "peerberry": {
-          "pct_ultimo_mes": 0.42,
-          "pct_12m": 7.87,
-          "ganancia_12m": 440.2,
-          "capital_actual": 11752.18,
-          "periodo_ultimo_mes": "2026-07"
+          "pct_ultimo_mes": 0.83,
+          "pct_12m": 8.51,
+          "ganancia_12m": 518.86,
+          "capital_actual": 9891.83,
+          "periodo_ultimo_mes": "2026-08"
         },
         "myinvestor": {
-          "pct_ultimo_mes": -0.84,
-          "pct_12m": 23.41,
-          "ganancia_12m": 2493.0,
-          "capital_actual": 2799,
-          "periodo_ultimo_mes": "2026-07"
+          "pct_ultimo_mes": 0.0,
+          "pct_12m": 22.48,
+          "ganancia_12m": 2379.0,
+          "capital_actual": 2950,
+          "periodo_ultimo_mes": "2026-08"
         }
       }
     },
@@ -20078,8 +20106,8 @@
         "total": 0.65,
         "acumulado": 21.03,
         "acumulado_anio": 11.83,
-        "benchmark": -0.09,
-        "benchmark_acumulado": 17.42,
+        "benchmark": null,
+        "benchmark_acumulado": null,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
