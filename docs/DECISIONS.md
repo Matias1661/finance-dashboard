@@ -1,3 +1,25 @@
+## [2026-09-01] Reembolsos de socios se descuentan del gasto semanal de Matias en Talho Argentino
+
+**Contexto:** El toldo del local (`FACTURA N°330/202`, -2.020,85€, 20/08/2026,
+Nota "Toldo del local") salió de la cuenta de Matias pero fue reembolsado por
+Willy vía tres movimientos en la misma categoría "Talho Argentino":
+`INGRESO CAJERO` +950€ (19/08), `TRANSFER INMEDIATA` +1.000€ (20/08) y
+`BIZUM RECIBIDO` +70,85€ (20/08). Suman exactamente 2.020,85€. El gráfico
+"Gastos de Matias" (`renderTalho`) sumaba el gasto bruto sin descontar estos
+ingresos, mostrando el toldo como gasto propio de Matias pese a estar
+totalmente cubierto por Willy.
+
+**Decisión:** Criterio general (no solo para este caso): en el gráfico
+semanal de "Gastos de Matias" en Talho Argentino, el gasto de cada semana se
+calcula como gastos de categoría "Talho Argentino" (Monto < 0) menos
+cualquier ingreso de esa misma categoría (Monto > 0) en la misma semana
+calendario (lunes a domingo). Así, cualquier reembolso futuro de Willy o
+Miguel se descuenta automáticamente sin necesidad de marcarlo manualmente.
+No se aplica floor en 0: si en una semana el ingreso supera el gasto, la
+barra puede quedar en negativo o cero neto, lo cual es correcto (esa semana
+Matias no puso dinero propio). La lista de transacciones sigue mostrando
+solo los gastos (Monto < 0), sin cambios.
+
 ## [2026-09-01] Mismo selector de rango en gráfico semanal de gastos de la sociedad
 
 **Contexto:** Extensión de la mejora aplicada al gráfico de Talho Argentino
