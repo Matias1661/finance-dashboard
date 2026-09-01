@@ -1,3 +1,14 @@
+## 2026-09-01 — Selector de rango en gráfico semanal de Talho Argentino
+
+- `index.html`: agregado selector `talho-week-range` (6 / 12 / Todas
+  semanas) junto al título del gráfico "Gastos Talho Argentino por semana".
+- `js/app.js` (`renderTalho`): el gráfico usa arrays recortados
+  (`labelsDisplay`, `weekTotalsDisplay`, `cumulativeDisplay`) según el rango
+  elegido; el acumulado sigue calculado sobre el historial completo, no se
+  reinicia al filtrar.
+- Default: últimas 6 semanas (motivo original: el gráfico se había vuelto
+  difícil de leer con todo el historial).
+
 ## 2026-08-31 — Organizar Movimientos: 25 pendientes revisados, 3 recategorizados, nueva ventana de viaje
 
 - Notion (Movimientos): 2 movimientos recategorizados de "A revisar"/"Comer
