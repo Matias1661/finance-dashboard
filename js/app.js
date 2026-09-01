@@ -1164,6 +1164,17 @@ function renderTalho(){
     return `${fmtMonday(mon)} (Wk${String(wk).padStart(2,'0')})`;
   });
 
+  // Week range filter for chart display (full arrays above stay intact for cumulative calc)
+  const rangeSel = document.getElementById('talho-week-range');
+  const rangeVal = rangeSel?.value || '6';
+  let labelsDisplay = labels, weekTotalsDisplay = weekTotals, cumulativeDisplay = cumulative;
+  if(rangeVal !== 'all'){
+    const n = parseInt(rangeVal, 10);
+    labelsDisplay = labels.slice(-n);
+    weekTotalsDisplay = weekTotals.slice(-n);
+    cumulativeDisplay = cumulative.slice(-n);
+  }
+
   // Populate month selector (keep monthly for transaction filtering)
   const MESES_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
   const sel = document.getElementById('talho-month-filter');
@@ -1183,12 +1194,12 @@ function renderTalho(){
     window.talhoChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels,
+        labels: labelsDisplay,
         datasets: [
           {
             type: 'bar',
             label: 'Gasto semanal',
-            data: weekTotals,
+            data: weekTotalsDisplay,
             backgroundColor: 'rgba(201,74,48,0.70)',
             borderRadius: 4,
             borderSkipped: false,
@@ -1197,7 +1208,7 @@ function renderTalho(){
           {
             type: 'line',
             label: 'Acumulado',
-            data: cumulative,
+            data: cumulativeDisplay,
             borderColor: 'rgba(37,99,190,0.9)',
             backgroundColor: 'rgba(37,99,190,0.08)',
             borderWidth: 2,
