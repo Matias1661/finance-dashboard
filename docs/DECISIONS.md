@@ -1,3 +1,16 @@
+## [2026-09-01] Mismo selector de rango en gráfico semanal de gastos de la sociedad
+
+**Contexto:** Extensión de la mejora aplicada al gráfico de Talho Argentino
+(ver entrada anterior) al segundo gráfico semanal ilegible, "Gastos de la
+sociedad por semana" (barras apiladas por socio + acumulado + presupuesto).
+
+**Decisión:** Mismo patrón: selector `sociedad-week-range` (6/12/Todas,
+default 6). Se recortan para el gráfico: labels, acumulado, totales por
+socio (barras apiladas) y la línea de presupuesto (que se regenera con el
+largo del array visible). El pie chart de porcentaje por socio no se toca —
+sigue calculado sobre `allRows` completo, independiente del rango del
+gráfico semanal.
+
 ## [2026-09-01] Selector de rango en gráfico semanal de Talho Argentino
 
 **Contexto:** El gráfico "Gastos Talho Argentino por semana" muestra todas las
