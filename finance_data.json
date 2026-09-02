@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-02 15:17",
+  "generated_at": "2026-09-02 15:26",
   "movimientos": [
     {
       "fecha": "2026-08-31",
@@ -20626,6 +20626,29 @@
       "fecha_proyectada_cierre": "2029-05-05",
       "fraccionado_pendiente": 9.43,
       "notas": "Columnas reflejan solo el componente revolving (disposición de 1.000€ del 06/08/26). Además existe una compra fraccionada separada (ECOMMERCE NEW WE SAN SEBASTIAN, 28/12/25, TIN 0%, 8 de 10 cuotas, cuota 4,68€/mes, pendiente 9,43€) no incluida en estas columnas. Importe total del recibo de este periodo (revolving + fraccionado): 44,68€, cargo 05/09/2026."
+    },
+    {
+      "nombre": "Visa Classic - Marzo 2026",
+      "tarjeta": "Visa Classic",
+      "contrato": "9613.18.0486311-07",
+      "periodo_inicio": "2026-02-28",
+      "periodo_fin": "2026-03-27",
+      "fecha_cargo": "2026-04-01",
+      "cuota_mensual_elegida": 100,
+      "aplazado_anterior": 2385.58,
+      "operaciones_periodo": 0,
+      "amortizacion": 58.67,
+      "intereses_periodo": 41.33,
+      "aplazado_proximo": 2326.91,
+      "cer": 22.41,
+      "tin_mensual": 1.7,
+      "tin_anual": 20.4,
+      "tae": 22.42,
+      "limite_inicial": 3000,
+      "limite_disponible": 673.09,
+      "fecha_proyectada_cierre": "2028-10-01",
+      "fraccionado_pendiente": null,
+      "notas": "Sin operaciones nuevas en el periodo."
     },
     {
       "nombre": "Visa Classic - Abril 2026",
