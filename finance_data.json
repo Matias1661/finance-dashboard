@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-01 14:28",
+  "generated_at": "2026-09-02 12:38",
   "movimientos": [
     {
       "fecha": "2026-08-31",
@@ -19539,7 +19539,7 @@
       {
         "mes": "2026-08",
         "peerberry": 9891.83,
-        "myinvestor": 0
+        "myinvestor": 1660
       },
       {
         "mes": "2026-09",
@@ -19646,7 +19646,12 @@
       {
         "mes": "2026-08",
         "peerberry": 0.88,
-        "myinvestor": 0
+        "myinvestor": 3.81
+      },
+      {
+        "mes": "2026-09",
+        "peerberry": 0,
+        "myinvestor": 0.0
       }
     ],
     "ganancia": [
@@ -19833,11 +19838,11 @@
       {
         "mes": "2026-08",
         "peerberry": 89.65,
-        "myinvestor": 0.0,
+        "myinvestor": 85.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": -1224.0,
         "peerberry_capital": 9891.83,
-        "myinvestor_capital": null
+        "myinvestor_capital": 1660
       },
       {
         "mes": "2026-09",
@@ -19850,25 +19855,25 @@
       }
     ],
     "kpi": {
-      "pct_ultimo_mes": 0.0,
-      "pct_12m": 18.69,
-      "ganancia_12m": 2933.2,
-      "capital_actual": 14551.18,
-      "periodo_ultimo_mes": "2026-07",
+      "pct_ultimo_mes": 1.34,
+      "pct_12m": 19.52,
+      "ganancia_12m": 2982.86,
+      "capital_actual": 11551.83,
+      "periodo_ultimo_mes": "2026-08",
       "por_plataforma": {
         "peerberry": {
-          "pct_ultimo_mes": 0.42,
-          "pct_12m": 7.87,
-          "ganancia_12m": 440.2,
-          "capital_actual": 11752.18,
-          "periodo_ultimo_mes": "2026-07"
+          "pct_ultimo_mes": 0.83,
+          "pct_12m": 8.51,
+          "ganancia_12m": 518.86,
+          "capital_actual": 9891.83,
+          "periodo_ultimo_mes": "2026-08"
         },
         "myinvestor": {
-          "pct_ultimo_mes": -0.84,
-          "pct_12m": 23.41,
-          "ganancia_12m": 2493.0,
-          "capital_actual": 2799,
-          "periodo_ultimo_mes": "2026-07"
+          "pct_ultimo_mes": 3.81,
+          "pct_12m": 27.15,
+          "ganancia_12m": 2464.0,
+          "capital_actual": 1660,
+          "periodo_ultimo_mes": "2026-08"
         }
       }
     },
@@ -20108,18 +20113,30 @@
         "total": 0.0,
         "acumulado": 20.24,
         "acumulado_anio": 11.1,
-        "benchmark": 2.34,
-        "benchmark_acumulado": 17.53,
+        "benchmark": 2.05,
+        "benchmark_acumulado": 17.19,
         "sin_aportes_pb": true,
+        "sin_aportes_mi": false
+      },
+      {
+        "mes": "2026-08",
+        "peerberry": 0.88,
+        "myinvestor": 3.81,
+        "total": 1.34,
+        "acumulado": 21.85,
+        "acumulado_anio": 12.59,
+        "benchmark": null,
+        "benchmark_acumulado": null,
+        "sin_aportes_pb": false,
         "sin_aportes_mi": false
       },
       {
         "mes": "2026-09",
         "peerberry": null,
-        "myinvestor": null,
+        "myinvestor": 0.0,
         "total": 0.0,
-        "acumulado": 20.24,
-        "acumulado_anio": 11.1,
+        "acumulado": 21.85,
+        "acumulado_anio": 12.59,
         "benchmark": null,
         "benchmark_acumulado": null,
         "sin_aportes_pb": false,
@@ -20492,6 +20509,162 @@
       "uso_real": "Talho Argentino",
       "estado": "Activo",
       "notas": "El contrato figura a nombre de financiación de vehículo (motivo original de la solicitud), pero el importe se desvió a financiar Talho Argentino."
+    }
+  ],
+  "tarjetas_credito": [
+    {
+      "nombre": "IKEA - Mayo 2026",
+      "tarjeta": "IKEA",
+      "contrato": "WY 7230097",
+      "periodo_inicio": "2026-04-21",
+      "periodo_fin": "2026-05-20",
+      "fecha_cargo": "2026-06-05",
+      "cuota_mensual_elegida": 40,
+      "aplazado_anterior": 0,
+      "operaciones_periodo": 0,
+      "amortizacion": 0,
+      "intereses_periodo": 0,
+      "aplazado_proximo": 0,
+      "cer": null,
+      "tin_mensual": 1.74,
+      "tin_anual": 20.88,
+      "tae": 23,
+      "limite_inicial": 1200,
+      "limite_disponible": 1140.18,
+      "fecha_proyectada_cierre": null,
+      "notas": "Sin actividad revolving este periodo (crédito dispuesto 0€). Recibo compuesto solo por 2 compras fraccionadas a 0% TIN: IKEA SAN SEBASTI (189,17€, compra 08/02/25, cuota 16 de 18, pendiente 21,17€) y ECOMMERCE NEW WE SAN SEBASTIAN (46,87€, cuota 5 de 10, pendiente 23,47€). Importe total del recibo: 15,18€, cargo 05/06/2026."
+    },
+    {
+      "nombre": "IKEA - Junio 2026",
+      "tarjeta": "IKEA",
+      "contrato": "WY 7230097",
+      "periodo_inicio": "2026-05-21",
+      "periodo_fin": "2026-06-20",
+      "fecha_cargo": "2026-07-05",
+      "cuota_mensual_elegida": 40,
+      "aplazado_anterior": 0,
+      "operaciones_periodo": 0,
+      "amortizacion": 0,
+      "intereses_periodo": 0,
+      "aplazado_proximo": 0,
+      "cer": null,
+      "tin_mensual": 1.74,
+      "tin_anual": 20.88,
+      "tae": 23,
+      "limite_inicial": 1200,
+      "limite_disponible": 1155.36,
+      "fecha_proyectada_cierre": null,
+      "notas": "Sin actividad revolving este periodo. Fraccionadas: IKEA SAN SEBASTI (cuota 17 de 18, pendiente 10,67€), ECOMMERCE NEW (cuota 6 de 10, pendiente 18,79€). Importe total del recibo: 15,18€, cargo 05/07/2026."
+    },
+    {
+      "nombre": "IKEA - Julio 2026",
+      "tarjeta": "IKEA",
+      "contrato": "WY 7230097",
+      "periodo_inicio": "2026-06-21",
+      "periodo_fin": "2026-07-20",
+      "fecha_cargo": "2026-08-05",
+      "cuota_mensual_elegida": 40,
+      "aplazado_anterior": 0,
+      "operaciones_periodo": 0,
+      "amortizacion": 0,
+      "intereses_periodo": 0,
+      "aplazado_proximo": 0,
+      "cer": null,
+      "tin_mensual": 1.74,
+      "tin_anual": 20.88,
+      "tae": 23,
+      "limite_inicial": 1200,
+      "limite_disponible": 1170.54,
+      "fecha_proyectada_cierre": null,
+      "notas": "Sin actividad revolving este periodo. Fraccionadas: IKEA SAN SEBASTI (cuota 18 de 18 — última cuota, saldada); ECOMMERCE NEW (cuota 7 de 10, pendiente 14,11€). Importe total del recibo: 15,35€, cargo 05/08/2026."
+    },
+    {
+      "nombre": "IKEA - Agosto 2026",
+      "tarjeta": "IKEA",
+      "contrato": "WY 7230097",
+      "periodo_inicio": "2026-07-21",
+      "periodo_fin": "2026-08-20",
+      "fecha_cargo": "2026-09-05",
+      "cuota_mensual_elegida": 40,
+      "aplazado_anterior": 0,
+      "operaciones_periodo": 1000,
+      "amortizacion": 22.6,
+      "intereses_periodo": 17.4,
+      "aplazado_proximo": 977.4,
+      "cer": null,
+      "tin_mensual": 1.74,
+      "tin_anual": 20.88,
+      "tae": 23,
+      "limite_inicial": 1200,
+      "limite_disponible": 168.49,
+      "fecha_proyectada_cierre": "2029-05-05",
+      "notas": "Columnas reflejan solo el componente revolving (disposición de 1.000€ del 06/08/26). Además existe una compra fraccionada separada (ECOMMERCE NEW WE SAN SEBASTIAN, 28/12/25, TIN 0%, 8 de 10 cuotas, cuota 4,68€/mes, pendiente 9,43€) no incluida en estas columnas. Importe total del recibo de este periodo (revolving + fraccionado): 44,68€, cargo 05/09/2026."
+    },
+    {
+      "nombre": "Visa Classic - Junio 2026",
+      "tarjeta": "Visa Classic",
+      "contrato": "9613.18.0486311-07",
+      "periodo_inicio": "2026-05-28",
+      "periodo_fin": "2026-06-27",
+      "fecha_cargo": "2026-07-01",
+      "cuota_mensual_elegida": 100,
+      "aplazado_anterior": 2624.18,
+      "operaciones_periodo": 0,
+      "amortizacion": 68.94,
+      "intereses_periodo": 31.06,
+      "aplazado_proximo": 2555.24,
+      "cer": 15.38,
+      "tin_mensual": 1.2,
+      "tin_anual": 14.4,
+      "tae": 15.39,
+      "limite_inicial": 3000,
+      "limite_disponible": 444.76,
+      "fecha_proyectada_cierre": "2029-02-01",
+      "notas": "Sin operaciones nuevas este periodo (0€)."
+    },
+    {
+      "nombre": "Visa Classic - Julio 2026",
+      "tarjeta": "Visa Classic",
+      "contrato": "9613.18.0486311-07",
+      "periodo_inicio": "2026-06-28",
+      "periodo_fin": "2026-07-27",
+      "fecha_cargo": "2026-08-01",
+      "cuota_mensual_elegida": 100,
+      "aplazado_anterior": 2555.24,
+      "operaciones_periodo": 0,
+      "amortizacion": 68.75,
+      "intereses_periodo": 31.25,
+      "aplazado_proximo": 2486.49,
+      "cer": 15.38,
+      "tin_mensual": 1.2,
+      "tin_anual": 14.4,
+      "tae": 15.39,
+      "limite_inicial": 3000,
+      "limite_disponible": 513.51,
+      "fecha_proyectada_cierre": "2029-02-01",
+      "notas": "Sin operaciones nuevas este periodo (0€)."
+    },
+    {
+      "nombre": "Visa Classic - Agosto 2026",
+      "tarjeta": "Visa Classic",
+      "contrato": "9613.18.0486311-07",
+      "periodo_inicio": "2026-07-28",
+      "periodo_fin": "2026-08-27",
+      "fecha_cargo": "2026-09-01",
+      "cuota_mensual_elegida": 150,
+      "aplazado_anterior": 2486.49,
+      "operaciones_periodo": 440.33,
+      "amortizacion": 117.48,
+      "intereses_periodo": 32.52,
+      "aplazado_proximo": 2809.34,
+      "cer": 15.38,
+      "tin_mensual": 1.2,
+      "tin_anual": 14.4,
+      "tae": 15.39,
+      "limite_inicial": 3000,
+      "limite_disponible": 190.66,
+      "fecha_proyectada_cierre": "2028-07-01",
+      "notas": "Límite de crédito compartido entre todas las tarjetas del contrato 9613.18.0486311-07 (tarjeta 4766 63  6808). Deuda total pendiente si se cancelase todo a 27.08.2026: 2.959,34€ (2.926,82 principal + 32,52 interés)."
     }
   ]
 }
