@@ -280,6 +280,7 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 | Transacciones | renderTransacciones() | Selector mes + categoría, tabla completa |
 | Guille | renderGuille() | KPIs (3), chart mixto dual-Y, selector mes, tabla movimientos |
 | Préstamos | renderPrestamos() | KPIs (3: capital pendiente total, cuota mensual total, préstamos activos), tarjeta por préstamo con barra de progreso y cuadro de amortización colapsable |
+| Tarjeta de Crédito | renderTarjetasCredito() | KPIs (3: saldo aplazado total, intereses histórico, TAE promedio ponderado), gráfico de evolución (`renderTarjetasChart()`), tarjeta por tarjeta con barra límite disponible/dispuesto e histórico colapsable |
 
 ---
 
@@ -519,6 +520,30 @@ Schema: Nombre (title), Entidad (rich text), Capital inicial (number, €), Cuot
 - `renderPrestamos()`: pinta KPIs agregados (capital pendiente total, cuota mensual total, préstamos activos) y una tarjeta por préstamo (barra de progreso, cuota, TIN, fecha fin, notas si existen, botón para expandir/colapsar el cuadro de amortización completo vía `togglePrestamoTabla()`).
 
 **Mantenimiento:** no hay sync automático de bancos — actualizar manualmente en Notion si cambian las condiciones de un préstamo (refinanciación, amortización anticipada) o al dar de alta uno nuevo (Estado = Activo se sincroniza; Cancelado se excluye).
+
+---
+
+## Tab Tarjeta de Crédito — implementado 2026-09-02
+
+**Objetivo:** seguimiento de tarjetas de crédito revolving (aplazado), a diferencia de Préstamos que es cuota fija/plazo cerrado.
+
+**DB Notion "Tarjetas de Crédito Revolving"** (bajo Finance Tracker, data source `7ca19b93-347f-4cbf-8dde-753d16babf77`): una fila por tarjeta por periodo de liquidación. Schema: Nombre (title), Tarjeta (select: IKEA/Visa Classic), Contrato (rich text), Periodo liquidación (date, rango), Fecha de cargo (date), Cuota mensual elegida (number), Aplazado periodo anterior (number), Operaciones del periodo (number), Amortización (number), Intereses del periodo (number), Aplazado próximo periodo (number), CER % (number), TIN mensual % (number), TIN anual % (number), TAE % (number), Límite crédito inicial (number), Límite disponible (number), Fecha proyectada cierre deuda (date), Notas (rich text).
+
+**Tarjetas cargadas (02/09/2026):**
+1. IKEA (CaixaBank Payments & Consumer, contrato WY 7230097) — límite 1.200€, TIN 1,74%/20,88%, TAE 23%. 4 periodos (may–ago 2026); los primeros 3 sin actividad revolving (solo 2 compras fraccionadas a 0% TIN — IKEA SAN SEBASTI y ECOMMERCE NEW), el 4º arranca la disposición revolving de 1.000€.
+2. Visa Classic (CaixaBank Payments & Consumer, contrato 9613.18.0486311-07) — límite 3.000€ (compartido entre todas las tarjetas del contrato), TIN 1,20%/14,40%, TAE 15,39%. 3 periodos (jun–ago 2026), saldos encadenados sin huecos.
+
+**Nota sobre otras tarjetas del usuario:** existe una tercera tarjeta "MyCard" (contrato 9613.18.9260197-98) que opera en modalidad "pago total" (no revolving, sin interés) — sus movimientos ya se cargan vía el CSV de Movimientos, por lo que deliberadamente NO se incluye en esta DB (evitar duplicar). Al procesar extractos nuevos de esta carpeta de Drive, verificar siempre el número de contrato contra los dos conocidos arriba antes de cargar.
+
+**Sync (`scripts/sync_finance_data.py`):** `fetch_tarjetas_credito_notion()` + `build_tarjetas_credito()` leen la DB vía API REST. Salida: clave `tarjetas_credito` en `finance_data.json`, lista plana de objetos (uno por tarjeta por periodo), ordenada por tarjeta y periodo_inicio. Data source ID hardcodeado con fallback vía env var `NOTION_TARJETAS_CREDITO_DATA_SOURCE_ID` (mismo patrón que Nominas — no requiere secret nuevo de GitHub Actions).
+
+**Diferencia clave con Préstamos:** el saldo aplazado NO se recalcula en cliente — se toma tal cual viene de Notion (que a su vez viene tal cual del extracto del banco). No hay `computeAmortizacion()` equivalente para estas tarjetas.
+
+**Frontend:**
+- `renderTarjetasCredito()` (`js/app.js`): agrupa `tarjetasCredito` por campo `tarjeta`, ordena periodos por `periodo_inicio`. Usa el último periodo de cada tarjeta para la tarjeta individual (saldo, barra límite disponible/dispuesto, TAE, cuota elegida, fecha de cierre proyectada) y expone un histórico colapsable (`toggleTarjetaHistorico()`) con todos los periodos cargados. KPIs: saldo aplazado total (suma del último periodo de cada tarjeta), intereses pagados histórico (suma de `intereses_periodo` de TODOS los periodos cargados, no solo el último), TAE promedio ponderado por saldo actual.
+- `renderTarjetasChart()` (`js/charts.js`): línea de evolución de `aplazado_proximo` por tarjeta, eje X = mes de cierre del periodo (`periodo_fin`). Si una tarjeta no tiene fila en un mes dado, mantiene el último saldo conocido (no corta la línea) — el saldo real no cambia hasta el próximo extracto.
+
+**Mantenimiento:** no hay sync automático de bancos — actualizar Notion manualmente al recibir un extracto nuevo (proceso manual por ahora; skill de ingesta pendiente, ver `ROADMAP.md`).
 
 ---
 
