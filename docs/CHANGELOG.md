@@ -1,3 +1,15 @@
+## 2026-09-02 — Curva de fraccionado 0% independiente + limpieza del header
+
+- Nueva columna "Fraccionado pendiente" en la DB Notion "Tarjetas de
+  Crédito Revolving", poblada para IKEA (4 periodos).
+- `scripts/sync_finance_data.py`: agrega `fraccionado_pendiente` al output
+  de `build_tarjetas_credito()`.
+- `js/charts.js` (`renderTarjetasChart`): curva punteada extra por tarjeta
+  con compras fraccionadas a 0% TIN, separada de la curva de saldo
+  revolving (mismo color, distinto trazo).
+- `index.html`: eliminado el link "↗ Sheets" del header (sin uso desde la
+  migración completa a Notion).
+
 ## 2026-09-02 — Nueva solapa "Tarjeta de Crédito" (revolving)
 
 - Nueva DB Notion "Tarjetas de Crédito Revolving" (data source
