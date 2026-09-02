@@ -1,3 +1,28 @@
+## [2026-09-02] Curva independiente de fraccionado 0% en el gráfico de Tarjeta de Crédito; se saca el link a Sheets del header
+
+**Contexto:** Matias pidió dos cosas en la misma sesión: (1) mostrar en el
+gráfico de evolución de la solapa "Tarjeta de Crédito" el saldo de las
+compras fraccionadas de IKEA (0% TIN, sin costo financiero) como una curva
+separada de la del saldo revolving, ya que mezclarlas distorsionaría la
+lectura de "cuánto me está costando la deuda"; (2) sacar el link "↗ Sheets"
+del header, que ya no tiene uso desde la migración completa a Notion.
+
+**Decisión:**
+- Nueva columna en la DB Notion "Tarjetas de Crédito Revolving":
+  "Fraccionado pendiente" (number), poblada para las 4 filas de IKEA con el
+  saldo pendiente de ambas compras fraccionadas al cierre de cada periodo
+  (44,64 / 29,46 / 14,11 / 9,43€). Vacía para Visa Classic (no aplica).
+- `sync_finance_data.py`: `build_tarjetas_credito()` agrega el campo
+  `fraccionado_pendiente` al output.
+- `js/charts.js` (`renderTarjetasChart`): agrega una serie extra por cada
+  tarjeta que tenga `fraccionado_pendiente` en algún periodo, con línea
+  punteada (`borderDash`) y label "· fraccionado 0% (sin costo)" para
+  distinguirla visualmente de la curva de saldo revolving de la misma
+  tarjeta (mismo color, distinto trazo).
+- `index.html`: eliminado el link "↗ Sheets" del header (Google Sheets es
+  archivo histórico de solo lectura desde la migración a Notion, ver
+  `DECISIONS.md` histórico de esa migración).
+
 ## [2026-09-02] Nueva solapa "Tarjeta de Crédito" (revolving), separada de Préstamos
 
 **Contexto:** Matias tiene 2 tarjetas de crédito revolving activas (IKEA,
