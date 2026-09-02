@@ -899,6 +899,35 @@ function renderTarjetasChart(){
     };
   });
 
+  // Curva independiente de compras fraccionadas a 0% TIN (ej. IKEA). Se
+  // grafica aparte porque no tiene costo financiero y su lógica de saldo
+  // (cuotas fijas) no tiene nada que ver con el revolving — mezclarla en la
+  // misma serie que el saldo revolving daría una lectura engañosa del costo
+  // real de la deuda.
+  Object.entries(porTarjeta).forEach(([nombre, list], idx) => {
+    const tieneFraccionado = list.some(r => r.fraccionado_pendiente !== null && r.fraccionado_pendiente !== undefined);
+    if(!tieneFraccionado) return;
+    const byMonth = {};
+    list.forEach(r => {
+      const v = r.fraccionado_pendiente;
+      if(v !== null && v !== undefined) byMonth[(r.periodo_fin || r.periodo_inicio || '').slice(0, 7)] = Number(v);
+    });
+    let last = null;
+    const data = labels.map(m => {
+      if(byMonth[m] !== undefined){ last = byMonth[m]; return last; }
+      return last;
+    });
+    datasets.push({
+      label: `${nombre} · fraccionado 0% (sin costo)`,
+      data,
+      borderColor: COLORS[idx % COLORS.length],
+      backgroundColor: COLORS[idx % COLORS.length],
+      borderDash: [6, 4],
+      tension: 0.2,
+      spanGaps: true
+    });
+  });
+
   if(window.tarjetasChart) window.tarjetasChart.destroy();
 
   window.tarjetasChart = new Chart(ctx, {
