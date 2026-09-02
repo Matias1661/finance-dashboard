@@ -1,3 +1,11 @@
+## 2026-09-02 — KPI "Intereses pagados" aclara desde qué periodo cuenta
+
+- `js/app.js` (`renderTarjetasCredito`): el KPI "Intereses pagados (histórico)"
+  ahora muestra debajo una aclaración "desde el periodo iniciado el
+  {fecha}", tomando el `periodo_inicio` más antiguo entre todas las
+  tarjetas cargadas — evita que se lea como "interés pagado en la vida del
+  contrato" cuando en realidad solo cuenta lo cargado en Notion hasta ahora.
+
 ## 2026-09-02 — Curva de fraccionado 0% independiente + limpieza del header
 
 - Nueva columna "Fraccionado pendiente" en la DB Notion "Tarjetas de
