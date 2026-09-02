@@ -64,6 +64,11 @@ NOTION_PRESTAMOS_DS_ID     = os.environ.get("NOTION_PRESTAMOS_DATA_SOURCE_ID")
 # Actions. Ver docs/DECISIONS.md, auditoria orden 9.
 NOTION_NOMINAS_DS_ID       = os.environ.get(
     "NOTION_NOMINAS_DATA_SOURCE_ID", "19833ce5-0e68-8121-8f95-000bddffaaea")
+# DB "Tarjetas de Credito Revolving" (Nombre/Tarjeta/Contrato/saldo por
+# periodo). ID no sensible, mismo patron que Nominas (no requiere secret
+# nuevo de GitHub Actions). Ver docs/DECISIONS.md [2026-09-02].
+NOTION_TARJETAS_DS_ID      = os.environ.get(
+    "NOTION_TARJETAS_CREDITO_DATA_SOURCE_ID", "7ca19b93-347f-4cbf-8dde-753d16babf77")
 NOTION_VERSION             = "2025-09-03"
 
 # Normalizacion de nombre de empresa: la DB Nominas tiene variantes de
@@ -265,6 +270,87 @@ def build_prestamos(pages):
             "notas": _text(props, "Notas"),
         })
 
+    return out
+
+
+def fetch_tarjetas_credito_notion():
+    """Lee todas las paginas de la DB Notion 'Tarjetas de Credito Revolving' via API REST."""
+    url = f"https://api.notion.com/v1/data_sources/{NOTION_TARJETAS_DS_ID}/query"
+    headers = {
+        "Authorization": f"Bearer {NOTION_TOKEN}",
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json"
+    }
+    payload = {"page_size": 100}
+
+    results = []
+    while True:
+        resp = requests.post(url, headers=headers, json=payload, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+        results.extend(data.get("results", []))
+        if not data.get("has_more"):
+            break
+        payload["start_cursor"] = data["next_cursor"]
+
+    return results
+
+
+def build_tarjetas_credito(pages):
+    """Convierte las paginas de la DB Notion 'Tarjetas de Credito Revolving' en
+    una lista de dicts (una fila por tarjeta por periodo de liquidacion) para
+    finance_data.json. A diferencia de Prestamos (cuota fija, sistema frances
+    calculado en cliente), estas son lineas revolving: el saldo aplazado se
+    toma tal cual del extracto del banco (columna 'Aplazado proximo periodo'),
+    no se recalcula con computeAmortizacion(). Ver docs/DECISIONS.md
+    [2026-09-02]."""
+
+    def _title(props, key):
+        arr = (props.get(key) or {}).get("title", [])
+        return "".join(t.get("plain_text", "") for t in arr)
+
+    def _text(props, key):
+        arr = (props.get(key) or {}).get("rich_text", [])
+        return "".join(t.get("plain_text", "") for t in arr)
+
+    def _number(props, key):
+        return (props.get(key) or {}).get("number")
+
+    def _date(props, key):
+        return (props.get(key) or {}).get("date") or {}
+
+    def _select(props, key):
+        s = (props.get(key) or {}).get("select")
+        return s.get("name") if s else None
+
+    out = []
+    for p in pages:
+        props = p.get("properties", {})
+        periodo = _date(props, "Periodo liquidación")
+        out.append({
+            "nombre": _title(props, "Nombre"),
+            "tarjeta": _select(props, "Tarjeta"),
+            "contrato": _text(props, "Contrato"),
+            "periodo_inicio": periodo.get("start"),
+            "periodo_fin": periodo.get("end"),
+            "fecha_cargo": _date(props, "Fecha de cargo").get("start"),
+            "cuota_mensual_elegida": _number(props, "Cuota mensual elegida"),
+            "aplazado_anterior": _number(props, "Aplazado periodo anterior"),
+            "operaciones_periodo": _number(props, "Operaciones del periodo"),
+            "amortizacion": _number(props, "Amortización"),
+            "intereses_periodo": _number(props, "Intereses del periodo"),
+            "aplazado_proximo": _number(props, "Aplazado próximo periodo"),
+            "cer": _number(props, "CER %"),
+            "tin_mensual": _number(props, "TIN mensual %"),
+            "tin_anual": _number(props, "TIN anual %"),
+            "tae": _number(props, "TAE %"),
+            "limite_inicial": _number(props, "Límite crédito inicial"),
+            "limite_disponible": _number(props, "Límite disponible"),
+            "fecha_proyectada_cierre": _date(props, "Fecha proyectada cierre deuda").get("start"),
+            "notas": _text(props, "Notas"),
+        })
+
+    out.sort(key=lambda r: (r.get("tarjeta") or "", r.get("periodo_inicio") or ""))
     return out
 
 
@@ -1120,6 +1206,15 @@ if __name__ == "__main__":
             print(f"  AVISO: no se pudo leer Prestamos: {prest_err}")
             prestamos = []
 
+        print("Leyendo Tarjetas de Credito Revolving (Notion)...")
+        try:
+            tarjetas_pages = fetch_tarjetas_credito_notion()
+            tarjetas_credito = build_tarjetas_credito(tarjetas_pages)
+            print(f"  {len(tarjetas_credito)} periodos cargados")
+        except Exception as tarj_err:
+            print(f"  AVISO: no se pudo leer Tarjetas de Credito: {tarj_err}")
+            tarjetas_credito = []
+
         sanity_check(movimientos, inversiones)
 
         if rend_read_ok:
@@ -1134,7 +1229,8 @@ if __name__ == "__main__":
             "movimientos": movimientos,
             "inversiones": inversiones,
             "nominas": nominas,
-            "prestamos": prestamos
+            "prestamos": prestamos,
+            "tarjetas_credito": tarjetas_credito
         }
 
         with open("finance_data.json", "w", encoding="utf-8") as f:
