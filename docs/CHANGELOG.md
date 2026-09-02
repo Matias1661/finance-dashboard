@@ -1,3 +1,10 @@
+## 2026-09-02 — KPIs de Guille aclaran desde qué fecha cuentan
+
+- `js/app.js` (`renderGuille`): "Total depositado" y "Total gastado" ahora
+  muestran debajo "desde el {fecha}", tomando la fecha del primer
+  movimiento de categoría "Guille" — mismo criterio de transparencia que
+  el KPI de intereses pagados de la solapa Tarjeta de Crédito.
+
 ## 2026-09-02 — KPI "Intereses pagados" aclara desde qué periodo cuenta
 
 - `js/app.js` (`renderTarjetasCredito`): el KPI "Intereses pagados (histórico)"
