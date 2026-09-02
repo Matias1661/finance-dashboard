@@ -1817,6 +1817,119 @@ function renderPrestamos(){
   }
 }
 
+/* ── Tarjetas de Crédito (revolving) ──
+ * A diferencia de Préstamos (cuota fija, sistema francés calculado en
+ * cliente), estas son líneas revolving: el saldo aplazado se toma tal cual
+ * viene de Notion (ya calculado por el banco en cada extracto), no se
+ * recalcula con computeAmortizacion(). Ver docs/DECISIONS.md [2026-09-02].
+ */
+function toggleTarjetaHistorico(id){
+  const div = document.getElementById(id);
+  if(div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
+}
+
+function renderTarjetasCredito(){
+  const rows = window.FINANCE_STATE?.tarjetasCredito || [];
+  const listEl = document.getElementById('tarjetas-list');
+  const kpiEl = document.getElementById('tarjetas-kpis');
+  if(!listEl) return;
+
+  if(rows.length === 0){
+    listEl.innerHTML = '<div class="card">No hay tarjetas de crédito cargadas en Notion.</div>';
+    if(kpiEl) kpiEl.innerHTML = '';
+    return;
+  }
+
+  const porTarjeta = {};
+  rows.forEach(r => {
+    const key = r.tarjeta || 'Sin nombre';
+    if(!porTarjeta[key]) porTarjeta[key] = [];
+    porTarjeta[key].push(r);
+  });
+  Object.values(porTarjeta).forEach(list =>
+    list.sort((a, b) => (a.periodo_inicio || '').localeCompare(b.periodo_inicio || '')));
+
+  let saldoTotal = 0;
+  let interesesAcumulados = 0;
+  let sumaPonderadaTAE = 0;
+
+  const cards = Object.entries(porTarjeta).map(([nombre, periodos], idx) => {
+    const ultimo = periodos[periodos.length - 1];
+    const saldo = Number(ultimo.aplazado_proximo) || 0;
+    saldoTotal += saldo;
+    sumaPonderadaTAE += saldo * (Number(ultimo.tae) || 0);
+    interesesAcumulados += periodos.reduce((acc, p) => acc + (Number(p.intereses_periodo) || 0), 0);
+
+    const limiteInicial = Number(ultimo.limite_inicial) || 0;
+    const limiteDisponible = Number(ultimo.limite_disponible) || 0;
+    const dispuesto = Math.max(0, limiteInicial - limiteDisponible);
+    const pctDispuesto = limiteInicial > 0 ? Math.max(0, Math.min(100, dispuesto / limiteInicial * 100)) : 0;
+    const taePct = ultimo.tae !== null && ultimo.tae !== undefined ? Number(ultimo.tae).toFixed(2) + '%' : '—';
+    const historicoId = `tarjeta-historico-${idx}`;
+
+    return `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+        <div>
+          <div class="card-title" style="margin-bottom:2px">${nombre}</div>
+          <div style="font-size:12px;color:var(--text-secondary)">${ultimo.contrato || ''}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:20px;font-weight:600;color:var(--red)">${formatEUR(saldo)}</div>
+          <div style="font-size:11px;color:var(--text-secondary)">saldo aplazado</div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;height:6px;background:var(--bg);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${pctDispuesto.toFixed(1)}%;background:var(--amber)"></div>
+      </div>
+      <div style="margin-top:4px;font-size:11px;color:var(--text-secondary)">${formatEUR(dispuesto)} dispuesto de ${formatEUR(limiteInicial)} · ${formatEUR(limiteDisponible)} disponible</div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;font-size:12px;color:var(--text-secondary)">
+        <div><div>TAE</div><div style="font-family:'DM Mono';font-size:14px;color:var(--text)">${taePct}</div></div>
+        <div><div>Cuota elegida</div><div style="font-family:'DM Mono';font-size:14px;color:var(--text)">${formatEUR(Number(ultimo.cuota_mensual_elegida) || 0)}</div></div>
+        <div><div>Cierre proyectado</div><div style="font-family:'DM Mono';font-size:14px;color:var(--text)">${ultimo.fecha_proyectada_cierre || '—'}</div></div>
+      </div>
+
+      ${ultimo.notas ? `<div style="margin-top:10px;font-size:12px;color:var(--amber);background:rgba(154,98,0,0.08);padding:8px 10px;border-radius:8px">${ultimo.notas}</div>` : ''}
+
+      <div style="margin-top:12px">
+        <button onclick="toggleTarjetaHistorico('${historicoId}')" style="font-size:12px;background:none;border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer;color:var(--text-secondary)">Ver histórico</button>
+        <div id="${historicoId}" style="display:none;margin-top:10px;max-height:300px;overflow:auto">
+          <table class="tx-table">
+            <thead><tr><th>Periodo</th><th>Anterior</th><th>Operaciones</th><th>Amortización</th><th>Intereses</th><th>Próximo</th></tr></thead>
+            <tbody>
+              ${periodos.map(p => `<tr><td>${p.periodo_inicio || ''} – ${p.periodo_fin || ''}</td><td>${formatEUR(Number(p.aplazado_anterior) || 0)}</td><td>${formatEUR(Number(p.operaciones_periodo) || 0)}</td><td>${formatEUR(Number(p.amortizacion) || 0)}</td><td>${formatEUR(Number(p.intereses_periodo) || 0)}</td><td>${formatEUR(Number(p.aplazado_proximo) || 0)}</td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  listEl.innerHTML = cards;
+
+  if(kpiEl){
+    const taePromedio = saldoTotal > 0 ? (sumaPonderadaTAE / saldoTotal) : 0;
+    kpiEl.innerHTML = `
+    <div class="card">
+      <div class="card-title">Saldo aplazado total</div>
+      <div style="font-size:22px;font-weight:600;color:var(--red)">${formatEUR(saldoTotal)}</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Intereses pagados (histórico)</div>
+      <div style="font-size:22px;font-weight:600;color:var(--amber)">${formatEUR(interesesAcumulados)}</div>
+    </div>
+    <div class="card">
+      <div class="card-title">TAE promedio ponderado</div>
+      <div style="font-size:22px;font-weight:600">${taePromedio.toFixed(2)}%</div>
+    </div>
+  `;
+  }
+
+  if(typeof renderTarjetasChart === 'function') renderTarjetasChart();
+}
+
 function switchTab(tab, el){
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1832,6 +1945,7 @@ function switchTab(tab, el){
   if(tab === 'inversiones')   renderInversiones();
   if(tab === 'talho')           { renderTalho(); renderSociedad(); }
   if(tab === 'prestamos')       renderPrestamos();
+  if(tab === 'tarjetas')        renderTarjetasCredito();
 }
 
 function populateTxMonthSelector(){
@@ -1896,6 +2010,7 @@ async function init(){
       window.FINANCE_STATE.inversiones  = rawData.inversiones  || { capital: [], rendimiento: [], ganancia: [], kpi: null };
       window.FINANCE_STATE.nominas      = rawData.nominas      || [];
       window.FINANCE_STATE.prestamos    = rawData.prestamos    || [];
+      window.FINANCE_STATE.tarjetasCredito = rawData.tarjetas_credito || [];
       window.FINANCE_STATE.generatedAt  = rawData.generated_at || '—';
     }
   }
