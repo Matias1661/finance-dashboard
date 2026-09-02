@@ -212,6 +212,7 @@
   <button class="tab" onclick="switchTab('inversiones', this)">Inversiones</button>
   <button class="tab" onclick="switchTab('talho', this)">Talho Argentino</button>
   <button class="tab" onclick="switchTab('prestamos', this)">Préstamos</button>
+  <button class="tab" onclick="switchTab('tarjetas', this)">Tarjeta de Crédito</button>
 </div>
 
 <div id="tab-resumen" class="tab-panel active">
@@ -505,6 +506,21 @@
   <div class="kpis" id="prestamos-kpis"></div>
 
   <div id="prestamos-list" style="display:flex;flex-direction:column;gap:16px"></div>
+
+</div>
+
+<div id="tab-tarjetas" class="tab-panel">
+
+  <div class="kpis" id="tarjetas-kpis"></div>
+
+  <div class="card">
+    <div class="card-title">Evolución del saldo aplazado</div>
+    <div class="chart-wrap-tall">
+      <canvas id="chart-tarjetas"></canvas>
+    </div>
+  </div>
+
+  <div id="tarjetas-list" style="display:flex;flex-direction:column;gap:16px"></div>
 
 </div>
 
