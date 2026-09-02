@@ -63,9 +63,11 @@ function renderGuille(){
   const kpisEl = document.getElementById('guille-kpis');
   if(kpisEl){
     const balColor = balance >= 0 ? 'var(--green)' : 'var(--red)';
+    const fechaInicio = data.length > 0 ? data.reduce((min, r) => (r.fecha < min ? r.fecha : min), data[0].fecha) : null;
+    const notaDesde = fechaInicio ? `<div style="margin-top:2px;font-size:11px;color:var(--text-secondary)">desde el ${fechaInicio}</div>` : '';
     kpisEl.innerHTML = `
-      <div class="card"><div class="card-title">Total depositado</div><div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:var(--green)">${formatEUR(totalDeposited)}</div></div>
-      <div class="card"><div class="card-title">Total gastado</div><div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:var(--red)">${formatEUR(totalSpent)}</div></div>
+      <div class="card"><div class="card-title">Total depositado</div><div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:var(--green)">${formatEUR(totalDeposited)}</div>${notaDesde}</div>
+      <div class="card"><div class="card-title">Total gastado</div><div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:var(--red)">${formatEUR(totalSpent)}</div>${notaDesde}</div>
       <div class="card"><div class="card-title">Saldo actual</div><div style="font-size:clamp(16px,4vw,22px);font-weight:600;color:${balColor}">${formatEUR(balance)}</div></div>
     `;
   }
