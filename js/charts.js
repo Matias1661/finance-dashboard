@@ -853,3 +853,67 @@ function renderNominaTrend(){
 }
 
 
+
+/* Evolución del saldo aplazado por tarjeta (Tarjetas de Crédito Revolving).
+ * Una línea por tarjeta, eje X = mes de cierre del periodo. Si una tarjeta
+ * no tiene fila en un mes dado (ej. otra tarjeta se cargó ese mes y esta
+ * no), se mantiene el último saldo conocido en vez de cortar la línea, ya
+ * que el saldo no cambia hasta el próximo extracto real.
+ */
+function renderTarjetasChart(){
+  const rows = window.FINANCE_STATE?.tarjetasCredito || [];
+  const ctx = document.getElementById('chart-tarjetas');
+  if(!ctx || rows.length === 0) return;
+
+  const porTarjeta = {};
+  rows.forEach(r => {
+    const key = r.tarjeta || 'Sin nombre';
+    if(!porTarjeta[key]) porTarjeta[key] = [];
+    porTarjeta[key].push(r);
+  });
+
+  const labelsSet = new Set();
+  Object.values(porTarjeta).forEach(list => {
+    list.sort((a, b) => (a.periodo_inicio || '').localeCompare(b.periodo_inicio || ''));
+    list.forEach(r => labelsSet.add((r.periodo_fin || r.periodo_inicio || '').slice(0, 7)));
+  });
+  const labels = [...labelsSet].sort();
+
+  const COLORS = ['rgba(66,133,180,0.9)', 'rgba(235,104,52,0.9)', 'rgba(13,138,82,0.9)', 'rgba(160,80,190,0.9)'];
+
+  const datasets = Object.entries(porTarjeta).map(([nombre, list], idx) => {
+    const byMonth = {};
+    list.forEach(r => { byMonth[(r.periodo_fin || r.periodo_inicio || '').slice(0, 7)] = Number(r.aplazado_proximo) || 0; });
+    let last = null;
+    const data = labels.map(m => {
+      if(byMonth[m] !== undefined){ last = byMonth[m]; return last; }
+      return last;
+    });
+    return {
+      label: nombre,
+      data,
+      borderColor: COLORS[idx % COLORS.length],
+      backgroundColor: COLORS[idx % COLORS.length],
+      tension: 0.2,
+      spanGaps: true
+    };
+  });
+
+  if(window.tarjetasChart) window.tarjetasChart.destroy();
+
+  window.tarjetasChart = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: true, position: 'bottom' } },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { callback: v => formatEUR(v) }
+        }
+      }
+    }
+  });
+}
