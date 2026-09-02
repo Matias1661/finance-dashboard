@@ -347,6 +347,7 @@ def build_tarjetas_credito(pages):
             "limite_inicial": _number(props, "Límite crédito inicial"),
             "limite_disponible": _number(props, "Límite disponible"),
             "fecha_proyectada_cierre": _date(props, "Fecha proyectada cierre deuda").get("start"),
+            "fraccionado_pendiente": _number(props, "Fraccionado pendiente"),
             "notas": _text(props, "Notas"),
         })
 
