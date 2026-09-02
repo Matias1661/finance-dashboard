@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-02 14:01",
+  "generated_at": "2026-09-02 15:17",
   "movimientos": [
     {
       "fecha": "2026-08-31",
@@ -20513,6 +20513,29 @@
   ],
   "tarjetas_credito": [
     {
+      "nombre": "IKEA - Marzo 2026",
+      "tarjeta": "IKEA",
+      "contrato": "WY 7230097",
+      "periodo_inicio": "2026-02-21",
+      "periodo_fin": "2026-03-20",
+      "fecha_cargo": "2026-04-05",
+      "cuota_mensual_elegida": 40,
+      "aplazado_anterior": 0,
+      "operaciones_periodo": 0,
+      "amortizacion": 0,
+      "intereses_periodo": 0,
+      "aplazado_proximo": 0,
+      "cer": null,
+      "tin_mensual": 1.74,
+      "tin_anual": 20.88,
+      "tae": 23,
+      "limite_inicial": 1200,
+      "limite_disponible": 1109.82,
+      "fecha_proyectada_cierre": null,
+      "fraccionado_pendiente": 42.17,
+      "notas": "Sin actividad revolving este periodo (0€). Fraccionadas: IKEA SAN SEBASTI (189,17€, compra 08/02/25, cuota 14 de 18, pendiente 42,17€); ECOMMERCE NEW WE SAN SEBASTIAN (46,87€, cuota 3 de 10, pendiente 32,83€). Importe total del recibo: 15,18€, cargo 05/04/2026."
+    },
+    {
       "nombre": "IKEA - Mayo 2026",
       "tarjeta": "IKEA",
       "contrato": "WY 7230097",
@@ -20603,6 +20626,29 @@
       "fecha_proyectada_cierre": "2029-05-05",
       "fraccionado_pendiente": 9.43,
       "notas": "Columnas reflejan solo el componente revolving (disposición de 1.000€ del 06/08/26). Además existe una compra fraccionada separada (ECOMMERCE NEW WE SAN SEBASTIAN, 28/12/25, TIN 0%, 8 de 10 cuotas, cuota 4,68€/mes, pendiente 9,43€) no incluida en estas columnas. Importe total del recibo de este periodo (revolving + fraccionado): 44,68€, cargo 05/09/2026."
+    },
+    {
+      "nombre": "Visa Classic - Abril 2026",
+      "tarjeta": "Visa Classic",
+      "contrato": "9613.18.0486311-07",
+      "periodo_inicio": "2026-03-28",
+      "periodo_fin": "2026-04-27",
+      "fecha_cargo": "2026-05-01",
+      "cuota_mensual_elegida": 100,
+      "aplazado_anterior": null,
+      "operaciones_periodo": 433.23,
+      "amortizacion": 68.87,
+      "intereses_periodo": 31.13,
+      "aplazado_proximo": 2691.27,
+      "cer": 15.38,
+      "tin_mensual": 1.2,
+      "tin_anual": 14.4,
+      "tae": 15.39,
+      "limite_inicial": 3000,
+      "limite_disponible": 308.73,
+      "fecha_proyectada_cierre": "2029-02-01",
+      "fraccionado_pendiente": null,
+      "notas": "Operación del periodo: HARLEY TALLER MADRID, 10/04/2026, 433,23€. Con la cuota actual, cierre de deuda proyectado 01/02/2029, intereses totales 610,70€, principal 2.760,14€."
     },
     {
       "nombre": "Visa Classic - Mayo 2026",
