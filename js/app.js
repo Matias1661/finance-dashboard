@@ -1852,6 +1852,10 @@ function renderTarjetasCredito(){
   let saldoTotal = 0;
   let interesesAcumulados = 0;
   let sumaPonderadaTAE = 0;
+  let periodoMasAntiguo = null;
+  rows.forEach(r => {
+    if(r.periodo_inicio && (!periodoMasAntiguo || r.periodo_inicio < periodoMasAntiguo)) periodoMasAntiguo = r.periodo_inicio;
+  });
 
   const cards = Object.entries(porTarjeta).map(([nombre, periodos], idx) => {
     const ultimo = periodos[periodos.length - 1];
@@ -1919,6 +1923,7 @@ function renderTarjetasCredito(){
     <div class="card">
       <div class="card-title">Intereses pagados (histórico)</div>
       <div style="font-size:22px;font-weight:600;color:var(--amber)">${formatEUR(interesesAcumulados)}</div>
+      <div style="margin-top:2px;font-size:11px;color:var(--text-secondary)">${periodoMasAntiguo ? `desde el periodo iniciado el ${periodoMasAntiguo}` : ''}</div>
     </div>
     <div class="card">
       <div class="card-title">TAE promedio ponderado</div>
