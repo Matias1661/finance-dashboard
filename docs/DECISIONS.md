@@ -1,3 +1,39 @@
+## [2026-09-02] Nueva solapa "Tarjeta de Crédito" (revolving), separada de Préstamos
+
+**Contexto:** Matias tiene 2 tarjetas de crédito revolving activas (IKEA,
+contrato WY 7230097; Visa Classic, contrato 9613.18.0486311-07), cargadas en
+la nueva DB Notion "Tarjetas de Crédito Revolving" (data source
+7ca19b93-347f-4cbf-8dde-753d16babf77), con 4 y 3 periodos históricos
+respectivamente. A diferencia de los 4 préstamos de la DB "Préstamos" (cuota
+fija, sistema francés, capital y plazo cerrados desde el origen), estas son
+líneas revolving: el capital dispuesto varía con nuevas compras, la cuota es
+elegida mensualmente por el usuario, y el saldo pendiente ("Aplazado próximo
+periodo") viene directamente del extracto del banco en vez de calcularse con
+`computeAmortizacion()`.
+
+**Decisión:**
+- Nueva solapa "Tarjeta de Crédito" en el dashboard, independiente de
+  Préstamos (no se mezclan ambos conceptos de deuda).
+- `sync_finance_data.py` lee la DB Notion (`fetch_tarjetas_credito_notion` +
+  `build_tarjetas_credito`) y agrega la clave `tarjetas_credito` (lista plana,
+  una fila por tarjeta por periodo de liquidación) a `finance_data.json`. Data
+  source ID hardcodeado con fallback vía env var
+  `NOTION_TARJETAS_CREDITO_DATA_SOURCE_ID`, mismo patrón que Nominas (no es un
+  secret real de acceso).
+- El frontend (`renderTarjetasCredito` en `js/app.js`) agrupa las filas por
+  tarjeta, usa el período más reciente para las tarjetas individuales
+  (saldo, TAE, barra límite disponible/dispuesto, fecha proyectada de cierre)
+  y expone un histórico desplegable por tarjeta (mismo patrón visual que el
+  cuadro de amortización de Préstamos). KPIs: saldo aplazado total, intereses
+  pagados histórico (suma de todos los periodos cargados), TAE promedio
+  ponderado por saldo actual.
+- Gráfico de evolución (`renderTarjetasChart` en `js/charts.js`): línea por
+  tarjeta, eje X = mes de cierre del periodo, Y = "Aplazado próximo periodo".
+  No se recalcula nada en cliente — a diferencia de Préstamos, el saldo ya
+  viene calculado por el banco en cada extracto.
+- No se duplica el "Ver histórico" con el cuadro de amortización francés de
+  Préstamos: son datos reales del banco, no una simulación.
+
 ## [2026-09-01] Reembolsos de socios se descuentan del gasto semanal de Matias en Talho Argentino
 
 **Contexto:** El toldo del local (`FACTURA N°330/202`, -2.020,85€, 20/08/2026,
