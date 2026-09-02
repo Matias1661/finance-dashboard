@@ -15,6 +15,7 @@
 - [x] Gráfico de rentabilidad mensual por plataforma en tab Inversiones (barras agrupadas + acumulado TWR, 2026-07-08)
 - [x] Migración de capital/rendimiento del tab Inversiones de Google Sheets a Notion (elimina dependencia de GOOGLE_SERVICE_ACCOUNT, 2026-07-10)
 - [x] Tab "Préstamos": seguimiento de préstamos personales pendientes (DB Notion + cuadro de amortización calculado en cliente, 2026-08-03)
+- [x] Tab "Tarjeta de Crédito": seguimiento de tarjetas revolving (IKEA, Visa Classic) — DB Notion propia, saldo tomado del extracto real (no recalculado), KPIs + gráfico de evolución + histórico por tarjeta (2026-09-02)
 
 ## Alta prioridad
 - [x] Botón "Actualizar" en `index.html`: eliminado 21/07 (tenía un token de GitHub hardcodeado, revocado, y seguía expuesto en texto plano en el archivo). Los workflows de sync se disparan manualmente vía `gh workflow run` o la UI de GitHub Actions. Ver `DECISIONS.md` 2026-07-21.
@@ -34,6 +35,8 @@
 - [x] Insights automáticos: comparación vs mes anterior, alertas de gasto por categoría (js/insights.js, 2026-07-03)
 - [ ] Enriquecimiento de Nota como fase del flujo "Organizar Movimientos" (de aquí en adelante, no solo backfill)
 - [x] KPI de ahorro real incluyendo inversiones (tarjeta en Resumen: balance + rendimiento, 2026-07-03)
+
+- [ ] Skill de ingesta de extractos de tarjetas de crédito (Drive + subida directa al chat), con verificación del número de contrato contra la lista conocida antes de cargar a Notion (evitar el caso ya ocurrido de subir por error el extracto de una tercera tarjeta)
 
 ## Prioridad media
 - [ ] Dashboard de vivienda (desglose Departamento)
