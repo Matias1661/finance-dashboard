@@ -1,3 +1,25 @@
+## 2026-09-02 — Nueva solapa "Tarjeta de Crédito" (revolving)
+
+- Nueva DB Notion "Tarjetas de Crédito Revolving" (data source
+  `7ca19b93-347f-4cbf-8dde-753d16babf77`), una fila por tarjeta por periodo
+  de liquidación. Cargadas IKEA (4 periodos, may–ago 2026) y Visa Classic
+  (3 periodos, jun–ago 2026), con saldos encadenados sin huecos.
+- `scripts/sync_finance_data.py`: `fetch_tarjetas_credito_notion()` +
+  `build_tarjetas_credito()` leen la DB y agregan la clave
+  `tarjetas_credito` a `finance_data.json`.
+- `index.html`: nueva solapa "Tarjeta de Crédito" con KPIs, gráfico de
+  evolución (`chart-tarjetas`) y lista de tarjetas.
+- `js/app.js` (`renderTarjetasCredito`): agrupa por tarjeta, tarjeta
+  individual con saldo actual, barra límite disponible/dispuesto, TAE,
+  cierre proyectado, e histórico desplegable por periodo. KPIs: saldo
+  aplazado total, intereses pagados histórico, TAE promedio ponderado.
+- `js/charts.js` (`renderTarjetasChart`): línea de evolución del saldo
+  aplazado por tarjeta, mes a mes.
+- A diferencia de Préstamos (sistema francés calculado en cliente vía
+  `computeAmortizacion()`), el saldo de estas tarjetas se toma tal cual del
+  extracto del banco — no se recalcula. Ver `docs/DECISIONS.md`
+  (2026-09-02).
+
 ## 2026-09-01 — Gráfico "Gastos de Matias" (Talho Argentino) neto de reembolsos de socios
 
 - `js/app.js` (`renderTalho`): el gasto semanal ahora resta los ingresos de
