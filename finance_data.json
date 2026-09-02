@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-02 12:38",
+  "generated_at": "2026-09-02 12:53",
   "movimientos": [
     {
       "fecha": "2026-08-31",
@@ -20532,6 +20532,7 @@
       "limite_inicial": 1200,
       "limite_disponible": 1140.18,
       "fecha_proyectada_cierre": null,
+      "fraccionado_pendiente": 44.64,
       "notas": "Sin actividad revolving este periodo (crédito dispuesto 0€). Recibo compuesto solo por 2 compras fraccionadas a 0% TIN: IKEA SAN SEBASTI (189,17€, compra 08/02/25, cuota 16 de 18, pendiente 21,17€) y ECOMMERCE NEW WE SAN SEBASTIAN (46,87€, cuota 5 de 10, pendiente 23,47€). Importe total del recibo: 15,18€, cargo 05/06/2026."
     },
     {
@@ -20554,6 +20555,7 @@
       "limite_inicial": 1200,
       "limite_disponible": 1155.36,
       "fecha_proyectada_cierre": null,
+      "fraccionado_pendiente": 29.46,
       "notas": "Sin actividad revolving este periodo. Fraccionadas: IKEA SAN SEBASTI (cuota 17 de 18, pendiente 10,67€), ECOMMERCE NEW (cuota 6 de 10, pendiente 18,79€). Importe total del recibo: 15,18€, cargo 05/07/2026."
     },
     {
@@ -20576,6 +20578,7 @@
       "limite_inicial": 1200,
       "limite_disponible": 1170.54,
       "fecha_proyectada_cierre": null,
+      "fraccionado_pendiente": 14.11,
       "notas": "Sin actividad revolving este periodo. Fraccionadas: IKEA SAN SEBASTI (cuota 18 de 18 — última cuota, saldada); ECOMMERCE NEW (cuota 7 de 10, pendiente 14,11€). Importe total del recibo: 15,35€, cargo 05/08/2026."
     },
     {
@@ -20598,6 +20601,7 @@
       "limite_inicial": 1200,
       "limite_disponible": 168.49,
       "fecha_proyectada_cierre": "2029-05-05",
+      "fraccionado_pendiente": 9.43,
       "notas": "Columnas reflejan solo el componente revolving (disposición de 1.000€ del 06/08/26). Además existe una compra fraccionada separada (ECOMMERCE NEW WE SAN SEBASTIAN, 28/12/25, TIN 0%, 8 de 10 cuotas, cuota 4,68€/mes, pendiente 9,43€) no incluida en estas columnas. Importe total del recibo de este periodo (revolving + fraccionado): 44,68€, cargo 05/09/2026."
     },
     {
@@ -20620,6 +20624,7 @@
       "limite_inicial": 3000,
       "limite_disponible": 444.76,
       "fecha_proyectada_cierre": "2029-02-01",
+      "fraccionado_pendiente": null,
       "notas": "Sin operaciones nuevas este periodo (0€)."
     },
     {
@@ -20642,6 +20647,7 @@
       "limite_inicial": 3000,
       "limite_disponible": 513.51,
       "fecha_proyectada_cierre": "2029-02-01",
+      "fraccionado_pendiente": null,
       "notas": "Sin operaciones nuevas este periodo (0€)."
     },
     {
@@ -20664,6 +20670,7 @@
       "limite_inicial": 3000,
       "limite_disponible": 190.66,
       "fecha_proyectada_cierre": "2028-07-01",
+      "fraccionado_pendiente": null,
       "notas": "Límite de crédito compartido entre todas las tarjetas del contrato 9613.18.0486311-07 (tarjeta 4766 63  6808). Deuda total pendiente si se cancelase todo a 27.08.2026: 2.959,34€ (2.926,82 principal + 32,52 interés)."
     }
   ]
