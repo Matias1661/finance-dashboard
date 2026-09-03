@@ -1830,8 +1830,14 @@ function toggleTarjetaHistorico(id){
   if(div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
 }
 
+function toggleTarjetaOperaciones(id){
+  const div = document.getElementById(id);
+  if(div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
+}
+
 function renderTarjetasCredito(){
   const rows = window.FINANCE_STATE?.tarjetasCredito || [];
+  const operaciones = window.FINANCE_STATE?.tarjetasCreditoOperaciones || [];
   const listEl = document.getElementById('tarjetas-list');
   const kpiEl = document.getElementById('tarjetas-kpis');
   if(!listEl) return;
@@ -1872,6 +1878,10 @@ function renderTarjetasCredito(){
     const pctDispuesto = limiteInicial > 0 ? Math.max(0, Math.min(100, dispuesto / limiteInicial * 100)) : 0;
     const taePct = ultimo.tae !== null && ultimo.tae !== undefined ? Number(ultimo.tae).toFixed(2) + '%' : '—';
     const historicoId = `tarjeta-historico-${idx}`;
+    const operacionesId = `tarjeta-operaciones-${idx}`;
+    const opsTarjeta = operaciones
+      .filter(o => o.tarjeta === nombre)
+      .sort((a, b) => (b.fecha_operacion || '').localeCompare(a.fecha_operacion || ''));
 
     return `
     <div class="card">
@@ -1901,6 +1911,7 @@ function renderTarjetasCredito(){
 
       <div style="margin-top:12px">
         <button onclick="toggleTarjetaHistorico('${historicoId}')" style="font-size:12px;background:none;border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer;color:var(--text-secondary)">Ver histórico</button>
+        <button onclick="toggleTarjetaOperaciones('${operacionesId}')" style="font-size:12px;background:none;border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer;color:var(--text-secondary);margin-left:8px">Ver operaciones${opsTarjeta.length ? ` (${opsTarjeta.length})` : ''}</button>
         <div id="${historicoId}" style="display:none;margin-top:10px;max-height:300px;overflow:auto">
           <table class="tx-table">
             <thead><tr><th>Periodo</th><th>Anterior</th><th>Operaciones</th><th>Amortización</th><th>Intereses</th><th>Próximo</th></tr></thead>
@@ -1908,6 +1919,15 @@ function renderTarjetasCredito(){
               ${periodos.map(p => `<tr><td>${p.periodo_inicio || ''} – ${p.periodo_fin || ''}</td><td>${formatEUR(Number(p.aplazado_anterior) || 0)}</td><td>${formatEUR(Number(p.operaciones_periodo) || 0)}</td><td>${formatEUR(Number(p.amortizacion) || 0)}</td><td>${formatEUR(Number(p.intereses_periodo) || 0)}</td><td>${formatEUR(Number(p.aplazado_proximo) || 0)}</td></tr>`).join('')}
             </tbody>
           </table>
+        </div>
+        <div id="${operacionesId}" style="display:none;margin-top:10px;max-height:300px;overflow:auto">
+          ${opsTarjeta.length === 0 ? '<div style="font-size:12px;color:var(--text-secondary)">Sin operaciones registradas.</div>' : `
+          <table class="tx-table">
+            <thead><tr><th>Fecha</th><th>Concepto</th><th>Importe</th><th>Tipo</th></tr></thead>
+            <tbody>
+              ${opsTarjeta.map(o => `<tr><td>${o.fecha_operacion || ''}</td><td>${o.concepto || ''}${o.cuotas ? ` <span style="color:var(--text-secondary);font-size:11px">(${o.cuotas})</span>` : ''}</td><td>${formatEUR(Number(o.importe) || 0)}</td><td>${o.tipo || ''}</td></tr>`).join('')}
+            </tbody>
+          </table>`}
         </div>
       </div>
     </div>`;
@@ -2018,6 +2038,7 @@ async function init(){
       window.FINANCE_STATE.nominas      = rawData.nominas      || [];
       window.FINANCE_STATE.prestamos    = rawData.prestamos    || [];
       window.FINANCE_STATE.tarjetasCredito = rawData.tarjetas_credito || [];
+      window.FINANCE_STATE.tarjetasCreditoOperaciones = rawData.tarjetas_credito_operaciones || [];
       window.FINANCE_STATE.generatedAt  = rawData.generated_at || '—';
     }
   }
