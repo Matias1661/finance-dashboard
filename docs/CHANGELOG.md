@@ -1,3 +1,12 @@
+## 2026-09-03 — Recordatorio de extracto pendiente por tarjeta
+
+- Nuevo cartel en la solapa Tarjeta de Crédito, arriba de los KPIs:
+  ámbar "⚠ Cargar extracto de {tarjeta} y correr el flujo..." si el
+  extracto más reciente esperado (según la cadencia mensual observada de
+  cada tarjeta + 5 días de gracia) no está cargado; verde
+  "✓ Información de tarjetas al día" si todo está al día.
+- `js/app.js`: nueva `tarjetaExtractoStatus()`.
+
 ## 2026-09-03 — Desplegable "Ver operaciones" por tarjeta de crédito
 
 - Nueva DB Notion "Operaciones Tarjetas de Crédito", relacionada con
