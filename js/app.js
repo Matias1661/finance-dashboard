@@ -1860,13 +1860,11 @@ function renderTarjetasCredito(){
   const operaciones = window.FINANCE_STATE?.tarjetasCreditoOperaciones || [];
   const listEl = document.getElementById('tarjetas-list');
   const kpiEl = document.getElementById('tarjetas-kpis');
-  const reminderEl = document.getElementById('tarjetas-reminder');
   if(!listEl) return;
 
   if(rows.length === 0){
     listEl.innerHTML = '<div class="card">No hay tarjetas de crédito cargadas en Notion.</div>';
     if(kpiEl) kpiEl.innerHTML = '';
-    if(reminderEl) reminderEl.innerHTML = '';
     return;
   }
 
@@ -1878,20 +1876,6 @@ function renderTarjetasCredito(){
   });
   Object.values(porTarjeta).forEach(list =>
     list.sort((a, b) => (a.periodo_inicio || '').localeCompare(b.periodo_inicio || '')));
-
-  if(reminderEl){
-    const hoy = new Date();
-    const pendientes = Object.entries(porTarjeta)
-      .map(([nombre, periodos]) => ({ nombre, status: tarjetaExtractoStatus(periodos, hoy) }))
-      .filter(t => t.status && t.status.overdue);
-
-    if(pendientes.length === 0){
-      reminderEl.innerHTML = `<div class="card" style="background:rgba(13,138,82,0.08);border:1px solid rgba(13,138,82,0.25);color:var(--green);font-size:13px;padding:10px 14px;margin-bottom:16px">✓ Información de tarjetas al día</div>`;
-    } else {
-      const lista = pendientes.map(t => t.nombre).join(' y ');
-      reminderEl.innerHTML = `<div class="card" style="background:rgba(154,98,0,0.08);border:1px solid rgba(154,98,0,0.25);color:var(--amber);font-size:13px;padding:10px 14px;margin-bottom:16px">⚠ Cargar extracto de ${lista} y correr el flujo "Organizar tarjetas de crédito"</div>`;
-    }
-  }
 
   let saldoTotal = 0;
   let interesesAcumulados = 0;
@@ -1973,6 +1957,16 @@ function renderTarjetasCredito(){
 
   if(kpiEl){
     const taePromedio = saldoTotal > 0 ? (sumaPonderadaTAE / saldoTotal) : 0;
+
+    const hoy = new Date();
+    const pendientes = Object.entries(porTarjeta)
+      .map(([nombre, periodos]) => ({ nombre, status: tarjetaExtractoStatus(periodos, hoy) }))
+      .filter(t => t.status && t.status.overdue);
+    const estadoValor = pendientes.length === 0
+      ? `<div style="font-size:22px;font-weight:600;color:var(--green)">✓ Al día</div>`
+      : `<div style="font-size:22px;font-weight:600;color:var(--amber)">⚠ Pendiente</div>
+         <div style="margin-top:2px;font-size:11px;color:var(--text-secondary)">Cargar extracto de ${pendientes.map(t => t.nombre).join(' y ')} y correr "Organizar tarjetas de crédito"</div>`;
+
     kpiEl.innerHTML = `
     <div class="card">
       <div class="card-title">Saldo aplazado total</div>
@@ -1986,6 +1980,10 @@ function renderTarjetasCredito(){
     <div class="card">
       <div class="card-title">TAE promedio ponderado</div>
       <div style="font-size:22px;font-weight:600">${taePromedio.toFixed(2)}%</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Estado extractos</div>
+      ${estadoValor}
     </div>
   `;
   }
