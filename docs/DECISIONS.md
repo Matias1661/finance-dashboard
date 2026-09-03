@@ -1,3 +1,28 @@
+## [2026-09-03] Recordatorio de extracto pendiente por tarjeta
+
+**Contexto:** Matias pidió un aviso en la solapa Tarjeta de Crédito que
+indique si falta cargar el extracto más reciente de alguna tarjeta y correr
+el flujo "Organizar tarjetas de crédito".
+
+**Decisión:**
+- Cadencia inferida por tarjeta a partir del `fecha_cargo` del último
+  periodo cargado, no hardcodeada: cada tarjeta recibe extracto mensual el
+  mismo día del mes observado en su último extracto (IKEA día 5, Visa
+  Classic día 1, según los datos actuales — pero el cálculo es dinámico
+  para no romper si el banco cambia la fecha de facturación).
+  Próximo esperado = mismo día, mes siguiente al último `fecha_cargo`
+  cargado.
+- Margen de gracia de 5 días sobre la fecha esperada antes de marcar la
+  tarjeta como pendiente (`tarjetaExtractoStatus()` en `js/app.js`), para
+  no generar falsos positivos por demoras normales de procesamiento del
+  banco.
+- Nuevo div `#tarjetas-reminder` en `index.html`, arriba de los KPIs de la
+  solapa. Verde ("✓ Información de tarjetas al día") si ninguna tarjeta
+  está vencida; ámbar listando las tarjetas pendientes
+  ("⚠ Cargar extracto de X y correr el flujo...") si alguna lo está.
+- Cálculo 100% client-side (depende de la fecha actual del navegador), no
+  se persiste en `finance_data.json`.
+
 ## [2026-09-03] Nueva DB "Operaciones Tarjetas de Crédito" y desplegable "Ver operaciones" por tarjeta
 
 **Contexto:** Matias pidió, además del histórico de extractos ya existente
