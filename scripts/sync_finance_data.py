@@ -69,6 +69,11 @@ NOTION_NOMINAS_DS_ID       = os.environ.get(
 # nuevo de GitHub Actions). Ver docs/DECISIONS.md [2026-09-02].
 NOTION_TARJETAS_DS_ID      = os.environ.get(
     "NOTION_TARJETAS_CREDITO_DATA_SOURCE_ID", "7ca19b93-347f-4cbf-8dde-753d16babf77")
+# DB "Operaciones Tarjetas de Credito" (una fila por operacion individual:
+# compra, fraccionada o disposicion revolving). ID no sensible, mismo patron
+# que Tarjetas de Credito Revolving. Ver docs/DECISIONS.md [2026-09-03].
+NOTION_TARJETAS_OPS_DS_ID  = os.environ.get(
+    "NOTION_TARJETAS_OPERACIONES_DATA_SOURCE_ID", "a7826aab-f105-4096-91f5-27903d97d60c")
 NOTION_VERSION             = "2025-09-03"
 
 # Normalizacion de nombre de empresa: la DB Nominas tiene variantes de
@@ -352,6 +357,72 @@ def build_tarjetas_credito(pages):
         })
 
     out.sort(key=lambda r: (r.get("tarjeta") or "", r.get("periodo_inicio") or ""))
+    return out
+
+
+def fetch_tarjetas_operaciones_notion():
+    """Lee todas las paginas de la DB Notion 'Operaciones Tarjetas de Credito' via API REST."""
+    url = f"https://api.notion.com/v1/data_sources/{NOTION_TARJETAS_OPS_DS_ID}/query"
+    headers = {
+        "Authorization": f"Bearer {NOTION_TOKEN}",
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json"
+    }
+    payload = {"page_size": 100}
+
+    results = []
+    while True:
+        resp = requests.post(url, headers=headers, json=payload, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+        results.extend(data.get("results", []))
+        if not data.get("has_more"):
+            break
+        payload["start_cursor"] = data["next_cursor"]
+
+    return results
+
+
+def build_tarjetas_operaciones(pages):
+    """Convierte las paginas de la DB Notion 'Operaciones Tarjetas de Credito'
+    en una lista de dicts (una operacion individual por tarjeta: compra,
+    fraccionada o disposicion revolving) para finance_data.json. Una
+    operacion es un evento unico (ej. una compra fraccionada a 10 cuotas
+    genera UNA fila aqui, no una por cuota mensual) -- ver docs/DECISIONS.md
+    [2026-09-03]."""
+
+    def _title(props, key):
+        arr = (props.get(key) or {}).get("title", [])
+        return "".join(t.get("plain_text", "") for t in arr)
+
+    def _text(props, key):
+        arr = (props.get(key) or {}).get("rich_text", [])
+        return "".join(t.get("plain_text", "") for t in arr)
+
+    def _number(props, key):
+        return (props.get(key) or {}).get("number")
+
+    def _date(props, key):
+        return (props.get(key) or {}).get("date") or {}
+
+    def _select(props, key):
+        s = (props.get(key) or {}).get("select")
+        return s.get("name") if s else None
+
+    out = []
+    for p in pages:
+        props = p.get("properties", {})
+        out.append({
+            "concepto": _title(props, "Concepto"),
+            "tarjeta": _select(props, "Tarjeta"),
+            "fecha_operacion": _date(props, "Fecha operación").get("start"),
+            "importe": _number(props, "Importe"),
+            "tipo": _select(props, "Tipo"),
+            "cuotas": _text(props, "Cuotas"),
+            "notas": _text(props, "Notas"),
+        })
+
+    out.sort(key=lambda r: (r.get("tarjeta") or "", r.get("fecha_operacion") or ""))
     return out
 
 
@@ -1216,6 +1287,15 @@ if __name__ == "__main__":
             print(f"  AVISO: no se pudo leer Tarjetas de Credito: {tarj_err}")
             tarjetas_credito = []
 
+        print("Leyendo Operaciones Tarjetas de Credito (Notion)...")
+        try:
+            tarjetas_ops_pages = fetch_tarjetas_operaciones_notion()
+            tarjetas_credito_operaciones = build_tarjetas_operaciones(tarjetas_ops_pages)
+            print(f"  {len(tarjetas_credito_operaciones)} operaciones cargadas")
+        except Exception as tarj_ops_err:
+            print(f"  AVISO: no se pudo leer Operaciones Tarjetas de Credito: {tarj_ops_err}")
+            tarjetas_credito_operaciones = []
+
         sanity_check(movimientos, inversiones)
 
         if rend_read_ok:
@@ -1231,7 +1311,8 @@ if __name__ == "__main__":
             "inversiones": inversiones,
             "nominas": nominas,
             "prestamos": prestamos,
-            "tarjetas_credito": tarjetas_credito
+            "tarjetas_credito": tarjetas_credito,
+            "tarjetas_credito_operaciones": tarjetas_credito_operaciones
         }
 
         with open("finance_data.json", "w", encoding="utf-8") as f:
