@@ -1,3 +1,18 @@
+## 2026-09-03 — Desplegable "Ver operaciones" por tarjeta de crédito
+
+- Nueva DB Notion "Operaciones Tarjetas de Crédito", relacionada con
+  "Tarjetas de Crédito Revolving": una fila por operación individual
+  (compra, fraccionada, disposición revolving), no por cuota mensual.
+- Carga retroactiva de 7 operaciones detectadas en los 11 extractos ya
+  cargados (IKEA y Visa Classic).
+- `scripts/sync_finance_data.py`: nueva clave `tarjetas_credito_operaciones`
+  en `finance_data.json`.
+- `js/app.js` (`renderTarjetasCredito`): nuevo botón "Ver operaciones (n)"
+  por tarjeta, junto al de "Ver histórico" existente, con tabla de fecha,
+  concepto, importe y tipo.
+- Skill `organizar-tarjetas-credito` ampliado para cargar operaciones
+  individuales también en extractos futuros.
+
 ## 2026-09-02 — KPIs de Guille aclaran desde qué fecha cuentan
 
 - `js/app.js` (`renderGuille`): "Total depositado" y "Total gastado" ahora
