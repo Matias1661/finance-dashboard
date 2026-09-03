@@ -1,3 +1,44 @@
+## [2026-09-03] Nueva DB "Operaciones Tarjetas de Crédito" y desplegable "Ver operaciones" por tarjeta
+
+**Contexto:** Matias pidió, además del histórico de extractos ya existente
+por tarjeta (desplegable "Ver histórico"), poder ver también el detalle de
+operaciones individuales hechas con cada tarjeta (compras, fraccionadas,
+disposiciones revolving), retroactivo a los extractos ya cargados.
+
+**Decisión:**
+- Nueva DB Notion "Operaciones Tarjetas de Crédito" (data source
+  `a7826aab-f105-4096-91f5-27903d97d60c`), bajo Finance Tracker. Schema:
+  Concepto (title), Tarjeta (select: IKEA/Visa Classic), Fecha operación
+  (date), Importe (number), Tipo (select: Compra normal / Fraccionada 0% /
+  Disposición revolving / Otro), Cuotas (rich text, ej. "8/10"), Periodo
+  liquidación (relation dual hacia "Tarjetas de Crédito Revolving",
+  propiedad sincronizada "Operaciones" del lado de esa DB), Notas (rich
+  text).
+- **Criterio "operación" = evento único**, no una fila por cuota mensual: una
+  compra fraccionada a 10 cuotas genera UNA fila aquí (con su importe total
+  original y su progreso de cuotas en el campo Cuotas), no 10 filas
+  repetidas a través de los periodos donde aparece. Cada operación se
+  vincula al periodo de liquidación donde aparece por primera vez.
+- Carga retroactiva completa (03/09/2026): 7 operaciones identificadas
+  revisando los 11 extractos ya cargados en Notion (5 IKEA + 6 Visa
+  Classic) — 2 fraccionadas IKEA (IKEA SAN SEBASTIÁN 189,17€, ECOMMERCE NEW
+  WE 46,87€), 1 disposición revolving IKEA (CAIXABANKPC BARCELONA 1.000€),
+  4 compras normales Visa Classic (HARLEY TALLER MADRID, MONTANER, AMERICAN
+  MOTOS TOULOUSE, TOTAL 4380846 31 TOULOUSE).
+- `sync_finance_data.py`: nuevas `fetch_tarjetas_operaciones_notion()` +
+  `build_tarjetas_operaciones()`, mismo patrón que Tarjetas de Crédito
+  Revolving. Nueva clave `tarjetas_credito_operaciones` en
+  `finance_data.json`. ID de data source hardcodeado con fallback vía env
+  var `NOTION_TARJETAS_OPERACIONES_DATA_SOURCE_ID` (no requiere secret
+  nuevo de GitHub Actions, mismo patrón que Nominas/Tarjetas).
+- `js/app.js`: `renderTarjetasCredito()` agrega un segundo botón/desplegable
+  "Ver operaciones (n)" por tarjeta (`toggleTarjetaOperaciones()`), filtrando
+  `tarjetasCreditoOperaciones` por nombre de tarjeta y ordenando por fecha
+  descendente. Tabla: fecha, concepto (+ cuotas si aplica), importe, tipo.
+- Skill `organizar-tarjetas-credito` actualizado para que extractos futuros
+  también extraigan y carguen sus operaciones individuales en esta DB,
+  no solo el resumen del periodo.
+
 ## [2026-09-02] Curva independiente de fraccionado 0% en el gráfico de Tarjeta de Crédito; se saca el link a Sheets del header
 
 **Contexto:** Matias pidió dos cosas en la misma sesión: (1) mostrar en el
