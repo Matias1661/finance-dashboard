@@ -543,7 +543,19 @@ Schema: Nombre (title), Entidad (rich text), Capital inicial (number, €), Cuot
 - `renderTarjetasCredito()` (`js/app.js`): agrupa `tarjetasCredito` por campo `tarjeta`, ordena periodos por `periodo_inicio`. Usa el último periodo de cada tarjeta para la tarjeta individual (saldo, barra límite disponible/dispuesto, TAE, cuota elegida, fecha de cierre proyectada) y expone un histórico colapsable (`toggleTarjetaHistorico()`) con todos los periodos cargados. KPIs: saldo aplazado total (suma del último periodo de cada tarjeta), intereses pagados histórico (suma de `intereses_periodo` de TODOS los periodos cargados, no solo el último), TAE promedio ponderado por saldo actual.
 - `renderTarjetasChart()` (`js/charts.js`): línea de evolución de `aplazado_proximo` por tarjeta, eje X = mes de cierre del periodo (`periodo_fin`). Si una tarjeta no tiene fila en un mes dado, mantiene el último saldo conocido (no corta la línea) — el saldo real no cambia hasta el próximo extracto.
 
-**Mantenimiento:** no hay sync automático de bancos — actualizar Notion manualmente al recibir un extracto nuevo (proceso manual por ahora; skill de ingesta pendiente, ver `ROADMAP.md`).
+**Mantenimiento:** no hay sync automático de bancos — actualizar Notion manualmente al recibir un extracto nuevo (skill `organizar-tarjetas-credito`).
+
+### Operaciones individuales — implementado 2026-09-03
+
+**DB Notion "Operaciones Tarjetas de Crédito"** (data source `a7826aab-f105-4096-91f5-27903d97d60c`), relacionada (relation dual) con "Tarjetas de Crédito Revolving" vía la propiedad "Periodo liquidación" / "Operaciones". Schema: Concepto (title), Tarjeta (select: IKEA/Visa Classic), Fecha operación (date), Importe (number), Tipo (select: Compra normal/Fraccionada 0%/Disposición revolving/Otro), Cuotas (rich text), Periodo liquidación (relation), Notas (rich text).
+
+**Criterio clave:** una operación es un evento único (la compra o disposición original), no una fila por cuota mensual. Una fraccionada a 10 cuotas es UNA fila, vinculada al periodo donde aparece por primera vez; el campo Cuotas guarda el progreso (ej. "8/10").
+
+**Sync:** `fetch_tarjetas_operaciones_notion()` + `build_tarjetas_operaciones()` en `sync_finance_data.py`. Clave `tarjetas_credito_operaciones` en `finance_data.json`. Data source ID hardcodeado con fallback vía env var `NOTION_TARJETAS_OPERACIONES_DATA_SOURCE_ID` (mismo patrón que Tarjetas de Crédito Revolving).
+
+**Frontend:** `renderTarjetasCredito()` agrega un segundo desplegable "Ver operaciones (n)" por tarjeta (`toggleTarjetaOperaciones()`), filtrando por nombre de tarjeta y ordenando por fecha descendente.
+
+**Ingesta:** skill `organizar-tarjetas-credito` ampliado para extraer y cargar operaciones individuales de cada extracto nuevo, además del resumen de periodo.
 
 ---
 
