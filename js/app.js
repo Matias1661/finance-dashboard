@@ -1835,16 +1835,38 @@ function toggleTarjetaOperaciones(id){
   if(div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
 }
 
+/* Estima si falta cargar el extracto más reciente de una tarjeta.
+ * Cadencia observada: cada tarjeta recibe un extracto mensual el mismo
+ * día del mes (IKEA día 5, Visa Classic día 1 — se infiere del último
+ * `fecha_cargo` cargado en vez de hardcodear el día, para no romper si el
+ * banco cambia la fecha de facturación). Margen de gracia de 5 días sobre
+ * la fecha esperada antes de marcarlo como pendiente, para no generar
+ * falsos positivos por demoras normales de procesamiento del banco.
+ * Ver docs/DECISIONS.md [2026-09-03].
+ */
+function tarjetaExtractoStatus(periodos, hoy){
+  const GRACIA_DIAS = 5;
+  const ultimo = periodos[periodos.length - 1];
+  if(!ultimo || !ultimo.fecha_cargo) return null;
+  const cargo = new Date(ultimo.fecha_cargo + 'T00:00:00');
+  const proximoEsperado = new Date(cargo.getFullYear(), cargo.getMonth() + 1, cargo.getDate());
+  const limite = new Date(proximoEsperado);
+  limite.setDate(limite.getDate() + GRACIA_DIAS);
+  return { overdue: hoy > limite, proximoEsperado };
+}
+
 function renderTarjetasCredito(){
   const rows = window.FINANCE_STATE?.tarjetasCredito || [];
   const operaciones = window.FINANCE_STATE?.tarjetasCreditoOperaciones || [];
   const listEl = document.getElementById('tarjetas-list');
   const kpiEl = document.getElementById('tarjetas-kpis');
+  const reminderEl = document.getElementById('tarjetas-reminder');
   if(!listEl) return;
 
   if(rows.length === 0){
     listEl.innerHTML = '<div class="card">No hay tarjetas de crédito cargadas en Notion.</div>';
     if(kpiEl) kpiEl.innerHTML = '';
+    if(reminderEl) reminderEl.innerHTML = '';
     return;
   }
 
@@ -1856,6 +1878,20 @@ function renderTarjetasCredito(){
   });
   Object.values(porTarjeta).forEach(list =>
     list.sort((a, b) => (a.periodo_inicio || '').localeCompare(b.periodo_inicio || '')));
+
+  if(reminderEl){
+    const hoy = new Date();
+    const pendientes = Object.entries(porTarjeta)
+      .map(([nombre, periodos]) => ({ nombre, status: tarjetaExtractoStatus(periodos, hoy) }))
+      .filter(t => t.status && t.status.overdue);
+
+    if(pendientes.length === 0){
+      reminderEl.innerHTML = `<div class="card" style="background:rgba(13,138,82,0.08);border:1px solid rgba(13,138,82,0.25);color:var(--green);font-size:13px;padding:10px 14px;margin-bottom:16px">✓ Información de tarjetas al día</div>`;
+    } else {
+      const lista = pendientes.map(t => t.nombre).join(' y ');
+      reminderEl.innerHTML = `<div class="card" style="background:rgba(154,98,0,0.08);border:1px solid rgba(154,98,0,0.25);color:var(--amber);font-size:13px;padding:10px 14px;margin-bottom:16px">⚠ Cargar extracto de ${lista} y correr el flujo "Organizar tarjetas de crédito"</div>`;
+    }
+  }
 
   let saldoTotal = 0;
   let interesesAcumulados = 0;
