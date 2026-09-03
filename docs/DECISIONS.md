@@ -23,6 +23,14 @@ el flujo "Organizar tarjetas de crédito".
 - Cálculo 100% client-side (depende de la fecha actual del navegador), no
   se persiste en `finance_data.json`.
 
+**Corrección (mismo día):** Matias pidió que el estado no fuera un banner
+separado sino un 4to card dentro de la grilla de KPIs existente (mismo
+formato que Saldo aplazado/Intereses/TAE), ocupando el espacio vacío de la
+grilla de 4 columnas. Se sacó `#tarjetas-reminder` de `index.html` y el
+cálculo se movió dentro del bloque `kpiEl.innerHTML` de
+`renderTarjetasCredito()`: card "Estado extractos" con "✓ Al día" (verde) o
+"⚠ Pendiente" (ámbar) + detalle de qué tarjeta cargar.
+
 ## [2026-09-03] Nueva DB "Operaciones Tarjetas de Crédito" y desplegable "Ver operaciones" por tarjeta
 
 **Contexto:** Matias pidió, además del histórico de extractos ya existente
