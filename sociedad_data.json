@@ -1,5 +1,11 @@
 [
   {
+    "fecha": "2026-09-03",
+    "concepto": "Alquiler septiembre Talho Argentino",
+    "costo": 1300,
+    "pagado": null
+  },
+  {
     "fecha": "2026-08-31",
     "concepto": "Pixartprinting - folletos y flyers",
     "costo": 62.34,
