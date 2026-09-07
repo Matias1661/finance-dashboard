@@ -1855,6 +1855,21 @@ function tarjetaExtractoStatus(periodos, hoy){
   return { overdue: hoy > limite, proximoEsperado };
 }
 
+/* "septiembre 2026" a partir de un Date. Ver docs/DECISIONS.md [2026-09-07]. */
+function mesEsp(date){
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio',
+    'agosto','septiembre','octubre','noviembre','diciembre'];
+  return `${meses[date.getMonth()]} ${date.getFullYear()}`;
+}
+
+/* Instrucción concreta por tarjeta cuando el KPI "Estado extractos" marca
+ * pendiente: qué app abrir y qué extracto bajar. Tarjetas sin entrada acá
+ * caen al mensaje genérico (fallback). Ver docs/DECISIONS.md [2026-09-07]. */
+const MENSAJE_TARJETA_PENDIENTE = {
+  'IKEA': (mes) => `Entrá a la app InOne, descargá el extracto de ${mes} y subilo a la carpeta "Tarjetas de crédito" en Drive.`,
+  'Visa Classic': (mes) => `Entrá a la app de CaixaBank, buscá el extracto de ${mes} y subilo a la carpeta "Tarjetas de crédito" en Drive.`
+};
+
 function renderTarjetasCredito(){
   const rows = window.FINANCE_STATE?.tarjetasCredito || [];
   const operaciones = window.FINANCE_STATE?.tarjetasCreditoOperaciones || [];
@@ -1962,10 +1977,17 @@ function renderTarjetasCredito(){
     const pendientes = Object.entries(porTarjeta)
       .map(([nombre, periodos]) => ({ nombre, status: tarjetaExtractoStatus(periodos, hoy) }))
       .filter(t => t.status && t.status.overdue);
+    const mensajesPendientes = pendientes.map(t => {
+      const mesFalta = mesEsp(t.status.proximoEsperado);
+      const msgFn = MENSAJE_TARJETA_PENDIENTE[t.nombre];
+      const detalle = msgFn
+        ? msgFn(mesFalta)
+        : `Cargar extracto de ${t.nombre} y correr "Organizar tarjetas de crédito".`;
+      return `<div style="margin-top:2px;font-size:11px;color:var(--text-secondary)"><strong>${t.nombre}:</strong> ${detalle}</div>`;
+    }).join('');
     const estadoValor = pendientes.length === 0
       ? `<div style="font-size:22px;font-weight:600;color:var(--green)">✓ Al día</div>`
-      : `<div style="font-size:22px;font-weight:600;color:var(--amber)">⚠ Pendiente</div>
-         <div style="margin-top:2px;font-size:11px;color:var(--text-secondary)">Cargar extracto de ${pendientes.map(t => t.nombre).join(' y ')} y correr "Organizar tarjetas de crédito"</div>`;
+      : `<div style="font-size:22px;font-weight:600;color:var(--amber)">⚠ Pendiente</div>${mensajesPendientes}`;
 
     kpiEl.innerHTML = `
     <div class="card">
