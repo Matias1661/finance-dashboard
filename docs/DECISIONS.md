@@ -1,3 +1,20 @@
+## [2026-09-07] Sync-finance-data obligatorio antes de find_pending.py en "Organizar Movimientos"
+
+**Contexto:** find_pending.py lee `finance_data.json`, que es un snapshot generado en el
+último sync-finance-data, no Notion en vivo. Cuando Matias hace correcciones manuales
+rápidas en Notion entre syncs, esas correcciones no se reflejan en el snapshot y el listado
+de pendientes sale desactualizado. Caso detectado el 07/09/2026: el movimiento
+PAYPAL *PIXARTPRI (02/09, -62.33€) aparecía como "Compras" en el snapshot pero ya estaba
+corregido a "Talho Argentino" en Notion.
+
+**Decisión:** el skill `organizar-movimientos` (ver docs/PROJECT_MEMORY.md, sección del
+mismo flujo, que ya indicaba este paso) debe disparar el workflow `sync-finance-data`
+(ID 286832931) y esperar `status: completed` / `conclusion: success` ANTES de correr
+find_pending.py, en cada ejecución. El paso ya estaba documentado en PROJECT_MEMORY.md pero
+faltaba en la implementación real del skill; corregido en esta fecha.
+
+---
+
 ## [2026-09-03] Recordatorio de extracto pendiente por tarjeta
 
 **Contexto:** Matias pidió un aviso en la solapa Tarjeta de Crédito que
