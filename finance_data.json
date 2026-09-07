@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07 13:48",
+  "generated_at": "2026-09-07 14:00",
   "movimientos": [
     {
       "fecha": "2026-09-06",
@@ -19,7 +19,7 @@
       "fecha": "2026-09-06",
       "concepto": "Ssrr",
       "monto": -3.93,
-      "categoria": "A revisar",
+      "categoria": "Compras",
       "nota": null
     },
     {
@@ -40,7 +40,7 @@
       "fecha": "2026-09-05",
       "concepto": "TALHO ARGENTINO",
       "monto": -21.63,
-      "categoria": "Talho Argentino",
+      "categoria": "Gastos en conjunto",
       "nota": null
     },
     {
@@ -75,7 +75,7 @@
       "fecha": "2026-09-04",
       "concepto": "PAGO TRANSFERENCIAS",
       "monto": -550,
-      "categoria": "A revisar",
+      "categoria": "Inversion",
       "nota": null
     },
     {
@@ -89,15 +89,15 @@
       "fecha": "2026-09-04",
       "concepto": "BIZUM ENVIADO",
       "monto": -23.5,
-      "categoria": "A revisar",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
       "fecha": "2026-09-04",
       "concepto": "REINT.CAJERO",
       "monto": -60,
-      "categoria": "A revisar",
-      "nota": null
+      "categoria": "Otros",
+      "nota": "Efectivo disponible"
     },
     {
       "fecha": "2026-09-03",
@@ -117,8 +117,8 @@
       "fecha": "2026-09-03",
       "concepto": "WWW.AMAZON",
       "monto": -44.99,
-      "categoria": "Compras",
-      "nota": null
+      "categoria": "Salud y Belleza",
+      "nota": "Optimum Nutrition Serious Mass (suplemento)"
     },
     {
       "fecha": "2026-09-03",
@@ -159,14 +159,14 @@
       "fecha": "2026-09-03",
       "concepto": "Alquiler septiemb",
       "monto": -1300,
-      "categoria": "Departamento",
+      "categoria": "Talho Argentino",
       "nota": null
     },
     {
       "fecha": "2026-09-02",
       "concepto": "PAYPAL *PIXARTPRI",
       "monto": -62.33,
-      "categoria": "Compras",
+      "categoria": "Talho Argentino",
       "nota": null
     },
     {
@@ -215,7 +215,7 @@
       "fecha": "2026-09-01",
       "concepto": "E.S. APADIS",
       "monto": -3.5,
-      "categoria": "Combustible",
+      "categoria": "Compras",
       "nota": null
     },
     {
@@ -20382,8 +20382,8 @@
         "total": 0.1,
         "acumulado": 21.97,
         "acumulado_anio": 12.7,
-        "benchmark": -0.06,
-        "benchmark_acumulado": 17.73,
+        "benchmark": -0.05,
+        "benchmark_acumulado": 17.74,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
