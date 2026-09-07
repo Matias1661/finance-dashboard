@@ -1,3 +1,11 @@
+## 2026-09-07 — Rombo de proyección de fin de mes en gráfico Ingresos vs Gastos
+
+- `js/charts.js` (`renderMonthly`): nuevo rombo azul "Proyección fin de mes",
+  junto al rombo rojo "Ritmo promedio" ya existente. Fórmula: fijos conocidos
+  (recurrentes activos vía `detectRecurring()` de `js/insights.js`, ya cobrados
+  este mes no se tocan, pendientes se suman completos) + run-rate del gasto
+  variable restante hasta fin de mes. Ver `DECISIONS.md` para el detalle.
+
 ## 2026-09-07 — Carpeta "Procesados" en Drive para extractos de tarjetas ya cargados
 
 - Nueva subcarpeta "Procesados" dentro de "Tarjetas de crédito" en Drive
