@@ -46,6 +46,6 @@
 
 ## Futuro
 - [ ] Seguimiento de patrimonio neto
-- [ ] Forecast financiero
+- [ ] Forecast financiero (avance parcial: rombo de proyección de fin de mes en Resumen, 2026-09-07 — falta forecast a más de un mes)
 - [ ] Vista consolidada personal + negocio
 - [ ] Capa de verificación de transacciones (verification_data.json)
