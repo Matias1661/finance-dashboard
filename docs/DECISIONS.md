@@ -1,3 +1,42 @@
+## [2026-09-07] Rombo de proyección de fin de mes en el gráfico Ingresos vs Gastos
+
+**Contexto:** Matias pidió una estimación del gasto total del mes en curso, visible
+como un rombo en el gráfico mensual de la solapa Resumen. Ese gráfico ya tenía un
+rombo ("Ritmo promedio (día N)"): promedio de gasto de los 3 meses anteriores hasta
+el mismo día, que responde a una pregunta distinta (cómo vengo vs. mi historial, no
+cuánto voy a terminar gastando este mes).
+
+**Decisión:**
+- Fórmula acordada: fijos conocidos + run-rate solo sobre el gasto variable.
+  Los "fijos conocidos" se obtienen reutilizando `detectRecurring()` (ya existente
+  en `js/insights.js`: agrupa por concepto+importe, cadencia 25-35 días, ≥3 cobros),
+  filtrando solo los recurrentes activos (`activa === true`):
+  - Si ya cobraron este mes (`ultimo` cae en el mes en curso) → ya están dentro del
+    acumulado real, no se tocan ni se prorratean.
+  - Si todavía no cobraron este mes → se suman completos por su monto conocido.
+  - El resto del gasto acumulado del mes (variable) se prorratea:
+    `variable_acumulado / día_actual × días_del_mes`.
+- `detectRecurring()` ya excluye Guille/Talho Argentino/Nomina/Inversion
+  (`RECURRING_EXCLUDED_CATS`), consistente con `excludedCategories` de
+  `state.js` — Talho Argentino queda fuera de esta proyección sin necesidad de
+  lógica adicional (confirmado con Matias: para este cálculo específico Talho
+  se excluye, a diferencia del resto del análisis general donde no lo está).
+- El rombo "Ritmo promedio" existente se mantiene sin cambios; el nuevo rombo
+  "Proyección fin de mes" convive con él en el mismo gráfico, mismo `pointStyle:
+  'rectRot'`, pero en azul (`rgba(37,99,190,1)`, mismo tono que `--blue` del
+  resto del dashboard) para distinguirlo del rombo rojo existente.
+- `js/charts.js` (`renderMonthly`): nuevo bloque de cálculo (`projDiamond`,
+  `fixedOccurred`, `fixedPending`, `variableAccumulated`, `variableProjected`)
+  y nuevo dataset scatter; tooltip actualizado para reconocer la nueva label.
+
+**Limitación conocida:** un gasto fijo detectado por `detectRecurring()` requiere
+al menos 3 cobros históricos con cadencia mensual regular; un cargo fijo nuevo
+(ej. un préstamo recién dado de alta, con menos de 3 cuotas pagadas) todavía no
+es reconocido como tal y cae dentro del run-rate variable hasta acumular
+historial suficiente.
+
+---
+
 ## [2026-09-07] Archivado de extractos procesados en Drive + fuente de verdad para el skill organizar-tarjetas-credito
 
 **Contexto:** Matias pensó que había 11 extractos sin cargar porque estaban
