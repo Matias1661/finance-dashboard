@@ -1,27 +1,33 @@
-## [2026-09-07] Mensaje del KPI "Estado extractos" ahora indica la app y el mes por tarjeta
+## [2026-09-07] Archivado de extractos procesados en Drive + fuente de verdad para el skill organizar-tarjetas-credito
 
-**Contexto:** el KPI "Estado extractos" (ver [2026-09-03]) marcaba una
-tarjeta como pendiente con un mensaje genérico ("Cargar extracto de X y
-correr 'Organizar tarjetas de crédito'"). Matias pidió que el mensaje diga
-concretamente qué app abrir y qué mes descargar, por tarjeta.
+**Contexto:** Matias pensó que había 11 extractos sin cargar porque estaban
+sueltos en la carpeta Drive "Tarjetas de crédito". Se verificó contra Notion
+en vivo (`notion-query-data-sources`, no el snapshot `finance_data.json`)
+que las 11 filas ya estaban cargadas — el skill nunca movía ni archivaba los
+PDFs después de procesarlos, así que la carpeta acumulaba tanto pendientes
+como ya cargados sin distinción visual.
 
 **Decisión:**
-- Se mantiene sin cambios la lógica de umbral existente
-  (`tarjetaExtractoStatus()`): próximo esperado = mismo día del mes que el
-  último `fecha_cargo` cargado, + 5 días de gracia. No se adopta el umbral
-  fijo de 35 días que se había explorado en el chat — Matias prefirió
-  conservar el cálculo dinámico por tarjeta ya implementado.
-- Nuevo mapa `MENSAJE_TARJETA_PENDIENTE` en `js/app.js` con instrucción
-  específica por tarjeta:
-  - IKEA: "Entrá a la app InOne, descargá el extracto de {mes} y subilo a
-    la carpeta 'Tarjetas de crédito' en Drive."
-  - Visa Classic: "Entrá a la app de CaixaBank, buscá el extracto de {mes}
-    y subilo a la carpeta 'Tarjetas de crédito' en Drive."
-  - Tarjeta sin entrada en el mapa (si se agrega una tarjeta nueva a
-    futuro): cae al mensaje genérico anterior como fallback.
-- `{mes}` = mes y año del `proximoEsperado` que ya calculaba
-  `tarjetaExtractoStatus()` (el ciclo que debería haber llegado y no
-  llegó), formateado en español vía nuevo helper `mesEsp()`.
+- Nueva subcarpeta "Procesados" dentro de "Tarjetas de crédito" en Drive
+  (folder ID `16-QivysQ_0iFdclW7D5Tv2WL_IyG6RLO`). Los 11 extractos ya
+  cargados se movieron ahí; la carpeta raíz queda solo con pendientes.
+- Skill `organizar-tarjetas-credito` actualizado con un paso 8: después de
+  sync y deploy, mover cada PDF recién cargado a "Procesados" vía
+  `Google Drive:update_file` (`parentId`).
+- **Cambio de mecanismo de persistencia:** se detectó que este skill corre
+  como plugin instalado de sesión (`/mnt/skills/plugins/...`), a diferencia
+  de `organizar-movimientos` que tiene copia fuente en
+  `docs/skills/organizar-movimientos/`. No hay garantía de que editar la
+  copia activa del plugin persista entre sesiones ni de que refleje cambios
+  hechos al repo. Se creó `docs/skills/organizar-tarjetas-credito/SKILL.md`
+  como fuente de verdad, se sincronizó la copia activa del plugin con ese
+  contenido, y se agregó un paso 0 al flujo: al arrancar, comparar la copia
+  activa contra la del repo vía API autenticada de GitHub; si difieren,
+  avisar a Matias en vez de asumir cuál versión correr.
+- Pendiente sin resolver: no se identificó el mecanismo real de
+  instalación/actualización del plugin (Matias no lo recuerda). El paso 0
+  es una salvaguarda, no una solución — si en una sesión futura la copia
+  activa vuelve a versión vieja, el aviso debería dispararse ahí.
 
 ---
 
