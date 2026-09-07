@@ -1,3 +1,16 @@
+## 2026-09-07 — Mensaje del KPI "Estado extractos" por tarjeta
+
+- `js/app.js`: cuando una tarjeta figura pendiente en el KPI "Estado
+  extractos" (solapa Tarjeta de Crédito), el mensaje ahora indica la app
+  y el mes concretos en vez de un texto genérico:
+  - IKEA: "Entrá a la app InOne, descargá el extracto de {mes} y subilo a
+    la carpeta 'Tarjetas de crédito' en Drive."
+  - Visa Classic: "Entrá a la app de CaixaBank, buscá el extracto de {mes}
+    y subilo a la carpeta 'Tarjetas de crédito' en Drive."
+- La lógica de umbral (día específico del mes + 5 días de gracia) no
+  cambió — solo el texto mostrado.
+- Nuevas `mesEsp()` y `MENSAJE_TARJETA_PENDIENTE` en `js/app.js`.
+
 ## 2026-09-03 — Recordatorio de extracto pendiente por tarjeta
 
 - Nuevo cartel en la solapa Tarjeta de Crédito, arriba de los KPIs:
