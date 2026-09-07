@@ -231,6 +231,37 @@ function renderMonthly(){
     return null;
   });
 
+  // Rombo: proyección de fin de mes = fijos conocidos (vía detectRecurring,
+  // insights.js) + run-rate solo sobre el gasto variable restante.
+  // - Recurrentes activos ya cobrados este mes → quedan como están (ya
+  //   forman parte del acumulado real, no se proyectan).
+  // - Recurrentes activos que todavía no cobraron este mes → se suman
+  //   completos por su monto conocido (no tiene sentido prorratearlos).
+  // - El resto del gasto acumulado (variable) se prorratea a fin de mes.
+  // detectRecurring() ya excluye Guille/Talho Argentino/Nomina/Inversion,
+  // igual que excludedCategories en state.js.
+  let projDiamond = null;
+  if(currentMonthIdx !== -1 && typeof detectRecurring === 'function'){
+    const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    const recurring = detectRecurring().filter(r => r.activa);
+    let fixedOccurred = 0, fixedPending = 0;
+    recurring.forEach(r => {
+      if(r.ultimo && r.ultimo.slice(0, 7) === currentMonthKey) fixedOccurred += r.monto;
+      else fixedPending += r.monto;
+    });
+    const currentExpense = expense[currentMonthIdx] || 0;
+    const variableAccumulated = Math.max(0, currentExpense - fixedOccurred);
+    const variableProjected = currentDay > 0
+      ? (variableAccumulated / currentDay) * daysInMonth
+      : variableAccumulated;
+    projDiamond = variableProjected + fixedOccurred + fixedPending;
+  }
+
+  const projDiamondData = labels.map((lbl, idx) => {
+    if(projDiamond !== null && idx === currentMonthIdx) return projDiamond;
+    return null;
+  });
+
   // Promedio de gastos de los últimos 12 meses completos (excluye el mes actual)
   const completeMonthsExpense = expense.filter((_, idx) => idx !== currentMonthIdx);
   const avgExpense12m = completeMonthsExpense.length > 0
@@ -271,6 +302,18 @@ function renderMonthly(){
           borderColor: 'rgba(255,255,255,0.9)',
           borderWidth: 1.5,
           order: 0
+        }] : []),
+        ...(projDiamond !== null ? [{
+          label: 'Proyección fin de mes',
+          type: 'scatter',
+          data: projDiamondData.map((v, i) => v !== null ? {x: labels[i], y: v} : null).filter(Boolean),
+          pointStyle: 'rectRot',
+          pointRadius: 8,
+          pointHoverRadius: 10,
+          backgroundColor: 'rgba(37,99,190,1)',
+          borderColor: 'rgba(255,255,255,0.9)',
+          borderWidth: 1.5,
+          order: 0
         }] : [])
       ]
     },
@@ -283,6 +326,9 @@ function renderMonthly(){
             label: function(ctx){
               if(ctx.dataset.label && ctx.dataset.label.startsWith('Ritmo')){
                 return `Promedio hasta día ${currentDay}: ${new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(ctx.parsed.y)}`;
+              }
+              if(ctx.dataset.label === 'Proyección fin de mes'){
+                return `Proyección fin de mes: ${new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(ctx.parsed.y)}`;
               }
               return `${ctx.dataset.label}: ${new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(ctx.parsed.y)}`;
             }
