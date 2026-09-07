@@ -1,3 +1,30 @@
+## [2026-09-07] Mensaje del KPI "Estado extractos" ahora indica la app y el mes por tarjeta
+
+**Contexto:** el KPI "Estado extractos" (ver [2026-09-03]) marcaba una
+tarjeta como pendiente con un mensaje genérico ("Cargar extracto de X y
+correr 'Organizar tarjetas de crédito'"). Matias pidió que el mensaje diga
+concretamente qué app abrir y qué mes descargar, por tarjeta.
+
+**Decisión:**
+- Se mantiene sin cambios la lógica de umbral existente
+  (`tarjetaExtractoStatus()`): próximo esperado = mismo día del mes que el
+  último `fecha_cargo` cargado, + 5 días de gracia. No se adopta el umbral
+  fijo de 35 días que se había explorado en el chat — Matias prefirió
+  conservar el cálculo dinámico por tarjeta ya implementado.
+- Nuevo mapa `MENSAJE_TARJETA_PENDIENTE` en `js/app.js` con instrucción
+  específica por tarjeta:
+  - IKEA: "Entrá a la app InOne, descargá el extracto de {mes} y subilo a
+    la carpeta 'Tarjetas de crédito' en Drive."
+  - Visa Classic: "Entrá a la app de CaixaBank, buscá el extracto de {mes}
+    y subilo a la carpeta 'Tarjetas de crédito' en Drive."
+  - Tarjeta sin entrada en el mapa (si se agrega una tarjeta nueva a
+    futuro): cae al mensaje genérico anterior como fallback.
+- `{mes}` = mes y año del `proximoEsperado` que ya calculaba
+  `tarjetaExtractoStatus()` (el ciclo que debería haber llegado y no
+  llegó), formateado en español vía nuevo helper `mesEsp()`.
+
+---
+
 ## [2026-09-07] Sync-finance-data obligatorio antes de find_pending.py en "Organizar Movimientos"
 
 **Contexto:** find_pending.py lee `finance_data.json`, que es un snapshot generado en el
