@@ -1,15 +1,14 @@
-## 2026-09-07 — Mensaje del KPI "Estado extractos" por tarjeta
+## 2026-09-07 — Carpeta "Procesados" en Drive para extractos de tarjetas ya cargados
 
-- `js/app.js`: cuando una tarjeta figura pendiente en el KPI "Estado
-  extractos" (solapa Tarjeta de Crédito), el mensaje ahora indica la app
-  y el mes concretos en vez de un texto genérico:
-  - IKEA: "Entrá a la app InOne, descargá el extracto de {mes} y subilo a
-    la carpeta 'Tarjetas de crédito' en Drive."
-  - Visa Classic: "Entrá a la app de CaixaBank, buscá el extracto de {mes}
-    y subilo a la carpeta 'Tarjetas de crédito' en Drive."
-- La lógica de umbral (día específico del mes + 5 días de gracia) no
-  cambió — solo el texto mostrado.
-- Nuevas `mesEsp()` y `MENSAJE_TARJETA_PENDIENTE` en `js/app.js`.
+- Nueva subcarpeta "Procesados" dentro de "Tarjetas de crédito" en Drive
+  (`16-QivysQ_0iFdclW7D5Tv2WL_IyG6RLO`). Los 11 extractos ya cargados
+  (verificados contra Notion en vivo, no había backlog real) se movieron
+  ahí; la carpeta raíz queda solo con extractos pendientes.
+- `docs/skills/organizar-tarjetas-credito/SKILL.md`: nuevo, fuente de
+  verdad del skill (antes solo existía como plugin instalado). Agrega paso
+  8 (archivar a "Procesados" tras sync/deploy) y paso 0 (verificar que la
+  copia activa del plugin coincide con la del repo antes de correr el
+  flujo).
 
 ## 2026-09-03 — Recordatorio de extracto pendiente por tarjeta
 
