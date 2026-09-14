@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-14 10:41",
+  "generated_at": "2026-09-14 10:44",
   "movimientos": [
     {
       "fecha": "2026-09-13",
@@ -12,21 +12,21 @@
       "fecha": "2026-09-13",
       "concepto": "AMELIA",
       "monto": -6.8,
-      "categoria": "Comer afuera",
+      "categoria": "Salidas",
       "nota": null
     },
     {
       "fecha": "2026-09-13",
       "concepto": "AMELIA",
       "monto": -7.6,
-      "categoria": "Comer afuera",
+      "categoria": "Salidas",
       "nota": null
     },
     {
       "fecha": "2026-09-13",
       "concepto": "AMELIA",
       "monto": -14.9,
-      "categoria": "Comer afuera",
+      "categoria": "Salidas",
       "nota": null
     },
     {
@@ -40,14 +40,14 @@
       "fecha": "2026-09-12",
       "concepto": "MI ALCAMPO S S DE",
       "monto": -0.84,
-      "categoria": "Supermercado",
+      "categoria": "Gastos en conjunto",
       "nota": null
     },
     {
       "fecha": "2026-09-12",
       "concepto": "MI ALCAMPO S S DE",
       "monto": -7.67,
-      "categoria": "Supermercado",
+      "categoria": "Gastos en conjunto",
       "nota": null
     },
     {
@@ -20578,8 +20578,8 @@
         "total": 0.24,
         "acumulado": 22.14,
         "acumulado_anio": 12.86,
-        "benchmark": -0.31,
-        "benchmark_acumulado": 16.7,
+        "benchmark": -0.35,
+        "benchmark_acumulado": 16.66,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
