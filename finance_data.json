@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-14 10:44",
+  "generated_at": "2026-09-14 15:47",
   "movimientos": [
     {
       "fecha": "2026-09-13",
@@ -83,14 +83,14 @@
       "concepto": "WWW.AMAZON",
       "monto": -8.79,
       "categoria": "Compras",
-      "nota": null
+      "nota": "LUDHEP Bolsa Universal para Casco de Moto"
     },
     {
       "fecha": "2026-09-10",
       "concepto": "PAYPAL *PAGO 3 PL",
       "monto": -17.32,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Cuota Paga en 3 plazos - Motocard (visera Scorpion KDS-F-03)"
     },
     {
       "fecha": "2026-09-10",
@@ -20578,8 +20578,8 @@
         "total": 0.24,
         "acumulado": 22.14,
         "acumulado_anio": 12.86,
-        "benchmark": -0.35,
-        "benchmark_acumulado": 16.66,
+        "benchmark": -0.3,
+        "benchmark_acumulado": 16.71,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
