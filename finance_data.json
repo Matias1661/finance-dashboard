@@ -1,6 +1,104 @@
 {
-  "generated_at": "2026-09-13 14:38",
+  "generated_at": "2026-09-14 10:41",
   "movimientos": [
+    {
+      "fecha": "2026-09-13",
+      "concepto": "ODG EL CA#AVERAL",
+      "monto": -4.2,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-13",
+      "concepto": "AMELIA",
+      "monto": -6.8,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-13",
+      "concepto": "AMELIA",
+      "monto": -7.6,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-13",
+      "concepto": "AMELIA",
+      "monto": -14.9,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-13",
+      "concepto": "Gastos conjuntos",
+      "monto": -50,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-12",
+      "concepto": "MI ALCAMPO S S DE",
+      "monto": -0.84,
+      "categoria": "Supermercado",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-12",
+      "concepto": "MI ALCAMPO S S DE",
+      "monto": -7.67,
+      "categoria": "Supermercado",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-11",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-11",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -2.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-11",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 41,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-11",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-10",
+      "concepto": "WWW.AMAZON",
+      "monto": -8.79,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-10",
+      "concepto": "PAYPAL *PAGO 3 PL",
+      "monto": -17.32,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-10",
+      "concepto": "Gastos club",
+      "monto": -65,
+      "categoria": "Club",
+      "nota": null
+    },
     {
       "fecha": "2026-09-09",
       "concepto": "YOIGO XFERA MOVIL",
@@ -19886,7 +19984,7 @@
       },
       {
         "mes": "2026-09",
-        "peerberry": 9902.86,
+        "peerberry": 9919.74,
         "myinvestor": 2225.12
       }
     ],
@@ -19993,7 +20091,7 @@
       },
       {
         "mes": "2026-09",
-        "peerberry": 0.11,
+        "peerberry": 0.28,
         "myinvestor": 0.0
       }
     ],
@@ -20189,11 +20287,11 @@
       },
       {
         "mes": "2026-09",
-        "peerberry": 11.03,
+        "peerberry": 27.91,
         "myinvestor": 0.0,
         "peerberry_aportes": null,
         "myinvestor_aportes": null,
-        "peerberry_capital": 9902.86,
+        "peerberry_capital": 9919.74,
         "myinvestor_capital": 2225.12
       }
     ],
@@ -20475,13 +20573,13 @@
       },
       {
         "mes": "2026-09",
-        "peerberry": 0.11,
+        "peerberry": 0.28,
         "myinvestor": 0.0,
-        "total": 0.09,
-        "acumulado": 21.97,
-        "acumulado_anio": 12.7,
-        "benchmark": 0.0,
-        "benchmark_acumulado": 17.06,
+        "total": 0.24,
+        "acumulado": 22.14,
+        "acumulado_anio": 12.86,
+        "benchmark": -0.31,
+        "benchmark_acumulado": 16.7,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
