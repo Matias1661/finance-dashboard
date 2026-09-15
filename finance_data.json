@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-14 15:47",
+  "generated_at": "2026-09-15 14:33",
   "movimientos": [
     {
       "fecha": "2026-09-13",
@@ -3267,7 +3267,7 @@
       "fecha": "2026-05-30",
       "concepto": "BIT2ME",
       "monto": -50,
-      "categoria": "Inversion",
+      "categoria": "Suscripciones",
       "nota": null
     },
     {
@@ -12458,7 +12458,7 @@
       "fecha": "2025-07-26",
       "concepto": "BIT2ME",
       "monto": -50,
-      "categoria": "Inversion",
+      "categoria": "Suscripciones",
       "nota": null
     },
     {
