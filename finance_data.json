@@ -1,6 +1,146 @@
 {
-  "generated_at": "2026-09-22 14:29",
+  "generated_at": "2026-09-22 15:51",
   "movimientos": [
+    {
+      "fecha": "2026-09-21",
+      "concepto": "Klarna*motocard.c",
+      "monto": -10.9,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-21",
+      "concepto": "CEDIPSA E.S.PUJAN",
+      "monto": -33.2,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-21",
+      "concepto": "Gastos club",
+      "monto": -29,
+      "categoria": "Club",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-20",
+      "concepto": "Gastos conjuntos",
+      "monto": -100,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-19",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-19",
+      "concepto": "WWW.AMAZON",
+      "monto": -64.89,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-19",
+      "concepto": "VANILA CLUB",
+      "monto": -7,
+      "categoria": "Salidas",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-18",
+      "concepto": "AMAZON.ES",
+      "monto": -9.49,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-17",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 30,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-17",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-17",
+      "concepto": "Gastos conjuntos",
+      "monto": -50,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-16",
+      "concepto": "Ssrr",
+      "monto": -3.45,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-16",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -22,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-16",
+      "concepto": "Klarna*Motea",
+      "monto": -112.76,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-15",
+      "concepto": "BEEFCIOUS SANSE",
+      "monto": -46.45,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-14",
+      "concepto": "TALHO ARGENTINO",
+      "monto": -3,
+      "categoria": "Talho Argentino",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-14",
+      "concepto": "COSTA SOCIAL",
+      "monto": -14,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-14",
+      "concepto": "TALHO ARGENTINO",
+      "monto": -34.47,
+      "categoria": "Talho Argentino",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-14",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-09-14",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 40,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-09-13",
       "concepto": "ODG EL CA#AVERAL",
@@ -20578,8 +20718,8 @@
         "total": 0.25,
         "acumulado": 22.16,
         "acumulado_anio": 12.87,
-        "benchmark": 1.77,
-        "benchmark_acumulado": 19.52,
+        "benchmark": 1.93,
+        "benchmark_acumulado": 19.71,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
