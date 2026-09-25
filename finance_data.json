@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-25 02:41",
+  "generated_at": "2026-09-25 14:30",
   "movimientos": [
     {
       "fecha": "2026-09-24",
@@ -19,7 +19,7 @@
       "fecha": "2026-09-23",
       "concepto": "TRANSFER. EN DIV.",
       "monto": 1500,
-      "categoria": "Guille",
+      "categoria": "Inversion",
       "nota": null
     },
     {
@@ -6067,8 +6067,8 @@
       "fecha": "2026-02-28",
       "concepto": "MUTUA MADRILENA",
       "monto": -352.53,
-      "categoria": "Guille",
-      "nota": null
+      "categoria": "Gastos moto",
+      "nota": "Seguro Low Rider S 1854MDY, Mutua póliza 8.830.634, vigencia 17/02/2026-17/02/2027"
     },
     {
       "fecha": "2026-02-28",
@@ -9215,6 +9215,20 @@
     },
     {
       "fecha": "2025-11-06",
+      "concepto": "AYUNTAMIENTO JAEN",
+      "monto": -146.69,
+      "categoria": "Gastos coche",
+      "nota": "IVTM 2025 Opel Astra J-9633-Z (126,52) + Seat Ibiza 8826LWL (20,17), vía de apremio. Parte del cargo de 414,65 dividido en 3 filas"
+    },
+    {
+      "fecha": "2025-11-06",
+      "concepto": "AYUNTAMIENTO JAEN",
+      "monto": -133.98,
+      "categoria": "Guille",
+      "nota": "IVTM 2025 Street Bob 4350JJZ (121,16 + recargo y costas, vía de apremio). Parte del cargo de 414,65 dividido en 3 filas"
+    },
+    {
+      "fecha": "2025-11-06",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 41,
       "categoria": "Guille",
@@ -9244,9 +9258,9 @@
     {
       "fecha": "2025-11-06",
       "concepto": "AYUNTAMIENTO JAEN",
-      "monto": -414.65,
-      "categoria": "Viajes",
-      "nota": null
+      "monto": -133.98,
+      "categoria": "Gastos moto",
+      "nota": "IVTM 2025 Low Rider S 1854MDY (121,16 + recargo y costas, vía de apremio). Cargo original de 414,65 dividido en 3 filas"
     },
     {
       "fecha": "2025-11-06",
@@ -20746,8 +20760,8 @@
         "total": 0.25,
         "acumulado": 22.16,
         "acumulado_anio": 12.87,
-        "benchmark": -0.78,
-        "benchmark_acumulado": 18.66,
+        "benchmark": -0.2,
+        "benchmark_acumulado": 19.36,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
