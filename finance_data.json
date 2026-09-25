@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-25 02:25",
+  "generated_at": "2026-09-25 02:33",
   "movimientos": [
     {
       "fecha": "2026-09-21",
@@ -21232,6 +21232,29 @@
       "notas": "Columnas reflejan solo el componente revolving (disposición de 1.000€ del 06/08/26). Además existe una compra fraccionada separada (ECOMMERCE NEW WE SAN SEBASTIAN, 28/12/25, TIN 0%, 8 de 10 cuotas, cuota 4,68€/mes, pendiente 9,43€) no incluida en estas columnas. Importe total del recibo de este periodo (revolving + fraccionado): 44,68€, cargo 05/09/2026."
     },
     {
+      "nombre": "Visa Classic - Enero 2026",
+      "tarjeta": "Visa Classic",
+      "contrato": "9613.18.0486311-07",
+      "periodo_inicio": "2025-12-28",
+      "periodo_fin": "2026-01-27",
+      "fecha_cargo": "2026-02-01",
+      "cuota_mensual_elegida": 100,
+      "aplazado_anterior": 2503.9,
+      "operaciones_periodo": 0,
+      "amortizacion": 56.62,
+      "intereses_periodo": 43.38,
+      "aplazado_proximo": 2447.28,
+      "cer": 22.41,
+      "tin_mensual": 1.7,
+      "tin_anual": 20.4,
+      "tae": 22.42,
+      "limite_inicial": 3000,
+      "limite_disponible": 552.72,
+      "fecha_proyectada_cierre": "2028-10-01",
+      "fraccionado_pendiente": null,
+      "notas": "Sin operaciones nuevas en el periodo. Deuda total si se cancelase todo a 27.01.2026: 2.547,28€ (2.503,90 principal + 43,38 interés). Con la cuota actual, intereses totales proyectados 785,66€."
+    },
+    {
       "nombre": "Visa Classic - Febrero 2026",
       "tarjeta": "Visa Classic",
       "contrato": "9613.18.0486311-07",
@@ -21285,7 +21308,7 @@
       "periodo_fin": "2026-04-27",
       "fecha_cargo": "2026-05-01",
       "cuota_mensual_elegida": 100,
-      "aplazado_anterior": null,
+      "aplazado_anterior": 2326.91,
       "operaciones_periodo": 433.23,
       "amortizacion": 68.87,
       "intereses_periodo": 31.13,
