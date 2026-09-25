@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24 14:38",
+  "generated_at": "2026-09-25 02:25",
   "movimientos": [
     {
       "fecha": "2026-09-21",
@@ -20718,8 +20718,8 @@
         "total": 0.25,
         "acumulado": 22.16,
         "acumulado_anio": 12.87,
-        "benchmark": -0.66,
-        "benchmark_acumulado": 18.81,
+        "benchmark": -0.78,
+        "benchmark_acumulado": 18.66,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
@@ -21094,6 +21094,29 @@
   ],
   "tarjetas_credito": [
     {
+      "nombre": "IKEA - Enero 2026",
+      "tarjeta": "IKEA",
+      "contrato": "WY 7230097",
+      "periodo_inicio": "2025-12-21",
+      "periodo_fin": "2026-01-20",
+      "fecha_cargo": "2026-02-05",
+      "cuota_mensual_elegida": 40,
+      "aplazado_anterior": 0,
+      "operaciones_periodo": 5.74,
+      "amortizacion": 5.74,
+      "intereses_periodo": 0.07,
+      "aplazado_proximo": 0,
+      "cer": null,
+      "tin_mensual": 0.83,
+      "tin_anual": 9.96,
+      "tae": 10.43,
+      "limite_inicial": 1200,
+      "limite_disponible": 1056.49,
+      "fecha_proyectada_cierre": "2026-02-05",
+      "fraccionado_pendiente": 113.94,
+      "notas": "Revolving: compra IKEA SSDLR HFB 21/12/25 5,74€, saldada en este recibo (intereses 0,07€). TIN revolving de este extracto 0,83%/9,96%/TAE 10,43% (TIN máximo del contrato para cuota mínima: 1,74%). Fraccionadas 0% TIN: IKEA SAN SEBASTI 189,17€ (cuota 12 de 18, pendiente 63,17€), ECOMMERCE NEW WE 23/04/25 85,80€ (cuota 9 de 10, pendiente 8,58€), ECOMMERCE NEW WE 28/12/25 46,87€ (cuota 1 de 10, pendiente 42,19€). Importe total del recibo: 29,57€ (23,76 fraccionado + 5,81 revolving), cargo 05/02/2026."
+    },
+    {
       "nombre": "IKEA - Marzo 2026",
       "tarjeta": "IKEA",
       "contrato": "WY 7230097",
@@ -21207,6 +21230,29 @@
       "fecha_proyectada_cierre": "2029-05-05",
       "fraccionado_pendiente": 9.43,
       "notas": "Columnas reflejan solo el componente revolving (disposición de 1.000€ del 06/08/26). Además existe una compra fraccionada separada (ECOMMERCE NEW WE SAN SEBASTIAN, 28/12/25, TIN 0%, 8 de 10 cuotas, cuota 4,68€/mes, pendiente 9,43€) no incluida en estas columnas. Importe total del recibo de este periodo (revolving + fraccionado): 44,68€, cargo 05/09/2026."
+    },
+    {
+      "nombre": "Visa Classic - Febrero 2026",
+      "tarjeta": "Visa Classic",
+      "contrato": "9613.18.0486311-07",
+      "periodo_inicio": "2026-01-28",
+      "periodo_fin": "2026-02-27",
+      "fecha_cargo": "2026-03-01",
+      "cuota_mensual_elegida": 100,
+      "aplazado_anterior": 2447.28,
+      "operaciones_periodo": 0,
+      "amortizacion": 61.7,
+      "intereses_periodo": 38.3,
+      "aplazado_proximo": 2385.58,
+      "cer": 22.42,
+      "tin_mensual": 1.7,
+      "tin_anual": 20.4,
+      "tae": 22.42,
+      "limite_inicial": 3000,
+      "limite_disponible": 614.42,
+      "fecha_proyectada_cierre": "2028-10-01",
+      "fraccionado_pendiente": null,
+      "notas": "Sin operaciones nuevas en el periodo. Deuda total si se cancelase todo a 27.02.2026: 2.485,58€ (2.447,28 principal + 38,30 interés). Con la cuota actual, intereses totales proyectados 735,36€."
     },
     {
       "nombre": "Visa Classic - Marzo 2026",
@@ -21356,6 +21402,24 @@
       "tipo": "Fraccionada 0%",
       "cuotas": "18/18 (saldada)",
       "notas": "Compra fraccionada a 18 cuotas 0% TIN. Saldada en el periodo IKEA - Julio 2026."
+    },
+    {
+      "concepto": "ECOMMERCE NEW WE SAN SEBASTIÁN",
+      "tarjeta": "IKEA",
+      "fecha_operacion": "2025-04-23",
+      "importe": 85.8,
+      "tipo": "Fraccionada 0%",
+      "cuotas": "9/10",
+      "notas": "Compra fraccionada a 10 cuotas 0% TIN (cuota 8,58€). Último estado conocido: 9/10 en IKEA - Enero 2026, pendiente 8,58€. No aparece en extractos desde Marzo 2026; falta el extracto de Febrero 2026 para confirmar la última cuota."
+    },
+    {
+      "concepto": "IKEA SSDLR HFB S.SEBASTIAN",
+      "tarjeta": "IKEA",
+      "fecha_operacion": "2025-12-21",
+      "importe": 5.74,
+      "tipo": "Compra normal",
+      "cuotas": "",
+      "notas": "Compra en modalidad revolving, saldada en el recibo del 05/02/2026 (intereses 0,07€)."
     },
     {
       "concepto": "ECOMMERCE NEW WE SAN SEBASTIÁN",
