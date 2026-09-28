@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-27 14:53",
+  "generated_at": "2026-09-28 17:11",
   "movimientos": [
     {
       "fecha": "2026-09-24",
@@ -20166,7 +20166,7 @@
       },
       {
         "mes": "2026-09",
-        "peerberry": 9921.62,
+        "peerberry": 8438,
         "myinvestor": 2225.12
       }
     ],
@@ -20273,7 +20273,7 @@
       },
       {
         "mes": "2026-09",
-        "peerberry": 0.3,
+        "peerberry": 0.48,
         "myinvestor": 0.0
       }
     ],
@@ -20469,11 +20469,11 @@
       },
       {
         "mes": "2026-09",
-        "peerberry": 29.79,
+        "peerberry": 46.17,
         "myinvestor": 0.0,
         "peerberry_aportes": null,
         "myinvestor_aportes": null,
-        "peerberry_capital": 9921.62,
+        "peerberry_capital": 8438,
         "myinvestor_capital": 2225.12
       }
     ],
@@ -20755,13 +20755,13 @@
       },
       {
         "mes": "2026-09",
-        "peerberry": 0.3,
+        "peerberry": 0.48,
         "myinvestor": 0.0,
-        "total": 0.25,
-        "acumulado": 22.16,
-        "acumulado_anio": 12.87,
-        "benchmark": -0.15,
-        "benchmark_acumulado": 19.16,
+        "total": 0.42,
+        "acumulado": 22.36,
+        "acumulado_anio": 13.06,
+        "benchmark": -0.4,
+        "benchmark_acumulado": 18.87,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
