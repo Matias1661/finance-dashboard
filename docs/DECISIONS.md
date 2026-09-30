@@ -1,3 +1,38 @@
+## [2026-09-30] Carga de nóminas Drive -> Notion pasa de GitHub Actions a tarea programada de Claude
+
+**Contexto:** al revisar por qué la nómina de septiembre no figuraba en el dashboard
+se vio que `scripts/process_nominas.py` reportaba "0 archivo(s) nuevo(s)" en cada
+corrida de `sync-finance-data` (26/09 a 30/09), aunque la carpeta Drive "Nominas"
+tenía PDFs nuevos (31/07, 01/09 y 30/09) que no figuraban en `processed_nominas.json`.
+La nómina de agosto nunca se cargó en la DB Nominas: el dashboard la mostraba con
+empresa vacía y etapa "Sin nómina", tomada del respaldo de Movimientos (categoría
+Nomina). Causa no confirmada: la hipótesis es que la cuenta de servicio de
+`GOOGLE_SERVICE_ACCOUNT` no tiene acceso a los archivos nuevos de la carpeta (los
+permisos de la carpeta solo listan al propietario). No se pudo verificar porque el
+email de la cuenta de servicio no se puede leer desde el chat.
+
+**Decisión (pedido de Matías):**
+- La carga de nóminas a Notion deja de correr en GitHub Actions. Se desactiva el
+  paso "Process new nominas (Drive -> Notion)" de `sync-finance-data.yml`.
+- Reemplazo: tarea programada de Claude en Cowork (pendiente de crear por Matías).
+  Matías sube el PDF a Drive; Claude lo descarga, lo lee como imagen y crea la fila
+  en la DB Nominas con Empresa "LUZUTANIA GROUP", Fecha de pago (último día hábil
+  del mes), Total (líquido a percibir) y Archivo (enlace al PDF en Drive). Las
+  nóminas de LUZUTANIA son escaneos: la lectura de texto del conector de Drive
+  devuelve solo el nombre del archivo, hay que leer el PDF como imagen.
+- Validado a mano el 30/09/2026: se cargaron agosto (pago 31/08/2026, 2.648,99 EUR)
+  y septiembre (pago 30/09/2026, 2.648,99 EUR).
+- Control de duplicados: manual por ahora (decisión de Matías). El conector de
+  Notion de su cuenta no permite consultar filas (la consulta requiere la versión
+  completa de Notion MCP), así que Claude no puede verificar por Fecha de pago.
+- `scripts/process_nominas.py` y `processed_nominas.json` se conservan sin uso.
+
+**Consecuencias:** hasta que exista la tarea programada, la carga de nóminas es por
+chat. `sync_finance_data.py` sigue leyendo la DB Nominas sin cambios y
+`checkNominaFaltante()` sigue funcionando. Si se reactiva `process_nominas.py`,
+puede procesar los PDFs no registrados (31/07, 01/09, 30/09) y duplicar filas ya
+cargadas a mano; la comprobación por Fecha de pago es la única defensa.
+
 ## [2026-09-07] Rombo de proyección de fin de mes en el gráfico Ingresos vs Gastos
 
 **Contexto:** Matias pidió una estimación del gasto total del mes en curso, visible
