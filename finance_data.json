@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-30 14:45",
+  "generated_at": "2026-09-30 15:06",
   "movimientos": [
     {
       "fecha": "2026-09-29",
@@ -12,22 +12,22 @@
       "fecha": "2026-09-29",
       "concepto": "UBR* PENDING.UBER",
       "monto": -7.95,
-      "categoria": "Comer afuera",
-      "nota": null
+      "categoria": "Gastos coche",
+      "nota": "Viaje en Uber a Aldauto"
     },
     {
       "fecha": "2026-09-29",
       "concepto": "Klarna*Airbnb",
       "monto": -128,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Cuota Klarna Airbnb, viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-09-28",
       "concepto": "VOLKSWAGEN RENTIN",
       "monto": -29.5,
       "categoria": "Gastos coche",
-      "nota": null
+      "nota": "Cuota mensual renting Volkswagen"
     },
     {
       "fecha": "2026-09-28",
@@ -83,7 +83,7 @@
       "concepto": "VOLKSWAGEN RENTIN",
       "monto": -45.81,
       "categoria": "Gastos coche",
-      "nota": null
+      "nota": "Cargo extraordinario renting Volkswagen"
     },
     {
       "fecha": "2026-09-25",
@@ -103,7 +103,7 @@
       "fecha": "2026-09-25",
       "concepto": "BIZUM ENVIADO",
       "monto": -50,
-      "categoria": "A revisar",
+      "categoria": "Club",
       "nota": null
     },
     {
@@ -783,7 +783,7 @@
       "concepto": "Klarna*Airbnb EU",
       "monto": -128,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Cuota Klarna Airbnb, viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-08-29",
@@ -20865,8 +20865,8 @@
         "total": 0.42,
         "acumulado": 22.36,
         "acumulado_anio": 13.06,
-        "benchmark": -0.23,
-        "benchmark_acumulado": 19.06,
+        "benchmark": -0.11,
+        "benchmark_acumulado": 19.21,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
@@ -21163,18 +21163,33 @@
     },
     {
       "mes": "2026-08",
-      "empresa": null,
+      "empresa": "LUZUTANIA GROUP",
       "monto": 2648.99,
       "irpf": false,
       "pagos": 1,
       "detalle": [
         {
-          "empresa": null,
+          "empresa": "LUZUTANIA GROUP",
           "monto": 2648.99
         }
       ],
       "estimado": false,
-      "etapa": "Sin nómina"
+      "etapa": "LUZUTANIA GROUP"
+    },
+    {
+      "mes": "2026-09",
+      "empresa": "LUZUTANIA GROUP",
+      "monto": 2648.99,
+      "irpf": false,
+      "pagos": 1,
+      "detalle": [
+        {
+          "empresa": "LUZUTANIA GROUP",
+          "monto": 2648.99
+        }
+      ],
+      "estimado": false,
+      "etapa": "LUZUTANIA GROUP"
     }
   ],
   "prestamos": [
