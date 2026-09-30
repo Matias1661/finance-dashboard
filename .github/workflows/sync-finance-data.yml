@@ -55,12 +55,9 @@ jobs:
           GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
         run: python scripts/process_myinvestor_emails.py
 
-      - name: Process new nominas (Drive -> Notion)
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
-        run: python scripts/process_nominas.py
+      # Paso "Process new nominas (Drive -> Notion)" desactivado el 2026-09-30:
+      # la carga de nominas pasa a una tarea programada de Claude (ver docs/DECISIONS.md).
+      # scripts/process_nominas.py se conserva en el repo por si hay que reactivarlo.
 
       - name: Generate finance_data.json
         env:
