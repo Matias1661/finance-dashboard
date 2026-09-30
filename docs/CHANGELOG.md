@@ -1,3 +1,16 @@
+## 2026-09-30 — Nóminas: paso de Actions desactivado, carga por Claude
+
+- `.github/workflows/sync-finance-data.yml`: desactivado el paso "Process new
+  nominas (Drive -> Notion)" (reemplazado por un comentario). `scripts/process_nominas.py`
+  y `processed_nominas.json` quedan en el repo sin uso.
+- Diagnóstico: el script listaba 0 archivos nuevos en cada corrida desde al menos
+  el 26/09 y no había cargado agosto ni septiembre. Causa sin confirmar (hipótesis:
+  la cuenta de servicio no ve los PDFs nuevos de la carpeta "Nominas").
+- DB Nominas: cargadas a mano las nóminas de agosto (31/08/2026, 2.648,99 EUR) y
+  septiembre (30/09/2026, 2.648,99 EUR), empresa "LUZUTANIA GROUP".
+- Pendiente: crear la tarea programada de Claude en Cowork. Control de duplicados
+  manual por ahora. Ver `DECISIONS.md`.
+
 ## 2026-09-07 — Rombo de proyección de fin de mes en gráfico Ingresos vs Gastos
 
 - `js/charts.js` (`renderMonthly`): nuevo rombo azul "Proyección fin de mes",
