@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-04 15:06",
+  "generated_at": "2026-10-04 20:20",
   "movimientos": [
     {
       "fecha": "2026-10-01",
@@ -21527,6 +21527,29 @@
       "notas": "Columnas reflejan solo el componente revolving (disposición de 1.000€ del 06/08/26). Además existe una compra fraccionada separada (ECOMMERCE NEW WE SAN SEBASTIAN, 28/12/25, TIN 0%, 8 de 10 cuotas, cuota 4,68€/mes, pendiente 9,43€) no incluida en estas columnas. Importe total del recibo de este periodo (revolving + fraccionado): 44,68€, cargo 05/09/2026."
     },
     {
+      "nombre": "IKEA - Septiembre 2026",
+      "tarjeta": "IKEA",
+      "contrato": "WY 7230097",
+      "periodo_inicio": "2026-08-21",
+      "periodo_fin": "2026-09-20",
+      "fecha_cargo": "2026-10-05",
+      "cuota_mensual_elegida": 100,
+      "aplazado_anterior": 977.4,
+      "operaciones_periodo": 0,
+      "amortizacion": 83,
+      "intereses_periodo": 17,
+      "aplazado_proximo": 894.4,
+      "cer": null,
+      "tin_mensual": 1.74,
+      "tin_anual": 20.88,
+      "tae": 23,
+      "limite_inicial": 1200,
+      "limite_disponible": 196.17,
+      "fecha_proyectada_cierre": "2027-08-05",
+      "fraccionado_pendiente": 4.75,
+      "notas": "Columnas reflejan solo el componente revolving. Cuota mensual elegida sube a 100€ (antes 40€). Fraccionada ECOMMERCE NEW WE SAN SEBASTIAN (28/12/25, TIN 0%): cuota 9 de 10, 4,68€, pendiente 4,75€. Importe total del recibo: 104,68€ (100,00 revolving + 4,68 fraccionado), cargo 05/10/2026. Discrepancia en el extracto: el bloque de cancelación total indica 877,40€ de crédito dispuesto (+8,50€ intereses = 885,90€), mientras el detalle revolving muestra 977,40€ antes del recibo y 894,40€ tras el pago; se usan las cifras del detalle."
+    },
+    {
       "nombre": "Visa Classic - Enero 2026",
       "tarjeta": "Visa Classic",
       "contrato": "9613.18.0486311-07",
@@ -21709,6 +21732,29 @@
       "fecha_proyectada_cierre": "2028-07-01",
       "fraccionado_pendiente": null,
       "notas": "Límite de crédito compartido entre todas las tarjetas del contrato 9613.18.0486311-07 (tarjeta 4766 63  6808). Deuda total pendiente si se cancelase todo a 27.08.2026: 2.959,34€ (2.926,82 principal + 32,52 interés)."
+    },
+    {
+      "nombre": "Visa Classic - Septiembre 2026",
+      "tarjeta": "Visa Classic",
+      "contrato": "9613.18.0486311-07",
+      "periodo_inicio": "2026-08-28",
+      "periodo_fin": "2026-09-27",
+      "fecha_cargo": "2026-10-01",
+      "cuota_mensual_elegida": 100,
+      "aplazado_anterior": 2809.34,
+      "operaciones_periodo": 0,
+      "amortizacion": 66.75,
+      "intereses_periodo": 33.25,
+      "aplazado_proximo": 2742.59,
+      "cer": 15.38,
+      "tin_mensual": 1.2,
+      "tin_anual": 14.4,
+      "tae": 15.39,
+      "limite_inicial": 3000,
+      "limite_disponible": 257.41,
+      "fecha_proyectada_cierre": "2029-08-01",
+      "fraccionado_pendiente": null,
+      "notas": "Sin operaciones nuevas este periodo (0€). Cuota mensual elegida baja a 100€ (periodo anterior 150€). Deuda total pendiente si se cancelase todo a 27.09.2026: 2.842,59€ (2.809,34 principal + 33,25 interés). Límite compartido entre todas las tarjetas del contrato."
     }
   ],
   "tarjetas_credito_operaciones": [
@@ -21745,8 +21791,8 @@
       "fecha_operacion": "2025-12-28",
       "importe": 46.87,
       "tipo": "Fraccionada 0%",
-      "cuotas": "8/10 (en curso)",
-      "notas": "Compra fraccionada a 10 cuotas 0% TIN. En curso a agosto 2026, pendiente 9,43€."
+      "cuotas": "9/10 (en curso)",
+      "notas": "Compra fraccionada a 10 cuotas 0% TIN. En curso a septiembre 2026, pendiente 4,75€."
     },
     {
       "concepto": "CAIXABANKPC BARCELONA",
