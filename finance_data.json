@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-04 20:20",
+  "generated_at": "2026-10-05 14:15",
   "movimientos": [
     {
       "fecha": "2026-10-01",
@@ -20406,6 +20406,11 @@
         "mes": "2026-09",
         "peerberry": 8438,
         "myinvestor": 2225.12
+      },
+      {
+        "mes": "2026-10",
+        "peerberry": 8455.81,
+        "myinvestor": 0
       }
     ],
     "rendimiento": [
@@ -20513,6 +20518,11 @@
         "mes": "2026-09",
         "peerberry": 0.48,
         "myinvestor": 0.05
+      },
+      {
+        "mes": "2026-10",
+        "peerberry": 0.21,
+        "myinvestor": 0
       }
     ],
     "ganancia": [
@@ -20713,6 +20723,15 @@
         "myinvestor_aportes": 546.0,
         "peerberry_capital": 8438,
         "myinvestor_capital": 2225.12
+      },
+      {
+        "mes": "2026-10",
+        "peerberry": 17.81,
+        "myinvestor": 0.0,
+        "peerberry_aportes": null,
+        "myinvestor_aportes": null,
+        "peerberry_capital": 8455.81,
+        "myinvestor_capital": null
       }
     ],
     "kpi": {
