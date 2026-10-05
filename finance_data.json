@@ -1,6 +1,76 @@
 {
-  "generated_at": "2026-10-05 17:45",
+  "generated_at": "2026-10-05 20:37",
   "movimientos": [
+    {
+      "fecha": "2026-10-04",
+      "concepto": "REPSOL WAYLET",
+      "monto": -57.7,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-04",
+      "concepto": "AUTOROUTES ASF",
+      "monto": -3.2,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-04",
+      "concepto": "CENTRAL PARKING",
+      "monto": -4.8,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-04",
+      "concepto": "L ORME",
+      "monto": -19.8,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-04",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-03",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-03",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-03",
+      "concepto": "Gastos conjuntos",
+      "monto": -100,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-02",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-02",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-10-01",
       "concepto": "T. VISA CLASSIC",
