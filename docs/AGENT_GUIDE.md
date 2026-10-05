@@ -56,6 +56,7 @@ No significant change should be made without updating documentation.
 These categories require special handling:
 - Guille (shared expenses tracking)
 - Inversion (investment flows)
+- Amortización deuda (extraordinary debt repayments and the asset sale that funds them, excluded from income and expenses)
 
 ---
 

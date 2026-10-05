@@ -238,7 +238,7 @@ function renderMonthly(){
   // - Recurrentes activos que todavía no cobraron este mes → se suman
   //   completos por su monto conocido (no tiene sentido prorratearlos).
   // - El resto del gasto acumulado (variable) se prorratea a fin de mes.
-  // detectRecurring() ya excluye Guille/Talho Argentino/Nomina/Inversion,
+  // detectRecurring() ya excluye Guille/Talho Argentino/Nomina/Inversion/Amortización deuda,
   // igual que excludedCategories en state.js.
   let projDiamond = null;
   if(currentMonthIdx !== -1 && typeof detectRecurring === 'function'){

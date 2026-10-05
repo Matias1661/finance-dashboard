@@ -18,6 +18,7 @@
 - [x] Tab "Tarjeta de Crédito": seguimiento de tarjetas revolving (IKEA, Visa Classic) — DB Notion propia, saldo tomado del extracto real (no recalculado), KPIs + gráfico de evolución + histórico por tarjeta (2026-09-02)
 
 ## Alta prioridad
+- [x] Categoría "Amortización deuda" excluida de ingresos y gastos (pagos extraordinarios de deuda y venta del Golf), necesaria para el plan de reducción de gastos (2026-10-05). Ver `DECISIONS.md` 2026-10-05.
 - [x] Botón "Actualizar" en `index.html`: eliminado 21/07 (tenía un token de GitHub hardcodeado, revocado, y seguía expuesto en texto plano en el archivo). Los workflows de sync se disparan manualmente vía `gh workflow run` o la UI de GitHub Actions. Ver `DECISIONS.md` 2026-07-21.
 - [ ] Evaluar si conviene reintroducir un botón de refresh con una alternativa server-side (ej. endpoint propio) que no dependa de un token en el cliente. Sin fecha.
 - [x] Migración Relay → GitHub Actions — completada, Relay.app retirado por completo (22/08/2026, confirmado por el usuario; ver `DECISIONS.md` 2026-08-22) (ver `PROJECT_MEMORY.md`, sección "MIGRACIÓN COMPLETA", y `DECISIONS.md` 2026-07-17 para prompts ya probados):

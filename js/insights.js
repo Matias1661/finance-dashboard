@@ -51,7 +51,7 @@ const CANCELLED_SUBS = [
   { name: 'Wellhub',                monto: 22.99, cancelada: '2026-06' }
 ];
 
-const RECURRING_EXCLUDED_CATS = ['Guille', 'Talho Argentino', 'Nomina', 'Inversion'];
+const RECURRING_EXCLUDED_CATS = ['Guille', 'Talho Argentino', 'Nomina', 'Inversion', 'Amortización deuda'];
 const RECURRING_MIN_CHARGES = 3;
 const RECURRING_GAP_MIN = 25;   // días — cadencia mensual
 const RECURRING_GAP_MAX = 35;

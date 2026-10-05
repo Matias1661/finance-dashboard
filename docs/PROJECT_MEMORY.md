@@ -191,10 +191,10 @@ Claude solo escribe las últimas 5 columnas.
 ## Categorías
 
 ### Excluidas del análisis principal
-`Guille` e `Inversion` — ver `js/state.js` → `excludedCategories`.
+`Guille`, `Inversion`, `Talho Argentino` y `Amortización deuda` — ver `js/state.js` → `excludedCategories`. `Amortización deuda` (desde 2026-10-05): solo pagos extraordinarios de deuda (cancelaciones totales o parciales de préstamos y tarjetas) y el ingreso por la venta del Golf que los financia; las cuotas mensuales ordinarias siguen en su categoría habitual. Oculta en todo el dashboard, igual que Inversion. Ver `DECISIONS.md` 2026-10-05.
 
 ### Lista completa de categorías válidas
-Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar, Salud y Belleza
+Salidas, Comer afuera, Combustible, Guille, Gastos coche, Compras, Gastos moto, Departamento, Club, Suscripciones, Gastos en conjunto, Inversion, Viajes, Nomina, Otros, Tarjeta, Supermercado, A revisar, Salud y Belleza, Amortización deuda
 
 ---
 

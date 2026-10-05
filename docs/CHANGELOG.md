@@ -1,3 +1,13 @@
+## 2026-10-05 — Categoría "Amortización deuda" excluida de ingresos y gastos
+
+- `js/state.js`: `Amortización deuda` añadida a `excludedCategories`.
+- `js/insights.js`: añadida a `RECURRING_EXCLUDED_CATS` (`detectRecurring()` y
+  proyección de fin de mes). Comentario actualizado en `js/charts.js`.
+- Notion: nueva opción en el select Categoria de Movimientos y regla nueva en
+  el prompt "Pasar extracto bancario a Notion".
+- Alcance: solo pagos extraordinarios de deuda y el ingreso por la venta del
+  Golf. Ver `DECISIONS.md`.
+
 ## 2026-09-30 — Nóminas: paso de Actions desactivado, carga por Claude
 
 - `.github/workflows/sync-finance-data.yml`: desactivado el paso "Process new

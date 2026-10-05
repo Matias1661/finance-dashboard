@@ -1,3 +1,37 @@
+## [2026-10-05] Nueva categoría "Amortización deuda", excluida de ingresos y gastos
+
+**Contexto:** el plan de reducción de gastos (objetivo de ritmo mensual de 2.600 EUR
+desde abril de 2027) prevé vender el Golf y usar lo obtenido para cancelar el
+préstamo Sabadell del Golf (necesario para levantar la reserva de dominio), el
+préstamo de la moto de Guille, la Visa Classic y la tarjeta IKEA. Sin una
+categoría excluida, el mes de la venta aparecería con un ingreso y un gasto de
+miles de euros que distorsionan el seguimiento del plan (solo Sabadell rondaría
+los 15.350 EUR).
+
+**Decisión (confirmada por Matías):**
+- Nueva categoría `Amortización deuda` en el select Categoria de la DB Notion
+  Movimientos.
+- Alcance: solo pagos extraordinarios de deuda (cancelación total o parcial
+  anticipada de préstamos y de saldos de tarjetas revolving). Las cuotas
+  mensuales ordinarias (PRES.*, SABADELL CONSUMER, T. VISA CLASSIC, CAIXABANK
+  PAYMENT de IKEA) siguen en su categoría habitual.
+- El ingreso por la venta del Golf va a la misma categoría, para que se
+  compense con los pagos que financia y no infle los ingresos del mes.
+- Se excluye como Inversion: se añade a `excludedCategories` (`js/state.js`)
+  y a `RECURRING_EXCLUDED_CATS` (`js/insights.js`). Queda fuera de KPIs,
+  gráficos, Categorías, proyección de fin de mes y también de Transacciones
+  (decisión de Matías: oculta, igual que Inversion).
+- Prompt de categorización "Pasar extracto bancario a Notion" (DB Notion de
+  prompts): nueva regla para asignar la categoría a pagos a prestamistas o
+  tarjetas cuyo importe no coincide con la cuota habitual, y a la venta del
+  Golf.
+- `sync_finance_data.py` no cambia: copia la categoría tal cual.
+
+**Consecuencias:** los pagos y la venta solo se ven en Notion. Los préstamos y
+tarjetas cancelados deben actualizarse a mano en sus DBs (Estado = Cancelado en
+Préstamos; extracto final en Tarjetas de Crédito Revolving). El ahorro del plan
+se ve en el dashboard como la desaparición de las cuotas mensuales.
+
 ## [2026-09-30] Carga de nóminas Drive -> Notion pasa de GitHub Actions a tarea programada de Claude
 
 **Contexto:** al revisar por qué la nómina de septiembre no figuraba en el dashboard
