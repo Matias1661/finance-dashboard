@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-06 18:12",
+  "generated_at": "2026-10-06 18:18",
   "movimientos": [
     {
       "fecha": "2026-10-05",
@@ -13,7 +13,7 @@
       "concepto": "Amazon Prime",
       "monto": -4.99,
       "categoria": "Suscripciones",
-      "nota": null
+      "nota": "Amazon Prime, cuota mensual recurrente"
     },
     {
       "fecha": "2026-10-05",
@@ -41,28 +41,28 @@
       "concepto": "REPSOL WAYLET",
       "monto": -57.7,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-04",
       "concepto": "AUTOROUTES ASF",
       "monto": -3.2,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-04",
       "concepto": "CENTRAL PARKING",
       "monto": -4.8,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-04",
       "concepto": "L ORME",
       "monto": -19.8,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-04",
@@ -118,14 +118,14 @@
       "concepto": "E.S. MONREAL DE A",
       "monto": -40,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-01",
       "concepto": "CEDIPSA ES MONTBL",
       "monto": -57.59,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-01",
@@ -181,7 +181,7 @@
       "concepto": "RECIBO UNICO MYBOX",
       "monto": -108.51,
       "categoria": "Gastos coche",
-      "nota": null
+      "nota": "Descuento solicitado, nuevo importe 108,51 (antes 114,38)"
     },
     {
       "fecha": "2026-10-01",
