@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-06 18:18",
+  "generated_at": "2026-10-06 18:22",
   "movimientos": [
     {
       "fecha": "2026-10-05",
@@ -20,14 +20,14 @@
       "concepto": "YEGO* RIDE 21 MIN",
       "monto": -7.56,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-05",
       "concepto": "GARDEN BOLERA",
       "monto": -11,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-05",
