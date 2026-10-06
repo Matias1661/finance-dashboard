@@ -1,6 +1,41 @@
 {
-  "generated_at": "2026-10-06 16:02",
+  "generated_at": "2026-10-06 18:09",
   "movimientos": [
+    {
+      "fecha": "2026-10-05",
+      "concepto": "VIVAGYM",
+      "monto": -34.9,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-05",
+      "concepto": "Amazon Prime",
+      "monto": -4.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-05",
+      "concepto": "YEGO* RIDE 21 MIN",
+      "monto": -7.56,
+      "categoria": "Otros",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-05",
+      "concepto": "GARDEN BOLERA",
+      "monto": -11,
+      "categoria": "Salidas",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-05",
+      "concepto": "PAGO TRANSFERENCIAS",
+      "monto": -550,
+      "categoria": "A revisar",
+      "nota": null
+    },
     {
       "fecha": "2026-10-04",
       "concepto": "REPSOL WAYLET",
