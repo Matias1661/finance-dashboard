@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-06 18:09",
+  "generated_at": "2026-10-06 18:12",
   "movimientos": [
     {
       "fecha": "2026-10-05",
@@ -19,21 +19,21 @@
       "fecha": "2026-10-05",
       "concepto": "YEGO* RIDE 21 MIN",
       "monto": -7.56,
-      "categoria": "Otros",
+      "categoria": "Viajes",
       "nota": null
     },
     {
       "fecha": "2026-10-05",
       "concepto": "GARDEN BOLERA",
       "monto": -11,
-      "categoria": "Salidas",
+      "categoria": "Viajes",
       "nota": null
     },
     {
       "fecha": "2026-10-05",
       "concepto": "PAGO TRANSFERENCIAS",
       "monto": -550,
-      "categoria": "A revisar",
+      "categoria": "Inversion",
       "nota": null
     },
     {
