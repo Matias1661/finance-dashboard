@@ -312,6 +312,7 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 7. Aplica aprobados escribiendo directo en Notion vía MCP (`notion-update-page`): localizar la página en la data source Movimientos (`367d58ce-928b-4e31-832d-07707f876365`) filtrando por Fecha+Concepto+Monto exactos (`notion-query-data-sources`, SQL), luego `notion-update-page` sobre la propiedad Categoria (select).
 8. **Enriquecimiento de Nota** — para los movimientos procesados (prioridad *Compras*), genera la nota descriptiva y la escribe en la propiedad Nota (rich text) de la misma página:
    a. Si es Amazon → buscar el producto en Gmail (`auto-confirm@amazon.es`, `confirmar-envio@amazon.es`, `order-update@amazon.es`, `digital-no-reply@amazon.es` para Kindle) y casar por fecha/importe.
+      No hay reglas automáticas por importe para Amazon: un cargo de 9,99€ puede ser un ebook Kindle y no Kindle Unlimited (cancelado en julio 2026). Siempre verificar en Gmail (decisión 2026-10-07).
    b. Si no es Amazon → buscar recibo del comercio en Gmail por ventana de fecha (±pocos días).
    c. Si no hay nada en Gmail → búsqueda web para identificar la tienda/marca.
    d. Si nada concluyente → dejar la nota en blanco (no inventar).
