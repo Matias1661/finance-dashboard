@@ -1,3 +1,13 @@
+## 2026-10-07 — Ebooks Kindle fuera de detectRecurring() y prompt Amazon actualizado
+
+- `js/insights.js`: nueva constante `RECURRING_EXCLUDED_NOTE_PREFIXES =
+  ['Libro Kindle']` y filtro en `detectRecurring()`. Kindle Unlimited vuelve a
+  "Inactivas" (último cargo real 22/06/2026); antes figuraba activa por el libro
+  del 07/10.
+- Notion, prompt "Pasar extracto bancario a Notion": AMAZON a 9,99 € pasa de
+  Suscripciones (Kindle Unlimited) a Compras.
+- Ver `DECISIONS.md` 2026-10-07.
+
 ## 2026-10-07 — Regla AMAZON -9,99€ = Kindle Unlimited retirada
 
 - `docs/skills/organizar-movimientos/SKILL.md`: la regla automática de Kindle
