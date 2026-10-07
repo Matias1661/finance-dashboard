@@ -43,8 +43,10 @@ olvidado antes** — el script la hace obligatoria porque no depende de la memor
 
 ## Reglas automáticas de categorización (sin verificar por Gmail)
 
-- `AMAZON.ES` o `WWW.AMAZON` a exactamente ±9.99€ → Kindle Unlimited (cargo o reembolso).
-  Verificar el signo: -9.99 = cargo, +9.99 = reembolso del cargo de ese mes.
+- `AMAZON.ES` o `WWW.AMAZON` a ±9.99€: NO es regla automática. Kindle Unlimited está
+  cancelado desde julio 2026 y los ebooks Kindle a 9.99€ son habituales (ej. "No Hero",
+  07/10/2026). Verificar siempre en Gmail (`digital-no-reply@amazon.es`). Ebook →
+  Compras, nota "Libro Kindle '<título>'". Ver DECISIONS.md 2026-10-07.
 - `APPLE.COM/BILL`: -22€ Claude Pro, -3.49€ Hevy Pro, -2.99€ iCloud+, -29.99€ LinkedIn
   Premium Career (revisar periódicamente por cambios de precio).
 - Pares de cargo/reembolso idénticos el mismo día o días cercanos (mismo concepto, mismo
