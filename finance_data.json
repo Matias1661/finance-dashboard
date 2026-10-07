@@ -1,6 +1,97 @@
 {
-  "generated_at": "2026-10-07 16:20",
+  "generated_at": "2026-10-07 22:37",
   "movimientos": [
+    {
+      "fecha": "2026-10-07",
+      "concepto": "AMAZON.ES",
+      "monto": -9.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-07",
+      "concepto": "TRASPASO",
+      "monto": 40,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-07",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-07",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-06",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-06",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-06",
+      "concepto": "CAIXABANK PAYMENT",
+      "monto": -104.68,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-06",
+      "concepto": "REPSOL WAYLET",
+      "monto": -46.17,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-06",
+      "concepto": "SEITT R2",
+      "monto": -5.2,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-06",
+      "concepto": "MOEVE PINA I",
+      "monto": -26.67,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-06",
+      "concepto": "MOEVE ARIZA II",
+      "monto": -39.25,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-06",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-06",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-10-05",
       "concepto": "VIVAGYM",
