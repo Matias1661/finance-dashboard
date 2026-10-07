@@ -1,3 +1,29 @@
+## [2026-10-07] Ebooks Kindle excluidos de detectRecurring() y regla Amazon 9,99 retirada del prompt
+
+**Contexto:** resuelve los dos pendientes de la entrada "AMAZON -9,99€ deja de
+categorizarse automáticamente como Kindle Unlimited" (misma fecha, abajo).
+Simulación con el `finance_data.json` del 07/10: el grupo AMAZON.ES|9.99 de
+`detectRecurring()` reunía los cargos del 22/01 al 22/06 y el libro del 07/10
+(mediana de intervalo 31 días, 0 días sin cobro), así que Kindle Unlimited
+figuraba como suscripción activa de 9,99€/mes y a la vez como cancelada en
+`CANCELLED_SUBS`. El prompt "Pasar extracto bancario a Notion" mandaba todo
+AMAZON a 9,99 € a Suscripciones como Kindle Unlimited.
+
+**Decisión (confirmada por Matías):**
+- `js/insights.js`: nueva constante `RECURRING_EXCLUDED_NOTE_PREFIXES =
+  ['Libro Kindle']`; `detectRecurring()` descarta los movimientos cuya nota
+  empieza por un prefijo de la lista. Con datos reales el grupo queda en
+  22/01, 22/02, 22/04, 22/05 y 22/06 (el 22/03 también era un libro), último
+  cargo hace 107 días: pasa a "Inactivas". Se mantiene el alias "Kindle
+  Unlimited" en `SUB_ALIASES` y la entrada de `SUB_KEYWORDS_AMT`, que siguen
+  siendo necesarios para nombrar el grupo histórico.
+- Criterio elegido porque las notas se curan en "Organizar movimientos".
+  Requisito: toda compra de ebook Kindle debe llevar nota "Libro Kindle
+  '<título>'".
+- Prompt "Pasar extracto bancario a Notion" (DB Notion Prompts): la regla
+  "AMAZON a 9,99 € → Suscripciones (Kindle Unlimited)" se reemplaza por
+  "AMAZON, incluido 9,99 €, → Compras".
+
 ## [2026-10-07] AMAZON -9,99€ deja de categorizarse automáticamente como Kindle Unlimited
 
 **Contexto:** en "Organizar movimientos" del 07/10/2026, el cargo AMAZON.ES -9,99€
