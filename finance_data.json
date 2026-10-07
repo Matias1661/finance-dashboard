@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-07 22:39",
+  "generated_at": "2026-10-07 22:48",
   "movimientos": [
     {
       "fecha": "2026-10-07",
       "concepto": "AMAZON.ES",
       "monto": -9.99,
-      "categoria": "Suscripciones",
-      "nota": null
+      "categoria": "Compras",
+      "nota": "Libro Kindle 'No Hero: The Evolution of a Navy SEAL'"
     },
     {
       "fecha": "2026-10-07",
@@ -47,36 +47,36 @@
       "fecha": "2026-10-06",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -104.68,
-      "categoria": "A revisar",
-      "nota": null
+      "categoria": "Tarjeta",
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2026-10-06",
       "concepto": "REPSOL WAYLET",
       "monto": -46.17,
-      "categoria": "Combustible",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-06",
       "concepto": "SEITT R2",
       "monto": -5.2,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-06",
       "concepto": "MOEVE PINA I",
       "monto": -26.67,
-      "categoria": "Combustible",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-06",
       "concepto": "MOEVE ARIZA II",
       "monto": -39.25,
-      "categoria": "Combustible",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Viaje a Lloret de Mar"
     },
     {
       "fecha": "2026-10-06",
@@ -244,7 +244,7 @@
       "concepto": "SANITAS S A SEG.",
       "monto": -12,
       "categoria": "Salud y Belleza",
-      "nota": null
+      "nota": "Seguro dental Sanitas"
     },
     {
       "fecha": "2026-10-01",
