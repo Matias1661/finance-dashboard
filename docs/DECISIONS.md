@@ -1,3 +1,36 @@
+## [2026-10-07] AMAZON -9,99€ deja de categorizarse automáticamente como Kindle Unlimited
+
+**Contexto:** en "Organizar movimientos" del 07/10/2026, el cargo AMAZON.ES -9,99€
+del 07/10 entró como Suscripciones y la regla automática lo habría anotado como
+Kindle Unlimited sin pasar por Gmail. La verificación en Gmail mostró que era la
+compra del libro Kindle "No Hero: The Evolution of a Navy SEAL" (pedido
+D01-3947836-8994203, 05/10/2026, 9,99€, mail de digital-no-reply@amazon.es).
+Kindle Unlimited está cancelado desde julio 2026: último cargo 17/07, reembolsado
+el 20/07, sin cargos en agosto ni septiembre. Ya había un precedente: el cargo de
+9,99€ del 22/03/2026 era el libro "Discipline Equals Freedom". Los ebooks Kindle a
+9,99€ son habituales, así que el importe no identifica la suscripción.
+
+**Decisión (confirmada por Matías):**
+- Se elimina la regla automática "AMAZON.ES / WWW.AMAZON a ±9,99€ = Kindle
+  Unlimited". Todo cargo o reembolso de Amazon a 9,99€ se verifica en Gmail
+  (`digital-no-reply@amazon.es` para Kindle, `auto-confirm@amazon.es` para
+  pedidos) igual que cualquier otra compra de Amazon.
+- Compras de ebooks Kindle: categoría Compras, nota "Libro Kindle '<título>'"
+  (mismo formato que los precedentes de marzo y junio 2026).
+- Si Kindle Unlimited se reactiva, se vuelve a verificar por Gmail; no se
+  restaura la regla por importe.
+- Actualizados `docs/skills/organizar-movimientos/SKILL.md` y
+  `docs/PROJECT_MEMORY.md`.
+
+**Pendiente (no incluido en este cambio, requiere decisión aparte):**
+`js/insights.js` sigue usando AMAZON.ES 9,99€ en `SUB_ALIASES` ("Kindle
+Unlimited") y en `SUB_KEYWORDS_AMT`. `detectRecurring()` agrupa por concepto +
+importe exacto, así que el libro del 07/10 cae en el mismo grupo que los cargos
+históricos de Kindle Unlimited y puede hacer que figure como suscripción activa
+en el dashboard. Además, el prompt de categorización "Pasar extracto bancario a
+Notion" asignó Suscripciones a este cargo; conviene revisar si tiene una regla
+por importe.
+
 ## [2026-10-05] Nueva categoría "Amortización deuda", excluida de ingresos y gastos
 
 **Contexto:** el plan de reducción de gastos (objetivo de ritmo mensual de 2.600 EUR
