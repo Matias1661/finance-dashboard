@@ -52,6 +52,10 @@ const CANCELLED_SUBS = [
 ];
 
 const RECURRING_EXCLUDED_CATS = ['Guille', 'Talho Argentino', 'Nomina', 'Inversion', 'Amortización deuda'];
+// Movimientos cuya nota empieza por estos prefijos son compras puntuales que comparten
+// concepto e importe con una suscripción (ej. ebook Kindle a 9,99€ vs Kindle Unlimited).
+// Se excluyen de la agrupación para no reactivar suscripciones canceladas (DECISIONS 2026-10-07).
+const RECURRING_EXCLUDED_NOTE_PREFIXES = ['Libro Kindle'];
 const RECURRING_MIN_CHARGES = 3;
 const RECURRING_GAP_MIN = 25;   // días — cadencia mensual
 const RECURRING_GAP_MAX = 35;
@@ -80,6 +84,7 @@ function detectRecurring(){
     const v = Number(r.monto);
     if(v >= 0) return;
     if(RECURRING_EXCLUDED_CATS.includes(r.categoria)) return;
+    if(RECURRING_EXCLUDED_NOTE_PREFIXES.some(p => (r.nota || '').startsWith(p))) return;
     const concepto = (r.concepto || '').trim().toUpperCase().replace(/\s+/g, ' ');
     const amt = Math.abs(v).toFixed(2);
     const key = concepto + '|' + amt;
