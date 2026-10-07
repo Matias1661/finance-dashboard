@@ -1,3 +1,15 @@
+## 2026-10-07 — Regla AMAZON -9,99€ = Kindle Unlimited retirada
+
+- `docs/skills/organizar-movimientos/SKILL.md`: la regla automática de Kindle
+  Unlimited por importe pasa a "verificar siempre en Gmail".
+- `docs/PROJECT_MEMORY.md`: nota en el paso 8a del flujo Organizar Movimientos.
+- Organizar movimientos (7 movimientos, viaje a Lloret de Mar): AMAZON.ES -9,99
+  del 07/10 recategorizado de Suscripciones a Compras (libro Kindle "No Hero");
+  MOEVE PINA I, MOEVE ARIZA II y REPSOL WAYLET del 06/10 de Combustible a Viajes
+  (vuelta del viaje, verificado con Waylet y calendario); SEITT R2 en Viajes;
+  CAIXABANK PAYMENT -104,68 en Tarjeta (recibo IKEA septiembre); SANITAS -12,00
+  con nota "Seguro dental Sanitas". Ver `DECISIONS.md`.
+
 ## 2026-10-05 — Categoría "Amortización deuda" excluida de ingresos y gastos
 
 - `js/state.js`: `Amortización deuda` añadida a `excludedCategories`.
