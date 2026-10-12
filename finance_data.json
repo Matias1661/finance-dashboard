@@ -1,6 +1,97 @@
 {
-  "generated_at": "2026-10-11 15:52",
+  "generated_at": "2026-10-12 10:48",
   "movimientos": [
+    {
+      "fecha": "2026-10-11",
+      "concepto": "REPSOL WAYLET",
+      "monto": -37.27,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-11",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -2.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-11",
+      "concepto": "E.S. GARCERAN 1 S",
+      "monto": -3.1,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-11",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 80,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-11",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-11",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-10",
+      "concepto": "PAYPAL *PAGO 3 PL",
+      "monto": -17.32,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-10",
+      "concepto": "PAYPAL *PLACASDEH",
+      "monto": -50.39,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-09",
+      "concepto": "YOIGO XFERA MOVIL",
+      "monto": -51.26,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-09",
+      "concepto": "VIENA CORNERS REN",
+      "monto": -0.8,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-09",
+      "concepto": "UBR* PENDING.UBER",
+      "monto": -18.94,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-09",
+      "concepto": "Cuota club",
+      "monto": -216.5,
+      "categoria": "Club",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-08",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-10-07",
       "concepto": "AMAZON.ES",
