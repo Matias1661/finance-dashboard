@@ -1,3 +1,12 @@
+## 2026-10-12 — Viaje a Málaga (octubre) en TRIP_WINDOWS
+
+- `js/app.js`: nueva ventana `Viaje a Málaga (octubre)`, 09/10 a 12/10/2026.
+- Organizar movimientos (7 movimientos): REPSOL WAYLET -37,27 y E.S. GARCERAN
+  1 S -3,10 del 11/10 de Combustible a Viajes; notas en PAYPAL *PAGO 3 PL
+  (cuota 2/3 Motocard), PAYPAL *PLACASDEH (pedido 5752, pendiente reintegro de
+  tesorería) y UBR* PENDING.UBER (taller moto); VIENA CORNERS REN y Cuota club
+  sin cambios. Ver `DECISIONS.md` 2026-10-12.
+
 ## 2026-10-07 — Ebooks Kindle fuera de detectRecurring() y prompt Amazon actualizado
 
 - `js/insights.js`: nueva constante `RECURRING_EXCLUDED_NOTE_PREFIXES =
