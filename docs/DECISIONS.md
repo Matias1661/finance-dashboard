@@ -1,3 +1,23 @@
+## [2026-10-12] Viaje a Málaga de octubre añadido a TRIP_WINDOWS
+
+**Contexto:** en "Organizar movimientos" del 12/10/2026 el script no marcó ningún
+movimiento como de viaje porque `TRIP_WINDOWS` solo tenía "Málaga" del 01/05 al
+03/05/2026. Google Calendar registra "Viaje a Málaga" del 09/10 19:00 al 12/10
+20:00.
+
+**Decisión (confirmada por Matías):**
+- Nueva entrada `{ name: 'Viaje a Málaga (octubre)', start: '2026-10-09', end:
+  '2026-10-12' }` en `js/app.js`. El nombre debe ser distinto de "Málaga" porque
+  `renderTripBreakdown()` agrupa por `name` y dos viajes con el mismo nombre se
+  mezclarían.
+- REPSOL WAYLET -37,27 y E.S. GARCERAN 1 S -3,10 (barra de chocolate) del 11/10
+  pasan de Combustible a Viajes, según el criterio de 25/08 (comida durante un
+  viaje va a Viajes).
+- VIENA CORNERS REN -0,80 del 09/10 queda en Comer afuera: consumo en Madrid
+  antes de salir.
+- Uber del 09/10 (viaje del 05/10) queda en Gastos moto: traslado tras dejar la
+  moto en el taller, no relacionado con el viaje.
+
 ## [2026-10-07] Ebooks Kindle excluidos de detectRecurring() y regla Amazon 9,99 retirada del prompt
 
 **Contexto:** resuelve los dos pendientes de la entrada "AMAZON -9,99€ deja de
