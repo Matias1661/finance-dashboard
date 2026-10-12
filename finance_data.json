@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12 10:48",
+  "generated_at": "2026-10-12 10:51",
   "movimientos": [
     {
       "fecha": "2026-10-11",
@@ -54,7 +54,7 @@
       "fecha": "2026-10-10",
       "concepto": "PAYPAL *PLACASDEH",
       "monto": -50.39,
-      "categoria": "Compras",
+      "categoria": "Club",
       "nota": null
     },
     {
@@ -75,7 +75,7 @@
       "fecha": "2026-10-09",
       "concepto": "UBR* PENDING.UBER",
       "monto": -18.94,
-      "categoria": "Comer afuera",
+      "categoria": "Gastos moto",
       "nota": null
     },
     {
