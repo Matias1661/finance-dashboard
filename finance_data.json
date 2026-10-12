@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-12 10:51",
+  "generated_at": "2026-10-12 10:58",
   "movimientos": [
     {
       "fecha": "2026-10-11",
       "concepto": "REPSOL WAYLET",
       "monto": -37.27,
-      "categoria": "Combustible",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Combustible viaje a Málaga"
     },
     {
       "fecha": "2026-10-11",
@@ -19,8 +19,8 @@
       "fecha": "2026-10-11",
       "concepto": "E.S. GARCERAN 1 S",
       "monto": -3.1,
-      "categoria": "Combustible",
-      "nota": null
+      "categoria": "Viajes",
+      "nota": "Barra de chocolate, viaje a Málaga"
     },
     {
       "fecha": "2026-10-11",
@@ -48,14 +48,14 @@
       "concepto": "PAYPAL *PAGO 3 PL",
       "monto": -17.32,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Cuota 2/3 Paga en 3 plazos - Motocard (visera Scorpion KDS-F-03)"
     },
     {
       "fecha": "2026-10-10",
       "concepto": "PAYPAL *PLACASDEH",
       "monto": -50.39,
       "categoria": "Club",
-      "nota": null
+      "nota": "Trofeos Burgos SL - Placas de Homenaje (pedido 5752), cristal grabado homenaje. Regalos club, pendiente reintegro de tesorería."
     },
     {
       "fecha": "2026-10-09",
@@ -76,7 +76,7 @@
       "concepto": "UBR* PENDING.UBER",
       "monto": -18.94,
       "categoria": "Gastos moto",
-      "nota": null
+      "nota": "Uber del 05/10 tras dejar la moto en el taller (García de Paredes, Madrid a SSdR)"
     },
     {
       "fecha": "2026-10-09",
