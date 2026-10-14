@@ -1,6 +1,41 @@
 {
-  "generated_at": "2026-10-13 16:54",
+  "generated_at": "2026-10-14 10:41",
   "movimientos": [
+    {
+      "fecha": "2026-10-13",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-13",
+      "concepto": "REPSOL WAYLET",
+      "monto": -62.24,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-13",
+      "concepto": "SUPERMERCADOS LLU",
+      "monto": -4.38,
+      "categoria": "Supermercado",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-13",
+      "concepto": "LUCCIANO S",
+      "monto": -14.7,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-12",
+      "concepto": "BARBER EL TANGERI",
+      "monto": -18,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
     {
       "fecha": "2026-10-11",
       "concepto": "REPSOL WAYLET",
@@ -21304,8 +21339,8 @@
         "total": 0.42,
         "acumulado": 22.37,
         "acumulado_anio": 13.07,
-        "benchmark": 1.95,
-        "benchmark_acumulado": 21.71,
+        "benchmark": 2.41,
+        "benchmark_acumulado": 22.26,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
