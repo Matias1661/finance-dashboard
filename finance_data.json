@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14 10:41",
+  "generated_at": "2026-10-14 10:46",
   "movimientos": [
     {
       "fecha": "2026-10-13",
@@ -12,21 +12,21 @@
       "fecha": "2026-10-13",
       "concepto": "REPSOL WAYLET",
       "monto": -62.24,
-      "categoria": "Combustible",
+      "categoria": "Viajes",
       "nota": null
     },
     {
       "fecha": "2026-10-13",
       "concepto": "SUPERMERCADOS LLU",
       "monto": -4.38,
-      "categoria": "Supermercado",
+      "categoria": "Viajes",
       "nota": null
     },
     {
       "fecha": "2026-10-13",
       "concepto": "LUCCIANO S",
       "monto": -14.7,
-      "categoria": "Comer afuera",
+      "categoria": "Viajes",
       "nota": null
     },
     {
