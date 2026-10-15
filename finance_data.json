@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-15 17:01",
+  "generated_at": "2026-10-15 17:04",
   "movimientos": [
     {
       "fecha": "2026-10-15",
       "concepto": "REPSOL WAYLET",
       "monto": -26.96,
-      "categoria": "Combustible",
+      "categoria": "Viajes",
       "nota": null
     },
     {
@@ -26,7 +26,7 @@
       "fecha": "2026-10-15",
       "concepto": "Ssrr",
       "monto": -2.95,
-      "categoria": "A revisar",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -54,7 +54,7 @@
       "fecha": "2026-10-14",
       "concepto": "E.S. ANERMO",
       "monto": -37.93,
-      "categoria": "Combustible",
+      "categoria": "Viajes",
       "nota": null
     },
     {
