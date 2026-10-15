@@ -1,6 +1,83 @@
 {
-  "generated_at": "2026-10-15 14:33",
+  "generated_at": "2026-10-15 16:42",
   "movimientos": [
+    {
+      "fecha": "2026-10-15",
+      "concepto": "REPSOL WAYLET",
+      "monto": -26.96,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-15",
+      "concepto": "ALMEMA RESTAURACI",
+      "monto": -2,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-15",
+      "concepto": "AUTOPISTA DEL SOL",
+      "monto": -2.2,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-15",
+      "concepto": "Ssrr",
+      "monto": -2.95,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-15",
+      "concepto": "AUTOPISTA DEL SOL",
+      "monto": -5.7,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-15",
+      "concepto": "HARLEY TALLER",
+      "monto": -1090.66,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-15",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 100,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-14",
+      "concepto": "E.S. ANERMO",
+      "monto": -37.93,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-14",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-14",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-14",
+      "concepto": "Gastos conjuntos",
+      "monto": -50,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
     {
       "fecha": "2026-10-13",
       "concepto": "TRANSF. A SU FAVOR",
