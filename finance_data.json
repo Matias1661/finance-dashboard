@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15 17:04",
+  "generated_at": "2026-10-16 14:12",
   "movimientos": [
     {
       "fecha": "2026-10-15",
@@ -21416,8 +21416,8 @@
         "total": 0.42,
         "acumulado": 22.37,
         "acumulado_anio": 13.07,
-        "benchmark": 2.0,
-        "benchmark_acumulado": 21.77,
+        "benchmark": 2.06,
+        "benchmark_acumulado": 21.84,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
