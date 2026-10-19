@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-18 13:59",
+  "generated_at": "2026-10-19 16:29",
   "movimientos": [
     {
       "fecha": "2026-10-15",
@@ -20808,7 +20808,7 @@
       },
       {
         "mes": "2026-10",
-        "peerberry": 8455.81,
+        "peerberry": 8464.02,
         "myinvestor": 0
       }
     ],
@@ -20920,7 +20920,7 @@
       },
       {
         "mes": "2026-10",
-        "peerberry": 0.21,
+        "peerberry": 0.31,
         "myinvestor": 0
       }
     ],
@@ -21125,11 +21125,11 @@
       },
       {
         "mes": "2026-10",
-        "peerberry": 17.81,
+        "peerberry": 26.02,
         "myinvestor": 0.0,
         "peerberry_aportes": null,
         "myinvestor_aportes": null,
-        "peerberry_capital": 8455.81,
+        "peerberry_capital": 8464.02,
         "myinvestor_capital": null
       }
     ],
