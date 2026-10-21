@@ -19,6 +19,7 @@ No escribe nada. Solo genera el listado para que el agente lo presente al usuari
 import argparse
 import base64
 import json
+import os
 import re
 import sys
 import urllib.request
@@ -72,7 +73,7 @@ def make_key(m):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--github-token", default=None)
+    parser.add_argument("--github-token", default=os.environ.get("GITHUB_TOKEN"))
     args = parser.parse_args()
     token = args.github_token
 
