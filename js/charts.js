@@ -294,30 +294,49 @@ function renderMonthly(){
     return null;
   });
 
-  // Rombo: proyección de fin de mes = fijos conocidos (vía detectRecurring,
-  // insights.js) + run-rate solo sobre el gasto variable restante.
-  // - Recurrentes activos ya cobrados este mes → quedan como están (ya
-  //   forman parte del acumulado real, no se proyectan).
-  // - Recurrentes activos que todavía no cobraron este mes → se suman
-  //   completos por su monto conocido (no tiene sentido prorratearlos).
-  // - El resto del gasto acumulado (variable) se prorratea a fin de mes.
+  // Rombo: proyección de fin de mes (DECISIONS 2026-10-21, reemplaza el run-rate de 2026-09-07)
+  //   = gasto neto real acumulado del mes
+  //   + recurrentes activos (detectRecurring, insights.js) que todavía no cobraron este mes
+  //     y cuyo día habitual de cobro + RECURRING_DUE_MARGIN_DAYS no pasó; si ya pasó, se
+  //     asume que ese mes no se cobra
+  //   + gasto variable medio de los días restantes (día > currentDay) en los 3 meses
+  //     anteriores, sin contar los cobros de grupos recurrentes. Así un gasto puntual del
+  //     mes en curso no se extrapola a fin de mes.
   // detectRecurring() ya excluye Guille/Talho Argentino/Nomina/Inversion/Amortización deuda,
   // igual que excludedCategories en state.js.
   let projDiamond = null;
   if(currentMonthIdx !== -1 && typeof detectRecurring === 'function'){
-    const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-    const recurring = detectRecurring().filter(r => r.activa);
-    let fixedOccurred = 0, fixedPending = 0;
-    recurring.forEach(r => {
-      if(r.ultimo && r.ultimo.slice(0, 7) === currentMonthKey) fixedOccurred += r.monto;
-      else fixedPending += r.monto;
+    const raw = window.FINANCE_STATE?.raw || [];
+    const excluded = window.FINANCE_STATE?.excludedCategories || [];
+    const recurringAll = detectRecurring();
+    const recurringItems = new Set();
+    recurringAll.forEach(r => (r.items || []).forEach(i => recurringItems.add(i)));
+
+    let fixedPending = 0;
+    recurringAll.filter(r => r.activa).forEach(r => {
+      if(r.ultimo && r.ultimo.slice(0, 7) === currentMonthKey) return;
+      if(currentDay <= r.diaHabitual + RECURRING_DUE_MARGIN_DAYS) fixedPending += r.monto;
     });
+
+    const prevRemaining = [];
+    for(let i = 1; i <= 3; i++){
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const monthPrefix = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-`;
+      let gross = 0, refund = 0;
+      raw.forEach(r => {
+        if(excluded.includes(r.categoria)) return;
+        if(!r.fecha || !r.fecha.startsWith(monthPrefix)) return;
+        if(parseInt(r.fecha.slice(8,10), 10) <= currentDay) return;
+        const v = Number(r.monto);
+        if(v < 0){ if(!recurringItems.has(r)) gross += Math.abs(v); }
+        else if(reimbursable.includes(r.categoria)) refund += v;
+      });
+      prevRemaining.push(Math.max(0, gross - refund));
+    }
+    const variableRemaining = prevRemaining.reduce((a,b) => a+b, 0) / prevRemaining.length;
+
     const currentExpense = expense[currentMonthIdx] || 0;
-    const variableAccumulated = Math.max(0, currentExpense - fixedOccurred);
-    const variableProjected = currentDay > 0
-      ? (variableAccumulated / currentDay) * daysInMonth
-      : variableAccumulated;
-    projDiamond = variableProjected + fixedOccurred + fixedPending;
+    projDiamond = currentExpense + fixedPending + variableRemaining;
   }
 
   const projDiamondData = labels.map((lbl, idx) => {
