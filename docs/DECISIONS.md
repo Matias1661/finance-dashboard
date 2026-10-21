@@ -1,3 +1,26 @@
+## [2026-10-21] Curva ideal v2: deuda 0 en diciembre 2028
+
+**Contexto:** Matías evaluó llegar a deuda 0 en diciembre 2028 con colchón en inversiones y pidió
+recalcular la "Curva ideal" con la venta del Golf en marzo 2027, haciendo solo las
+amortizaciones justas para llegar a 0 en diciembre 2028 y destinando el resto a inversiones.
+
+**Decisión:**
+- Reemplaza la curva ideal de la entrada "Curva ideal en el gráfico del ratio de
+  endeudamiento" (misma fecha). Sigue siendo una foto fija (`CURVA_IDEAL_RATIO_DEUDA`).
+- Supuestos: presupuesto de deuda de 1.111,26 €/mes (cuota total actual, incluye la cuota de
+  la moto que paga Guille). Venta del Golf en marzo 2027 por 22.800 €, que cancela Golf, IKEA,
+  Visa Classic y moto de Guille y amortiza el Ibiza con el remanente (se mantienen los mismos
+  criterios de la versión anterior). Desde abril 2027, amortización fija de 787,69 €/mes al
+  préstamo de mayor tipo (Ibiza, luego Talho), reduciendo cuota: es el importe mínimo
+  constante con el que la deuda llega a 0 en diciembre 2028. Hasta marzo 2027 solo cuotas
+  ordinarias. Lo que sobra del presupuesto va a inversiones. Comisión 1% en préstamos (Talho
+  sin comisión), nómina 2.648,99 € constante.
+- Resultado: 42,0% hasta marzo 2027, 13,0% en abril 2027, Ibiza cancelado en octubre 2027,
+  0,5% en diciembre 2028 (última cuota) y deuda 0. Colchón estimado en diciembre 2028:
+  ~15.800 € (desde 10.663 € en septiembre 2026, 6% anual, sin retiros para gasto corriente).
+
+---
+
 ## [2026-10-21] Curva ideal en el gráfico del ratio de endeudamiento
 
 **Contexto:** después de simular en el chat varios escenarios de desendeudamiento, Matías pidió

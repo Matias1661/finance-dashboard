@@ -1091,13 +1091,15 @@ function renderTarjetasChart(){
  * 2026-10-21 (curva ideal). */
 const FIN_CURVA_RATIO_DEUDA = '2028-12';
 
-/* Curva ideal: foto fija calculada el 21/10/2026, no se recalcula. Supuestos:
- * venta del Golf en marzo 2027 por 22.800 € (cobro 15/03/2027) que cancela
- * Golf, IKEA, Visa Classic y moto de Guille y amortiza el Ibiza; pago total en
- * deuda constante de 1.136,39 €/mes (octubre 2026) y todo lo que libere una
- * cuota va a capital del préstamo de mayor tipo, reduciendo cuota; comisión
- * 1% en préstamos (Talho sin comisión); nómina 2.648,99 € constante. Deuda 0
- * en septiembre 2028. Ver DECISIONS 2026-10-21 (curva ideal). */
+/* Curva ideal: foto fija calculada el 21/10/2026, no se recalcula. Supuestos
+ * (versión 2, 21/10/2026): venta del Golf en marzo 2027 por 22.800 € (cobro
+ * 15/03/2027) que cancela Golf, IKEA, Visa Classic y moto de Guille y amortiza
+ * el Ibiza con el remanente; desde abril 2027, amortización fija de 787,69 €/mes
+ * al préstamo de mayor tipo (Ibiza y luego Talho), reduciendo cuota, el monto
+ * justo para llegar a deuda 0 en diciembre 2028 (Ibiza cancelado en octubre
+ * 2027); el resto del presupuesto de 1.111,26 €/mes va a inversiones; comisión
+ * 1% en préstamos (Talho sin comisión); nómina 2.648,99 € constante. Ver
+ * DECISIONS 2026-10-21 (curva ideal v2). */
 const CURVA_IDEAL_RATIO_DEUDA = {
   '2026-10': 42.9,
   '2026-11': 42.0,
@@ -1105,27 +1107,27 @@ const CURVA_IDEAL_RATIO_DEUDA = {
   '2027-01': 42.0,
   '2027-02': 42.0,
   '2027-03': 42.0,
-  '2027-04': 12.9,
-  '2027-05': 12.0,
-  '2027-06': 11.0,
-  '2027-07': 10.0,
-  '2027-08': 9.0,
-  '2027-09': 7.8,
-  '2027-10': 7.0,
-  '2027-11': 6.5,
-  '2027-12': 5.9,
-  '2028-01': 5.3,
-  '2028-02': 4.7,
-  '2028-03': 4.1,
-  '2028-04': 3.5,
-  '2028-05': 2.9,
-  '2028-06': 2.2,
-  '2028-07': 1.6,
-  '2028-08': 0.9,
-  '2028-09': 0.2,
-  '2028-10': 0.0,
-  '2028-11': 0.0,
-  '2028-12': 0.0
+  '2027-04': 13.0,
+  '2027-05': 12.2,
+  '2027-06': 11.2,
+  '2027-07': 10.3,
+  '2027-08': 9.3,
+  '2027-09': 8.3,
+  '2027-10': 7.3,
+  '2027-11': 6.9,
+  '2027-12': 6.4,
+  '2028-01': 5.9,
+  '2028-02': 5.5,
+  '2028-03': 5.0,
+  '2028-04': 4.5,
+  '2028-05': 4.1,
+  '2028-06': 3.6,
+  '2028-07': 3.1,
+  '2028-08': 2.6,
+  '2028-09': 2.1,
+  '2028-10': 1.6,
+  '2028-11': 1.1,
+  '2028-12': 0.5
 };
 
 function renderDebtRatioChart(){

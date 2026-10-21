@@ -1,3 +1,9 @@
+## 2026-10-21 — Curva ideal v2 (deuda 0 en diciembre 2028)
+
+- `js/charts.js`: `CURVA_IDEAL_RATIO_DEUDA` recalculada con amortización fija de 787,69 €/mes
+  desde abril 2027 para llegar a deuda 0 en diciembre 2028. Ver `DECISIONS.md` 2026-10-21
+  (curva ideal v2).
+
 ## 2026-10-21 — Card de ratio del Resumen sin objetivo
 
 - `js/charts.js` (`renderKPIs()`): la card "Ratio de endeudamiento" del Resumen deja de mostrar
