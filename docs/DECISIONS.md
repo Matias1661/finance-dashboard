@@ -1,3 +1,29 @@
+## [2026-10-21] Curva ideal en el gráfico del ratio de endeudamiento
+
+**Contexto:** después de simular en el chat varios escenarios de desendeudamiento, Matías pidió
+quitar la línea de objetivo 30% del gráfico de la solapa Deuda y reemplazarla por una "Curva
+ideal" con la simulación de gasto en deuda constante, suponiendo la venta del Golf en marzo.
+
+**Decisión (confirmada por Matías):**
+- "Curva ideal" (`CURVA_IDEAL_RATIO_DEUDA` en `js/charts.js`): foto fija calculada el
+  21/10/2026, no se recalcula en cada sync. Se dibuja desde octubre 2026 (empalma con el
+  histórico).
+- Supuestos: venta del Golf en marzo 2027 por 22.800 € (cobro 15/03/2027), que cancela Golf,
+  IKEA, Visa Classic y moto de Guille y amortiza el Ibiza; pago total en deuda constante de
+  1.136,39 €/mes (octubre 2026) y todo lo que libera una cuota va a capital del préstamo de
+  mayor tipo, reduciendo cuota; comisión 1% en préstamos (Talho sin comisión), tarjetas sin
+  comisión; nómina 2.648,99 € constante. Resultado: 42,0% hasta marzo 2027, 12,9% en abril
+  2027, Ibiza cancelado en septiembre 2027, deuda 0 en septiembre 2028.
+- Se quitan del gráfico la línea de objetivo 30%, la línea vertical y el texto de llegada al
+  objetivo y las banderitas de cambios de pronóstico (se quita `#ratio-deuda-llegada` de
+  `index.html`).
+- No cambia: el pronóstico (`deuda_forecast`) y `debt_forecast_history.json` se siguen
+  generando en el sync (el histórico de llegadas queda registrado aunque no se muestre);
+  `OBJETIVO_RATIO_DEUDA` (30%) sigue en la card del Resumen, el KPI de la solapa Deuda y el
+  semáforo de los puntos.
+
+---
+
 ## [2026-10-21] Forecast del ratio de endeudamiento e histórico del pronóstico
 
 **Contexto:** Matías pidió convertir la curva del ratio de endeudamiento (solapa Deuda) en una

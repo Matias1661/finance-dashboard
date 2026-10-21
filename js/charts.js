@@ -1083,20 +1083,56 @@ function renderTarjetasChart(){
 }
 
 /* Evolución del ratio de endeudamiento (solapa Deuda): histórico desde
- * INICIO_CURVA_RATIO_DEUDA hasta el mes en curso con computeDebtRatio(), y
+ * INICIO_CURVA_RATIO_DEUDA hasta el mes en curso con computeDebtRatio(),
  * pronóstico hasta FIN_CURVA_RATIO_DEUDA con la serie que genera
- * sync_finance_data.py (deuda_forecast en finance_data.json). Línea vertical en
- * el mes de llegada al objetivo y banderitas en los meses en que cambió el
- * pronóstico (debt_forecast_history.json). Ver DECISIONS 2026-10-21 (solapa
- * Deuda y forecast del ratio). */
+ * sync_finance_data.py (deuda_forecast en finance_data.json) y "Curva ideal"
+ * fija (CURVA_IDEAL_RATIO_DEUDA). Desde 2026-10-21 sin línea de objetivo,
+ * marca de llegada ni banderitas de cambios de pronóstico. Ver DECISIONS
+ * 2026-10-21 (curva ideal). */
 const FIN_CURVA_RATIO_DEUDA = '2028-12';
+
+/* Curva ideal: foto fija calculada el 21/10/2026, no se recalcula. Supuestos:
+ * venta del Golf en marzo 2027 por 22.800 € (cobro 15/03/2027) que cancela
+ * Golf, IKEA, Visa Classic y moto de Guille y amortiza el Ibiza; pago total en
+ * deuda constante de 1.136,39 €/mes (octubre 2026) y todo lo que libere una
+ * cuota va a capital del préstamo de mayor tipo, reduciendo cuota; comisión
+ * 1% en préstamos (Talho sin comisión); nómina 2.648,99 € constante. Deuda 0
+ * en septiembre 2028. Ver DECISIONS 2026-10-21 (curva ideal). */
+const CURVA_IDEAL_RATIO_DEUDA = {
+  '2026-10': 42.9,
+  '2026-11': 42.0,
+  '2026-12': 42.0,
+  '2027-01': 42.0,
+  '2027-02': 42.0,
+  '2027-03': 42.0,
+  '2027-04': 12.9,
+  '2027-05': 12.0,
+  '2027-06': 11.0,
+  '2027-07': 10.0,
+  '2027-08': 9.0,
+  '2027-09': 7.8,
+  '2027-10': 7.0,
+  '2027-11': 6.5,
+  '2027-12': 5.9,
+  '2028-01': 5.3,
+  '2028-02': 4.7,
+  '2028-03': 4.1,
+  '2028-04': 3.5,
+  '2028-05': 2.9,
+  '2028-06': 2.2,
+  '2028-07': 1.6,
+  '2028-08': 0.9,
+  '2028-09': 0.2,
+  '2028-10': 0.0,
+  '2028-11': 0.0,
+  '2028-12': 0.0
+};
 
 function renderDebtRatioChart(){
   const ctx = document.getElementById('chart-ratio-deuda');
   if(!ctx) return;
 
   const MESES_CORTOS = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  const MESES_LARGOS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const hoy = new Date();
   const fin = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}`;
   const meses = [];
@@ -1109,8 +1145,6 @@ function renderDebtRatioChart(){
   }
   const idxFin = meses.indexOf(fin);
   const mesCorto = k => `${MESES_CORTOS[parseInt(k.slice(5,7),10)-1]} ${k.slice(2,4)}`;
-  const mesLargo = k => `${MESES_LARGOS[parseInt(k.slice(5,7),10)-1]} ${k.slice(0,4)}`;
-  const fechaCorta = f => `${f.slice(8,10)}/${f.slice(5,7)}/${f.slice(0,4)}`;
   const r1 = v => v === null || v === undefined ? null : Math.round(v * 10) / 10;
   const fmtPct = v => v.toFixed(1).replace('.', ',') + '%';
   const colorPunto = v => v === null ? 'rgba(0,0,0,0.2)'
@@ -1129,128 +1163,53 @@ function renderDebtRatioChart(){
     if(k === fin) return hist[i];
     return fcMap[k] ? r1(fcMap[k].ratio) : null;
   });
-  const llegada = fc?.llegada || null;
-  const idxLlegada = llegada ? meses.indexOf(llegada) : -1;
 
-  // Cambios de pronóstico: banderita sobre la curva en el mes del cambio
-  const cambiosPorIdx = {};
-  (fc?.historial || []).forEach(e => {
-    if(!e.llegada_anterior || e.llegada_anterior === e.llegada) return;
-    const i = meses.indexOf(e.fecha.slice(0,7));
-    if(i < 0) return;
-    (cambiosPorIdx[i] = cambiosPorIdx[i] || []).push(e);
-  });
-  const flags = meses.map((k, i) => {
-    if(!cambiosPorIdx[i]) return null;
-    const base = hist[i] ?? prono[i] ?? OBJETIVO_RATIO_DEUDA;
-    return base + 4;
-  });
-  const hayFlags = flags.some(v => v !== null);
-  const flagIcon = color => {
-    const c = document.createElement('canvas');
-    c.width = 16; c.height = 20;
-    const g = c.getContext('2d');
-    g.strokeStyle = 'rgba(60,60,60,0.9)'; g.lineWidth = 1.5;
-    g.beginPath(); g.moveTo(3, 2); g.lineTo(3, 20); g.stroke();
-    g.fillStyle = color;
-    g.beginPath(); g.moveTo(4, 2); g.lineTo(15, 6); g.lineTo(4, 10); g.closePath(); g.fill();
-    return c;
-  };
-  const flagStyles = meses.map((k, i) => {
-    const es = cambiosPorIdx[i];
-    if(!es) return 'circle';
-    const ult = es[es.length - 1];
-    const mejora = ult.llegada && (!ult.llegada_anterior || ult.llegada < ult.llegada_anterior);
-    return flagIcon(mejora ? 'rgba(13,138,82,0.95)' : 'rgba(200,40,40,0.95)');
-  });
-
-  // Texto de llegada sobre el gráfico
-  const info = document.getElementById('ratio-deuda-llegada');
-  if(info){
-    if(!fc){
-      info.textContent = 'Pronóstico no disponible.';
-    } else {
-      const txtLlegada = llegada ? mesLargo(llegada) : 'no se alcanza con las cuotas actuales';
-      info.textContent = `Llegada estimada al objetivo ${OBJETIVO_RATIO_DEUDA}%: ${txtLlegada}`
-        + ` · pronóstico del ${fechaCorta(fc.generado)}`
-        + ' · supuestos: cuadro actual de préstamos, tarjetas con la última cuota elegida y sin compras nuevas, nómina constante';
-    }
-  }
-
-  // Línea vertical en el mes de llegada
-  const llegadaPlugin = {
-    id: 'llegadaRatioDeuda',
-    afterDatasetsDraw(chart){
-      if(idxLlegada < 0) return;
-      const { ctx: c, chartArea, scales } = chart;
-      const x = scales.x.getPixelForValue(idxLlegada);
-      c.save();
-      c.strokeStyle = 'rgba(13,138,82,0.7)';
-      c.setLineDash([3, 3]);
-      c.lineWidth = 1.5;
-      c.beginPath(); c.moveTo(x, chartArea.top); c.lineTo(x, chartArea.bottom); c.stroke();
-      c.setLineDash([]);
-      c.fillStyle = 'rgba(13,138,82,0.95)';
-      c.font = '600 11px DM Sans, sans-serif';
-      c.textAlign = x > chartArea.right - 90 ? 'right' : 'left';
-      c.fillText(`Objetivo: ${mesCorto(llegada)}`, x + (c.textAlign === 'right' ? -4 : 4), chartArea.top + 12);
-      c.restore();
-    }
-  };
+  // Curva ideal (fija)
+  const ideal = meses.map(k => CURVA_IDEAL_RATIO_DEUDA[k] ?? null);
 
   if(window.debtRatioChart) window.debtRatioChart.destroy();
 
-  const datasets = [
-    {
-      label: 'Ratio de endeudamiento',
-      data: hist,
-      borderColor: 'rgba(66,133,180,0.9)',
-      backgroundColor: 'rgba(66,133,180,0.9)',
-      pointBackgroundColor: hist.map(colorPunto),
-      pointBorderColor: hist.map(colorPunto),
-      pointRadius: 5,
-      tension: 0.2,
-      spanGaps: true
-    },
-    {
-      label: 'Pronóstico',
-      data: prono,
-      borderColor: 'rgba(66,133,180,0.6)',
-      backgroundColor: 'rgba(66,133,180,0.6)',
-      borderDash: [5, 4],
-      pointBackgroundColor: prono.map((v, i) => i === idxLlegada ? colorPunto(v) : '#fff'),
-      pointBorderColor: prono.map(colorPunto),
-      pointRadius: prono.map((v, i) => i === idxFin ? 0 : i === idxLlegada ? 6 : 3),
-      tension: 0,
-      spanGaps: false
-    },
-    {
-      label: `Objetivo ${OBJETIVO_RATIO_DEUDA}%`,
-      data: meses.map(() => OBJETIVO_RATIO_DEUDA),
-      borderColor: 'rgba(13,138,82,0.9)',
-      backgroundColor: 'rgba(13,138,82,0.9)',
-      borderDash: [6, 4],
-      pointRadius: 0,
-      pointHoverRadius: 0
-    }
-  ];
-  if(hayFlags){
-    datasets.push({
-      label: 'Cambios de pronóstico',
-      data: flags,
-      showLine: false,
-      pointStyle: flagStyles,
-      pointRadius: 10,
-      pointHoverRadius: 10,
-      borderColor: 'rgba(110,110,110,0.9)',
-      backgroundColor: 'rgba(110,110,110,0.6)'
-    });
-  }
-
   window.debtRatioChart = new Chart(ctx, {
     type: 'line',
-    data: { labels: meses.map(mesCorto), datasets },
-    plugins: [llegadaPlugin],
+    data: {
+      labels: meses.map(mesCorto),
+      datasets: [
+        {
+          label: 'Ratio de endeudamiento',
+          data: hist,
+          borderColor: 'rgba(66,133,180,0.9)',
+          backgroundColor: 'rgba(66,133,180,0.9)',
+          pointBackgroundColor: hist.map(colorPunto),
+          pointBorderColor: hist.map(colorPunto),
+          pointRadius: 5,
+          tension: 0.2,
+          spanGaps: true
+        },
+        {
+          label: 'Pronóstico',
+          data: prono,
+          borderColor: 'rgba(66,133,180,0.6)',
+          backgroundColor: 'rgba(66,133,180,0.6)',
+          borderDash: [5, 4],
+          pointBackgroundColor: '#fff',
+          pointBorderColor: prono.map(colorPunto),
+          pointRadius: prono.map((v, i) => i === idxFin ? 0 : 3),
+          tension: 0,
+          spanGaps: false
+        },
+        {
+          label: 'Curva ideal',
+          data: ideal,
+          borderColor: 'rgba(13,138,82,0.9)',
+          backgroundColor: 'rgba(13,138,82,0.9)',
+          borderDash: [6, 4],
+          pointRadius: 0,
+          pointHoverRadius: 3,
+          tension: 0,
+          spanGaps: false
+        }
+      ]
+    },
     options: {
       responsive: true,
       maintainAspectRatio: false,
@@ -1262,13 +1221,7 @@ function renderDebtRatioChart(){
             && !(it.datasetIndex === 1 && it.dataIndex === idxFin),
           callbacks: {
             label: c => {
-              if(c.datasetIndex === 2) return `Objetivo: ${fmtPct(c.parsed.y)}`;
-              if(c.datasetIndex === 3){
-                return (cambiosPorIdx[c.dataIndex] || []).flatMap(e => [
-                  `Cambio ${fechaCorta(e.fecha)}: llegada ${e.llegada_anterior ? mesCorto(e.llegada_anterior) : '—'} → ${e.llegada ? mesCorto(e.llegada) : 'sin llegada'}`,
-                  ...(e.cambios || []).map(t => '  ' + t)
-                ]);
-              }
+              if(c.datasetIndex === 2) return `Curva ideal: ${fmtPct(c.parsed.y)}`;
               if(c.datasetIndex === 1){
                 const f = fcMap[meses[c.dataIndex]];
                 const txt = `Pronóstico: ${fmtPct(c.parsed.y)}`;

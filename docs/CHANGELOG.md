@@ -1,3 +1,11 @@
+## 2026-10-21 — Curva ideal en el gráfico del ratio de endeudamiento
+
+- `js/charts.js`: `renderDebtRatioChart()` reemplaza la línea "Objetivo 30%" por "Curva ideal"
+  (`CURVA_IDEAL_RATIO_DEUDA`, serie fija); se quitan la marca y el texto de llegada al
+  objetivo y las banderitas de cambios de pronóstico.
+- `index.html`: se quita `#ratio-deuda-llegada`.
+- Ver `DECISIONS.md` 2026-10-21 (curva ideal).
+
 ## 2026-10-21 — Forecast del ratio de endeudamiento
 
 - `scripts/sync_finance_data.py`: `build_debt_forecast()` (port a Python de

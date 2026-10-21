@@ -283,7 +283,7 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 | Transacciones | renderTransacciones() | Selector mes + categoría, tabla completa |
 | Guille | renderGuille() | KPIs (3), chart mixto dual-Y, selector mes, tabla movimientos |
 | Inversiones | renderInversiones() | ver sección "Tab Inversiones" |
-| Deuda | renderDeuda() | KPIs (5: deuda pendiente total, cuota mensual total, ratio de endeudamiento vs objetivo 30%, TIN/TAE ponderado, estado extractos), curva del ratio de ene 2026 a dic 2028 (`renderDebtRatioChart()`: histórico + pronóstico de `deuda_forecast`, mes de llegada al objetivo y banderitas de cambios de pronóstico desde `debt_forecast_history.json`), sección Préstamos (`renderPrestamos()`) y sección Tarjetas de crédito (`renderTarjetasCredito()`: intereses histórico, `renderTarjetasChart()`, cards por tarjeta) |
+| Deuda | renderDeuda() | KPIs (5: deuda pendiente total, cuota mensual total, ratio de endeudamiento vs objetivo 30%, TIN/TAE ponderado, estado extractos), curva del ratio de ene 2026 a dic 2028 (`renderDebtRatioChart()`: histórico + pronóstico de `deuda_forecast` + "Curva ideal" fija `CURVA_IDEAL_RATIO_DEUDA`; desde 2026-10-21 sin línea de objetivo, marca de llegada ni banderitas), sección Préstamos (`renderPrestamos()`) y sección Tarjetas de crédito (`renderTarjetasCredito()`: intereses histórico, `renderTarjetasChart()`, cards por tarjeta) |
 
 Las solapas Préstamos y Tarjeta de Crédito se unificaron en "Deuda" el 21/10/2026 (ver `DECISIONS.md` 2026-10-21, solapa Deuda); las secciones "Tab Préstamos" y "Tab Tarjeta de Crédito" de este documento describen hoy las dos secciones de esa solapa.
 
