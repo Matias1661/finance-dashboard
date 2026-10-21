@@ -16,8 +16,10 @@ reglas ya decididas:
 
 **Decisión (confirmada por Matías):** agregar al skill el paso de token desde Notion y el
 dispatch obligatorio de `sync-finance-data` con espera, las tres reglas de la fase Viajes y
-el texto de token actualizado en la sección de escritura. Corregir el formato de
-`reviewed_movements.json` en PROJECT_MEMORY.md. `find_pending.py` sin cambios.
+el texto de token actualizado en la sección de escritura. `find_pending.py` pasa a leer
+`GITHUB_TOKEN` del entorno cuando no se pasa `--github-token` (el skill y el docstring ya lo
+decían, pero el script lo ignoraba). Corregir el formato de
+`reviewed_movements.json` en PROJECT_MEMORY.md.
 
 ---
 
