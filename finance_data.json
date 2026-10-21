@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21 14:23",
+  "generated_at": "2026-10-21 14:37",
   "movimientos": [
     {
       "fecha": "2026-10-20",
@@ -21828,6 +21828,7 @@
       "cuota_mensual": 277.95,
       "tin": 0.1493,
       "plazo_meses": 48,
+      "dia_cobro": 1,
       "fecha_inicio": "2023-10-25",
       "fecha_fin": "2027-11-01",
       "numero_prestamo": "9620.323-343588-86",
@@ -21856,6 +21857,7 @@
       "cuota_mensual": 218.12,
       "tin": 0.0799,
       "plazo_meses": 108,
+      "dia_cobro": null,
       "fecha_inicio": "2025-07-25",
       "fecha_fin": "2034-08-01",
       "numero_prestamo": "202507000343303 / 6051762",
@@ -21872,6 +21874,7 @@
       "cuota_mensual": 246.83,
       "tin": 0.0575,
       "plazo_meses": 72,
+      "dia_cobro": null,
       "fecha_inicio": "2024-04-01",
       "fecha_fin": "2030-04-01",
       "numero_prestamo": "9620.801.941896-97",
@@ -21888,6 +21891,7 @@
       "cuota_mensual": 193.49,
       "tin": 0.055,
       "plazo_meses": 96,
+      "dia_cobro": null,
       "fecha_inicio": "2026-05-01",
       "fecha_fin": "2034-05-01",
       "numero_prestamo": "9620.326.640311-37",
