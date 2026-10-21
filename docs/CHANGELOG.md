@@ -1,3 +1,19 @@
+## 2026-10-21 — Amortizaciones anticipadas de préstamos
+
+- Notion: nueva DB "Amortizaciones anticipadas" (data source
+  `03d6c0a0-3bc5-4bc5-88b3-e26cad479e88`) con relación a Préstamos. Primera fila: Moto de
+  Guille, 21/10/2026, 300 € (reducir cuota, nueva cuota 252,82 €). En Préstamos se completó
+  el Nº préstamo de "CaixaBank - Moto de Guille" (9620.323-343588-86).
+- `scripts/sync_finance_data.py`: `fetch_amortizaciones_notion()` y
+  `build_amortizaciones()`; `build_prestamos()` agrega `amortizaciones_anticipadas` a cada
+  préstamo. Nueva constante `NOTION_AMORTIZACIONES_DS_ID` con fallback (sin cambios en el
+  workflow).
+- `js/app.js`: `computeAmortizacion()` aplica las amortizaciones anticipadas (campo
+  `anticipada` por cuota), `capitalPendienteHoy()` las descuenta hasta hoy, nueva
+  `cuotaVigente()`. `renderPrestamos()` usa la cuota vigente en card y totales, muestra lo
+  amortizado y la columna "Anticipada" en el cuadro.
+- Ver `DECISIONS.md` 2026-10-21 (amortizaciones anticipadas).
+
 ## 2026-10-21 — Card de ratio del Resumen: objetivo 30%
 
 - `js/charts.js` (`renderKPIs()`): el subtítulo de la card "Ratio de endeudamiento" muestra

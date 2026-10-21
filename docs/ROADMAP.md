@@ -17,6 +17,7 @@
 - [x] Tab "Préstamos": seguimiento de préstamos personales pendientes (DB Notion + cuadro de amortización calculado en cliente, 2026-08-03)
 - [x] Tab "Tarjeta de Crédito": seguimiento de tarjetas revolving (IKEA, Visa Classic) — DB Notion propia, saldo tomado del extracto real (no recalculado), KPIs + gráfico de evolución + histórico por tarjeta (2026-09-02)
 - [x] Tab "Deuda": unifica Préstamos y Tarjeta de Crédito, KPIs unificados y curva del ratio de endeudamiento con objetivo 30% (2026-10-21). Ver `DECISIONS.md` 2026-10-21.
+- [x] Amortizaciones anticipadas de préstamos: DB Notion propia, aplicadas en el cuadro calculado en cliente (cuota vigente y capital pendiente, 2026-10-21). Ver `DECISIONS.md` 2026-10-21 (amortizaciones anticipadas).
 
 ## Alta prioridad
 - [x] Categoría "Amortización deuda" excluida de ingresos y gastos (pagos extraordinarios de deuda y venta del Golf), necesaria para el plan de reducción de gastos (2026-10-05). Ver `DECISIONS.md` 2026-10-05.

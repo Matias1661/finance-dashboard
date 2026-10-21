@@ -1,3 +1,45 @@
+## [2026-10-21] Amortizaciones anticipadas de préstamos
+
+**Contexto:** Matías hizo una amortización parcial de prueba del préstamo "CaixaBank - Moto de
+Guille" (contrato 9620.323-343588-86, TIN 14,93%) el 21/10/2026: 300 € de capital, tipo
+"Reducir cuota y mantener el mismo plazo". Justificante de CaixaBankNow: intereses del
+01/10 al 21/10 sobre lo amortizado 2,58 €, comisión 1,0% 3,00 €, total liquidado 305,58 €,
+saldo dispuesto 3.017,36 €, cuota nueva 252,82 € (antes 277,95 €), 13 vencimientos
+pendientes, vencimiento 01/11/2027 sin cambios. `computeAmortizacion()` no contemplaba
+amortizaciones anticipadas y seguía mostrando la cuota y el saldo originales. Matías pidió
+actualizar el préstamo en Notion y adaptar el dashboard.
+
+**Decisión:**
+- Nueva DB Notion "Amortizaciones anticipadas" bajo Finance Tracker (data source
+  `03d6c0a0-3bc5-4bc5-88b3-e26cad479e88`), una fila por operación: Nombre, Préstamo
+  (relación con Préstamos, inversa "Amortizaciones anticipadas"), Fecha, Importe amortizado,
+  Intereses liquidados, Comisión, Total liquidado, Tipo (Reducir cuota / Reducir plazo),
+  Nueva cuota, Capital pendiente tras amortización, Vencimientos pendientes, Justificante
+  (Drive), Notas. Se eligió una DB aparte (no columnas en Préstamos) porque un préstamo
+  puede tener varias amortizaciones.
+- En Préstamos, "Cuota mensual" sigue siendo la cuota original del contrato: el cuadro se
+  reconstruye desde el inicio y necesita la cuota original para los meses previos.
+- `sync_finance_data.py` lee la DB nueva y agrega a cada préstamo la lista
+  `amortizaciones_anticipadas`. Si la lectura falla, los préstamos se sincronizan igual
+  sin amortizaciones (aviso en el log).
+- `computeAmortizacion()` resta cada amortización del saldo antes de la primera cuota con
+  fecha posterior. "Reducir cuota" usa la "Nueva cuota" del justificante; si falta, la
+  recalcula por sistema francés sobre las cuotas restantes. "Reducir plazo" mantiene la
+  cuota y el cuadro termina antes. Los intereses liquidados y la comisión no entran en el
+  cuadro (se pagan aparte, en el mismo cargo del banco).
+- `capitalPendienteHoy()` descuenta también las amortizaciones hechas después de la última
+  cuota vencida. La card muestra la cuota vigente (con la original debajo si cambió), una
+  línea con lo amortizado anticipadamente y una columna "Anticipada" en el cuadro. KPIs y
+  ratio de endeudamiento usan la cuota vigente.
+- Verificación con el préstamo de Guille: el cuadro calculado da 3.317,45 € tras 35 cuotas
+  (banco 3.317,36 € antes de amortizar), 3.017,45 € tras la amortización y cuota 252,82 €,
+  igual que el banco.
+- Limitación conocida (previa): las fechas de cuota del cuadro salen de "Fecha inicio"
+  (25/10/2023) y caen el día 25; el banco cobra el día 1 (vencimiento 01/11/2027). El
+  número de cuotas pendientes coincide.
+
+---
+
 ## [2026-10-21] Solapa Deuda: unifica Préstamos y Tarjeta de Crédito
 
 **Contexto:** Matías pidió unificar las solapas Préstamos y Tarjeta de Crédito en una sola

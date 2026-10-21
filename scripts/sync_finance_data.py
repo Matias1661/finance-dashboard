@@ -58,6 +58,11 @@ NOTION_TOKEN               = os.environ["NOTION_TOKEN"]
 NOTION_DATA_SOURCE_ID      = os.environ["NOTION_MOVIMIENTOS_DATA_SOURCE_ID"]
 NOTION_RENDIMIENTO_DS_ID   = os.environ.get("NOTION_RENDIMIENTO_DATA_SOURCE_ID")
 NOTION_PRESTAMOS_DS_ID     = os.environ.get("NOTION_PRESTAMOS_DATA_SOURCE_ID")
+# DB "Amortizaciones anticipadas" (una fila por amortizacion parcial, con
+# relacion a Prestamos). ID no sensible, mismo patron que Nominas. Ver
+# docs/DECISIONS.md [2026-10-21] (amortizaciones anticipadas).
+NOTION_AMORTIZACIONES_DS_ID = os.environ.get(
+    "NOTION_AMORTIZACIONES_DATA_SOURCE_ID", "03d6c0a0-3bc5-4bc5-88b3-e26cad479e88")
 # DB "Nominas" (detalle Empresa/Total por recibo). ID no sensible (no es un
 # secret real de acceso, es solo el identificador de la data source), por eso
 # se hardcodea con fallback en vez de requerir un nuevo secret de GitHub
@@ -225,13 +230,80 @@ def fetch_prestamos_notion():
     return results
 
 
-def build_prestamos(pages):
+def fetch_amortizaciones_notion():
+    """Lee todas las paginas de la DB Notion 'Amortizaciones anticipadas' via API REST."""
+    url = f"https://api.notion.com/v1/data_sources/{NOTION_AMORTIZACIONES_DS_ID}/query"
+    headers = {
+        "Authorization": f"Bearer {NOTION_TOKEN}",
+        "Notion-Version": NOTION_VERSION,
+        "Content-Type": "application/json"
+    }
+    payload = {"page_size": 100}
+
+    results = []
+    while True:
+        resp = requests.post(url, headers=headers, json=payload, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+        results.extend(data.get("results", []))
+        if not data.get("has_more"):
+            break
+        payload["start_cursor"] = data["next_cursor"]
+
+    return results
+
+
+def build_amortizaciones(pages):
+    """Agrupa las amortizaciones anticipadas por id de pagina del prestamo
+    (relacion 'Préstamo'). Devuelve {prestamo_id: [ {...}, ... ]} ordenado por
+    fecha. El cliente (computeAmortizacion) las aplica sobre el cuadro."""
+    def _number(props, key):
+        return (props.get(key) or {}).get("number")
+
+    def _date(props, key):
+        d = (props.get(key) or {}).get("date")
+        return d.get("start") if d else None
+
+    def _select(props, key):
+        s = (props.get(key) or {}).get("select")
+        return s.get("name") if s else None
+
+    out = {}
+    for p in pages:
+        props = p.get("properties", {})
+        fecha = _date(props, "Fecha")
+        importe = _number(props, "Importe amortizado")
+        if not fecha or not importe:
+            continue
+        rel = (props.get("Préstamo") or {}).get("relation", [])
+        for r in rel:
+            pid = (r.get("id") or "").replace("-", "")
+            out.setdefault(pid, []).append({
+                "fecha": fecha,
+                "importe": importe,
+                "intereses": _number(props, "Intereses liquidados"),
+                "comision": _number(props, "Comisión"),
+                "total_liquidado": _number(props, "Total liquidado"),
+                "tipo": _select(props, "Tipo"),
+                "nueva_cuota": _number(props, "Nueva cuota"),
+                "capital_tras": _number(props, "Capital pendiente tras amortización"),
+                "vencimientos_pendientes": _number(props, "Vencimientos pendientes"),
+            })
+    for pid in out:
+        out[pid].sort(key=lambda a: a["fecha"])
+    return out
+
+
+def build_prestamos(pages, amortizaciones=None):
     """Convierte las paginas de la DB Notion 'Prestamos' en una lista de dicts
     para finance_data.json. El cuadro de amortizacion y el capital pendiente
     NO se calculan aqui: se derivan en el cliente (js/app.js,
     computeAmortizacion()) a partir de capital_inicial/tin/cuota_mensual/
     fecha_inicio, para evitar tener que sincronizar cientos de filas de cuotas.
-    Excluye prestamos con Estado = Cancelado."""
+    Excluye prestamos con Estado = Cancelado. Cada prestamo lleva la lista
+    'amortizaciones_anticipadas' (DB 'Amortizaciones anticipadas') y
+    'cuota_mensual' sigue siendo la cuota original del contrato."""
+    amortizaciones = amortizaciones or {}
 
     def _title(props, key):
         arr = (props.get(key) or {}).get("title", [])
@@ -259,6 +331,7 @@ def build_prestamos(pages):
         if estado == "Cancelado":
             continue
 
+        pid = (p.get("id") or "").replace("-", "")
         out.append({
             "nombre": _title(props, "Nombre"),
             "entidad": _text(props, "Entidad"),
@@ -273,6 +346,7 @@ def build_prestamos(pages):
             "uso_real": _select(props, "Uso real"),
             "estado": estado,
             "notas": _text(props, "Notas"),
+            "amortizaciones_anticipadas": amortizaciones.get(pid, []),
         })
 
     return out
@@ -1272,7 +1346,13 @@ if __name__ == "__main__":
             if not NOTION_PRESTAMOS_DS_ID:
                 raise RuntimeError("falta env var NOTION_PRESTAMOS_DATA_SOURCE_ID")
             prestamos_pages = fetch_prestamos_notion()
-            prestamos = build_prestamos(prestamos_pages)
+            try:
+                amortizaciones = build_amortizaciones(fetch_amortizaciones_notion())
+                print(f"  {sum(len(v) for v in amortizaciones.values())} amortizaciones anticipadas")
+            except Exception as amort_err:
+                print(f"  AVISO: no se pudo leer Amortizaciones anticipadas: {amort_err}")
+                amortizaciones = {}
+            prestamos = build_prestamos(prestamos_pages, amortizaciones)
             print(f"  {len(prestamos)} prestamos activos")
         except Exception as prest_err:
             print(f"  AVISO: no se pudo leer Prestamos: {prest_err}")

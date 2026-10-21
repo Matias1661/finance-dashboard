@@ -1109,12 +1109,29 @@ function renderInvRendimiento(){
  * fecha_inicio). Puede diferir en céntimos del cuadro real del banco por
  * convenciones de conteo de días, pero es suficiente para seguimiento
  * personal. Ver docs/DECISIONS.md, entrada [2026-08-03] (5).
+ *
+ * Amortizaciones anticipadas (DB Notion "Amortizaciones anticipadas", clave
+ * amortizaciones_anticipadas de cada préstamo): se restan del saldo antes de
+ * la primera cuota con fecha posterior. Tipo "Reducir cuota" (o vacío): la
+ * cuota pasa a "Nueva cuota" del justificante del banco o, si falta, se
+ * recalcula por sistema francés sobre las cuotas restantes. Tipo "Reducir
+ * plazo": se mantiene la cuota y el cuadro termina antes. cuota_mensual de
+ * Notion sigue siendo la cuota original del contrato. Ver docs/DECISIONS.md
+ * [2026-10-21] (amortizaciones anticipadas).
  */
+function anticipadasOrdenadas(prestamo){
+  return [...(prestamo.amortizaciones_anticipadas || [])]
+    .filter(a => a && a.fecha && Number(a.importe) > 0)
+    .sort((a, b) => a.fecha.localeCompare(b.fecha));
+}
+
 function computeAmortizacion(prestamo){
   const capital0 = Number(prestamo.capital_inicial) || 0;
-  const cuota = Number(prestamo.cuota_mensual) || 0;
+  let cuota = Number(prestamo.cuota_mensual) || 0;
   const tasaMensual = (Number(prestamo.tin) || 0) / 12;
   const plazo = Number(prestamo.plazo_meses) || 0;
+  const anticipadas = anticipadasOrdenadas(prestamo);
+  let idxA = 0;
 
   const schedule = [];
   if(!prestamo.fecha_inicio || plazo <= 0) return schedule;
@@ -1123,35 +1140,68 @@ function computeAmortizacion(prestamo){
   const inicio = new Date(prestamo.fecha_inicio + 'T00:00:00');
 
   for(let i = 1; i <= plazo && saldo > 0.01; i++){
+    const fechaCuota = new Date(inicio);
+    fechaCuota.setMonth(inicio.getMonth() + i);
+    const fechaISO = fechaCuota.toISOString().slice(0, 10);
+
+    let anticipada = 0;
+    while(idxA < anticipadas.length && anticipadas[idxA].fecha < fechaISO){
+      const a = anticipadas[idxA++];
+      const importe = Math.min(Number(a.importe) || 0, saldo);
+      saldo = Math.max(0, saldo - importe);
+      anticipada += importe;
+      if(a.tipo !== 'Reducir plazo' && saldo > 0.01){
+        const restantes = plazo - i + 1;
+        const nueva = Number(a.nueva_cuota) || 0;
+        cuota = nueva > 0 ? nueva
+          : (tasaMensual > 0 ? saldo * tasaMensual / (1 - Math.pow(1 + tasaMensual, -restantes)) : saldo / restantes);
+      }
+    }
+    if(saldo <= 0.01) break;
+
     const interes = saldo * tasaMensual;
     let amort = cuota - interes;
     if(amort > saldo) amort = saldo;
     if(amort < 0) amort = 0;
     saldo = Math.max(0, saldo - amort);
 
-    const fechaCuota = new Date(inicio);
-    fechaCuota.setMonth(inicio.getMonth() + i);
-
     schedule.push({
       numero: i,
-      fecha: fechaCuota.toISOString().slice(0, 10),
+      fecha: fechaISO,
       cuota: interes + amort,
       interes,
       amortizacion: amort,
+      anticipada,
       saldo
     });
   }
   return schedule;
 }
 
+/* Saldo de la última cuota con fecha <= hoy, menos las amortizaciones
+ * anticipadas hechas después de esa cuota y hasta hoy (las anteriores ya
+ * están dentro del cuadro). */
 function capitalPendienteHoy(prestamo, schedule){
   let saldo = Number(prestamo.capital_inicial) || 0;
+  let ultimaFecha = '';
   const hoy = new Date();
+  const hoyISO = hoy.toISOString().slice(0, 10);
   for(const c of schedule){
-    if(new Date(c.fecha + 'T00:00:00') <= hoy) saldo = c.saldo;
+    if(new Date(c.fecha + 'T00:00:00') <= hoy){ saldo = c.saldo; ultimaFecha = c.fecha; }
     else break;
   }
+  anticipadasOrdenadas(prestamo).forEach(a => {
+    if(a.fecha >= ultimaFecha && a.fecha <= hoyISO) saldo = Math.max(0, saldo - (Number(a.importe) || 0));
+  });
   return saldo;
+}
+
+/* Cuota vigente: la de la próxima cuota del cuadro (refleja amortizaciones
+ * anticipadas de tipo "Reducir cuota"); si no quedan cuotas, la original. */
+function cuotaVigente(prestamo, schedule){
+  const hoy = new Date();
+  const proxima = schedule.find(c => new Date(c.fecha + 'T00:00:00') > hoy);
+  return proxima ? proxima.cuota : (Number(prestamo.cuota_mensual) || 0);
 }
 
 function togglePrestamoTabla(id){
@@ -1185,10 +1235,14 @@ function renderPrestamos(){
   const cards = prestamosOrdenados.map((p, idx) => {
     const schedule = computeAmortizacion(p);
     const pendiente = schedule.length > 0 ? capitalPendienteHoy(p, schedule) : (Number(p.capital_inicial) || 0);
+    const cuotaActual = cuotaVigente(p, schedule);
+    const cuotaOriginal = Number(p.cuota_mensual) || 0;
+    const anticipadas = anticipadasOrdenadas(p);
+    const totalAnticipado = anticipadas.reduce((s, a) => s + (Number(a.importe) || 0), 0);
     totalPendiente += pendiente;
-    totalCuotas += Number(p.cuota_mensual) || 0;
+    totalCuotas += cuotaActual;
     if(pendiente > 0.01){
-      totales.cuotas += Number(p.cuota_mensual) || 0;
+      totales.cuotas += cuotaActual;
       totales.activos += 1;
       totales.sumaPonderadaTipo += pendiente * (Number(p.tin) || 0) * 100;
     }
@@ -1217,10 +1271,12 @@ function renderPrestamos(){
       <div style="margin-top:4px;font-size:11px;color:var(--text-secondary)">${pctAmortizado.toFixed(1)}% pagado</div>
 
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;font-size:12px;color:var(--text-secondary)">
-        <div><div>Cuota mensual</div><div style="font-family:'DM Mono';font-size:14px;color:var(--text)">${formatEUR(Number(p.cuota_mensual) || 0)}</div></div>
+        <div><div>Cuota mensual</div><div style="font-family:'DM Mono';font-size:14px;color:var(--text)">${formatEUR(cuotaActual)}</div>${Math.abs(cuotaActual - cuotaOriginal) > 0.01 ? `<div style="font-size:11px">original ${formatEUR(cuotaOriginal)}</div>` : ''}</div>
         <div><div>TIN</div><div style="font-family:'DM Mono';font-size:14px;color:var(--text)">${tinPct}</div></div>
         <div><div>Fecha fin</div><div style="font-family:'DM Mono';font-size:14px;color:var(--text)">${p.fecha_fin || '—'}</div></div>
       </div>
+
+      ${anticipadas.length ? `<div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">Amortizado anticipadamente: ${formatEUR(totalAnticipado)} (${anticipadas.map(a => `${a.fecha.split('-').reverse().join('/')}: ${formatEUR(Number(a.importe) || 0)}${a.tipo ? ', ' + a.tipo.toLowerCase() : ''}`).join('; ')})</div>` : ''}
 
       ${p.notas ? `<div style="margin-top:10px;font-size:12px;color:var(--amber);background:rgba(154,98,0,0.08);padding:8px 10px;border-radius:8px">${p.notas}</div>` : ''}
 
@@ -1228,9 +1284,9 @@ function renderPrestamos(){
         <button onclick="togglePrestamoTabla('${tablaId}')" style="font-size:12px;background:none;border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer;color:var(--text-secondary)">Ver cuadro de amortización</button>
         <div id="${tablaId}" style="display:none;margin-top:10px;max-height:300px;overflow:auto">
           <table class="tx-table">
-            <thead><tr><th>#</th><th>Fecha</th><th>Cuota</th><th>Interés</th><th>Amortización</th><th>Saldo</th></tr></thead>
+            <thead><tr><th>#</th><th>Fecha</th><th>Cuota</th><th>Interés</th><th>Amortización</th>${anticipadas.length ? '<th>Anticipada</th>' : ''}<th>Saldo</th></tr></thead>
             <tbody>
-              ${schedule.map(c => `<tr><td>${c.numero}</td><td>${c.fecha}</td><td>${formatEUR(c.cuota)}</td><td>${formatEUR(c.interes)}</td><td>${formatEUR(c.amortizacion)}</td><td>${formatEUR(c.saldo)}</td></tr>`).join('')}
+              ${schedule.map(c => `<tr><td>${c.numero}</td><td>${c.fecha}</td><td>${formatEUR(c.cuota)}</td><td>${formatEUR(c.interes)}</td><td>${formatEUR(c.amortizacion)}</td>${anticipadas.length ? `<td>${c.anticipada ? formatEUR(c.anticipada) : ''}</td>` : ''}<td>${formatEUR(c.saldo)}</td></tr>`).join('')}
             </tbody>
           </table>
         </div>
