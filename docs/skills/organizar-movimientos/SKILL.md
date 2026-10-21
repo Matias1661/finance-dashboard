@@ -1,6 +1,6 @@
 ---
 name: organizar-movimientos
-description: Usar SIEMPRE que Matias pida "organizar movimientos", "revisar movimientos pendientes", "qué falta categorizar", o cualquier variante sobre el flujo de revisión de movimientos del Finance Dashboard (repo Matias1661/finance-dashboard). Este skill fuerza el orden completo de fases (0 categorización inicial de "A revisar", PayPal, Uber, Amazon, Viajes, residual) y NO debe saltearse ninguna, en particular el cruce contra TRIP_WINDOWS de js/app.js, que es fácil de olvidar porque no vive en ningún doc central del repo.
+description: Usar SIEMPRE que Matias pida "organizar movimientos", "revisar movimientos pendientes", "qué falta categorizar", o cualquier variante sobre el flujo de revisión de movimientos del Finance Dashboard (repo Matias1661/finance-dashboard). Este skill fuerza el orden completo de fases (PayPal, Uber, Amazon, Viajes, residual) y NO debe saltearse ninguna, en particular el cruce contra TRIP_WINDOWS de js/app.js, que es fácil de olvidar porque no vive en ningún doc central del repo.
 ---
 
 # Organizar Movimientos — Finance Dashboard
@@ -14,12 +14,7 @@ antes de asumir nada del historial de chat.
 
 1. Leer `docs/PROJECT_MEMORY.md` del repo (vía API autenticada de GitHub, nunca
    `raw.githubusercontent.com` si luego vas a editar — cache puede estar desactualizado).
-2. Disparar `sync-finance-data` (`POST .../actions/workflows/286832931/dispatches` con
-   `{"ref":"main"}`) y esperar a que termine, para que se carguen en Notion los CSV nuevos
-   de "Extractos para Notion".
-3. Ejecutar la **Fase 0** (ver abajo). Si escribió categorías, volver a disparar
-   `sync-finance-data` y esperar a que termine antes del paso 4.
-4. Correr `scripts/find_pending.py` (bundled en este skill) para obtener el listado de
+2. Correr `scripts/find_pending.py` (bundled en este skill) para obtener el listado de
    movimientos pendientes YA cruzado contra viajes. No arrastres una lista hecha a mano en
    una sesión anterior — el repo puede haber cambiado.
 
@@ -35,20 +30,6 @@ olvidado antes** — el script la hace obligatoria porque no depende de la memor
 
 ## Fases del flujo (en este orden)
 
-0. **Categorización inicial** — desde el 21/10/2026 GitHub Actions carga los movimientos
-   del CSV sin categorizar, con Categoria = "A revisar" (ver DECISIONS.md 2026-10-21).
-   a. Consultar en Notion (data source `367d58ce-928b-4e31-832d-07707f876365`) todas las
-      filas con Categoria = "A revisar".
-   b. Leer en vivo el prompt "Pasar extracto bancario a Notion" de la DB Notion "Prompts"
-      (data source `39833ce5-0e68-804a-b091-000bef7a0796`, propiedad Texto). Es la única
-      fuente de reglas de categorización; no usar una copia de una sesión anterior.
-   c. Proponer una categoría por movimiento aplicando ese prompt y las reglas automáticas
-      de este skill. Si alguno es ambiguo, proponerlo igual como "A revisar" y marcarlo.
-   d. Mostrar la propuesta completa en una tabla (Fecha, Concepto, Monto, Categoría
-      propuesta) y pedir confirmación en bloque.
-   e. Escribir solo lo confirmado (ver "Escritura", punto 1). No se agrega nada a
-      `reviewed_movements.json` en esta fase: los movimientos siguen pendientes y pasan
-      por las fases 1 a 5.
 1. **PayPal** — cruzar contra Gmail si hay movimientos con concepto PAYPAL.
 2. **Uber** — distinguir Uber Rides vs Uber Eats vía Gmail si hace falta.
 3. **Amazon** — Gmail + reglas automáticas (ver abajo), distinguir compras de reembolsos.
