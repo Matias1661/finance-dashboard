@@ -322,7 +322,7 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 
 **Caso de fechas/montos duplicados:** si la query SQL devuelve más de una página con la misma combinación fecha+concepto+monto, Claude debe pedir confirmación al usuario indicando ambas antes de escribir, en vez de asumir cuál corresponde (paralelo al caso NYX*AIRservSpain documentado en el CHANGELOG bajo el flujo anterior).
 
-**Registro:** `reviewed_movements.json` — `{ "reviewed": ["fecha|concepto|monto", ...] }`
+**Registro:** `reviewed_movements.json` — lista plana de claves: `["fecha|concepto|monto", ...]` (monto como float)
 
 **KPI:** card "Sin analizar por Claude" en tab Resumen — cuenta movimientos candidatos no en `reviewed_movements.json`
 
