@@ -5,6 +5,8 @@
   cruce de Google Calendar, verificación geográfica del comercio y criterio comida-en-viajes
   (SERVIMATIC siempre en Comer afuera).
 - `docs/PROJECT_MEMORY.md`: formato real de `reviewed_movements.json` (lista plana).
+- `docs/skills/organizar-movimientos/scripts/find_pending.py`: lee `GITHUB_TOKEN` del
+  entorno si no se pasa `--github-token`.
 - Ver `DECISIONS.md` 2026-10-21.
 
 ## 2026-10-21 — Organizar movimientos
