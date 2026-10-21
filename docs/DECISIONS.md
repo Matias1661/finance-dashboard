@@ -1,3 +1,40 @@
+## [2026-10-21] Solapa Deuda: unifica Préstamos y Tarjeta de Crédito
+
+**Contexto:** Matías pidió unificar las solapas Préstamos y Tarjeta de Crédito en una sola
+llamada "Deuda", con la información actual, KPIs unificados y una curva de evolución del
+ratio de endeudamiento con una línea de objetivo. Propuesta revisada en el chat antes de
+implementar.
+
+**Decisión (confirmada por Matías):**
+- Una sola solapa "Deuda" (`tab-deuda`, `renderDeuda()`) reemplaza a `tab-prestamos` y
+  `tab-tarjetas`. Orden: KPIs, curva del ratio, sección Préstamos (cards sin cambios),
+  sección Tarjetas de crédito (card de intereses históricos, gráfico de saldo aplazado y
+  cards por tarjeta, sin cambios).
+- KPIs unificados (5):
+  - Deuda pendiente total: capital pendiente de préstamos (calendario
+    `computeAmortizacion()`) + saldo aplazado del último extracto de cada tarjeta.
+  - Cuota mensual total: cuota de préstamos con capital pendiente + cuota elegida del
+    último extracto de tarjetas con saldo.
+  - Ratio de endeudamiento del mes: mismo `computeDebtRatio()` del Resumen, comparado
+    contra el objetivo.
+  - TIN/TAE ponderado por saldo pendiente: TIN de préstamos y TAE de tarjetas (no son la
+    misma medida; se rotula explícitamente). Reemplaza a "TAE promedio ponderado" y a
+    "Préstamos activos" (el conteo pasa a subtítulo de la deuda total).
+  - Estado extractos: igual que antes.
+  - "Intereses pagados (histórico)" pasa a la sección de tarjetas: no tiene equivalente
+    directo en préstamos.
+- Curva "Evolución del ratio de endeudamiento" (`renderDebtRatioChart()`): mensual desde
+  enero 2026 (`INICIO_CURVA_RATIO_DEUDA`) hasta el mes en curso. Arranca en enero 2026
+  porque los extractos revolving empiezan en diciembre 2025 y antes el ratio sale
+  subestimado. Puntos con el semáforo del Resumen.
+- Objetivo: 30% (`OBJETIVO_RATIO_DEUDA`, fin de la zona verde), línea punteada.
+- La card de ratio del Resumen se mantiene.
+- Valores al 21/10/2026: deuda 45.898,67 € (préstamos 42.261,68 € + tarjetas
+  3.636,99 €), cuota 1.136,39 € (936,39 € + 200 €), ratio 42,9%, TIN/TAE ponderado
+  7,99%. Curva: ene 32,2%, feb 36,8%, mar-may 36,5%, jun-ago 39,1%, sep 42,5%, oct 42,9%.
+
+---
+
 ## [2026-10-21] Corrección de la proyección de gastos de fin de mes
 
 **Contexto:** el rombo azul "Proyección fin de mes" daba 5.881,88 € para octubre 2026 con

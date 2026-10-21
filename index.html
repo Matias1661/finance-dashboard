@@ -76,6 +76,8 @@
 
     /* ── KPIs ── */
     .kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 24px; }
+    .kpis.kpis-5 { grid-template-columns: repeat(5,1fr); }
+    .deuda-seccion { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--text-secondary); margin: 0 0 10px; }
 
     /* ── Period pills ── */
     .period-pills { display: flex; gap: 4px; margin-bottom: 10px; flex-wrap: wrap; }
@@ -162,6 +164,7 @@
       .main   { padding: 14px 12px; }
 
       .kpis   { grid-template-columns: repeat(2,1fr); gap: 8px; }
+      .kpis.kpis-5 { grid-template-columns: repeat(2,1fr); }
       .grid-2 { grid-template-columns: 1fr; }
       .grid-cat-resumen { grid-template-columns: 1fr; }
 
@@ -209,8 +212,7 @@
   <button class="tab" onclick="switchTab('transacciones', this)">Transacciones</button>
   <button class="tab" onclick="switchTab('guille', this)">Guille</button>
   <button class="tab" onclick="switchTab('inversiones', this)">Inversiones</button>
-  <button class="tab" onclick="switchTab('prestamos', this)">Préstamos</button>
-  <button class="tab" onclick="switchTab('tarjetas', this)">Tarjeta de Crédito</button>
+  <button class="tab" onclick="switchTab('deuda', this)">Deuda</button>
 </div>
 
 <div id="tab-resumen" class="tab-panel active">
@@ -429,19 +431,24 @@
 
 </div>
 
-<div id="tab-prestamos" class="tab-panel">
+<div id="tab-deuda" class="tab-panel">
 
-  <div class="kpis" id="prestamos-kpis"></div>
+  <div class="kpis kpis-5" id="deuda-kpis"></div>
 
-  <div id="prestamos-list" style="display:flex;flex-direction:column;gap:16px"></div>
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-title">Evolución del ratio de endeudamiento</div>
+    <div class="chart-wrap-tall">
+      <canvas id="chart-ratio-deuda"></canvas>
+    </div>
+  </div>
 
-</div>
+  <div class="deuda-seccion">Préstamos</div>
+  <div id="prestamos-list" style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px"></div>
 
-<div id="tab-tarjetas" class="tab-panel">
-
+  <div class="deuda-seccion">Tarjetas de crédito</div>
   <div class="kpis" id="tarjetas-kpis"></div>
 
-  <div class="card">
+  <div class="card" style="margin-bottom:16px">
     <div class="card-title">Evolución del saldo aplazado</div>
     <div class="chart-wrap-tall">
       <canvas id="chart-tarjetas"></canvas>

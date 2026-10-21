@@ -1159,16 +1159,18 @@ function togglePrestamoTabla(id){
   if(div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
 }
 
+/* Pinta las cards de préstamos dentro de la solapa Deuda y devuelve los
+ * totales para los KPIs unificados de renderDeuda(). Ver docs/DECISIONS.md
+ * [2026-10-21] (solapa Deuda). */
 function renderPrestamos(){
   const prestamos = window.FINANCE_STATE?.prestamos || [];
   const listEl = document.getElementById('prestamos-list');
-  const kpiEl = document.getElementById('prestamos-kpis');
-  if(!listEl) return;
+  const totales = { pendiente: 0, cuotas: 0, activos: 0, sumaPonderadaTipo: 0 };
+  if(!listEl) return totales;
 
   if(prestamos.length === 0){
     listEl.innerHTML = '<div class="card">No hay préstamos cargados en Notion.</div>';
-    if(kpiEl) kpiEl.innerHTML = '';
-    return;
+    return totales;
   }
 
   let totalPendiente = 0;
@@ -1185,6 +1187,11 @@ function renderPrestamos(){
     const pendiente = schedule.length > 0 ? capitalPendienteHoy(p, schedule) : (Number(p.capital_inicial) || 0);
     totalPendiente += pendiente;
     totalCuotas += Number(p.cuota_mensual) || 0;
+    if(pendiente > 0.01){
+      totales.cuotas += Number(p.cuota_mensual) || 0;
+      totales.activos += 1;
+      totales.sumaPonderadaTipo += pendiente * (Number(p.tin) || 0) * 100;
+    }
 
     const capitalInicial = Number(p.capital_inicial) || 0;
     const pctAmortizado = capitalInicial > 0 ? Math.max(0, Math.min(100, 100 - (pendiente / capitalInicial * 100))) : 0;
@@ -1233,22 +1240,8 @@ function renderPrestamos(){
 
   listEl.innerHTML = cards;
 
-  if(kpiEl){
-    kpiEl.innerHTML = `
-    <div class="card">
-      <div class="card-title">Capital pendiente total</div>
-      <div style="font-size:22px;font-weight:600;color:var(--blue)">${formatEUR(totalPendiente)}</div>
-    </div>
-    <div class="card">
-      <div class="card-title">Cuota mensual total</div>
-      <div style="font-size:22px;font-weight:600;color:var(--red)">${formatEUR(totalCuotas)}</div>
-    </div>
-    <div class="card">
-      <div class="card-title">Préstamos activos</div>
-      <div style="font-size:22px;font-weight:600">${prestamos.length}</div>
-    </div>
-  `;
-  }
+  totales.pendiente = totalPendiente;
+  return totales;
 }
 
 /* ── Tarjetas de Crédito (revolving) ──
@@ -1302,17 +1295,22 @@ const MENSAJE_TARJETA_PENDIENTE = {
   'Visa Classic': (mes) => `Entrá a la app de CaixaBank, buscá el extracto de ${mes} y subilo a la carpeta "Tarjetas de crédito" en Drive.`
 };
 
+/* Pinta la sección de tarjetas dentro de la solapa Deuda (card de intereses
+ * históricos, gráfico de saldo aplazado y una card por tarjeta) y devuelve
+ * los totales para los KPIs unificados de renderDeuda(). Ver
+ * docs/DECISIONS.md [2026-10-21] (solapa Deuda). */
 function renderTarjetasCredito(){
   const rows = window.FINANCE_STATE?.tarjetasCredito || [];
   const operaciones = window.FINANCE_STATE?.tarjetasCreditoOperaciones || [];
   const listEl = document.getElementById('tarjetas-list');
   const kpiEl = document.getElementById('tarjetas-kpis');
-  if(!listEl) return;
+  const totales = { saldo: 0, cuotas: 0, activas: 0, sumaPonderadaTipo: 0, estadoHTML: '' };
+  if(!listEl) return totales;
 
   if(rows.length === 0){
     listEl.innerHTML = '<div class="card">No hay tarjetas de crédito cargadas en Notion.</div>';
     if(kpiEl) kpiEl.innerHTML = '';
-    return;
+    return totales;
   }
 
   const porTarjeta = {};
@@ -1337,6 +1335,10 @@ function renderTarjetasCredito(){
     const saldo = Number(ultimo.aplazado_proximo) || 0;
     saldoTotal += saldo;
     sumaPonderadaTAE += saldo * (Number(ultimo.tae) || 0);
+    if(saldo > 0.01){
+      totales.cuotas += Number(ultimo.cuota_mensual_elegida) || 0;
+      totales.activas += 1;
+    }
     interesesAcumulados += periodos.reduce((acc, p) => acc + (Number(p.intereses_periodo) || 0), 0);
 
     const limiteInicial = Number(ultimo.limite_inicial) || 0;
@@ -1402,9 +1404,7 @@ function renderTarjetasCredito(){
 
   listEl.innerHTML = cards;
 
-  if(kpiEl){
-    const taePromedio = saldoTotal > 0 ? (sumaPonderadaTAE / saldoTotal) : 0;
-
+  {
     const hoy = new Date();
     const pendientes = Object.entries(porTarjeta)
       .map(([nombre, periodos]) => ({ nombre, status: tarjetaExtractoStatus(periodos, hoy) }))
@@ -1421,28 +1421,79 @@ function renderTarjetasCredito(){
       ? `<div style="font-size:22px;font-weight:600;color:var(--green)">✓ Al día</div>`
       : `<div style="font-size:22px;font-weight:600;color:var(--amber)">⚠ Pendiente</div>${mensajesPendientes}`;
 
-    kpiEl.innerHTML = `
-    <div class="card">
-      <div class="card-title">Saldo aplazado total</div>
-      <div style="font-size:22px;font-weight:600;color:var(--red)">${formatEUR(saldoTotal)}</div>
-    </div>
+    totales.estadoHTML = estadoValor;
+    if(kpiEl) kpiEl.innerHTML = `
     <div class="card">
       <div class="card-title">Intereses pagados (histórico)</div>
       <div style="font-size:22px;font-weight:600;color:var(--amber)">${formatEUR(interesesAcumulados)}</div>
       <div style="margin-top:2px;font-size:11px;color:var(--text-secondary)">${periodoMasAntiguo ? `desde el periodo iniciado el ${periodoMasAntiguo}` : ''}</div>
     </div>
+  `;
+  }
+
+  totales.saldo = saldoTotal;
+  totales.sumaPonderadaTipo = sumaPonderadaTAE;
+
+  if(typeof renderTarjetasChart === 'function') renderTarjetasChart();
+  return totales;
+}
+
+/* Solapa Deuda: unifica Préstamos y Tarjetas de Crédito. KPIs agregados
+ * (deuda pendiente, cuota mensual, ratio de endeudamiento del mes, tipo
+ * medio ponderado y estado de extractos), curva del ratio con línea de
+ * objetivo y las secciones de préstamos y tarjetas sin cambios.
+ * Tipo ponderado: mezcla TIN de préstamos (Notion guarda decimal, 0.0575)
+ * con TAE de tarjetas (Notion guarda porcentaje, 15.39), ponderado por
+ * saldo pendiente. Ver docs/DECISIONS.md [2026-10-21] (solapa Deuda). */
+function renderDeuda(){
+  const pr = renderPrestamos();
+  const tj = renderTarjetasCredito();
+  const kpiEl = document.getElementById('deuda-kpis');
+
+  const deudaTotal = pr.pendiente + tj.saldo;
+  const cuotaTotal = pr.cuotas + tj.cuotas;
+  const tipoPonderado = deudaTotal > 0 ? (pr.sumaPonderadaTipo + tj.sumaPonderadaTipo) / deudaTotal : 0;
+
+  const hoy = new Date();
+  const mesKey = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}`;
+  const r = typeof computeDebtRatio === 'function' ? computeDebtRatio(mesKey) : { ratio: null };
+  const objetivo = typeof OBJETIVO_RATIO_DEUDA !== 'undefined' ? OBJETIVO_RATIO_DEUDA : 30;
+  const colorRatio = r.ratio === null ? 'var(--text-secondary)'
+    : r.ratio > 35 ? 'var(--red)' : r.ratio > 30 ? 'var(--amber)' : 'var(--green)';
+  const fmtPct = v => v.toFixed(1).replace('.', ',') + '%';
+  const sub = txt => `<div style="margin-top:2px;font-size:11px;color:var(--text-secondary)">${txt}</div>`;
+
+  if(kpiEl){
+    kpiEl.innerHTML = `
     <div class="card">
-      <div class="card-title">TAE promedio ponderado</div>
-      <div style="font-size:22px;font-weight:600">${taePromedio.toFixed(2)}%</div>
+      <div class="card-title">Deuda pendiente total</div>
+      <div style="font-size:22px;font-weight:600;color:var(--blue)">${formatEUR(deudaTotal)}</div>
+      ${sub(`Préstamos ${formatEUR(pr.pendiente)} · Tarjetas ${formatEUR(tj.saldo)}`)}
+      ${sub(`${pr.activos} préstamos · ${tj.activas} tarjetas con saldo`)}
+    </div>
+    <div class="card">
+      <div class="card-title">Cuota mensual total</div>
+      <div style="font-size:22px;font-weight:600;color:var(--red)">${formatEUR(cuotaTotal)}</div>
+      ${sub(`Préstamos ${formatEUR(pr.cuotas)} · Tarjetas ${formatEUR(tj.cuotas)}`)}
+    </div>
+    <div class="card"${r.ratio !== null && r.ratio > 35 ? ' style="border:1.5px solid var(--red)"' : ''}>
+      <div class="card-title">Ratio de endeudamiento</div>
+      <div style="font-size:22px;font-weight:600;color:${colorRatio}">${r.ratio === null ? '—' : fmtPct(r.ratio)}</div>
+      ${sub(r.ratio === null ? 'Sin nómina disponible' : `Objetivo ${objetivo}% · ${r.ratio > objetivo ? `${(r.ratio - objetivo).toFixed(1).replace('.', ',')} pp por encima` : 'cumplido'}`)}
+    </div>
+    <div class="card">
+      <div class="card-title">TIN/TAE ponderado</div>
+      <div style="font-size:22px;font-weight:600">${tipoPonderado.toFixed(2).replace('.', ',')}%</div>
+      ${sub('ponderado por saldo pendiente')}
     </div>
     <div class="card">
       <div class="card-title">Estado extractos</div>
-      ${estadoValor}
+      ${tj.estadoHTML || sub('Sin tarjetas cargadas')}
     </div>
   `;
   }
 
-  if(typeof renderTarjetasChart === 'function') renderTarjetasChart();
+  if(typeof renderDebtRatioChart === 'function') renderDebtRatioChart();
 }
 
 function switchTab(tab, el){
@@ -1458,8 +1509,7 @@ function switchTab(tab, el){
   if(tab === 'transacciones') renderTransacciones();
   if(tab === 'guille')        renderGuille();
   if(tab === 'inversiones')   renderInversiones();
-  if(tab === 'prestamos')       renderPrestamos();
-  if(tab === 'tarjetas')        renderTarjetasCredito();
+  if(tab === 'deuda')           renderDeuda();
 }
 
 function populateTxMonthSelector(){

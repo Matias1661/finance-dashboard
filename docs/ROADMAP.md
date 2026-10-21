@@ -16,6 +16,7 @@
 - [x] Migración de capital/rendimiento del tab Inversiones de Google Sheets a Notion (elimina dependencia de GOOGLE_SERVICE_ACCOUNT, 2026-07-10)
 - [x] Tab "Préstamos": seguimiento de préstamos personales pendientes (DB Notion + cuadro de amortización calculado en cliente, 2026-08-03)
 - [x] Tab "Tarjeta de Crédito": seguimiento de tarjetas revolving (IKEA, Visa Classic) — DB Notion propia, saldo tomado del extracto real (no recalculado), KPIs + gráfico de evolución + histórico por tarjeta (2026-09-02)
+- [x] Tab "Deuda": unifica Préstamos y Tarjeta de Crédito, KPIs unificados y curva del ratio de endeudamiento con objetivo 30% (2026-10-21). Ver `DECISIONS.md` 2026-10-21.
 
 ## Alta prioridad
 - [x] Categoría "Amortización deuda" excluida de ingresos y gastos (pagos extraordinarios de deuda y venta del Golf), necesaria para el plan de reducción de gastos (2026-10-05). Ver `DECISIONS.md` 2026-10-05.

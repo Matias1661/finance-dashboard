@@ -206,6 +206,13 @@ function nominaHabitual(mesKey){
   return null;
 }
 
+// Objetivo de ratio de endeudamiento (línea punteada en la solapa Deuda) e
+// inicio de la curva. Enero 2026 porque los extractos revolving empiezan en
+// diciembre 2025: antes el ratio sale subestimado. Ver DECISIONS 2026-10-21
+// (solapa Deuda).
+const OBJETIVO_RATIO_DEUDA = 30;
+const INICIO_CURVA_RATIO_DEUDA = '2026-01';
+
 // Ratio de endeudamiento del mes (criterio bancario, umbral 35%):
 // cuotas de préstamos con cuota en ese mes (según computeAmortizacion, app.js)
 // + amortización + intereses de los extractos revolving con cargo en ese mes,
@@ -1069,6 +1076,90 @@ function renderTarjetasChart(){
         y: {
           beginAtZero: true,
           ticks: { callback: v => formatEUR(v) }
+        }
+      }
+    }
+  });
+}
+
+/* Evolución mensual del ratio de endeudamiento (solapa Deuda), desde
+ * INICIO_CURVA_RATIO_DEUDA hasta el mes en curso, con computeDebtRatio().
+ * Puntos con el semáforo del Resumen (verde <=30%, ámbar 30-35%, rojo >35%)
+ * y línea punteada con OBJETIVO_RATIO_DEUDA. Ver DECISIONS 2026-10-21. */
+function renderDebtRatioChart(){
+  const ctx = document.getElementById('chart-ratio-deuda');
+  if(!ctx) return;
+
+  const MESES_CORTOS = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const hoy = new Date();
+  const fin = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}`;
+  const meses = [];
+  let [y, m] = INICIO_CURVA_RATIO_DEUDA.split('-').map(Number);
+  while(true){
+    const k = `${y}-${String(m).padStart(2,'0')}`;
+    if(k > fin) break;
+    meses.push(k);
+    m++; if(m > 12){ m = 1; y++; }
+  }
+
+  const datos = meses.map(k => computeDebtRatio(k));
+  const ratios = datos.map(d => d.ratio === null ? null : Math.round(d.ratio * 10) / 10);
+  const colorPunto = v => v === null ? 'rgba(0,0,0,0.2)'
+    : v > 35 ? 'rgba(200,40,40,0.95)' : v > 30 ? 'rgba(154,98,0,0.95)' : 'rgba(13,138,82,0.95)';
+  const labels = meses.map(k => `${MESES_CORTOS[parseInt(k.slice(5,7),10)-1]} ${k.slice(2,4)}`);
+  const fmtPct = v => v.toFixed(1).replace('.', ',') + '%';
+
+  if(window.debtRatioChart) window.debtRatioChart.destroy();
+
+  window.debtRatioChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Ratio de endeudamiento',
+          data: ratios,
+          borderColor: 'rgba(66,133,180,0.9)',
+          backgroundColor: 'rgba(66,133,180,0.9)',
+          pointBackgroundColor: ratios.map(colorPunto),
+          pointBorderColor: ratios.map(colorPunto),
+          pointRadius: 5,
+          tension: 0.2,
+          spanGaps: true
+        },
+        {
+          label: `Objetivo ${OBJETIVO_RATIO_DEUDA}%`,
+          data: meses.map(() => OBJETIVO_RATIO_DEUDA),
+          borderColor: 'rgba(13,138,82,0.9)',
+          backgroundColor: 'rgba(13,138,82,0.9)',
+          borderDash: [6, 4],
+          pointRadius: 0,
+          pointHoverRadius: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: true, position: 'bottom' },
+        tooltip: {
+          callbacks: {
+            label: c => {
+              if(c.datasetIndex === 1) return `Objetivo: ${fmtPct(c.parsed.y)}`;
+              const d = datos[c.dataIndex];
+              if(d.ratio === null) return 'Sin nómina disponible';
+              return `Ratio: ${fmtPct(d.ratio)} (${formatEUR(d.cuotas)} / ${formatEUR(d.nomina)})`;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          suggestedMax: 50,
+          ticks: { callback: v => v + '%' }
         }
       }
     }

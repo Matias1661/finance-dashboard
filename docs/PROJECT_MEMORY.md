@@ -281,8 +281,10 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 | Categorías | renderCategorias() | Selector mes, barras horizontales, tabla resumen por cat, lista transacciones |
 | Transacciones | renderTransacciones() | Selector mes + categoría, tabla completa |
 | Guille | renderGuille() | KPIs (3), chart mixto dual-Y, selector mes, tabla movimientos |
-| Préstamos | renderPrestamos() | KPIs (3: capital pendiente total, cuota mensual total, préstamos activos), tarjeta por préstamo con barra de progreso y cuadro de amortización colapsable |
-| Tarjeta de Crédito | renderTarjetasCredito() | KPIs (3: saldo aplazado total, intereses histórico, TAE promedio ponderado), gráfico de evolución (`renderTarjetasChart()`), tarjeta por tarjeta con barra límite disponible/dispuesto e histórico colapsable |
+| Inversiones | renderInversiones() | ver sección "Tab Inversiones" |
+| Deuda | renderDeuda() | KPIs (5: deuda pendiente total, cuota mensual total, ratio de endeudamiento vs objetivo 30%, TIN/TAE ponderado, estado extractos), curva del ratio desde ene 2026 (`renderDebtRatioChart()`), sección Préstamos (`renderPrestamos()`) y sección Tarjetas de crédito (`renderTarjetasCredito()`: intereses histórico, `renderTarjetasChart()`, cards por tarjeta) |
+
+Las solapas Préstamos y Tarjeta de Crédito se unificaron en "Deuda" el 21/10/2026 (ver `DECISIONS.md` 2026-10-21, solapa Deuda); las secciones "Tab Préstamos" y "Tab Tarjeta de Crédito" de este documento describen hoy las dos secciones de esa solapa.
 
 La solapa Talho Argentino se eliminó el 21/10/2026. Sus datos siguen en Notion: movimientos de categoría "Talho Argentino" en la DB Movimientos y gastos de los socios en la DB "Gastos del local" (ver `DECISIONS.md` 2026-10-21).
 
@@ -522,7 +524,7 @@ Schema: Nombre (title), Entidad (rich text), Capital inicial (number, €), Cuot
 **Cálculo del cuadro de amortización — decisión clave:** no se sincronizan las cuotas individuales desde Notion (evita cientos de filas por préstamo). En su lugar, `js/app.js` calcula todo en el cliente:
 - `computeAmortizacion(prestamo)`: sistema francés estándar — interés mensual = saldo × (TIN/12), amortización = cuota − interés, iterando `plazo_meses` veces desde `fecha_inicio`. Puede diferir en céntimos del cuadro real del banco por convenciones de conteo de días, aceptado como suficiente para seguimiento personal.
 - `capitalPendienteHoy(prestamo, schedule)`: recorre el cuadro calculado y devuelve el saldo de la última cuota con fecha ≤ hoy.
-- `renderPrestamos()`: pinta KPIs agregados (capital pendiente total, cuota mensual total, préstamos activos) y una tarjeta por préstamo (barra de progreso, cuota, TIN, fecha fin, notas si existen, botón para expandir/colapsar el cuadro de amortización completo vía `togglePrestamoTabla()`).
+- `renderPrestamos()`: desde 2026-10-21 ya no pinta KPIs (los unifica `renderDeuda()`); devuelve totales (pendiente, cuotas y tipo ponderado de préstamos con capital pendiente) y pinta una tarjeta por préstamo (barra de progreso, cuota, TIN, fecha fin, notas si existen, botón para expandir/colapsar el cuadro de amortización completo vía `togglePrestamoTabla()`).
 
 **Mantenimiento:** no hay sync automático de bancos — actualizar manualmente en Notion si cambian las condiciones de un préstamo (refinanciación, amortización anticipada) o al dar de alta uno nuevo (Estado = Activo se sincroniza; Cancelado se excluye).
 
@@ -545,7 +547,7 @@ Schema: Nombre (title), Entidad (rich text), Capital inicial (number, €), Cuot
 **Diferencia clave con Préstamos:** el saldo aplazado NO se recalcula en cliente — se toma tal cual viene de Notion (que a su vez viene tal cual del extracto del banco). No hay `computeAmortizacion()` equivalente para estas tarjetas.
 
 **Frontend:**
-- `renderTarjetasCredito()` (`js/app.js`): agrupa `tarjetasCredito` por campo `tarjeta`, ordena periodos por `periodo_inicio`. Usa el último periodo de cada tarjeta para la tarjeta individual (saldo, barra límite disponible/dispuesto, TAE, cuota elegida, fecha de cierre proyectada) y expone un histórico colapsable (`toggleTarjetaHistorico()`) con todos los periodos cargados. KPIs: saldo aplazado total (suma del último periodo de cada tarjeta), intereses pagados histórico (suma de `intereses_periodo` de TODOS los periodos cargados, no solo el último), TAE promedio ponderado por saldo actual.
+- `renderTarjetasCredito()` (`js/app.js`): agrupa `tarjetasCredito` por campo `tarjeta`, ordena periodos por `periodo_inicio`. Usa el último periodo de cada tarjeta para la tarjeta individual (saldo, barra límite disponible/dispuesto, TAE, cuota elegida, fecha de cierre proyectada) y expone un histórico colapsable (`toggleTarjetaHistorico()`) con todos los periodos cargados. KPIs: saldo aplazado total (suma del último periodo de cada tarjeta), intereses pagados histórico (suma de `intereses_periodo` de TODOS los periodos cargados, no solo el último), TAE promedio ponderado por saldo actual. Desde 2026-10-21 solo pinta la card de intereses históricos en `tarjetas-kpis`; saldo, cuotas elegidas, TAE ponderada y estado de extractos los devuelve a `renderDeuda()`.
 - `renderTarjetasChart()` (`js/charts.js`): línea de evolución de `aplazado_proximo` por tarjeta, eje X = mes de cierre del periodo (`periodo_fin`). Si una tarjeta no tiene fila en un mes dado, mantiene el último saldo conocido (no corta la línea) — el saldo real no cambia hasta el próximo extracto.
 
 **Mantenimiento:** no hay sync automático de bancos — actualizar Notion manualmente al recibir un extracto nuevo (skill `organizar-tarjetas-credito`).

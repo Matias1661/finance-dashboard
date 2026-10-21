@@ -1,3 +1,16 @@
+## 2026-10-21 — Solapa Deuda (unifica Préstamos y Tarjeta de Crédito)
+
+- `index.html`: los botones y paneles `tab-prestamos` y `tab-tarjetas` se reemplazan por
+  `tab-deuda` (KPIs `deuda-kpis`, gráfico `chart-ratio-deuda`, secciones Préstamos y
+  Tarjetas de crédito). CSS: `.kpis.kpis-5` y `.deuda-seccion`.
+- `js/app.js`: nueva `renderDeuda()` con 5 KPIs unificados. `renderPrestamos()` y
+  `renderTarjetasCredito()` ya no pintan KPIs propios (salvo la card de intereses
+  históricos de tarjetas) y devuelven sus totales. `switchTab()` llama a `renderDeuda()`.
+- `js/charts.js`: nueva `renderDebtRatioChart()` y constantes `OBJETIVO_RATIO_DEUDA` (30) e
+  `INICIO_CURVA_RATIO_DEUDA` ('2026-01').
+- `docs/PROJECT_MEMORY.md`, `docs/ROADMAP.md`: actualizados.
+- Ver `DECISIONS.md` 2026-10-21 (solapa Deuda).
+
 ## 2026-10-21 — Proyección de fin de mes corregida
 
 - `js/insights.js` (`detectRecurring()`): agrupación por concepto con tolerancia de importe
