@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-21 11:08",
+  "generated_at": "2026-10-21 11:22",
   "movimientos": [
     {
       "fecha": "2026-10-20",
       "concepto": "AMAZON.ES",
       "monto": -9.49,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Libro Kindle 'Inside Mercedes F1'"
     },
     {
       "fecha": "2026-10-20",
@@ -62,7 +62,7 @@
       "concepto": "UBR* PENDING.UBER",
       "monto": -20.95,
       "categoria": "Gastos moto",
-      "nota": null
+      "nota": "UberX 13/10 al taller a buscar la moto (San Sebastián de los Reyes - Chamberí)"
     },
     {
       "fecha": "2026-10-16",
