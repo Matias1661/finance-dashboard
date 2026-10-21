@@ -1,3 +1,10 @@
+## 2026-10-21 — Organizar movimientos
+
+- Organizar movimientos (4 movimientos): notas en UBR* PENDING.UBER -20,95
+  (UberX 13/10 al taller a buscar la moto, sigue en Gastos moto) y AMAZON.ES
+  -9,49 (libro Kindle "Inside Mercedes F1", sigue en Compras); Telpark -0,40 y
+  -0,01 sin cambios.
+
 ## 2026-10-12 — Viaje a Málaga (octubre) en TRIP_WINDOWS
 
 - `js/app.js`: nueva ventana `Viaje a Málaga (octubre)`, 09/10 a 12/10/2026.
