@@ -1,3 +1,12 @@
+## 2026-10-21 — Skill organizar-movimientos alineado con decisiones vigentes
+
+- `docs/skills/organizar-movimientos/SKILL.md`: token de GitHub desde la página de Notion;
+  dispatch de `sync-finance-data` y espera antes de `find_pending.py`; fase Viajes con
+  cruce de Google Calendar, verificación geográfica del comercio y criterio comida-en-viajes
+  (SERVIMATIC siempre en Comer afuera).
+- `docs/PROJECT_MEMORY.md`: formato real de `reviewed_movements.json` (lista plana).
+- Ver `DECISIONS.md` 2026-10-21.
+
 ## 2026-10-21 — Organizar movimientos
 
 - Organizar movimientos (4 movimientos): notas en UBR* PENDING.UBER -20,95
