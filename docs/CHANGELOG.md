@@ -1,3 +1,16 @@
+## 2026-10-21 — Eliminada la solapa Talho Argentino
+
+- `index.html`: quitados el botón y el panel `tab-talho`.
+- `js/app.js`: quitados `renderTalho()`, `fetchSociedadData()`, `renderSociedad()` y la
+  llamada en `switchTab()`.
+- `.github/workflows/sync-sociedad-data.yml`: solo corre `process_gastos_talho.py`; ya
+  no genera `sociedad_data.json` ni dispara `deploy-pages`.
+- `.github/workflows/deploy-pages.yml`: ya no copia `sociedad_data.json`.
+- Eliminados `scripts/sync_sociedad_data.py` y `sociedad_data.json`.
+- Notion: fecha de "Amazon - taquilla, tacho de basura..." corregida de 25/08/2025 a
+  25/08/2026 en "Gastos del local".
+- Ver `DECISIONS.md` 2026-10-21.
+
 ## 2026-10-21 — Skill organizar-movimientos alineado con decisiones vigentes
 
 - `docs/skills/organizar-movimientos/SKILL.md`: token de GitHub desde la página de Notion;

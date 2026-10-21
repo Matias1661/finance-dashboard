@@ -16,9 +16,9 @@ Matias (o Willy) sube una foto o PDF del comprobante a la carpeta Drive
    subido dos veces con distinto file ID).
 5. Crea la pagina en la DB "Gastos del local", dejando "Pagado por" vacio
    -- igual que el flujo original de Relay. Willy o Matias lo completan a
-   mano en Notion; esa edicion ya queda reflejada en sociedad_data.json por
-   el cron diario de sync-sociedad-data.yml, sin necesidad de un trigger
-   instantaneo (ver docs/DECISIONS.md, entrada de esta implementacion).
+   mano en Notion. Desde 2026-10-21 el dashboard ya no tiene solapa Talho
+   ni genera sociedad_data.json: Notion es el unico registro de estos
+   gastos (ver docs/DECISIONS.md 2026-10-21).
 
 Variables de entorno requeridas (todas ya existen como secrets):
   NOTION_TOKEN

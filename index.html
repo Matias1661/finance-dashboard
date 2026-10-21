@@ -209,7 +209,6 @@
   <button class="tab" onclick="switchTab('transacciones', this)">Transacciones</button>
   <button class="tab" onclick="switchTab('guille', this)">Guille</button>
   <button class="tab" onclick="switchTab('inversiones', this)">Inversiones</button>
-  <button class="tab" onclick="switchTab('talho', this)">Talho Argentino</button>
   <button class="tab" onclick="switchTab('prestamos', this)">Préstamos</button>
   <button class="tab" onclick="switchTab('tarjetas', this)">Tarjeta de Crédito</button>
 </div>
@@ -427,76 +426,6 @@
     </div>
   </div>
 
-
-</div>
-
-<div id="tab-talho" class="tab-panel">
-
-  <!-- Gastos de Matias -->
-  <div style="margin-bottom:8px;font-size:13px;font-weight:600;color:var(--text-secondary);letter-spacing:0.04em;text-transform:uppercase">Gastos de Matias</div>
-  <div style="display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start;margin-bottom:32px">
-
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div class="card-title" style="margin-bottom:0">Gastos Talho Argentino por semana</div>
-        <select id="talho-week-range" onchange="renderTalho()" style="font-size:13px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit">
-          <option value="6" selected>Últimas 6 semanas</option>
-          <option value="12">Últimas 12 semanas</option>
-          <option value="all">Todas</option>
-        </select>
-      </div>
-      <div class="chart-wrap-tall">
-        <canvas id="chart-talho-bars"></canvas>
-      </div>
-    </div>
-
-    <div class="card" style="min-width:0">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div class="card-title" style="margin-bottom:0">Transacciones</div>
-        <select id="talho-month-filter" onchange="renderTalho()" style="font-size:13px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit">
-          <option value="">Todos los meses</option>
-        </select>
-      </div>
-      <div id="talho-tx-list"></div>
-    </div>
-
-  </div>
-
-  <!-- Gastos de la sociedad -->
-  <div style="margin-bottom:8px;font-size:13px;font-weight:600;color:var(--text-secondary);letter-spacing:0.04em;text-transform:uppercase">Gastos de la sociedad</div>
-  <div style="display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start">
-
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div class="card-title" style="margin-bottom:0">Gastos de la sociedad por semana</div>
-        <select id="sociedad-week-range" onchange="renderSociedad()" style="font-size:13px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit">
-          <option value="6" selected>Últimas 6 semanas</option>
-          <option value="12">Últimas 12 semanas</option>
-          <option value="all">Todas</option>
-        </select>
-      </div>
-      <div class="chart-wrap-tall">
-        <canvas id="chart-sociedad-bars"></canvas>
-      </div>
-      <div id="sociedad-alert" style="display:none;margin-top:16px;padding:12px 14px;background:#fff3cd;border:1px solid #f0c040;border-radius:8px;font-size:12px;line-height:1.6;color:#7a4f00"></div>
-      <div style="display:flex;justify-content:center;margin-top:24px">
-        <div style="position:relative;width:380px;height:380px">
-          <canvas id="chart-sociedad-pie"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="min-width:0">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div class="card-title" style="margin-bottom:0">Transacciones</div>
-        <select id="sociedad-month-filter" onchange="renderSociedad()" style="font-size:13px;padding:4px 8px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit">
-          <option value="">Todos los meses</option>
-        </select>
-      </div>
-      <div id="sociedad-tx-list"><div style="color:var(--text-secondary);font-size:13px;padding:8px 0">Cargando…</div></div>
-    </div>
-
-  </div>
 
 </div>
 

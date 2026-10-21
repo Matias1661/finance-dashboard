@@ -1,3 +1,37 @@
+## [2026-10-21] Se elimina la solapa Talho Argentino del dashboard
+
+**Contexto:** Matías pidió quitar la solapa Talho Argentino porque no tiene uso. La
+solapa no guardaba datos propios, solo mostraba dos fuentes de Notion:
+- "Gastos de Matias": movimientos de categoría "Talho Argentino" de la DB Movimientos
+  (vía `finance_data.json`). 16 movimientos al 21/10/2026.
+- "Gastos de la sociedad": DB Notion "Gastos del local"
+  (`38933ce5-0e68-80ba-9e03-000b001f2431`) vía `sync_sociedad_data.py` →
+  `sociedad_data.json`. Antes de eliminar se disparó `sync-sociedad-data` y el JSON no
+  cambió: 71 filas, 57.800,96 € (Mati 14.810,28, Willy 37.990,68, Miguel 5.000).
+
+Revisión de datos antes de eliminar:
+- Heladeras Coolvi: los dos movimientos de 6.723,97 € (22/06 y 05/08) son dos pagos del
+  50 % (confirmado por Matías) y ya están ambos en "Gastos del local" ("Adelanto
+  Heladeras (50%)" 22/06 y "Equipamiento Coolvi - Heladeras Talho Argentino" 05/08).
+- "Amazon - taquilla, tacho de basura..." tenía fecha 25/08/2025; corregida a
+  25/08/2026 en Notion.
+- "Diego Rotulos - montaje" sigue con fecha 30/05/2025, pendiente de confirmar la fecha
+  real con Matías.
+
+**Decisión (confirmada por Matías):**
+- Quitar la solapa de `index.html` y `renderTalho()`, `fetchSociedadData()` y
+  `renderSociedad()` de `js/app.js`.
+- Quitar solo la generación del JSON: se eliminan `scripts/sync_sociedad_data.py` y
+  `sociedad_data.json`, y el paso correspondiente de `sync-sociedad-data.yml`. El
+  workflow mantiene `process_gastos_talho.py` (comprobantes de Drive → Notion) y deja de
+  disparar el deploy de Pages, porque ya no cambia ningún archivo del sitio.
+- `deploy-pages.yml` deja de copiar `sociedad_data.json`.
+- La categoría "Talho Argentino" sigue en `excludedCategories` y en las exclusiones de
+  `detectRecurring()`; no cambia ningún cálculo del resto del dashboard.
+- Notion queda como único registro de los gastos de Talho Argentino.
+
+---
+
 ## [2026-10-21] Skill organizar-movimientos alineado con DECISIONS y PROJECT_MEMORY
 
 **Contexto:** verificación del skill `organizar-movimientos` el 21/10/2026. La copia
