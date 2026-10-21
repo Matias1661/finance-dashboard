@@ -15,8 +15,9 @@ Revisión de datos antes de eliminar:
   Heladeras (50%)" 22/06 y "Equipamiento Coolvi - Heladeras Talho Argentino" 05/08).
 - "Amazon - taquilla, tacho de basura..." tenía fecha 25/08/2025; corregida a
   25/08/2026 en Notion.
-- "Diego Rotulos - montaje" sigue con fecha 30/05/2025, pendiente de confirmar la fecha
-  real con Matías.
+- "Diego Rotulos - montaje" tenía fecha 30/05/2025; corregida a 30/05/2026 por decisión
+  de Matías, aunque queda antes del primer gasto del local (15/06) y del presupuesto del
+  rótulo (22/07). La fecha real del montaje no está documentada.
 
 **Decisión (confirmada por Matías):**
 - Quitar la solapa de `index.html` y `renderTalho()`, `fetchSociedadData()` y
