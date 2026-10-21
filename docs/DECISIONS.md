@@ -1,3 +1,39 @@
+## [2026-10-21] Corrección de la proyección de gastos de fin de mes
+
+**Contexto:** el rombo azul "Proyección fin de mes" daba 5.881,88 € para octubre 2026 con
+un gasto real de 3.224,81 € al 20/10. Con la fórmula de 2026-09-07 (fijos + run-rate del
+variable) había tres problemas:
+- El variable del mes se extrapolaba ×31/20, incluido un gasto puntual (HARLEY TALLER
+  1.090,66 € el 15/10), lo que sumaba unos 600 € que no iban a ocurrir.
+- `detectRecurring()` agrupaba por importe exacto y perdía fijos: PRES.80194189697 alterna
+  246,82/246,83 por redondeo, RECIBO UNICO MYBOX bajó de 114,38 a 108,51 y SANITAS de
+  79,97 a 78,56. Esos cargos, cobrados el día 1, se prorrateaban como variable.
+- Los fijos pendientes se sumaban aunque su día habitual ya hubiera pasado (TRASPASO
+  DONATIVO 350 €, día 7; KLARNA*MOTEA 112,76 €, día 16-18), 462,76 € probablemente
+  inexistentes.
+
+**Decisión (confirmada por Matías):**
+- A. `detectRecurring()` agrupa por concepto con tolerancia de importe del 6% respecto del
+  último importe del grupo (orden cronológico); `monto` = último importe. Se eligió 6%
+  porque 2% no capta el cambio de MYBOX (5,1%) y 10% agrega ruido (BIZUM ENVIADO,
+  AUTOROUTES ASF, ANTHROPIC). Afecta también a la card de Suscripciones: PRES.80194189697
+  queda en un solo grupo, MYBOX y SANITAS pasan a activas con el importe nuevo.
+- B. Un recurrente activo sin cobro en el mes cuenta como pendiente solo si
+  `día actual <= día habitual (mediana del día del mes) + 3`. Si ya pasó, se asume que
+  ese mes no se cobra.
+- C. El variable restante ya no se extrapola del mes en curso: se usa el gasto neto medio
+  de los días posteriores al día actual en los 3 meses anteriores, sin contar los cobros
+  de grupos recurrentes.
+- Fórmula: gasto neto real del mes + fijos pendientes (B) + variable restante (C).
+- Resultado al 20/10/2026: 4.558,56 €. Backtest al día 15 (proyección vs real del mes):
+  julio 4.700,99 vs 4.048,84 (antes 5.310,73), agosto 4.174,96 vs 4.434,14 (antes
+  5.139,32), septiembre 3.772,89 vs 3.690,57 (antes 3.852,63).
+- Limitación: un gasto puntual grande en los días finales de alguno de los 3 meses
+  anteriores sube la estimación del variable restante; YOIGO (47,55 → 51,26, +7,8%) sigue
+  fuera de la tolerancia y cuenta como variable.
+
+---
+
 ## [2026-10-21] KPI "Sin analizar por Claude" reemplazado por alerta y ratio de endeudamiento
 
 **Contexto:** Matías pidió quitar la card "Sin analizar por Claude" del Resumen, mostrar el
