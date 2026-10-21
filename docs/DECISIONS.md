@@ -1,3 +1,32 @@
+## [2026-10-21] Categorización de Movimientos pasa de la API de Anthropic a la fase 0 de "Organizar Movimientos"
+
+**Contexto:** `scripts/process_bank_statements.py` categorizaba cada movimiento
+del CSV con la API de Anthropic (`categorizar_movimientos()`) antes de crearlo
+en Notion. Matías prefiere que la categorización la haga Claude en chat, a su
+pedido, para revisarla antes de que quede escrita.
+
+**Decisión (confirmada por Matías):**
+- `process_bank_statements.py` deja de llamar a la API: crea cada movimiento
+  nuevo con Categoria = "A revisar" (opción ya existente en la DB). Se mantienen
+  el parseo determinístico del CSV, el control de duplicados por
+  fecha|concepto|monto y `processed_bank_statements.json`. Se eliminan
+  `fetch_categorizacion_prompt()` y `categorizar_movimientos()`.
+- La categorización pasa a ser la fase 0 del skill "Organizar Movimientos"
+  (no un skill aparte): sync, consulta de las filas "A revisar", lectura en vivo
+  del prompt "Pasar extracto bancario a Notion" de la DB Prompts, propuesta en
+  tabla, confirmación en bloque, escritura en Notion y nuevo sync antes de
+  `find_pending.py`. La fase 0 no escribe en `reviewed_movements.json`.
+- El secret `ANTHROPIC_API_KEY` se mantiene: lo siguen usando Peerberry,
+  MyInvestor y Talho Argentino. La variable sigue declarada en el paso del
+  workflow pero el script ya no la lee.
+- Al 21/10/2026 no había ningún movimiento en "A revisar", así que la fase 0
+  arranca sin arrastre histórico.
+
+**Efecto aceptado:** entre la carga del CSV y la siguiente sesión de
+"Organizar Movimientos", los movimientos nuevos figuran como "A revisar" en el
+dashboard. Totales de ingresos y gastos no cambian; el desglose por categoría y
+la proyección de fin de mes quedan incompletos hasta categorizar.
+
 ## [2026-10-12] Viaje a Málaga de octubre añadido a TRIP_WINDOWS
 
 **Contexto:** en "Organizar movimientos" del 12/10/2026 el script no marcó ningún
