@@ -1,3 +1,25 @@
+## [2026-10-21] Curva ideal de inversiones (Capital total vs plan)
+
+**Contexto:** Matías pidió en la solapa Inversiones, arriba de los gráficos actuales, un gráfico
+de enero 2026 a diciembre 2028 con el capital total real y una curva ideal de aportes más
+rendimiento para llegar a 15.000 € en diciembre 2028, para ver mes a mes cómo va contra el plan.
+
+**Decisión (confirmada por Matías):**
+- Nueva card "Capital total vs plan" (`#chart-inv-plan`, `renderInvPlanChart()` en
+  `js/app.js`), entre los KPIs y "Capital invertido por plataforma".
+- Capital total = Peerberry + MyInvestor (`fillForwardCapital()`), solo hasta el último mes
+  completo (`inversiones.kpi.periodo_ultimo_mes`), para no mostrar meses sin informe de
+  MyInvestor.
+- Curva ideal (`CURVA_IDEAL_INV`): foto fija calculada el 21/10/2026. Igual al capital real
+  hasta septiembre 2026 (10.663,12 €); desde octubre 2026, rentabilidad 6% anual (0,5% mensual)
+  y aportes iguales al sobrante del presupuesto de deuda de la curva ideal de deuda v2
+  (1.111,26 €/mes menos cuotas y amortización fija de 787,69 €/mes desde abril 2027): 0 €
+  hasta abril 2027, luego de 1 € a 310 € por mes. Termina en 15.837,77 € en diciembre 2028,
+  por encima del objetivo de 15.000 €.
+- Tooltip del capital real: diferencia contra el plan desde octubre 2026.
+
+---
+
 ## [2026-10-21] Curva ideal v2: deuda 0 en diciembre 2028
 
 **Contexto:** Matías evaluó llegar a deuda 0 en diciembre 2028 con colchón en inversiones y pidió

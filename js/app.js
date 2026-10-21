@@ -767,6 +767,7 @@ function renderInversiones(){
     });
   }
 
+  renderInvPlanChart();
   renderInvAportesRetiros();
   renderInvRendimiento();
   renderInvBenchmark();
@@ -777,6 +778,129 @@ function renderInversiones(){
 // retiros (liquidacion parcial de Peerberry): el neto no sirve como medida
 // de ahorro. Convencion (decidida con el usuario): monto negativo = aporte,
 // monto positivo = retiro. Se reportan ambos por separado, nunca el neto.
+/* Capital total vs plan (solapa Inversiones): capital real (Peerberry +
+ * MyInvestor) desde ene 2026 hasta el último mes completo
+ * (inversiones.kpi.periodo_ultimo_mes) y curva ideal fija hasta dic 2028.
+ * Ver DECISIONS 2026-10-21 (curva ideal de inversiones). */
+const INICIO_CURVA_PLAN_INV = '2026-01';
+const FIN_CURVA_PLAN_INV = '2028-12';
+const BASE_CURVA_PLAN_INV = '2026-09';
+/* Curva ideal: foto fija calculada el 21/10/2026, no se recalcula. Parte del
+ * capital real de septiembre 2026 (10.663,12 €), rentabilidad 6% anual
+ * (0,5% mensual) y aportes = sobrante del presupuesto de deuda de la curva
+ * ideal de deuda v2 (1.111,26 €/mes menos cuotas y amortización fija de
+ * 787,69 €/mes desde abril 2027): 0 € hasta abril 2027, luego de 1 € a 310 €
+ * por mes. Termina en 15.837,77 € en diciembre 2028 (objetivo: 15.000 €). */
+const CURVA_IDEAL_INV = {
+  '2026-10': 10716.44,
+  '2026-11': 10770.02,
+  '2026-12': 10823.87,
+  '2027-01': 10877.99,
+  '2027-02': 10932.38,
+  '2027-03': 10987.04,
+  '2027-04': 11041.97,
+  '2027-05': 11098.63,
+  '2027-06': 11179.83,
+  '2027-07': 11286.35,
+  '2027-08': 11419.01,
+  '2027-09': 11578.68,
+  '2027-10': 11766.28,
+  '2027-11': 11966.94,
+  '2027-12': 12180.63,
+  '2028-01': 12407.56,
+  '2028-02': 12647.93,
+  '2028-03': 12901.92,
+  '2028-04': 13169.77,
+  '2028-05': 13451.67,
+  '2028-06': 13747.85,
+  '2028-07': 14058.54,
+  '2028-08': 14383.96,
+  '2028-09': 14724.35,
+  '2028-10': 15079.94,
+  '2028-11': 15451.0,
+  '2028-12': 15837.77
+};
+
+function renderInvPlanChart(){
+  const ctx = document.getElementById('chart-inv-plan');
+  if(!ctx) return;
+  const inv = window.FINANCE_STATE?.inversiones || {};
+  const ultimo = inv.kpi?.periodo_ultimo_mes || null;
+  const capMap = {};
+  fillForwardCapital(inv.capital || []).forEach(c => {
+    capMap[c.mes] = (c.peerberry || 0) + (c.myinvestor || 0);
+  });
+
+  const MESES_CORTOS = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const mesCorto = k => `${MESES_CORTOS[parseInt(k.slice(5,7),10)-1]} ${k.slice(2,4)}`;
+  const meses = [];
+  let [y, m] = INICIO_CURVA_PLAN_INV.split('-').map(Number);
+  while(true){
+    const k = `${y}-${String(m).padStart(2,'0')}`;
+    if(k > FIN_CURVA_PLAN_INV) break;
+    meses.push(k);
+    m++; if(m > 12){ m = 1; y++; }
+  }
+
+  const real = meses.map(k => (ultimo && k <= ultimo && capMap[k] !== undefined) ? Math.round(capMap[k] * 100) / 100 : null);
+  const ideal = meses.map((k, i) => k <= BASE_CURVA_PLAN_INV ? real[i] : (CURVA_IDEAL_INV[k] ?? null));
+  const fmt = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
+
+  if(window.invPlanChart) window.invPlanChart.destroy();
+  window.invPlanChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: meses.map(mesCorto),
+      datasets: [
+        {
+          label: 'Capital total',
+          data: real,
+          borderColor: 'rgba(66,133,180,0.9)',
+          backgroundColor: 'rgba(66,133,180,0.9)',
+          pointRadius: 4,
+          tension: 0.2,
+          spanGaps: true
+        },
+        {
+          label: 'Curva ideal',
+          data: ideal,
+          borderColor: 'rgba(13,138,82,0.9)',
+          backgroundColor: 'rgba(13,138,82,0.9)',
+          borderDash: [6, 4],
+          pointRadius: 0,
+          pointHoverRadius: 3,
+          tension: 0,
+          spanGaps: true
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: true, position: 'bottom' },
+        tooltip: {
+          filter: it => it.raw !== null && it.raw !== undefined,
+          callbacks: {
+            label: c => {
+              if(c.datasetIndex === 1) return `Curva ideal: ${fmt(c.parsed.y)}`;
+              const k = meses[c.dataIndex];
+              const txt = `Capital total: ${fmt(c.parsed.y)}`;
+              if(k <= BASE_CURVA_PLAN_INV || ideal[c.dataIndex] === null) return txt;
+              const dif = c.parsed.y - ideal[c.dataIndex];
+              return `${txt} (${dif >= 0 ? '+' : '−'}${fmt(Math.abs(dif))} vs plan)`;
+            }
+          }
+        }
+      },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: v => fmt(v) } }
+      }
+    }
+  });
+}
+
 function renderInvAportesRetiros(){
   const el = document.getElementById('inv-aportes-retiros');
   if(!el) return;

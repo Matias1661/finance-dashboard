@@ -19,6 +19,7 @@
 - [x] Tab "Deuda": unifica Préstamos y Tarjeta de Crédito, KPIs unificados y curva del ratio de endeudamiento con objetivo 30% (2026-10-21). Ver `DECISIONS.md` 2026-10-21.
 - [x] Curva del ratio de endeudamiento con pronóstico hasta dic 2028, mes de llegada al objetivo e histórico de cambios del pronóstico (2026-10-21). Ver `DECISIONS.md` 2026-10-21.
 - [x] "Curva ideal" (venta del Golf en marzo 2027 y gasto en deuda constante) en lugar de la línea de objetivo 30%; sin marca de llegada ni banderitas en el gráfico (2026-10-21). Ver `DECISIONS.md` 2026-10-21.
+- [x] Gráfico "Capital total vs plan" en Inversiones con curva ideal hasta dic 2028 (2026-10-21). Ver `DECISIONS.md` 2026-10-21.
 - [x] Amortizaciones anticipadas de préstamos: DB Notion propia, aplicadas en el cuadro calculado en cliente (cuota vigente y capital pendiente, 2026-10-21). Ver `DECISIONS.md` 2026-10-21 (amortizaciones anticipadas).
 - [x] Cuadro de préstamos: "Día de cobro" en Notion, fechas sin desfase de zona horaria y amortización anticipada en fila propia (2026-10-21).
 - [x] "Día de cobro" = 1 en los cuatro préstamos, verificado contra los cargos reales en Movimientos (2026-10-21).

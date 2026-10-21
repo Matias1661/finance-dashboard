@@ -1,3 +1,10 @@
+## 2026-10-21 — Capital total vs plan (solapa Inversiones)
+
+- `index.html`: card "Capital total vs plan" (`#chart-inv-plan`) arriba de los gráficos de la
+  solapa Inversiones.
+- `js/app.js`: `renderInvPlanChart()` y `CURVA_IDEAL_INV` (serie fija). Ver `DECISIONS.md`
+  2026-10-21 (curva ideal de inversiones).
+
 ## 2026-10-21 — Curva ideal v2 (deuda 0 en diciembre 2028)
 
 - `js/charts.js`: `CURVA_IDEAL_RATIO_DEUDA` recalculada con amortización fija de 787,69 €/mes
