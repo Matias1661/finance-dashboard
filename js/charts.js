@@ -181,7 +181,7 @@ function renderKPIs(){
     <div class="card"${actual.ratio !== null && actual.ratio > 35 ? ' style="border:1.5px solid var(--red)"' : ''}>
       <div class="card-title">Ratio de endeudamiento</div>
       <div style="font-size:22px;font-weight:600;color:${colorRatio(actual.ratio)}">${fmtPct(actual.ratio)}</div>
-      <div style="font-size:11px;color:var(--text-secondary);margin-top:4px">${actual.ratio !== null ? `${formatEUR(actual.cuotas)} cuotas / ${formatEUR(actual.nomina)} nómina · objetivo ${OBJETIVO_RATIO_DEUDA}%` : 'Sin nómina disponible'}</div>
+      <div style="font-size:11px;color:var(--text-secondary);margin-top:4px">${actual.ratio !== null ? `${formatEUR(actual.cuotas)} cuotas / ${formatEUR(actual.nomina)} nómina` : 'Sin nómina disponible'}</div>
       <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08);font-size:12px;color:var(--text-secondary)">${previos}</div>
     </div>`;
     })()}

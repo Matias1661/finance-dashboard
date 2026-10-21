@@ -1,3 +1,10 @@
+## 2026-10-21 — Card de ratio del Resumen sin objetivo
+
+- `js/charts.js` (`renderKPIs()`): la card "Ratio de endeudamiento" del Resumen deja de mostrar
+  "· objetivo 30%" en el subtítulo, pedido por Matías; queda "cuotas / nómina". Se mantienen
+  el semáforo de color y el borde rojo por encima de 35% (`OBJETIVO_RATIO_DEUDA` ya no se
+  muestra en ningún texto del dashboard).
+
 ## 2026-10-21 — KPI de ratio en la solapa Deuda sin objetivo
 
 - `js/app.js` (`renderDeuda()`): el KPI "Ratio de endeudamiento" deja de mostrar el subtítulo
