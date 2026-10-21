@@ -226,7 +226,8 @@ Sin bloques `<script>` inline con lógica de negocio.
 - `populateMonthSelector(RAW)` — selector del tab Resumen
 
 **js/insights.js** (añadido 2026-07-03)
-- `detectRecurring()` — cargos recurrentes: concepto+importe exacto, ≥3 cobros, mediana de intervalo 25–35 días. Estado activa/inactiva con ventana de 45 días desde `lastTxDate`.
+- `detectRecurring()` — cargos recurrentes: mismo concepto e importe con tolerancia del 6% respecto del último importe del grupo (`RECURRING_AMT_TOLERANCE`), ≥3 cobros, mediana de intervalo 25–35 días. Estado activa/inactiva con ventana de 45 días desde `lastTxDate`. Devuelve también `diaHabitual` (mediana del día del mes) e `items`, que usa la proyección de fin de mes.
+- Proyección de fin de mes (rombo azul, `renderMonthly()` en `js/charts.js`): gasto neto real del mes + recurrentes activos sin cobrar cuyo día habitual + 3 días no pasó + gasto variable medio de los días restantes en los 3 meses anteriores (sin cobros recurrentes). Ver DECISIONS 2026-10-21.
 - `SUB_ALIASES` / `SUB_KEYWORDS` / `SUB_KEYWORDS_AMT` — clasificación y nombres legibles de suscripciones. Verificar alias periódicamente (los precios cambian).
 - `renderSuscripciones()` — sección en Resumen (`#subs-card`).
 - `computeInsights()` / `renderInsights()` — último mes completo vs. previo, top variaciones, alertas media+2σ (`#insights-card`).
