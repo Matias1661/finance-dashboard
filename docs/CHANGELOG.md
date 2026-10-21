@@ -1,3 +1,16 @@
+## 2026-10-21 — Categorización de Movimientos sin API de Anthropic
+
+- `scripts/process_bank_statements.py`: sin llamadas a la API; los movimientos
+  nuevos se crean con Categoria = "A revisar". Eliminadas
+  `fetch_categorizacion_prompt()` y `categorizar_movimientos()`.
+- `docs/skills/organizar-movimientos/SKILL.md`: nueva fase 0 (categorización
+  inicial de "A revisar" con el prompt de la DB Prompts y confirmación en
+  bloque) y sync previo obligatorio.
+- `docs/PROJECT_MEMORY.md`: tabla de migración, arquitectura y flujo Organizar
+  Movimientos actualizados.
+- Notion: descripción de la DB Movimientos actualizada.
+- Ver `DECISIONS.md` 2026-10-21.
+
 ## 2026-10-12 — Viaje a Málaga (octubre) en TRIP_WINDOWS
 
 - `js/app.js`: nueva ventana `Viaje a Málaga (octubre)`, 09/10 a 12/10/2026.
