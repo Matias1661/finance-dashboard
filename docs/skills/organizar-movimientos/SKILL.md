@@ -12,9 +12,18 @@ antes de asumir nada del historial de chat.
 
 ## Antes de empezar
 
-1. Leer `docs/PROJECT_MEMORY.md` del repo (vía API autenticada de GitHub, nunca
+1. Obtener el token de GitHub de la página Finance Tracker de Notion indicada en las
+   preferencias de Matias (`notion-fetch`). Usarlo sin repetirlo en texto plano y sin
+   guardarlo en memoria; no borrarlo de Notion, lo borra Matias cuando deja de usarlo.
+2. Leer `docs/PROJECT_MEMORY.md` del repo (vía API autenticada de GitHub, nunca
    `raw.githubusercontent.com` si luego vas a editar — cache puede estar desactualizado).
-2. Correr `scripts/find_pending.py` (bundled en este skill) para obtener el listado de
+3. Disparar el workflow `sync-finance-data` (ID 286832931:
+   `POST /repos/Matias1661/finance-dashboard/actions/workflows/286832931/dispatches` con
+   `{"ref":"main"}`) y esperar a que la ejecución quede en `status: completed` con
+   `conclusion: success`. Paso obligatorio en cada ejecución (DECISIONS 2026-09-07):
+   `find_pending.py` lee `finance_data.json`, que es un snapshot, y sin sync no refleja las
+   correcciones manuales hechas en Notion desde el último sync.
+4. Correr `scripts/find_pending.py` (bundled en este skill) para obtener el listado de
    movimientos pendientes YA cruzado contra viajes. No arrastres una lista hecha a mano en
    una sesión anterior — el repo puede haber cambiado.
 
@@ -38,6 +47,16 @@ olvidado antes** — el script la hace obligatoria porque no depende de la memor
    la ventana solo indica coincidencia de fecha, no causalidad — hay gastos recurrentes
    (cuotas, financiaciones) que caen ahí por casualidad del ciclo de tarjeta. Confirmar
    con el usuario cuáles son realmente del viaje antes de escribir en Notion.
+   - Cruzar con Google Calendar las fechas reales del viaje (hora de salida y de vuelta).
+     Si hay un viaje en el calendario que no está en `TRIP_WINDOWS`, proponer agregarlo a
+     `js/app.js` con un `name` distinto de los existentes (`renderTripBreakdown()` agrupa
+     por `name`). Ver DECISIONS 2026-10-12.
+   - Verificar la geografía del comercio (nombre + ubicación conocida) antes de pasar un
+     movimiento a "Viajes". Las cadenas con locales en el destino y cerca de casa
+     (McDonald's, Café&Té, farmacias, supermercados, gasolineras) son la fuente más común
+     de falsos positivos por caer dentro del buffer.
+   - Comida y gastos durante el viaje van a "Viajes", no a "Comer afuera" (DECISIONS
+     2026-08-25). Excepción: SERVIMATIC queda siempre en "Comer afuera".
 5. **Residual** — el resto de los movimientos pendientes, uno por uno o en bloque si ya
    tienen categoría/nota razonable.
 
@@ -68,8 +87,8 @@ olvidado antes** — el script la hace obligatoria porque no depende de la memor
    Esperar ~8 segundos entre llamadas sucesivas (rate limit de Notion).
 2. **`reviewed_movements.json`** (GitHub): agregar la clave `fecha|concepto|monto` (monto
    como float) de CADA movimiento presentado, haya cambiado o no su categoría/nota.
-   Requiere token de GitHub pegado por el usuario en la sesión — nunca se guarda, se usa
-   una vez y se recomienda revocar después. Patrón: GET fresco del SHA → editar en memoria
+   Usa el token de GitHub obtenido en "Antes de empezar" (página de Notion; nunca se
+   guarda en memoria ni se repite en texto plano). Patrón: GET fresco del SHA → editar en memoria
    → PUT con ese SHA (nunca reusar un SHA de antes en la sesión).
 
 ## Al terminar
