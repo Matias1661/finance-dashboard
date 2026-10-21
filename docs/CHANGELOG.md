@@ -1,3 +1,14 @@
+## 2026-10-21 — Ratio de endeudamiento y alerta de Organizar movimientos en el Resumen
+
+- `js/charts.js`: eliminada la card "Sin analizar por Claude". La card "Última
+  transacción" muestra borde rojo y "Pendiente ejecutar Organizar movimientos en Claude
+  (N movimientos)" cuando hay pendientes.
+- `js/charts.js`: nueva card "Ratio de endeudamiento" (mes en curso + 3 meses anteriores)
+  y funciones `computeDebtRatio()` y `nominaHabitual()`.
+- `docs/PROJECT_MEMORY.md`: actualizada la descripción de `renderKPIs()` y del KPI de
+  pendientes.
+- Ver `DECISIONS.md` 2026-10-21.
+
 ## 2026-10-21 — Eliminada la solapa Talho Argentino
 
 - `index.html`: quitados el botón y el panel `tab-talho`.
