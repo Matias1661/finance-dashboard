@@ -19,7 +19,7 @@
 - [x] Tab "Deuda": unifica Préstamos y Tarjeta de Crédito, KPIs unificados y curva del ratio de endeudamiento con objetivo 30% (2026-10-21). Ver `DECISIONS.md` 2026-10-21.
 - [x] Amortizaciones anticipadas de préstamos: DB Notion propia, aplicadas en el cuadro calculado en cliente (cuota vigente y capital pendiente, 2026-10-21). Ver `DECISIONS.md` 2026-10-21 (amortizaciones anticipadas).
 - [x] Cuadro de préstamos: "Día de cobro" en Notion, fechas sin desfase de zona horaria y amortización anticipada en fila propia (2026-10-21).
-- [ ] Completar "Día de cobro" de MicroBank - SEAT Ibiza, Sabadell - VW Golf y CaixaBank - Talho Argentino (hoy usan el día de Fecha inicio).
+- [x] "Día de cobro" = 1 en los cuatro préstamos, verificado contra los cargos reales en Movimientos (2026-10-21).
 
 ## Alta prioridad
 - [x] Categoría "Amortización deuda" excluida de ingresos y gastos (pagos extraordinarios de deuda y venta del Golf), necesaria para el plan de reducción de gastos (2026-10-05). Ver `DECISIONS.md` 2026-10-05.

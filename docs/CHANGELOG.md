@@ -1,3 +1,9 @@
+## 2026-10-21 — Día de cobro de los préstamos restantes
+
+- Notion: "Día de cobro" = 1 en MicroBank - SEAT Ibiza, Sabadell Consumer Finance - VW Golf y
+  CaixaBank - Talho Argentino, según los cargos reales en Movimientos. Solo cambia el cuadro
+  del Golf (antes día 25); Ibiza y Talho ya caían el día 1.
+
 ## 2026-10-21 — Cuadro de préstamos: día de cobro, fechas locales, fila de amortización anticipada
 
 - Notion: propiedad "Día de cobro" en Préstamos; "CaixaBank - Moto de Guille" = 1.

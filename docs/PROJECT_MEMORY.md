@@ -511,7 +511,7 @@ Patrones CSS establecidos:
 **Objetivo:** seguimiento de préstamos personales pendientes (capital, cuota, capital pendiente, cuadro de amortización).
 
 **DB Notion "Prestamos"** (bajo Finance Tracker, data source `ddce76bd-0a56-4b41-8721-92af35bcd83f`):
-Schema: Nombre (title), Entidad (rich text), Capital inicial (number, €), Cuota mensual (number, €), TIN (number, formato percent — se guarda como fracción, ej. 0.055 = 5,5%), Plazo meses (number), Fecha inicio (date), Fecha fin (date), Día de cobro (number, desde 2026-10-21: día del mes del cargo; vacío = día de Fecha inicio), Nº préstamo (rich text), Finalidad declarada (rich text), Uso real (select: Talho Argentino/Vehículo/Personal/Otro), Estado (select: Activo/Cancelado), Notas (rich text).
+Schema: Nombre (title), Entidad (rich text), Capital inicial (number, €), Cuota mensual (number, €), TIN (number, formato percent — se guarda como fracción, ej. 0.055 = 5,5%), Plazo meses (number), Fecha inicio (date), Fecha fin (date), Día de cobro (number, desde 2026-10-21: día del mes del cargo; vacío = día de Fecha inicio; los cuatro préstamos activos = 1, verificado con los cargos de Movimientos: PRES.80194189697, PRES.32664031137 y PRES.32334358886 el día 1; SABADELL CONSUMER entre el 1 y el 5, día contractual 1 según Fecha fin 01/08/2034), Nº préstamo (rich text), Finalidad declarada (rich text), Uso real (select: Talho Argentino/Vehículo/Personal/Otro), Estado (select: Activo/Cancelado), Notas (rich text).
 
 **Préstamos activos cargados (03/08/2026):**
 1. MicroBank (CaixaBank) — 15.000€, cuota 246,83€, TIN 5,75%, fin 04/2030, uso Personal.
