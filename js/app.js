@@ -1559,7 +1559,6 @@ function renderDeuda(){
   const hoy = new Date();
   const mesKey = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}`;
   const r = typeof computeDebtRatio === 'function' ? computeDebtRatio(mesKey) : { ratio: null };
-  const objetivo = typeof OBJETIVO_RATIO_DEUDA !== 'undefined' ? OBJETIVO_RATIO_DEUDA : 30;
   const colorRatio = r.ratio === null ? 'var(--text-secondary)'
     : r.ratio > 35 ? 'var(--red)' : r.ratio > 30 ? 'var(--amber)' : 'var(--green)';
   const fmtPct = v => v.toFixed(1).replace('.', ',') + '%';
@@ -1581,7 +1580,7 @@ function renderDeuda(){
     <div class="card"${r.ratio !== null && r.ratio > 35 ? ' style="border:1.5px solid var(--red)"' : ''}>
       <div class="card-title">Ratio de endeudamiento</div>
       <div style="font-size:22px;font-weight:600;color:${colorRatio}">${r.ratio === null ? '—' : fmtPct(r.ratio)}</div>
-      ${sub(r.ratio === null ? 'Sin nómina disponible' : `Objetivo ${objetivo}% · ${r.ratio > objetivo ? `${(r.ratio - objetivo).toFixed(1).replace('.', ',')} pp por encima` : 'cumplido'}`)}
+      ${r.ratio === null ? sub('Sin nómina disponible') : ''}
     </div>
     <div class="card">
       <div class="card-title">TIN/TAE ponderado</div>

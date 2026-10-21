@@ -1,3 +1,9 @@
+## 2026-10-21 — KPI de ratio en la solapa Deuda sin objetivo
+
+- `js/app.js` (`renderDeuda()`): el KPI "Ratio de endeudamiento" deja de mostrar el subtítulo
+  "Objetivo 30% · x pp por encima / cumplido", pedido por Matías. Se mantienen el valor, el
+  semáforo de color y el borde rojo por encima de 35%. La card del Resumen no cambia.
+
 ## 2026-10-21 — Curva ideal en el gráfico del ratio de endeudamiento
 
 - `js/charts.js`: `renderDebtRatioChart()` reemplaza la línea "Objetivo 30%" por "Curva ideal"
