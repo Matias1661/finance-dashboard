@@ -5,13 +5,9 @@ Revisa la carpeta de Drive "Extractos para Notion" en busca de archivos
 nuevos y crea una pagina por movimiento en la DB Movimientos.
 
 Formato soportado: CSV exportado por CaixaBank (columnas
-Concepto;Fecha;Importe;Saldo). Parseo deterministico local, sin Claude (ver
-parse_csv_extracto()).
-
-Desde el 2026-10-21 el script NO categoriza: cada movimiento nuevo se crea
-con Categoria = "A revisar" y la categorizacion la hace Claude en chat, a
-pedido del usuario, en la fase 0 del skill "Organizar Movimientos". Ver
-docs/DECISIONS.md 2026-10-21.
+Concepto;Fecha;Importe;Saldo). Parseo deterministico local, sin Claude, y
+despues categorizacion via Claude sobre los datos ya parseados (ver
+parse_csv_extracto() / categorizar_movimientos()).
 
 La rama de extraccion via PDF (Claude leyendo el extracto como documento)
 se probo en paralelo y se elimino el 2026-07-23: el CSV es deterministico
@@ -26,26 +22,27 @@ historial solapado entre exports.
 
 Variables de entorno requeridas:
   NOTION_TOKEN            - ya existe como secret
+  ANTHROPIC_API_KEY       - ya existe como secret (agregado 2026-07-17, usado solo para categorizar)
   GOOGLE_SERVICE_ACCOUNT  - JSON completo de la cuenta de servicio (secret nuevo, pendiente)
 
 Ver docs/DECISIONS.md 2026-07-17 (paso 1 del plan de migracion de Relay).
 """
 
-import os, json, csv, io
+import os, json, re, csv, io
 from datetime import datetime
 import requests
 
 NOTION_TOKEN = os.environ["NOTION_TOKEN"]
+ANTHROPIC_API_KEY = os.environ["ANTHROPIC_API_KEY"]
 GOOGLE_SERVICE_ACCOUNT_JSON = os.environ["GOOGLE_SERVICE_ACCOUNT"]
 
 NOTION_VERSION = "2025-09-03"
 MOVIMIENTOS_DS_ID = "367d58ce-928b-4e31-832d-07707f876365"
+PROMPTS_RELAY_DS_ID = "39833ce5-0e68-804a-b091-000bef7a0796"
 DRIVE_FOLDER_ID = "1tDJJ8iJJ5SR5pFQdmp-vKO52x9uc_3Cs"  # "Extractos para Notion"
 STATE_FILE = "processed_bank_statements.json"
 
-# Categoria provisoria; la asigna Claude en la fase 0 de "Organizar
-# Movimientos" (DECISIONS.md 2026-10-21).
-CATEGORIA_PROVISORIA = "A revisar"
+CLAUDE_MODEL = "claude-sonnet-5"
 
 NOTION_HEADERS = {
     "Authorization": f"Bearer {NOTION_TOKEN}",
@@ -92,6 +89,27 @@ def download_file(drive_token, file_id):
     return resp.content
 
 
+def fetch_categorizacion_prompt():
+    """Lee en vivo el texto de categorizacion desde la DB Notion 'Prompts', igual que hacia el workflow de Relay. Si no lo encuentra, falla
+    fuerte (mejor frenar que categorizar sin las reglas actualizadas)."""
+    url = f"https://api.notion.com/v1/data_sources/{PROMPTS_RELAY_DS_ID}/query"
+    payload = {
+        "filter": {
+            "property": "Nombre",
+            "title": {"equals": "Pasar extracto bancario a Notion"}
+        }
+    }
+    resp = requests.post(url, headers=NOTION_HEADERS, json=payload, timeout=30)
+    resp.raise_for_status()
+    results = resp.json().get("results", [])
+    if not results:
+        raise RuntimeError(
+            "No se encontro el prompt 'Pasar extracto bancario a Notion' en "
+            "la DB Notion 'Prompts'.")
+    texto_prop = results[0]["properties"]["Texto"]
+    return "".join(t["plain_text"] for t in texto_prop.get("rich_text", []))
+
+
 def _parse_importe(valor):
     """Convierte '+50,00EUR' o '-23,34EUR' a float. El signo ya viene en el texto."""
     return float(valor.strip().replace("EUR", "").replace(",", "."))
@@ -129,6 +147,77 @@ def parse_csv_extracto(csv_bytes):
                   f"esperado {esperado}, real {real}. Puede indicar filas faltantes en el export.")
 
     return movimientos
+
+
+def categorizar_movimientos(movimientos, categorizacion_prompt, max_intentos=3):
+    """Le pide a Claude UNICAMENTE la categoria de cada movimiento ya parseado
+    (concepto/monto/fecha vienen del CSV, deterministicos, no de una lectura
+    de Claude). No hay extraccion de datos, solo categorizacion sobre datos
+    ya confiables.
+
+    Reintenta hasta max_intentos veces si la respuesta no es JSON valido o
+    no trae una categoria por movimiento (fallo transitorio de la API, ver
+    docs/DECISIONS.md 2026-08-22). Si se agotan los intentos, levanta
+    RuntimeError para que el llamador decida como manejarlo (en
+    process_bank_statements.py, el archivo se salta sin marcarse como
+    procesado, en vez de frenar todo el job)."""
+    entrada = [{"concepto": m["concepto"], "monto": m["monto"], "fecha": m["fecha"]} for m in movimientos]
+
+    system_prompt = (
+        "Sos un categorizador de movimientos bancarios. Te paso una lista de "
+        "movimientos ya extraidos (concepto, monto, fecha) en JSON. Tu unica "
+        "tarea es asignarle una categoria a cada uno, en el mismo orden, "
+        "siguiendo EXACTAMENTE estas reglas:\n\n"
+        f"{categorizacion_prompt}\n\n"
+        "Respondé ÚNICAMENTE con un JSON valido, sin texto adicional, sin "
+        "backticks, con este formato exacto:\n"
+        '{"categorias": ["...", "..."]}'
+    )
+
+    ultimo_error = None
+    for intento in range(1, max_intentos + 1):
+        resp = requests.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={
+                "x-api-key": ANTHROPIC_API_KEY,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            },
+            json={
+                "model": CLAUDE_MODEL,
+                "max_tokens": 4096,
+                "system": system_prompt,
+                "messages": [{"role": "user", "content": json.dumps(entrada, ensure_ascii=False)}],
+            },
+            timeout=120,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        text = "".join(b["text"] for b in data["content"] if b["type"] == "text")
+        text = re.sub(r"^```(json)?|```$", "", text.strip(), flags=re.MULTILINE).strip()
+
+        try:
+            if not text:
+                raise json.JSONDecodeError("respuesta vacia", text, 0)
+            parsed = json.loads(text)
+            categorias = parsed.get("categorias", [])
+            if len(categorias) != len(movimientos):
+                raise RuntimeError(
+                    f"devolvio {len(categorias)} categorias para "
+                    f"{len(movimientos)} movimientos: no coinciden.")
+        except (json.JSONDecodeError, RuntimeError) as e:
+            ultimo_error = e
+            print(f"  AVISO: intento {intento}/{max_intentos} de categorizacion "
+                  f"fallo ({e}).")
+            continue
+
+        for m, cat in zip(movimientos, categorias):
+            m["categoria"] = cat
+        return movimientos
+
+    raise RuntimeError(
+        f"categorizar_movimientos: se agotaron los {max_intentos} intentos, "
+        f"ultimo error: {ultimo_error}")
 
 
 def ya_existe_en_notion(concepto, monto, fecha):
@@ -188,6 +277,8 @@ if __name__ == "__main__":
     if not new_files:
         print("Nada que procesar.")
     else:
+        categorizacion_prompt = fetch_categorizacion_prompt()
+
         for f in new_files:
             print(f"Procesando {f['name']} ({f['id']})...")
 
@@ -200,6 +291,7 @@ if __name__ == "__main__":
             try:
                 file_bytes = download_file(drive_token, f["id"])
                 movimientos = parse_csv_extracto(file_bytes)
+                movimientos = categorizar_movimientos(movimientos, categorizacion_prompt)
             except Exception as e:
                 print(f"  ERROR: fallo el procesamiento de {f['name']}: {e}. "
                       f"Se omite, no se marca como procesado (se reintenta en "
@@ -213,7 +305,7 @@ if __name__ == "__main__":
                 concepto = m["concepto"]
                 monto = float(m["monto"])
                 fecha = m["fecha"]
-                categoria = CATEGORIA_PROVISORIA
+                categoria = m["categoria"]
 
                 if ya_existe_en_notion(concepto, monto, fecha):
                     duplicados += 1
