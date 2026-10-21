@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21 11:22",
+  "generated_at": "2026-10-21 14:23",
   "movimientos": [
     {
       "fecha": "2026-10-20",
@@ -21830,11 +21830,24 @@
       "plazo_meses": 48,
       "fecha_inicio": "2023-10-25",
       "fecha_fin": "2027-11-01",
-      "numero_prestamo": "",
+      "numero_prestamo": "9620.323-343588-86",
       "finalidad_declarada": "Prestamo para comprar la moto de Guille ",
       "uso_real": "Otro",
       "estado": "Activo",
-      "notas": "Se descuenta de los ingresos de Guille"
+      "notas": "Se descuenta de los ingresos de Guille",
+      "amortizaciones_anticipadas": [
+        {
+          "fecha": "2026-10-21",
+          "importe": 300,
+          "intereses": 2.58,
+          "comision": 3,
+          "total_liquidado": 305.58,
+          "tipo": "Reducir cuota",
+          "nueva_cuota": 252.82,
+          "capital_tras": 3017.36,
+          "vencimientos_pendientes": 13
+        }
+      ]
     },
     {
       "nombre": "Sabadell Consumer Finance - VW Golf",
@@ -21849,7 +21862,8 @@
       "finalidad_declarada": "Volkswagen Golf 1.4 TSI eHybrid 150kW (Flexicar Internacional)",
       "uso_real": "Vehículo",
       "estado": "Activo",
-      "notas": ""
+      "notas": "",
+      "amortizaciones_anticipadas": []
     },
     {
       "nombre": "MicroBank - SEAT Ibiza",
@@ -21864,7 +21878,8 @@
       "finalidad_declarada": "No especificada en el contrato",
       "uso_real": "Vehículo",
       "estado": "Activo",
-      "notas": ""
+      "notas": "",
+      "amortizaciones_anticipadas": []
     },
     {
       "nombre": "CaixaBank - Talho Argentino",
@@ -21879,7 +21894,8 @@
       "finalidad_declarada": "Vehículos - adquisición/reparación",
       "uso_real": "Talho Argentino",
       "estado": "Activo",
-      "notas": "El contrato figura a nombre de financiación de vehículo (motivo original de la solicitud), pero el importe se desvió a financiar Talho Argentino."
+      "notas": "El contrato figura a nombre de financiación de vehículo (motivo original de la solicitud), pero el importe se desvió a financiar Talho Argentino.",
+      "amortizaciones_anticipadas": []
     }
   ],
   "tarjetas_credito": [
