@@ -60,6 +60,14 @@ const RECURRING_MIN_CHARGES = 3;
 const RECURRING_GAP_MIN = 25;   // días — cadencia mensual
 const RECURRING_GAP_MAX = 35;
 const RECURRING_ACTIVE_DAYS = 45; // sin cobro en más de 45 días → inactiva
+// Tolerancia de importe para agrupar cobros del mismo concepto (DECISIONS 2026-10-21):
+// absorbe redondeos de céntimos (PRES.80194189697 246,82/246,83) y cambios de precio
+// (RECIBO UNICO MYBOX 114,38 → 108,51; SANITAS 79,97 → 78,56). Se compara contra el
+// último importe del grupo, en orden cronológico.
+const RECURRING_AMT_TOLERANCE = 0.06;
+// Margen en días sobre el día habitual de cobro: pasado ese margen sin cobro en el mes,
+// la proyección de fin de mes asume que ese mes no se cobra.
+const RECURRING_DUE_MARGIN_DAYS = 3;
 const RECURRING_HIDE_DAYS = 180;  // sin cobro en más de 180 días (6 meses) → dejar de mostrar
 
 function _median(arr){
@@ -72,28 +80,39 @@ function _daysBetween(a, b){
   return Math.round((new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / 86400000);
 }
 
-// Devuelve grupos recurrentes: mismo concepto + mismo importe, >=3 cobros,
+// Devuelve grupos recurrentes: mismo concepto + importe dentro de la tolerancia, >=3 cobros,
 // mediana de intervalo entre 25 y 35 días (cadencia mensual).
 function detectRecurring(){
   const raw = window.FINANCE_STATE?.raw || [];
   const lastTx = window.FINANCE_STATE?.lastTxDate;
   if(!raw.length || !lastTx) return [];
 
-  const groups = {};
+  // Agrupación: mismo concepto y mismo importe con tolerancia RECURRING_AMT_TOLERANCE
+  // respecto del último importe del grupo (orden cronológico). g.amt = último importe.
+  const byConcept = {};
   raw.forEach(r => {
     const v = Number(r.monto);
     if(v >= 0) return;
     if(RECURRING_EXCLUDED_CATS.includes(r.categoria)) return;
     if(RECURRING_EXCLUDED_NOTE_PREFIXES.some(p => (r.nota || '').startsWith(p))) return;
     const concepto = (r.concepto || '').trim().toUpperCase().replace(/\s+/g, ' ');
-    const amt = Math.abs(v).toFixed(2);
-    const key = concepto + '|' + amt;
-    if(!groups[key]) groups[key] = { concepto, amt: Number(amt), items: [] };
-    groups[key].items.push(r);
+    if(!byConcept[concepto]) byConcept[concepto] = [];
+    byConcept[concepto].push(r);
+  });
+  const groups = [];
+  Object.entries(byConcept).forEach(([concepto, rows]) => {
+    const clusters = [];
+    [...rows].sort((a, b) => a.fecha.localeCompare(b.fecha)).forEach(r => {
+      const amt = Number(Math.abs(Number(r.monto)).toFixed(2));
+      const c = clusters.find(k => Math.abs(amt - k.amt) <= k.amt * RECURRING_AMT_TOLERANCE);
+      if(c){ c.items.push(r); c.amt = amt; }
+      else clusters.push({ concepto, amt, items: [r] });
+    });
+    groups.push(...clusters);
   });
 
   const result = [];
-  Object.values(groups).forEach(g => {
+  groups.forEach(g => {
     if(g.items.length < RECURRING_MIN_CHARGES) return;
     const fechas = g.items.map(i => i.fecha).sort();
     const gaps = [];
@@ -130,7 +149,11 @@ function detectRecurring(){
 
     result.push({
       concepto: g.concepto, alias, monto: g.amt, categoria: modalCat,
-      cobros: g.items.length, ultimo, activa, diasSinCobro, esSuscripcion: esSub
+      cobros: g.items.length, ultimo, activa, diasSinCobro, esSuscripcion: esSub,
+      // Día habitual de cobro (mediana del día del mes) e items del grupo, usados por la
+      // proyección de fin de mes en charts.js (renderMonthly).
+      diaHabitual: _median(g.items.map(i => parseInt(i.fecha.slice(8, 10), 10))),
+      items: g.items
     });
   });
 
