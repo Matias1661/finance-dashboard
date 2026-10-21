@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21 14:49",
+  "generated_at": "2026-10-21 17:27",
   "movimientos": [
     {
       "fecha": "2026-10-20",
@@ -22354,5 +22354,183 @@
       "cuotas": "",
       "notas": "Cubierta en Harley Davidson Toulouse"
     }
-  ]
+  ],
+  "deuda_forecast": {
+    "generado": "2026-10-21",
+    "objetivo": 30,
+    "llegada": "2027-12",
+    "meses": [
+      {
+        "mes": "2026-10",
+        "cuotas": 1136.39,
+        "nomina": 2648.99,
+        "ratio": 42.9
+      },
+      {
+        "mes": "2026-11",
+        "cuotas": 1111.26,
+        "nomina": 2648.99,
+        "ratio": 41.95
+      },
+      {
+        "mes": "2026-12",
+        "cuotas": 1111.26,
+        "nomina": 2648.99,
+        "ratio": 41.95
+      },
+      {
+        "mes": "2027-01",
+        "cuotas": 1111.26,
+        "nomina": 2648.99,
+        "ratio": 41.95
+      },
+      {
+        "mes": "2027-02",
+        "cuotas": 1111.26,
+        "nomina": 2648.99,
+        "ratio": 41.95
+      },
+      {
+        "mes": "2027-03",
+        "cuotas": 1111.26,
+        "nomina": 2648.99,
+        "ratio": 41.95
+      },
+      {
+        "mes": "2027-04",
+        "cuotas": 1111.26,
+        "nomina": 2648.99,
+        "ratio": 41.95
+      },
+      {
+        "mes": "2027-05",
+        "cuotas": 1111.26,
+        "nomina": 2648.99,
+        "ratio": 41.95
+      },
+      {
+        "mes": "2027-06",
+        "cuotas": 1111.26,
+        "nomina": 2648.99,
+        "ratio": 41.95
+      },
+      {
+        "mes": "2027-07",
+        "cuotas": 1111.26,
+        "nomina": 2648.99,
+        "ratio": 41.95
+      },
+      {
+        "mes": "2027-08",
+        "cuotas": 1092.01,
+        "nomina": 2648.99,
+        "ratio": 41.22
+      },
+      {
+        "mes": "2027-09",
+        "cuotas": 1011.26,
+        "nomina": 2648.99,
+        "ratio": 38.18
+      },
+      {
+        "mes": "2027-10",
+        "cuotas": 1011.26,
+        "nomina": 2648.99,
+        "ratio": 38.18
+      },
+      {
+        "mes": "2027-11",
+        "cuotas": 1011.26,
+        "nomina": 2648.99,
+        "ratio": 38.18
+      },
+      {
+        "mes": "2027-12",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-01",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-02",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-03",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-04",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-05",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-06",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-07",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-08",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-09",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-10",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-11",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      },
+      {
+        "mes": "2028-12",
+        "cuotas": 758.44,
+        "nomina": 2648.99,
+        "ratio": 28.63
+      }
+    ],
+    "historial": [
+      {
+        "fecha": "2026-10-21",
+        "llegada": "2027-12",
+        "llegada_anterior": null,
+        "ratio_mes": 42.9,
+        "cambios": []
+      }
+    ]
+  }
 }
