@@ -1,3 +1,34 @@
+## [2026-10-21] KPI "Sin analizar por Claude" reemplazado por alerta y ratio de endeudamiento
+
+**Contexto:** Matías pidió quitar la card "Sin analizar por Claude" del Resumen, mostrar el
+aviso solo cuando haga falta dentro de "Última transacción", y usar ese espacio para el
+ratio de endeudamiento con su evolución mensual.
+
+**Decisión (confirmada por Matías):**
+- Alerta: mismo criterio de pendientes que la card anterior (A revisar/Otros + PayPal,
+  Uber y Amazon no presentes en `reviewed_movements.json`). Si hay pendientes, la card
+  "Última transacción" lleva borde rojo y el texto "Pendiente ejecutar Organizar
+  movimientos en Claude (N movimientos)". Sin pendientes, la card queda igual que antes.
+- Ratio de endeudamiento: criterio bancario de concesión de hipotecas, cuotas mensuales de
+  deudas / ingresos netos mensuales, umbral 35% (referencia de la banca española; el
+  Banco de España no fija límite legal. Fuente:
+  https://www.assurly.com/es/blog/cual-es-el-porcentaje-maximo-de-endeudamiento-permitido/).
+- Numerador del mes: cuota de cada préstamo con cuota en ese mes según su calendario
+  (`computeAmortizacion()`), todos los préstamos incluidos (también moto de Guille y
+  Talho Argentino), más amortización + intereses de cada extracto de la DB Tarjetas de
+  Crédito Revolving cuya `fecha_cargo` cae en ese mes. Las cuotas fraccionadas 0% de
+  IKEA no se incluyen (no vienen desglosadas por mes; 4,75 € pendientes al 21/10/2026).
+- Denominador: nómina neta habitual. Meses con IRPF: suma de `detalle`, sin la
+  devolución. Meses con más de un pago: se usa la habitual del mes anterior. Si el mes no
+  tiene nómina cargada todavía, se usa la última disponible.
+- Colores: verde hasta 30%, ámbar 30-35%, rojo por encima de 35% (con borde rojo).
+- Card: mes en curso grande, debajo cuotas / nómina usadas y los tres meses anteriores.
+- Valores al 21/10/2026: oct 42,9%, sep 42,5%, ago 39,1%, jul 39,1%.
+- Limitación conocida: el calendario de préstamos no contempla cancelaciones anticipadas
+  (no hay fecha de cancelación en la DB Préstamos); si se cancela uno, revisar el cálculo.
+
+---
+
 ## [2026-10-21] Se elimina la solapa Talho Argentino del dashboard
 
 **Contexto:** Matías pidió quitar la solapa Talho Argentino porque no tiene uso. La
