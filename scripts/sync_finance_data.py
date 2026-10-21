@@ -339,6 +339,7 @@ def build_prestamos(pages, amortizaciones=None):
             "cuota_mensual": _number(props, "Cuota mensual"),
             "tin": _number(props, "TIN"),
             "plazo_meses": _number(props, "Plazo meses"),
+            "dia_cobro": _number(props, "Día de cobro"),
             "fecha_inicio": _date(props, "Fecha inicio"),
             "fecha_fin": _date(props, "Fecha fin"),
             "numero_prestamo": _text(props, "Nº préstamo"),

@@ -1,3 +1,26 @@
+## [2026-10-21] Cuadro de préstamos: día de cobro, fechas locales y fila propia para amortizaciones anticipadas
+
+**Contexto:** en el cuadro del préstamo de Guille la cuota 36 aparecía con fecha 24/10/2026,
+cuota 252,82 € y 300 € en la columna "Anticipada", lo que confundía a Matías. Tres causas:
+las cuotas se fechaban desde "Fecha inicio" (25/10/2023, día de firma) cuando el banco cobra
+el día 1; `toISOString()` convertía a UTC y en horario de Madrid restaba un día a todas las
+fechas; y la amortización anticipada se mostraba en la misma fila que la cuota siguiente.
+
+**Decisión (confirmada por Matías):**
+- Nueva propiedad "Día de cobro" (number) en la DB Préstamos, sincronizada como `dia_cobro`.
+  Con valor D, la cuota i cae en la primera fecha con día D en o después de
+  `fecha_inicio + i meses` (último día del mes si el mes no tiene día D). Vacía, se mantiene
+  el comportamiento anterior. Préstamo de Guille: D = 1, primera cuota 01/12/2023, última
+  01/11/2027, igual que el banco. El resto de préstamos queda vacío hasta confirmar su día.
+- Fechas del cuadro y "hoy" con `fechaLocalISO()` (componentes locales), sin `toISOString()`.
+- Cada amortización anticipada se muestra como fila propia con su fecha real (importe en la
+  columna Amortización, saldo tras amortizar, tipo, comisión e intereses en la descripción).
+  Se quita la columna "Anticipada". El cálculo no cambia.
+- Efecto en el ratio de endeudamiento: las cuotas del préstamo de Guille pasan del día 25 al
+  día 1 del mes siguiente en `computeDebtRatio()`, alineadas con el cargo real.
+
+---
+
 ## [2026-10-21] Amortizaciones anticipadas de préstamos
 
 **Contexto:** Matías hizo una amortización parcial de prueba del préstamo "CaixaBank - Moto de

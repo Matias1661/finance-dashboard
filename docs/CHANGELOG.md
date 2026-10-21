@@ -1,3 +1,13 @@
+## 2026-10-21 — Cuadro de préstamos: día de cobro, fechas locales, fila de amortización anticipada
+
+- Notion: propiedad "Día de cobro" en Préstamos; "CaixaBank - Moto de Guille" = 1.
+- `scripts/sync_finance_data.py`: `build_prestamos()` exporta `dia_cobro`.
+- `js/app.js`: nuevas `fechaLocalISO()`, `fechaCuotaPrestamo()` y `filasCuadroPrestamo()`;
+  `computeAmortizacion()` y `capitalPendienteHoy()` dejan de usar `toISOString()` (restaba un
+  día). El cuadro muestra las amortizaciones anticipadas en fila propia y quita la columna
+  "Anticipada".
+- Ver `DECISIONS.md` 2026-10-21 (día de cobro).
+
 ## 2026-10-21 — Amortizaciones anticipadas de préstamos
 
 - Notion: nueva DB "Amortizaciones anticipadas" (data source
