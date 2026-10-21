@@ -28,7 +28,9 @@ implementar.
   porque los extractos revolving empiezan en diciembre 2025 y antes el ratio sale
   subestimado. Puntos con el semáforo del Resumen.
 - Objetivo: 30% (`OBJETIVO_RATIO_DEUDA`, fin de la zona verde), línea punteada.
-- La card de ratio del Resumen se mantiene.
+- La card de ratio del Resumen se mantiene. Su subtítulo pasa de "límite 35%" a
+  "objetivo 30%" (lee `OBJETIVO_RATIO_DEUDA`), pedido por Matías el mismo día. El semáforo
+  y el borde rojo por encima de 35% no cambian.
 - Valores al 21/10/2026: deuda 45.898,67 € (préstamos 42.261,68 € + tarjetas
   3.636,99 €), cuota 1.136,39 € (936,39 € + 200 €), ratio 42,9%, TIN/TAE ponderado
   7,99%. Curva: ene 32,2%, feb 36,8%, mar-may 36,5%, jun-ago 39,1%, sep 42,5%, oct 42,9%.

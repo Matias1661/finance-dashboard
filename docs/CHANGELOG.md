@@ -1,3 +1,10 @@
+## 2026-10-21 — Card de ratio del Resumen: objetivo 30%
+
+- `js/charts.js` (`renderKPIs()`): el subtítulo de la card "Ratio de endeudamiento" muestra
+  "objetivo 30%" (constante `OBJETIVO_RATIO_DEUDA`) en lugar de "límite 35%". Semáforo y
+  borde sin cambios.
+- Ver `DECISIONS.md` 2026-10-21 (solapa Deuda).
+
 ## 2026-10-21 — Solapa Deuda (unifica Préstamos y Tarjeta de Crédito)
 
 - `index.html`: los botones y paneles `tab-prestamos` y `tab-tarjetas` se reemplazan por
