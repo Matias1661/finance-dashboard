@@ -1,3 +1,14 @@
+## 2026-10-21 — Proyección de fin de mes corregida
+
+- `js/insights.js` (`detectRecurring()`): agrupación por concepto con tolerancia de importe
+  del 6% (`RECURRING_AMT_TOLERANCE`); devuelve `diaHabitual` e `items`. Nueva constante
+  `RECURRING_DUE_MARGIN_DAYS` (3).
+- `js/charts.js` (`renderMonthly()`): proyección = gasto real del mes + recurrentes
+  pendientes cuyo día habitual + 3 no pasó + variable medio de los días restantes en los
+  3 meses anteriores. Octubre 2026 al 20/10: 5.881,88 € → 4.558,56 €.
+- `docs/PROJECT_MEMORY.md`: descripción de `detectRecurring()` y de la proyección.
+- Ver `DECISIONS.md` 2026-10-21.
+
 ## 2026-10-21 — Ratio de endeudamiento y alerta de Organizar movimientos en el Resumen
 
 - `js/charts.js`: eliminada la card "Sin analizar por Claude". La card "Última
