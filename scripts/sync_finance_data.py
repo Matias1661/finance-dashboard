@@ -1300,6 +1300,253 @@ def sanity_check(movimientos, inversiones):
                 "tenia datos — sync abortado.")
 
 
+# ---------------------------------------------------------------------------
+# Forecast del ratio de endeudamiento (ver docs/DECISIONS.md [2026-10-21],
+# forecast del ratio de endeudamiento). Replica en Python la logica de
+# js/app.js (fechaCuotaPrestamo, computeAmortizacion) y js/charts.js
+# (nominaHabitual, computeDebtRatio) para proyectar el ratio mes a mes:
+#   - Prestamos: cuadro frances con amortizaciones anticipadas.
+#   - Tarjetas revolving: extracto real si existe para ese mes; si no,
+#     proyeccion desde el ultimo extracto con la cuota elegida y el TIN
+#     mensual de ese extracto, sin compras nuevas.
+#   - Nomina: ultima nomina habitual, constante.
+# Llegada = primer mes desde el mes en curso con ratio <= objetivo que no
+# vuelve a superarlo. El historico (debt_forecast_history.json) suma una
+# entrada solo cuando cambia el mes de llegada.
+# ---------------------------------------------------------------------------
+OBJETIVO_RATIO_DEUDA = 30
+FIN_CURVA_RATIO_DEUDA = "2028-12"
+FORECAST_HISTORY_FILE = "debt_forecast_history.json"
+
+
+def _ultimo_dia(anio, mes0):
+    """Ultimo dia del mes (mes0 en base 0)."""
+    import calendar
+    return calendar.monthrange(anio, mes0 + 1)[1]
+
+
+def _fecha_cuota_prestamo(prestamo, i):
+    y, m, d = [int(x) for x in prestamo["fecha_inicio"][:10].split("-")]
+    dia_cobro = int(prestamo.get("dia_cobro") or 0)
+    anio, mes = y, m - 1 + i
+    anio += mes // 12
+    mes = mes % 12
+    dia_base = min(d, _ultimo_dia(anio, mes))
+    if dia_cobro < 1:
+        return f"{anio}-{mes + 1:02d}-{dia_base:02d}"
+    if min(dia_cobro, _ultimo_dia(anio, mes)) < dia_base:
+        mes += 1
+        if mes > 11:
+            mes = 0
+            anio += 1
+    return f"{anio}-{mes + 1:02d}-{min(dia_cobro, _ultimo_dia(anio, mes)):02d}"
+
+
+def _compute_amortizacion(prestamo):
+    capital0 = float(prestamo.get("capital_inicial") or 0)
+    cuota = float(prestamo.get("cuota_mensual") or 0)
+    tasa = float(prestamo.get("tin") or 0) / 12
+    plazo = int(prestamo.get("plazo_meses") or 0)
+    anticipadas = sorted(
+        [a for a in (prestamo.get("amortizaciones_anticipadas") or [])
+         if a and a.get("fecha") and float(a.get("importe") or 0) > 0],
+        key=lambda a: a["fecha"])
+    idx = 0
+    schedule = []
+    if not prestamo.get("fecha_inicio") or plazo <= 0:
+        return schedule
+    saldo = capital0
+    for i in range(1, plazo + 1):
+        if saldo <= 0.01:
+            break
+        fecha = _fecha_cuota_prestamo(prestamo, i)
+        while idx < len(anticipadas) and anticipadas[idx]["fecha"] < fecha:
+            a = anticipadas[idx]
+            idx += 1
+            importe = min(float(a.get("importe") or 0), saldo)
+            saldo = max(0.0, saldo - importe)
+            if a.get("tipo") != "Reducir plazo" and saldo > 0.01:
+                restantes = plazo - i + 1
+                nueva = float(a.get("nueva_cuota") or 0)
+                cuota = nueva if nueva > 0 else (
+                    saldo * tasa / (1 - (1 + tasa) ** -restantes) if tasa > 0 else saldo / restantes)
+        if saldo <= 0.01:
+            break
+        interes = saldo * tasa
+        amort = min(max(cuota - interes, 0.0), saldo)
+        saldo = max(0.0, saldo - amort)
+        schedule.append({"fecha": fecha, "cuota": interes + amort})
+    return schedule
+
+
+def _nomina_habitual(nominas, mes_key):
+    noms = sorted([n for n in nominas if n.get("mes") and n["mes"] <= mes_key],
+                  key=lambda n: n["mes"])
+    for n in reversed(noms):
+        if (n.get("pagos") or 1) > 1:
+            continue
+        det = sum(float(x.get("monto") or 0) for x in (n.get("detalle") or []))
+        v = det if det > 0 else float(n.get("monto") or 0)
+        if v > 0:
+            return v
+    return None
+
+
+def _sumar_mes(mes_key, n):
+    y, m = [int(x) for x in mes_key.split("-")]
+    m += n
+    y += (m - 1) // 12
+    m = (m - 1) % 12 + 1
+    return f"{y}-{m:02d}"
+
+
+def _proyeccion_tarjetas(tarjetas, max_meses=240):
+    """Pago mensual proyectado (amortizacion + intereses) por mes, desde el mes
+    siguiente al ultimo extracto de cada tarjeta. Devuelve (dict mes->importe,
+    dict tarjeta->ultimo extracto, sin_fin) con sin_fin=True si alguna
+    tarjeta no se salda en max_meses (cuota <= intereses)."""
+    ultimos = {}
+    for t in tarjetas:
+        if not t.get("fecha_cargo"):
+            continue
+        k = t.get("tarjeta") or t.get("contrato")
+        if k not in ultimos or t["fecha_cargo"] > ultimos[k]["fecha_cargo"]:
+            ultimos[k] = t
+    proy, sin_fin = {}, False
+    for t in ultimos.values():
+        saldo = float(t.get("aplazado_proximo") or 0)
+        tin_m = float(t.get("tin_mensual") or 0) / 100
+        cuota = float(t.get("cuota_mensual_elegida") or 0)
+        mes = t["fecha_cargo"][:7]
+        n = 0
+        while saldo > 0.01:
+            n += 1
+            if n > max_meses or cuota <= 0:
+                sin_fin = True
+                break
+            mes = _sumar_mes(mes, 1)
+            interes = saldo * tin_m
+            pago = min(cuota, saldo + interes)
+            saldo = saldo + interes - pago
+            proy[mes] = proy.get(mes, 0.0) + pago
+    return proy, ultimos, sin_fin
+
+
+def build_debt_forecast(prestamos, tarjetas, nominas, hoy):
+    """Serie del ratio desde el mes en curso hasta que se salda toda la deuda
+    (minimo hasta FIN_CURVA_RATIO_DEUDA) y mes de llegada al objetivo."""
+    mes_actual = hoy.strftime("%Y-%m")
+    nomina = _nomina_habitual(nominas, mes_actual)
+    if not nomina:
+        return None
+    cuotas_prest = {}
+    ultimo_mes_deuda = mes_actual
+    for p in prestamos:
+        for c in _compute_amortizacion(p):
+            k = c["fecha"][:7]
+            cuotas_prest[k] = cuotas_prest.get(k, 0.0) + c["cuota"]
+            ultimo_mes_deuda = max(ultimo_mes_deuda, k)
+    reales = {}
+    for t in tarjetas:
+        if t.get("fecha_cargo"):
+            k = t["fecha_cargo"][:7]
+            reales[k] = reales.get(k, 0.0) + float(t.get("amortizacion") or 0) + float(t.get("intereses_periodo") or 0)
+    proy, ultimos, sin_fin = _proyeccion_tarjetas(tarjetas)
+    if proy:
+        ultimo_mes_deuda = max(ultimo_mes_deuda, max(proy))
+    fin = max(FIN_CURVA_RATIO_DEUDA, _sumar_mes(ultimo_mes_deuda, 1))
+
+    meses = []
+    k = mes_actual
+    while k <= fin:
+        cuotas = cuotas_prest.get(k, 0.0) + reales.get(k, 0.0) + proy.get(k, 0.0)
+        meses.append({"mes": k, "cuotas": round(cuotas, 2), "nomina": round(nomina, 2),
+                      "ratio": round(cuotas / nomina * 100, 2)})
+        k = _sumar_mes(k, 1)
+
+    llegada = None
+    if not sin_fin:
+        for i, m in enumerate(meses):
+            if all(x["ratio"] <= OBJETIVO_RATIO_DEUDA for x in meses[i:]):
+                llegada = m["mes"]
+                break
+
+    insumos = {
+        "nomina": round(nomina, 2),
+        "anticipadas": sorted(
+            f'{p.get("nombre")}|{a.get("fecha")}|{float(a.get("importe") or 0):.2f}'
+            for p in prestamos for a in (p.get("amortizaciones_anticipadas") or [])),
+        "cuotas_prestamos": {p.get("nombre"): float(p.get("cuota_mensual") or 0) for p in prestamos},
+        "tarjetas": {k: {"fecha_cargo": t["fecha_cargo"],
+                         "cuota": float(t.get("cuota_mensual_elegida") or 0),
+                         "saldo": float(t.get("aplazado_proximo") or 0)}
+                     for k, t in ultimos.items()},
+    }
+    return {
+        "generado": hoy.strftime("%Y-%m-%d"),
+        "objetivo": OBJETIVO_RATIO_DEUDA,
+        "llegada": llegada,
+        "meses": [m for m in meses if m["mes"] <= FIN_CURVA_RATIO_DEUDA],
+        "insumos": insumos,
+    }
+
+
+def _describir_cambios(prev, cur):
+    """Lista legible de lo que cambio en los insumos entre dos pronosticos."""
+    if not prev:
+        return []
+    out = []
+    eur = lambda v: f"{v:,.2f} €".replace(",", "X").replace(".", ",").replace("X", ".")
+    for a in sorted(set(cur["anticipadas"]) - set(prev.get("anticipadas", []))):
+        nombre, fecha, importe = a.split("|")
+        out.append(f"Amortización anticipada {nombre}: {eur(float(importe))} ({fecha[8:10]}/{fecha[5:7]}/{fecha[:4]})")
+    for nombre, cuota in cur["cuotas_prestamos"].items():
+        antes = prev.get("cuotas_prestamos", {}).get(nombre)
+        if antes is None:
+            out.append(f"Préstamo nuevo {nombre}: cuota {eur(cuota)}")
+        elif abs(antes - cuota) > 0.005:
+            out.append(f"Cuota {nombre}: {eur(antes)} → {eur(cuota)}")
+    for nombre in prev.get("cuotas_prestamos", {}):
+        if nombre not in cur["cuotas_prestamos"]:
+            out.append(f"Préstamo {nombre} fuera del cálculo")
+    for k, t in cur["tarjetas"].items():
+        antes = prev.get("tarjetas", {}).get(k)
+        if not antes or antes["fecha_cargo"] != t["fecha_cargo"]:
+            txt = f"Extracto {k} ({t['fecha_cargo'][8:10]}/{t['fecha_cargo'][5:7]}/{t['fecha_cargo'][:4]}): saldo {eur(t['saldo'])}, cuota {eur(t['cuota'])}"
+            if antes and abs(antes["cuota"] - t["cuota"]) > 0.005:
+                txt += f" (antes {eur(antes['cuota'])})"
+            out.append(txt)
+    if abs(prev.get("nomina", 0) - cur["nomina"]) > 0.005:
+        out.append(f"Nómina: {eur(prev.get('nomina', 0))} → {eur(cur['nomina'])}")
+    return out
+
+
+def update_debt_forecast_history(forecast, path=FORECAST_HISTORY_FILE):
+    """Agrega una entrada al historico si cambio el mes de llegada (o si el
+    historico esta vacio). Devuelve la lista completa."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            historial = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        historial = []
+    ultima = historial[-1] if historial else None
+    if ultima is None or ultima.get("llegada") != forecast["llegada"]:
+        historial.append({
+            "fecha": forecast["generado"],
+            "llegada": forecast["llegada"],
+            "llegada_anterior": ultima.get("llegada") if ultima else None,
+            "ratio_mes": forecast["meses"][0]["ratio"] if forecast["meses"] else None,
+            "cambios": _describir_cambios(ultima.get("insumos") if ultima else None, forecast["insumos"]),
+            "insumos": forecast["insumos"],
+        })
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(historial, f, ensure_ascii=False, indent=2)
+        print(f"  Forecast deuda: llegada {forecast['llegada']} (antes {ultima.get('llegada') if ultima else '—'}), entrada agregada al historico")
+    else:
+        print(f"  Forecast deuda: llegada {forecast['llegada']} sin cambios")
+    return historial
+
+
 if __name__ == "__main__":
     try:
         print("Leyendo Movimientos (Notion)...")
@@ -1343,27 +1590,33 @@ if __name__ == "__main__":
             nominas = []
 
         print("Leyendo Prestamos (Notion)...")
+        deuda_read_ok = False
+        amortizaciones_read_ok = False
         try:
             if not NOTION_PRESTAMOS_DS_ID:
                 raise RuntimeError("falta env var NOTION_PRESTAMOS_DATA_SOURCE_ID")
             prestamos_pages = fetch_prestamos_notion()
             try:
                 amortizaciones = build_amortizaciones(fetch_amortizaciones_notion())
+                amortizaciones_read_ok = True
                 print(f"  {sum(len(v) for v in amortizaciones.values())} amortizaciones anticipadas")
             except Exception as amort_err:
                 print(f"  AVISO: no se pudo leer Amortizaciones anticipadas: {amort_err}")
                 amortizaciones = {}
             prestamos = build_prestamos(prestamos_pages, amortizaciones)
             print(f"  {len(prestamos)} prestamos activos")
+            deuda_read_ok = amortizaciones_read_ok
         except Exception as prest_err:
             print(f"  AVISO: no se pudo leer Prestamos: {prest_err}")
             prestamos = []
 
         print("Leyendo Tarjetas de Credito Revolving (Notion)...")
+        tarjetas_read_ok = False
         try:
             tarjetas_pages = fetch_tarjetas_credito_notion()
             tarjetas_credito = build_tarjetas_credito(tarjetas_pages)
             print(f"  {len(tarjetas_credito)} periodos cargados")
+            tarjetas_read_ok = True
         except Exception as tarj_err:
             print(f"  AVISO: no se pudo leer Tarjetas de Credito: {tarj_err}")
             tarjetas_credito = []
@@ -1386,6 +1639,31 @@ if __name__ == "__main__":
         else:
             print("Se omite verificacion de huecos de Relay: la lectura de Rendimiento Inversiones fallo (fallo de sync, no hueco de datos).")
 
+        print("Calculando forecast del ratio de endeudamiento...")
+        deuda_forecast = None
+        try:
+            deuda_forecast = build_debt_forecast(
+                prestamos, tarjetas_credito, nominas, datetime.now(ZoneInfo("Europe/Madrid")))
+            if deuda_forecast is None:
+                print("  AVISO: sin nomina habitual, se omite el forecast")
+            elif deuda_read_ok and tarjetas_read_ok and nominas:
+                deuda_forecast["historial"] = [
+                    {k: v for k, v in e.items() if k != "insumos"}
+                    for e in update_debt_forecast_history(deuda_forecast)]
+            else:
+                print("  AVISO: lectura incompleta de Prestamos/Amortizaciones/Tarjetas/Nominas, no se toca el historico")
+                try:
+                    with open(FORECAST_HISTORY_FILE, encoding="utf-8") as f:
+                        deuda_forecast["historial"] = [
+                            {k: v for k, v in e.items() if k != "insumos"} for e in json.load(f)]
+                except (FileNotFoundError, json.JSONDecodeError):
+                    deuda_forecast["historial"] = []
+            if deuda_forecast is not None:
+                deuda_forecast.pop("insumos", None)
+        except Exception as fc_err:
+            print(f"  AVISO: no se pudo calcular el forecast de deuda: {fc_err}")
+            deuda_forecast = None
+
         output = {
             "generated_at": datetime.now(ZoneInfo("Europe/Madrid")).strftime("%Y-%m-%d %H:%M"),
             "movimientos": movimientos,
@@ -1393,7 +1671,8 @@ if __name__ == "__main__":
             "nominas": nominas,
             "prestamos": prestamos,
             "tarjetas_credito": tarjetas_credito,
-            "tarjetas_credito_operaciones": tarjetas_credito_operaciones
+            "tarjetas_credito_operaciones": tarjetas_credito_operaciones,
+            "deuda_forecast": deuda_forecast
         }
 
         with open("finance_data.json", "w", encoding="utf-8") as f:

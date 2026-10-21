@@ -1,3 +1,42 @@
+## [2026-10-21] Forecast del ratio de endeudamiento e histórico del pronóstico
+
+**Contexto:** Matías pidió convertir la curva del ratio de endeudamiento (solapa Deuda) en una
+mezcla de histórico y pronóstico, con eje de enero 2026 a diciembre 2028, la marca del mes en
+que se alcanza el objetivo y un registro de cómo va cambiando ese mes con amortizaciones
+anticipadas o subidas de cuota. Supuestos y diseño confirmados en el chat antes de implementar.
+
+**Decisión (confirmada por Matías):**
+- Histórico: sin cambios, `computeDebtRatio()` hasta el mes en curso.
+- Pronóstico (calculado en `scripts/sync_finance_data.py`, `build_debt_forecast()`):
+  - Préstamos: cuadro francés con amortizaciones anticipadas. Port a Python de
+    `fechaCuotaPrestamo()` y `computeAmortizacion()`; verificado contra el JS con los datos del
+    21/10/2026 (324 cuotas, diferencia 0).
+  - Tarjetas revolving: extracto real si existe para el mes; si no, proyección desde el último
+    extracto de cada tarjeta con su cuota elegida y su TIN mensual, sin compras nuevas. Una
+    subida de cuota entra en el pronóstico al cargar el extracto con la cuota nueva.
+  - Nómina: última nómina habitual (`nominaHabitual()`), constante.
+- Llegada: primer mes desde el mes en curso con ratio <= objetivo (30%) que no vuelve a
+  superarlo. La serie se calcula hasta saldar toda la deuda (la llegada puede caer después de
+  diciembre 2028); el gráfico muestra hasta diciembre 2028.
+- Histórico del pronóstico (opción "foto guardada", en el repo): `debt_forecast_history.json`.
+  Cada sync agrega una entrada solo si cambió el mes de llegada: fecha del sync, llegada,
+  llegada anterior, ratio del mes, cambios detectados en los insumos (amortizaciones
+  anticipadas nuevas, cuotas de préstamos, extractos nuevos de tarjetas con cambio de cuota,
+  nómina) y los insumos para comparar en el próximo sync. Si falla la lectura de Préstamos,
+  Amortizaciones, Tarjetas o Nóminas, el histórico no se toca. El workflow
+  `sync-finance-data` lo incluye en el commit.
+- `finance_data.json` gana `deuda_forecast` (generado, objetivo, llegada, meses hasta dic 2028,
+  historial sin insumos).
+- Gráfico: histórico en línea continua, pronóstico en línea punteada con puntos huecos,
+  línea vertical y rótulo en el mes de llegada, banderita sobre la curva en el mes de cada
+  cambio de pronóstico (verde si la llegada se adelanta, roja si se atrasa) con tooltip
+  "llegada X → Y" y la lista de cambios. Texto sobre el gráfico con la llegada, la fecha del
+  pronóstico y los supuestos.
+- Primera entrada del histórico (21/10/2026): llegada diciembre 2027 (ratio 28,6%), al
+  terminar el préstamo de la moto de Guille. Ratio octubre 2026: 42,9%.
+
+---
+
 ## [2026-10-21] Cuadro de préstamos: día de cobro, fechas locales y fila propia para amortizaciones anticipadas
 
 **Contexto:** en el cuadro del préstamo de Guille la cuota 36 aparecía con fecha 24/10/2026,

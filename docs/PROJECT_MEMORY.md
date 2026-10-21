@@ -239,6 +239,7 @@ Sin bloques `<script>` inline con lógica de negocio.
 - `formatEUR(v)` — fuente única del formateador EUR. No duplicar en otros módulos.
 - `renderKPIs()` — tarjetas del Resumen: Última transacción (con alerta en rojo si hay movimientos pendientes de Organizar movimientos), Patrimonio invertido, Ahorro real 12m (balance + rendimiento, desglose de aportes), Ratio de endeudamiento (desde 2026-10-21, reemplaza a "Sin analizar por Claude").
 - `computeDebtRatio(mesKey)` / `nominaHabitual(mesKey)` — ratio de endeudamiento mensual: cuotas de préstamos (vía `computeAmortizacion()` de app.js) + amortización e intereses de extractos revolving con cargo en el mes, sobre la nómina neta habitual. Ver `DECISIONS.md` 2026-10-21.
+- `deuda_forecast` (finance_data.json, generado por `build_debt_forecast()` en `sync_finance_data.py`): pronóstico del ratio mes a mes y mes de llegada al objetivo; `debt_forecast_history.json` guarda una entrada cada vez que cambia la llegada. Ver `DECISIONS.md` 2026-10-21 (forecast).
 - `renderMonthly()` — barras ingresos/gastos por mes. Consume `filteredData()`. Eje Y en EUR.
 - `renderDonut()` — donut de gastos por categoría. Consume `filteredData()`.
 
@@ -282,7 +283,7 @@ El gráfico mixto de Guille requiere configuración específica por la diferenci
 | Transacciones | renderTransacciones() | Selector mes + categoría, tabla completa |
 | Guille | renderGuille() | KPIs (3), chart mixto dual-Y, selector mes, tabla movimientos |
 | Inversiones | renderInversiones() | ver sección "Tab Inversiones" |
-| Deuda | renderDeuda() | KPIs (5: deuda pendiente total, cuota mensual total, ratio de endeudamiento vs objetivo 30%, TIN/TAE ponderado, estado extractos), curva del ratio desde ene 2026 (`renderDebtRatioChart()`), sección Préstamos (`renderPrestamos()`) y sección Tarjetas de crédito (`renderTarjetasCredito()`: intereses histórico, `renderTarjetasChart()`, cards por tarjeta) |
+| Deuda | renderDeuda() | KPIs (5: deuda pendiente total, cuota mensual total, ratio de endeudamiento vs objetivo 30%, TIN/TAE ponderado, estado extractos), curva del ratio de ene 2026 a dic 2028 (`renderDebtRatioChart()`: histórico + pronóstico de `deuda_forecast`, mes de llegada al objetivo y banderitas de cambios de pronóstico desde `debt_forecast_history.json`), sección Préstamos (`renderPrestamos()`) y sección Tarjetas de crédito (`renderTarjetasCredito()`: intereses histórico, `renderTarjetasChart()`, cards por tarjeta) |
 
 Las solapas Préstamos y Tarjeta de Crédito se unificaron en "Deuda" el 21/10/2026 (ver `DECISIONS.md` 2026-10-21, solapa Deuda); las secciones "Tab Préstamos" y "Tab Tarjeta de Crédito" de este documento describen hoy las dos secciones de esa solapa.
 

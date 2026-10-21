@@ -1678,6 +1678,7 @@ async function init(){
       window.FINANCE_STATE.prestamos    = rawData.prestamos    || [];
       window.FINANCE_STATE.tarjetasCredito = rawData.tarjetas_credito || [];
       window.FINANCE_STATE.tarjetasCreditoOperaciones = rawData.tarjetas_credito_operaciones || [];
+      window.FINANCE_STATE.deudaForecast = rawData.deuda_forecast || null;
       window.FINANCE_STATE.generatedAt  = rawData.generated_at || '—';
     }
   }

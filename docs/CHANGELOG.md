@@ -1,3 +1,17 @@
+## 2026-10-21 — Forecast del ratio de endeudamiento
+
+- `scripts/sync_finance_data.py`: `build_debt_forecast()` (port a Python de
+  `fechaCuotaPrestamo()`, `computeAmortizacion()` y `nominaHabitual()`, más proyección de
+  tarjetas revolving) y `update_debt_forecast_history()`. Nueva clave `deuda_forecast` en
+  `finance_data.json`.
+- Nuevo `debt_forecast_history.json` (raíz del repo), primera entrada 21/10/2026 con llegada
+  diciembre 2027. `.github/workflows/sync-finance-data.yml` lo agrega al commit.
+- `js/charts.js`: `renderDebtRatioChart()` con eje ene 2026 a dic 2028
+  (`FIN_CURVA_RATIO_DEUDA`), histórico, pronóstico, mes de llegada y banderitas de cambios.
+- `js/app.js`: `FINANCE_STATE.deudaForecast`. `index.html`: línea de texto con la llegada
+  estimada (`#ratio-deuda-llegada`).
+- Ver `DECISIONS.md` 2026-10-21 (forecast del ratio de endeudamiento).
+
 ## 2026-10-21 — Día de cobro de los préstamos restantes
 
 - Notion: "Día de cobro" = 1 en MicroBank - SEAT Ibiza, Sabadell Consumer Finance - VW Golf y
