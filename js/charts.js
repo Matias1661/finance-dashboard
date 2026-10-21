@@ -111,9 +111,10 @@ function renderKPIs(){
   }).length;
 
   el.innerHTML = `
-    <div class="card">
+    <div class="card"${pendingReview > 0 ? ' style="border:1.5px solid var(--red)"' : ''}>
       <div class="card-title">Última transacción</div>
       <div style="font-size:16px;font-weight:600;font-family:'DM Mono'">${lastTx}</div>
+      ${pendingReview > 0 ? `<div style="font-size:11px;font-weight:600;color:var(--red);margin-top:6px">Pendiente ejecutar Organizar movimientos en Claude (${pendingReview} ${pendingReview === 1 ? 'movimiento' : 'movimientos'})</div>` : ''}
       <div class="card-title" style="margin-top:14px">Última sincronización</div>
       <div style="font-size:13px;font-weight:500;font-family:'DM Mono';color:var(--text-secondary)">${generatedAt}</div>
     </div>
@@ -159,12 +160,74 @@ function renderKPIs(){
       </div>
     </div>`;
     })()}
-    <div class="card" style="${pendingReview > 0 ? 'border:1.5px solid var(--amber)' : ''}">
-      <div class="card-title">Sin analizar por Claude</div>
-      <div style="font-size:22px;font-weight:600;color:${pendingReview > 0 ? 'var(--amber)' : 'var(--green)'}">${pendingReview}</div>
-      ${pendingReview > 0 ? '<div style="font-size:11px;color:var(--text-secondary);margin-top:6px">Usa el trigger <strong>"Organizar Movimientos"</strong> en el chat de Claude</div>' : '<div style="font-size:11px;color:var(--text-secondary);margin-top:6px">Todo al día</div>'}
-    </div>
+    ${(() => {
+      const MESES_CORTOS = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+      const hoy = new Date();
+      const meses = [0,1,2,3].map(i => {
+        const d = new Date(hoy.getFullYear(), hoy.getMonth() - i, 1);
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+      });
+      const ratios = meses.map(m => ({ mes: m, ...computeDebtRatio(m) }));
+      const colorRatio = r => r === null ? 'var(--text-secondary)'
+        : r > 35 ? 'var(--red)' : r > 30 ? 'var(--amber)' : 'var(--green)';
+      const fmtPct = r => r === null ? '—' : r.toFixed(1).replace('.', ',') + '%';
+      const actual = ratios[0];
+      const previos = ratios.slice(1).map(x => `
+        <div style="display:flex;justify-content:space-between;margin-top:4px">
+          <span>${MESES_CORTOS[parseInt(x.mes.slice(5,7),10)-1]} ${x.mes.slice(2,4)}</span>
+          <span style="font-family:'DM Mono';color:${colorRatio(x.ratio)}">${fmtPct(x.ratio)}</span>
+        </div>`).join('');
+      return `
+    <div class="card"${actual.ratio !== null && actual.ratio > 35 ? ' style="border:1.5px solid var(--red)"' : ''}>
+      <div class="card-title">Ratio de endeudamiento</div>
+      <div style="font-size:22px;font-weight:600;color:${colorRatio(actual.ratio)}">${fmtPct(actual.ratio)}</div>
+      <div style="font-size:11px;color:var(--text-secondary);margin-top:4px">${actual.ratio !== null ? `${formatEUR(actual.cuotas)} cuotas / ${formatEUR(actual.nomina)} nómina · límite 35%` : 'Sin nómina disponible'}</div>
+      <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08);font-size:12px;color:var(--text-secondary)">${previos}</div>
+    </div>`;
+    })()}
   `;
+}
+
+// Nómina neta habitual del mes (ver DECISIONS 2026-10-21, ratio de endeudamiento):
+// usa la última nómina con mes <= mesKey. Meses con IRPF: solo la suma de `detalle`
+// (sin la devolución). Meses con más de un pago (cambio de empresa, extras): se toma
+// la nómina habitual del mes anterior.
+function nominaHabitual(mesKey){
+  const noms = [...(window.FINANCE_STATE?.nominas || [])]
+    .filter(n => n.mes && n.mes <= mesKey)
+    .sort((a, b) => a.mes.localeCompare(b.mes));
+  for(let i = noms.length - 1; i >= 0; i--){
+    const n = noms[i];
+    if((n.pagos || 1) > 1) continue;
+    const det = (n.detalle || []).reduce((s, x) => s + (Number(x.monto) || 0), 0);
+    const v = det > 0 ? det : Number(n.monto) || 0;
+    if(v > 0) return v;
+  }
+  return null;
+}
+
+// Ratio de endeudamiento del mes (criterio bancario, umbral 35%):
+// cuotas de préstamos con cuota en ese mes (según computeAmortizacion, app.js)
+// + amortización + intereses de los extractos revolving con cargo en ese mes,
+// dividido por la nómina habitual. Las cuotas fraccionadas 0% de IKEA no se incluyen.
+function computeDebtRatio(mesKey){
+  let cuotas = 0;
+  const prestamos = window.FINANCE_STATE?.prestamos || [];
+  if(typeof computeAmortizacion === 'function'){
+    prestamos.forEach(p => {
+      computeAmortizacion(p).forEach(c => {
+        if(c.fecha.slice(0,7) === mesKey) cuotas += c.cuota;
+      });
+    });
+  }
+  (window.FINANCE_STATE?.tarjetasCredito || []).forEach(t => {
+    if(t.fecha_cargo && t.fecha_cargo.slice(0,7) === mesKey){
+      cuotas += (Number(t.amortizacion) || 0) + (Number(t.intereses_periodo) || 0);
+    }
+  });
+  const nomina = nominaHabitual(mesKey);
+  const ratio = nomina ? cuotas / nomina * 100 : null;
+  return { cuotas, nomina, ratio };
 }
 
 function renderMonthly(){
