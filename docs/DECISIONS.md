@@ -1,3 +1,26 @@
+## [2026-10-21] Skill organizar-movimientos alineado con DECISIONS y PROJECT_MEMORY
+
+**Contexto:** verificación del skill `organizar-movimientos` el 21/10/2026. La copia
+instalada coincide con `docs/skills/organizar-movimientos/`, pero el skill no aplicaba
+reglas ya decididas:
+- El dispatch de `sync-finance-data` antes de `find_pending.py` (DECISIONS 2026-09-07)
+  nunca llegó a la copia canónica del repo. Solo estuvo en `efc9d90` y se quitó con el
+  revert `e10d698`.
+- La fase Viajes no incluía el cruce con Google Calendar, la verificación geográfica del
+  comercio ni el criterio comida-en-viajes con la excepción de SERVIMATIC
+  (DECISIONS 2026-08-25 y 2026-10-12, PROJECT_MEMORY.md).
+- El manejo del token describía un token pegado en la sesión y revocado después; el token
+  vive en la página Finance Tracker de Notion y no se borra.
+- PROJECT_MEMORY.md describía `reviewed_movements.json` como `{ "reviewed": [...] }`; el
+  archivo real es una lista plana, que es lo que asume `find_pending.py`.
+
+**Decisión (confirmada por Matías):** agregar al skill el paso de token desde Notion y el
+dispatch obligatorio de `sync-finance-data` con espera, las tres reglas de la fase Viajes y
+el texto de token actualizado en la sección de escritura. Corregir el formato de
+`reviewed_movements.json` en PROJECT_MEMORY.md. `find_pending.py` sin cambios.
+
+---
+
 ## [2026-10-12] Viaje a Málaga de octubre añadido a TRIP_WINDOWS
 
 **Contexto:** en "Organizar movimientos" del 12/10/2026 el script no marcó ningún
