@@ -1130,6 +1130,14 @@ const CURVA_IDEAL_RATIO_DEUDA = {
   '2028-12': 0.5
 };
 
+function sumarMesRatio(mesKey, n){
+  let [y, m] = mesKey.split('-').map(Number);
+  m += n;
+  y += Math.floor((m - 1) / 12);
+  m = ((m - 1) % 12 + 12) % 12 + 1;
+  return `${y}-${String(m).padStart(2,'0')}`;
+}
+
 function renderDebtRatioChart(){
   const ctx = document.getElementById('chart-ratio-deuda');
   if(!ctx) return;
@@ -1168,6 +1176,31 @@ function renderDebtRatioChart(){
 
   // Curva ideal (fija)
   const ideal = meses.map(k => CURVA_IDEAL_RATIO_DEUDA[k] ?? null);
+
+  /* Cambios del pronóstico contra el mes anterior, por préstamo o tarjeta
+   * (detalle de deuda_forecast). Solo diferencias de más de 0,50 €, para
+   * ignorar redondeos. Ver docs/DECISIONS.md [2026-10-22]. */
+  const cambiosPronostico = mesKey => {
+    const cur = fcMap[mesKey];
+    const prev = fcMap[sumarMesRatio(mesKey, -1)];
+    if(!cur || !prev || !cur.detalle || !prev.detalle) return [];
+    const nombres = [...new Set([...Object.keys(prev.detalle), ...Object.keys(cur.detalle)])].sort();
+    const fmtDif = v => (v > 0 ? '+' : '−') + formatEUR(Math.abs(v));
+    const lineas = [];
+    nombres.forEach(n => {
+      const a = Number(prev.detalle[n]) || 0;
+      const b = Number(cur.detalle[n]) || 0;
+      const dif = b - a;
+      if(Math.abs(dif) <= 0.5) return;
+      if(b === 0) lineas.push(`${n}: deja de pagarse (${fmtDif(dif)})`);
+      else if(a === 0) lineas.push(`${n}: nueva cuota (${fmtDif(dif)})`);
+      else lineas.push(`${n}: ${formatEUR(a)} → ${formatEUR(b)} (${fmtDif(dif)})`);
+    });
+    if(!lineas.length) return [];
+    const difRatio = (Number(cur.ratio) || 0) - (Number(prev.ratio) || 0);
+    return ['Cambios contra el mes anterior:', ...lineas,
+      `Ratio: ${difRatio > 0 ? '+' : '−'}${Math.abs(difRatio).toFixed(1).replace('.', ',')} pp`];
+  };
 
   if(window.debtRatioChart) window.debtRatioChart.destroy();
 
@@ -1232,7 +1265,8 @@ function renderDebtRatioChart(){
               const d = datos[c.dataIndex];
               if(!d || d.ratio === null) return 'Sin nómina disponible';
               return `Ratio: ${fmtPct(d.ratio)} (${formatEUR(d.cuotas)} / ${formatEUR(d.nomina)})`;
-            }
+            },
+            afterLabel: c => c.datasetIndex === 1 ? cambiosPronostico(meses[c.dataIndex]) : []
           }
         }
       },

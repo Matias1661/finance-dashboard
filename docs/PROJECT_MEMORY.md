@@ -239,7 +239,7 @@ Sin bloques `<script>` inline con lógica de negocio.
 - `formatEUR(v)` — fuente única del formateador EUR. No duplicar en otros módulos.
 - `renderKPIs()` — tarjetas del Resumen: Última transacción (con alerta en rojo si hay movimientos pendientes de Organizar movimientos), Patrimonio invertido, Ahorro real 12m (balance + rendimiento, desglose de aportes), Ratio de endeudamiento (desde 2026-10-21, reemplaza a "Sin analizar por Claude").
 - `computeDebtRatio(mesKey)` / `nominaHabitual(mesKey)` — ratio de endeudamiento mensual: cuotas de préstamos (vía `computeAmortizacion()` de app.js) + amortización e intereses de extractos revolving con cargo en el mes, sobre la nómina neta habitual. Ver `DECISIONS.md` 2026-10-21.
-- `deuda_forecast` (finance_data.json, generado por `build_debt_forecast()` en `sync_finance_data.py`): pronóstico del ratio mes a mes y mes de llegada al objetivo; `debt_forecast_history.json` guarda una entrada cada vez que cambia la llegada. Ver `DECISIONS.md` 2026-10-21 (forecast).
+- `deuda_forecast` (finance_data.json, generado por `build_debt_forecast()` en `sync_finance_data.py`): pronóstico del ratio mes a mes (con `detalle` por préstamo y tarjeta desde 2026-10-22, que usa el tooltip de cambios contra el mes anterior) y mes de llegada al objetivo; `debt_forecast_history.json` guarda una entrada cada vez que cambia la llegada. Ver `DECISIONS.md` 2026-10-21 (forecast).
 - `renderMonthly()` — barras ingresos/gastos por mes. Consume `filteredData()`. Eje Y en EUR.
 - `renderDonut()` — donut de gastos por categoría. Consume `filteredData()`.
 

@@ -1403,8 +1403,8 @@ def _sumar_mes(mes_key, n):
 def _proyeccion_tarjetas(tarjetas, max_meses=240):
     """Pago mensual proyectado (amortizacion + intereses) por mes, desde el mes
     siguiente al ultimo extracto de cada tarjeta. Devuelve (dict mes->importe,
-    dict tarjeta->ultimo extracto, sin_fin) con sin_fin=True si alguna
-    tarjeta no se salda en max_meses (cuota <= intereses)."""
+    dict tarjeta->ultimo extracto, sin_fin, dict mes->{tarjeta: importe}) con
+    sin_fin=True si alguna tarjeta no se salda en max_meses (cuota <= intereses)."""
     ultimos = {}
     for t in tarjetas:
         if not t.get("fecha_cargo"):
@@ -1412,7 +1412,7 @@ def _proyeccion_tarjetas(tarjetas, max_meses=240):
         k = t.get("tarjeta") or t.get("contrato")
         if k not in ultimos or t["fecha_cargo"] > ultimos[k]["fecha_cargo"]:
             ultimos[k] = t
-    proy, sin_fin = {}, False
+    proy, sin_fin, detalle = {}, False, {}
     for t in ultimos.values():
         saldo = float(t.get("aplazado_proximo") or 0)
         tin_m = float(t.get("tin_mensual") or 0) / 100
@@ -1429,7 +1429,10 @@ def _proyeccion_tarjetas(tarjetas, max_meses=240):
             pago = min(cuota, saldo + interes)
             saldo = saldo + interes - pago
             proy[mes] = proy.get(mes, 0.0) + pago
-    return proy, ultimos, sin_fin
+            k_t = t.get("tarjeta") or t.get("contrato")
+            detalle.setdefault(mes, {})
+            detalle[mes][k_t] = detalle[mes].get(k_t, 0.0) + pago
+    return proy, ultimos, sin_fin, detalle
 
 
 def build_debt_forecast(prestamos, tarjetas, nominas, hoy):
@@ -1440,18 +1443,33 @@ def build_debt_forecast(prestamos, tarjetas, nominas, hoy):
     if not nomina:
         return None
     cuotas_prest = {}
+    # Desglose por instrumento (prestamo o tarjeta) de cada mes, para que el
+    # tooltip del pronostico muestre que cambia contra el mes anterior.
+    detalle = {}
     ultimo_mes_deuda = mes_actual
     for p in prestamos:
+        nombre_p = p.get("nombre") or p.get("entidad") or "Préstamo"
         for c in _compute_amortizacion(p):
             k = c["fecha"][:7]
             cuotas_prest[k] = cuotas_prest.get(k, 0.0) + c["cuota"]
+            detalle.setdefault(k, {})
+            detalle[k][nombre_p] = detalle[k].get(nombre_p, 0.0) + c["cuota"]
             ultimo_mes_deuda = max(ultimo_mes_deuda, k)
     reales = {}
     for t in tarjetas:
         if t.get("fecha_cargo"):
             k = t["fecha_cargo"][:7]
-            reales[k] = reales.get(k, 0.0) + float(t.get("amortizacion") or 0) + float(t.get("intereses_periodo") or 0)
-    proy, ultimos, sin_fin = _proyeccion_tarjetas(tarjetas)
+            pago_t = float(t.get("amortizacion") or 0) + float(t.get("intereses_periodo") or 0)
+            reales[k] = reales.get(k, 0.0) + pago_t
+            if pago_t > 0:
+                k_t = t.get("tarjeta") or t.get("contrato")
+                detalle.setdefault(k, {})
+                detalle[k][k_t] = detalle[k].get(k_t, 0.0) + pago_t
+    proy, ultimos, sin_fin, detalle_tarj = _proyeccion_tarjetas(tarjetas)
+    for k, d in detalle_tarj.items():
+        detalle.setdefault(k, {})
+        for k_t, v in d.items():
+            detalle[k][k_t] = detalle[k].get(k_t, 0.0) + v
     if proy:
         ultimo_mes_deuda = max(ultimo_mes_deuda, max(proy))
     fin = max(FIN_CURVA_RATIO_DEUDA, _sumar_mes(ultimo_mes_deuda, 1))
@@ -1461,7 +1479,8 @@ def build_debt_forecast(prestamos, tarjetas, nominas, hoy):
     while k <= fin:
         cuotas = cuotas_prest.get(k, 0.0) + reales.get(k, 0.0) + proy.get(k, 0.0)
         meses.append({"mes": k, "cuotas": round(cuotas, 2), "nomina": round(nomina, 2),
-                      "ratio": round(cuotas / nomina * 100, 2)})
+                      "ratio": round(cuotas / nomina * 100, 2),
+                      "detalle": {n: round(v, 2) for n, v in sorted((detalle.get(k) or {}).items())}})
         k = _sumar_mes(k, 1)
 
     llegada = None

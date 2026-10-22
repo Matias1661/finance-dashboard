@@ -1,3 +1,11 @@
+## 2026-10-22 — Tooltip de cambios en el pronóstico del ratio
+
+- `scripts/sync_finance_data.py` (`build_debt_forecast()`, `_proyeccion_tarjetas()`): cada mes
+  de `deuda_forecast.meses` incluye `detalle` por préstamo y tarjeta.
+- `js/charts.js` (`renderDebtRatioChart()`, nueva `sumarMesRatio()`): el tooltip del pronóstico
+  muestra los cambios contra el mes anterior por préstamo o tarjeta y la variación del ratio.
+  Ver `DECISIONS.md` 2026-10-22.
+
 ## 2026-10-21 — Curva ideal de inversiones desde septiembre 2026
 
 - `js/app.js` (`renderInvPlanChart()`): la curva ideal se dibuja desde septiembre 2026 (mes

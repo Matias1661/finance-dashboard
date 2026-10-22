@@ -1,3 +1,22 @@
+## [2026-10-22] Tooltip de cambios en el pronóstico del ratio de endeudamiento
+
+**Contexto:** Matías preguntó por el salto del pronóstico entre agosto y septiembre 2027 (fin
+de la tarjeta IKEA) y pidió que, al pasar el ratón por cada salto de la curva de pronóstico,
+el gráfico diga qué cambió contra el mes anterior.
+
+**Decisión:**
+- `build_debt_forecast()` agrega a cada mes de `deuda_forecast.meses` un campo `detalle`
+  ({préstamo o tarjeta: importe del mes}): cuotas del cuadro francés por préstamo (`nombre`),
+  extracto real o proyección por tarjeta (`tarjeta`). Los totales no cambian.
+- `renderDebtRatioChart()` (`js/charts.js`): en los puntos del pronóstico, el tooltip suma
+  "Cambios contra el mes anterior:" con una línea por instrumento cuyo importe varió más de
+  0,50 € (para ignorar redondeos): "importe anterior → importe nuevo (diferencia)", "deja de
+  pagarse" o "nueva cuota", y la variación del ratio en puntos. Sin cambios, el tooltip queda
+  como antes. No se agregan marcas visuales en la curva (se mantiene la decisión del
+  2026-10-21 de no mostrar banderitas).
+
+---
+
 ## [2026-10-21] Curva ideal de inversiones (Capital total vs plan)
 
 **Contexto:** Matías pidió en la solapa Inversiones, arriba de los gráficos actuales, un gráfico
