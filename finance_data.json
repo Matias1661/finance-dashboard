@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22 13:17",
+  "generated_at": "2026-10-22 13:21",
   "movimientos": [
     {
       "fecha": "2026-10-21",
@@ -26,7 +26,7 @@
       "fecha": "2026-10-21",
       "concepto": "AMORT. PRESTAMO",
       "monto": -305.58,
-      "categoria": "Amortización deuda",
+      "categoria": "Guille",
       "nota": null
     },
     {
