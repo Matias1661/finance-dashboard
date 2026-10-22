@@ -843,7 +843,8 @@ function renderInvPlanChart(){
   }
 
   const real = meses.map(k => (ultimo && k <= ultimo && capMap[k] !== undefined) ? Math.round(capMap[k] * 100) / 100 : null);
-  const ideal = meses.map((k, i) => k <= BASE_CURVA_PLAN_INV ? real[i] : (CURVA_IDEAL_INV[k] ?? null));
+  const ideal = meses.map((k, i) => k < BASE_CURVA_PLAN_INV ? null
+    : k === BASE_CURVA_PLAN_INV ? real[i] : (CURVA_IDEAL_INV[k] ?? null));
   const fmt = v => new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
 
   if(window.invPlanChart) window.invPlanChart.destroy();

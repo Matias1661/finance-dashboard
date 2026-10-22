@@ -1,3 +1,8 @@
+## 2026-10-21 — Curva ideal de inversiones desde septiembre 2026
+
+- `js/app.js` (`renderInvPlanChart()`): la curva ideal se dibuja desde septiembre 2026 (mes
+  base, igual al capital real), sin repetir el histórico anterior. Pedido por Matías.
+
 ## 2026-10-21 — Capital total vs plan (solapa Inversiones)
 
 - `index.html`: card "Capital total vs plan" (`#chart-inv-plan`) arriba de los gráficos de la

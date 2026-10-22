@@ -10,8 +10,9 @@ rendimiento para llegar a 15.000 € en diciembre 2028, para ver mes a mes cómo
 - Capital total = Peerberry + MyInvestor (`fillForwardCapital()`), solo hasta el último mes
   completo (`inversiones.kpi.periodo_ultimo_mes`), para no mostrar meses sin informe de
   MyInvestor.
-- Curva ideal (`CURVA_IDEAL_INV`): foto fija calculada el 21/10/2026. Igual al capital real
-  hasta septiembre 2026 (10.663,12 €); desde octubre 2026, rentabilidad 6% anual (0,5% mensual)
+- Curva ideal (`CURVA_IDEAL_INV`): foto fija calculada el 21/10/2026. Se dibuja desde
+  septiembre 2026, igual al capital real ese mes (10.663,12 €; ajuste del mismo día: antes
+  repetía el histórico desde enero); desde octubre 2026, rentabilidad 6% anual (0,5% mensual)
   y aportes iguales al sobrante del presupuesto de deuda de la curva ideal de deuda v2
   (1.111,26 €/mes menos cuotas y amortización fija de 787,69 €/mes desde abril 2027): 0 €
   hasta abril 2027, luego de 1 € a 310 € por mes. Termina en 15.837,77 € en diciembre 2028,
