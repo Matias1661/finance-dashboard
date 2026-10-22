@@ -1,6 +1,41 @@
 {
-  "generated_at": "2026-10-21 17:27",
+  "generated_at": "2026-10-22 13:17",
   "movimientos": [
+    {
+      "fecha": "2026-10-21",
+      "concepto": "Telpark",
+      "monto": 0.01,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-21",
+      "concepto": "Klarna*Motocard",
+      "monto": -10.9,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-21",
+      "concepto": "TRASPASO",
+      "monto": 40,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-21",
+      "concepto": "AMORT. PRESTAMO",
+      "monto": -305.58,
+      "categoria": "Amortización deuda",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-21",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-10-20",
       "concepto": "AMAZON.ES",
@@ -22356,7 +22391,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-10-21",
+    "generado": "2026-10-22",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
