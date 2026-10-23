@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22 14:51",
+  "generated_at": "2026-10-23 14:30",
   "movimientos": [
     {
       "fecha": "2026-10-21",
@@ -22391,7 +22391,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-10-22",
+    "generado": "2026-10-23",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
