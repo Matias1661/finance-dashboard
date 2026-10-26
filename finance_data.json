@@ -1,6 +1,27 @@
 {
-  "generated_at": "2026-10-25 13:26",
+  "generated_at": "2026-10-26 10:25",
   "movimientos": [
+    {
+      "fecha": "2026-10-23",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 55,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-23",
+      "concepto": "LIDL SAN SEBASTI",
+      "monto": -48.76,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-22",
+      "concepto": "PAGO A CUENTA",
+      "monto": -200,
+      "categoria": "A revisar",
+      "nota": null
+    },
     {
       "fecha": "2026-10-21",
       "concepto": "Telpark",
@@ -20920,7 +20941,7 @@
       },
       {
         "mes": "2026-10",
-        "peerberry": 8464.02,
+        "peerberry": 8473.19,
         "myinvestor": 0
       }
     ],
@@ -21032,7 +21053,7 @@
       },
       {
         "mes": "2026-10",
-        "peerberry": 0.31,
+        "peerberry": 0.42,
         "myinvestor": 0
       }
     ],
@@ -21237,11 +21258,11 @@
       },
       {
         "mes": "2026-10",
-        "peerberry": 26.02,
+        "peerberry": 35.19,
         "myinvestor": 0.0,
         "peerberry_aportes": null,
         "myinvestor_aportes": null,
-        "peerberry_capital": 8464.02,
+        "peerberry_capital": 8473.19,
         "myinvestor_capital": null
       }
     ],
@@ -22391,7 +22412,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-10-25",
+    "generado": "2026-10-26",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
