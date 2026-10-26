@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-26 10:25",
+  "generated_at": "2026-10-26 10:27",
   "movimientos": [
     {
       "fecha": "2026-10-23",
@@ -19,7 +19,7 @@
       "fecha": "2026-10-22",
       "concepto": "PAGO A CUENTA",
       "monto": -200,
-      "categoria": "A revisar",
+      "categoria": "Amortización deuda",
       "nota": null
     },
     {
