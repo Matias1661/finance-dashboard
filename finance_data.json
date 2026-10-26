@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-26 10:27",
+  "generated_at": "2026-10-26 15:02",
   "movimientos": [
     {
       "fecha": "2026-10-23",
@@ -20,7 +20,7 @@
       "concepto": "PAGO A CUENTA",
       "monto": -200,
       "categoria": "Amortización deuda",
-      "nota": null
+      "nota": "Pago a cuenta de la tarjeta Visa Classic, adelanto de capital"
     },
     {
       "fecha": "2026-10-21",
