@@ -1,6 +1,20 @@
 {
-  "generated_at": "2026-10-26 15:02",
+  "generated_at": "2026-10-27 13:41",
   "movimientos": [
+    {
+      "fecha": "2026-10-26",
+      "concepto": "SANSE I",
+      "monto": -15,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-26",
+      "concepto": "Gastos conjuntos",
+      "monto": -20,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
     {
       "fecha": "2026-10-23",
       "concepto": "TRANSF. A SU FAVOR",
@@ -22412,7 +22426,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-10-26",
+    "generado": "2026-10-27",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
