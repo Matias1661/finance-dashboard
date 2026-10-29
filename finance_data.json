@@ -1,6 +1,27 @@
 {
-  "generated_at": "2026-10-28 14:55",
+  "generated_at": "2026-10-29 15:01",
   "movimientos": [
+    {
+      "fecha": "2026-10-27",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -3.49,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-27",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-27",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-10-26",
       "concepto": "SANSE I",
@@ -21563,8 +21584,8 @@
         "total": 0.42,
         "acumulado": 22.37,
         "acumulado_anio": 13.07,
-        "benchmark": 1.9,
-        "benchmark_acumulado": 21.66,
+        "benchmark": 2.0,
+        "benchmark_acumulado": 21.77,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
@@ -22426,7 +22447,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-10-28",
+    "generado": "2026-10-29",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
