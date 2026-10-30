@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30 10:03",
+  "generated_at": "2026-10-30 14:56",
   "movimientos": [
     {
       "fecha": "2026-10-29",
@@ -13,13 +13,13 @@
       "concepto": "Klarna*Airbnb",
       "monto": -128,
       "categoria": "Viajes",
-      "nota": null
+      "nota": "Alojamiento Lloret, cuota Klarna"
     },
     {
       "fecha": "2026-10-28",
       "concepto": "Ssrr",
       "monto": -3.75,
-      "categoria": "A revisar",
+      "categoria": "Otros",
       "nota": null
     },
     {
@@ -21605,8 +21605,8 @@
         "total": 0.42,
         "acumulado": 22.37,
         "acumulado_anio": 13.07,
-        "benchmark": 2.0,
-        "benchmark_acumulado": 21.77,
+        "benchmark": 1.83,
+        "benchmark_acumulado": 21.57,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
