@@ -1,3 +1,21 @@
+## [2026-10-30] Corte de cargos recurrentes sin cobro bajado de 180 a 120 días
+
+**Contexto:** Matías preguntó cuándo desaparecen los cargos inactivos de la lista de
+Suscripciones y de "Otros cargos recurrentes", y pidió bajar el umbral a 120 días. El
+2026-07-09 se había confirmado mantener 180; esta decisión lo reemplaza.
+
+**Decisión (pedida por Matías):**
+- `RECURRING_HIDE_DAYS` pasa de 180 a 120 en `js/insights.js`. Sigue siendo una constante
+  única que aplica a ambas listas. El cálculo se hace contra `lastTxDate` (última
+  transacción cargada), no contra la fecha de hoy.
+- `RECURRING_ACTIVE_DAYS` (45) no cambia.
+
+**Impacto:** solo visual. Un recurrente sin cobro hace más de 120 días deja de listarse,
+activo o inactivo. La detección y las proyecciones de `charts.js` no cambian. Si el cargo
+reaparece, el grupo vuelve a mostrarse.
+
+---
+
 ## [2026-10-22] Tooltip de cambios en el pronóstico del ratio de endeudamiento
 
 **Contexto:** Matías preguntó por el salto del pronóstico entre agosto y septiembre 2027 (fin
