@@ -1,6 +1,27 @@
 {
-  "generated_at": "2026-10-29 15:01",
+  "generated_at": "2026-10-30 10:00",
   "movimientos": [
+    {
+      "fecha": "2026-10-29",
+      "concepto": "Ad free for Prime",
+      "monto": -1.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-29",
+      "concepto": "Klarna*Airbnb",
+      "monto": -128,
+      "categoria": "Viajes",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-28",
+      "concepto": "Ssrr",
+      "monto": -3.75,
+      "categoria": "A revisar",
+      "nota": null
+    },
     {
       "fecha": "2026-10-27",
       "concepto": "APPLE.COM/BILL",
@@ -22447,7 +22468,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-10-29",
+    "generado": "2026-10-30",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
