@@ -1,3 +1,8 @@
+## 2026-10-30 Corte de recurrentes inactivos a 120 días
+
+- `js/insights.js`: `RECURRING_HIDE_DAYS` baja de 180 a 120 días. Aplica a Suscripciones y a
+  "Otros cargos recurrentes". Pedido por Matías. Ver `DECISIONS.md` 2026-10-30.
+
 ## 2026-10-22 — Tooltip de cambios en el pronóstico del ratio
 
 - `scripts/sync_finance_data.py` (`build_debt_forecast()`, `_proyeccion_tarjetas()`): cada mes
