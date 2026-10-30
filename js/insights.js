@@ -68,7 +68,7 @@ const RECURRING_AMT_TOLERANCE = 0.06;
 // Margen en días sobre el día habitual de cobro: pasado ese margen sin cobro en el mes,
 // la proyección de fin de mes asume que ese mes no se cobra.
 const RECURRING_DUE_MARGIN_DAYS = 3;
-const RECURRING_HIDE_DAYS = 180;  // sin cobro en más de 180 días (6 meses) → dejar de mostrar
+const RECURRING_HIDE_DAYS = 120;  // sin cobro en más de 120 días (4 meses) → dejar de mostrar
 
 function _median(arr){
   const s = [...arr].sort((a, b) => a - b);
