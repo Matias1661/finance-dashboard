@@ -1,6 +1,62 @@
 {
-  "generated_at": "2026-10-31 14:28",
+  "generated_at": "2026-10-31 14:59",
   "movimientos": [
+    {
+      "fecha": "2026-10-30",
+      "concepto": "CAIXABANK PAYMENT",
+      "monto": -12.9,
+      "categoria": "Departamento",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-30",
+      "concepto": "SkyShowtime Limit",
+      "monto": -4.49,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-30",
+      "concepto": "PAG NOMINAS",
+      "monto": -700,
+      "categoria": "Departamento",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-30",
+      "concepto": "PAGO TRANSFERENCIAS",
+      "monto": -580,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-30",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-30",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-30",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-10-30",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 125.15,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-10-29",
       "concepto": "Ad free for Prime",
