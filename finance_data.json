@@ -1,6 +1,13 @@
 {
-  "generated_at": "2026-10-31 14:59",
+  "generated_at": "2026-10-31 15:04",
   "movimientos": [
+    {
+      "fecha": "2026-10-30",
+      "concepto": "NOMINA (TRF)",
+      "monto": 2648.99,
+      "categoria": "Nomina",
+      "nota": null
+    },
     {
       "fecha": "2026-10-30",
       "concepto": "CAIXABANK PAYMENT",
@@ -26,7 +33,7 @@
       "fecha": "2026-10-30",
       "concepto": "PAGO TRANSFERENCIAS",
       "monto": -580,
-      "categoria": "A revisar",
+      "categoria": "Inversion",
       "nota": null
     },
     {
@@ -54,7 +61,7 @@
       "fecha": "2026-10-30",
       "concepto": "TRANSFER INMEDIATA",
       "monto": 125.15,
-      "categoria": "Guille",
+      "categoria": "Nomina",
       "nota": null
     },
     {
@@ -21986,6 +21993,21 @@
       ],
       "estimado": false,
       "etapa": "LUZUTANIA GROUP"
+    },
+    {
+      "mes": "2026-10",
+      "empresa": null,
+      "monto": 2648.99,
+      "irpf": false,
+      "pagos": 1,
+      "detalle": [
+        {
+          "empresa": null,
+          "monto": 2648.99
+        }
+      ],
+      "estimado": false,
+      "etapa": "Sin nómina"
     }
   ],
   "prestamos": [
