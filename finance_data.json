@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-31 15:04",
+  "generated_at": "2026-11-01 15:10",
   "movimientos": [
     {
       "fecha": "2026-10-30",
@@ -13,7 +13,7 @@
       "concepto": "CAIXABANK PAYMENT",
       "monto": -12.9,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Contrato IKEA 00635873 (según app del banco). No figura en la app de la tarjeta IKEA, pendiente de verificar"
     },
     {
       "fecha": "2026-10-30",
@@ -62,7 +62,7 @@
       "concepto": "TRANSFER INMEDIATA",
       "monto": 125.15,
       "categoria": "Nomina",
-      "nota": null
+      "nota": "Finiquito por despido"
     },
     {
       "fecha": "2026-10-29",
@@ -22546,24 +22546,10 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-10-31",
+    "generado": "2026-11-01",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
-      {
-        "mes": "2026-10",
-        "cuotas": 1136.39,
-        "nomina": 2648.99,
-        "ratio": 42.9,
-        "detalle": {
-          "CaixaBank - Moto de Guille": 277.95,
-          "CaixaBank - Talho Argentino": 193.49,
-          "IKEA": 100.0,
-          "MicroBank - SEAT Ibiza": 246.83,
-          "Sabadell Consumer Finance - VW Golf": 218.12,
-          "Visa Classic": 100.0
-        }
-      },
       {
         "mes": "2026-11",
         "cuotas": 1111.26,
