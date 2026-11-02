@@ -1,3 +1,10 @@
+## 2026-11-02 — Pronóstico del saldo aplazado (solapa Deuda)
+
+- `js/charts.js` (`renderTarjetasChart()`): el gráfico pasa a ene 2026 - dic 2028, con saldo
+  real sólido y pronóstico punteado por tarjeta a partir del último extracto (saldo, TIN mensual
+  y cuota elegida leídos del extracto). Se elimina la serie de fraccionado 0% de IKEA. Pedido por
+  Matías. Ver `DECISIONS.md` 2026-11-02.
+
 ## 2026-10-30 Corte de recurrentes inactivos a 120 días
 
 - `js/insights.js`: `RECURRING_HIDE_DAYS` baja de 180 a 120 días. Aplica a Suscripciones y a
