@@ -989,16 +989,33 @@ function renderNominaTrend(){
 
 
 
-/* Evolución del saldo aplazado por tarjeta (Tarjetas de Crédito Revolving).
- * Una línea por tarjeta, eje X = mes de cierre del periodo. Si una tarjeta
- * no tiene fila en un mes dado (ej. otra tarjeta se cargó ese mes y esta
- * no), se mantiene el último saldo conocido en vez de cortar la línea, ya
- * que el saldo no cambia hasta el próximo extracto real.
- */
+/* Evolución y pronóstico del saldo aplazado por tarjeta (Tarjetas de Crédito
+ * Revolving). Eje X mensual de INICIO_CURVA_RATIO_DEUDA a FIN_CURVA_RATIO_DEUDA
+ * (mes de cierre del periodo), igual que la curva del ratio. Línea sólida: saldo
+ * real de cada extracto (si una tarjeta no tiene fila en un mes, se mantiene el
+ * último saldo conocido). Línea punteada: pronóstico desde el último extracto de
+ * cada tarjeta con el mismo modelo que `_proyeccion_tarjetas()` del sync: saldo
+ * (`aplazado_proximo`), TIN mensual y cuota mensual elegida del último extracto,
+ * sin compras nuevas ni pagos extraordinarios. Si cambia la cuota elegida, el
+ * pronóstico se ajusta con el primer extracto que la refleje. Ver
+ * docs/DECISIONS.md [2026-11-02] (pronóstico del saldo aplazado). */
 function renderTarjetasChart(){
   const rows = window.FINANCE_STATE?.tarjetasCredito || [];
   const ctx = document.getElementById('chart-tarjetas');
   if(!ctx || rows.length === 0) return;
+
+  const MESES_CORTOS = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const mesCorto = k => `${MESES_CORTOS[parseInt(k.slice(5,7),10)-1]} ${k.slice(2,4)}`;
+  const mesDe = r => (r.periodo_fin || r.periodo_inicio || '').slice(0, 7);
+
+  const meses = [];
+  let [y, m] = INICIO_CURVA_RATIO_DEUDA.split('-').map(Number);
+  while(true){
+    const k = `${y}-${String(m).padStart(2,'0')}`;
+    if(k > FIN_CURVA_RATIO_DEUDA) break;
+    meses.push(k);
+    m++; if(m > 12){ m = 1; y++; }
+  }
 
   const porTarjeta = {};
   rows.forEach(r => {
@@ -1007,59 +1024,73 @@ function renderTarjetasChart(){
     porTarjeta[key].push(r);
   });
 
-  const labelsSet = new Set();
-  Object.values(porTarjeta).forEach(list => {
-    list.sort((a, b) => (a.periodo_inicio || '').localeCompare(b.periodo_inicio || ''));
-    list.forEach(r => labelsSet.add((r.periodo_fin || r.periodo_inicio || '').slice(0, 7)));
-  });
-  const labels = [...labelsSet].sort();
-
   const COLORS = ['rgba(66,133,180,0.9)', 'rgba(235,104,52,0.9)', 'rgba(13,138,82,0.9)', 'rgba(160,80,190,0.9)'];
+  const datasets = [];
+  const info = {};
 
-  const datasets = Object.entries(porTarjeta).map(([nombre, list], idx) => {
+  Object.entries(porTarjeta).forEach(([nombre, list], idx) => {
+    list.sort((a, b) => (a.periodo_inicio || '').localeCompare(b.periodo_inicio || ''));
+    const color = COLORS[idx % COLORS.length];
+
+    // Saldo real por mes de cierre; se mantiene el último conocido hasta el último extracto
     const byMonth = {};
-    list.forEach(r => { byMonth[(r.periodo_fin || r.periodo_inicio || '').slice(0, 7)] = Number(r.aplazado_proximo) || 0; });
+    list.forEach(r => { byMonth[mesDe(r)] = Number(r.aplazado_proximo) || 0; });
+    const ultimo = list[list.length - 1];
+    const mesUlt = mesDe(ultimo);
     let last = null;
-    const data = labels.map(m => {
-      if(byMonth[m] !== undefined){ last = byMonth[m]; return last; }
+    const real = meses.map(k => {
+      if(k > mesUlt) return null;
+      if(byMonth[k] !== undefined) last = byMonth[k];
       return last;
     });
-    return {
+
+    // Pronóstico desde el último extracto
+    let saldo = Number(ultimo.aplazado_proximo) || 0;
+    const tin = (Number(ultimo.tin_mensual) || 0) / 100;
+    const cuota = Number(ultimo.cuota_mensual_elegida) || 0;
+    const proy = {};
+    let mesProy = mesUlt;
+    let cierre = saldo > 0.01 ? null : mesUlt;
+    for(let n = 0; n < 240 && mesProy < FIN_CURVA_RATIO_DEUDA; n++){
+      mesProy = sumarMesRatio(mesProy, 1);
+      if(saldo > 0.01){
+        const interes = saldo * tin;
+        const pago = Math.min(cuota, saldo + interes);
+        saldo = saldo + interes - pago;
+        if(saldo <= 0.01){ saldo = 0; cierre = mesProy; }
+        proy[mesProy] = { saldo: Math.round(saldo * 100) / 100, interes, pago };
+      } else {
+        proy[mesProy] = { saldo: 0, interes: 0, pago: 0 };
+      }
+    }
+    info[nombre] = { cuota, tin, cierre };
+    const pron = meses.map(k => {
+      if(k === mesUlt) return Number(ultimo.aplazado_proximo) || 0;
+      return proy[k] ? proy[k].saldo : null;
+    });
+
+    datasets.push({
       label: nombre,
-      data,
-      borderColor: COLORS[idx % COLORS.length],
-      backgroundColor: COLORS[idx % COLORS.length],
+      data: real,
+      borderColor: color,
+      backgroundColor: color,
+      pointRadius: 4,
       tension: 0.2,
       spanGaps: true
-    };
-  });
-
-  // Curva independiente de compras fraccionadas a 0% TIN (ej. IKEA). Se
-  // grafica aparte porque no tiene costo financiero y su lógica de saldo
-  // (cuotas fijas) no tiene nada que ver con el revolving — mezclarla en la
-  // misma serie que el saldo revolving daría una lectura engañosa del costo
-  // real de la deuda.
-  Object.entries(porTarjeta).forEach(([nombre, list], idx) => {
-    const tieneFraccionado = list.some(r => r.fraccionado_pendiente !== null && r.fraccionado_pendiente !== undefined);
-    if(!tieneFraccionado) return;
-    const byMonth = {};
-    list.forEach(r => {
-      const v = r.fraccionado_pendiente;
-      if(v !== null && v !== undefined) byMonth[(r.periodo_fin || r.periodo_inicio || '').slice(0, 7)] = Number(v);
-    });
-    let last = null;
-    const data = labels.map(m => {
-      if(byMonth[m] !== undefined){ last = byMonth[m]; return last; }
-      return last;
     });
     datasets.push({
-      label: `${nombre} · fraccionado 0% (sin costo)`,
-      data,
-      borderColor: COLORS[idx % COLORS.length],
-      backgroundColor: COLORS[idx % COLORS.length],
-      borderDash: [6, 4],
-      tension: 0.2,
-      spanGaps: true
+      label: `${nombre} (pronóstico)`,
+      data: pron,
+      borderColor: color.replace('0.9)', '0.6)'),
+      backgroundColor: color.replace('0.9)', '0.6)'),
+      borderDash: [5, 4],
+      pointBackgroundColor: '#fff',
+      pointBorderColor: color,
+      pointRadius: meses.map(k => k === mesUlt ? 0 : 2),
+      tension: 0,
+      spanGaps: false,
+      _tarjeta: nombre,
+      _proy: proy
     });
   });
 
@@ -1067,11 +1098,28 @@ function renderTarjetasChart(){
 
   window.tarjetasChart = new Chart(ctx, {
     type: 'line',
-    data: { labels, datasets },
+    data: { labels: meses.map(mesCorto), datasets },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: true, position: 'bottom' } },
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: true, position: 'bottom' },
+        tooltip: {
+          filter: c => c.parsed.y !== null && c.parsed.y !== undefined
+            && !(c.dataset._proy && !c.dataset._proy[meses[c.dataIndex]]),
+          callbacks: {
+            label: c => {
+              const ds = c.dataset;
+              if(!ds._proy) return `${ds.label}: ${formatEUR(c.parsed.y)}`;
+              const p = ds._proy[meses[c.dataIndex]];
+              const inf = info[ds._tarjeta];
+              const cierre = inf.cierre && inf.cierre === meses[c.dataIndex] ? ' · último pago' : '';
+              return `${ds.label}: ${formatEUR(c.parsed.y)} (cuota ${formatEUR(p.pago)}, intereses ${formatEUR(p.interes)})${cierre}`;
+            }
+          }
+        }
+      },
       scales: {
         y: {
           beginAtZero: true,
