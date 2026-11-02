@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-02 12:32",
+  "generated_at": "2026-11-02 12:38",
   "movimientos": [
     {
       "fecha": "2026-11-01",
@@ -12,14 +12,14 @@
       "fecha": "2026-11-01",
       "concepto": "ODG EL CA#AVERAL",
       "monto": -1.7,
-      "categoria": "A revisar",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
       "fecha": "2026-11-01",
       "concepto": "PRES.32334358886",
       "monto": -252.82,
-      "categoria": "Amortización deuda",
+      "categoria": "Guille",
       "nota": null
     },
     {
