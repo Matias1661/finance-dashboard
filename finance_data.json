@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-02 12:49",
+  "generated_at": "2026-11-02 13:08",
   "movimientos": [
     {
       "fecha": "2026-11-01",
@@ -22327,6 +22327,29 @@
       "notas": "Columnas reflejan solo el componente revolving. Cuota mensual elegida sube a 100€ (antes 40€). Fraccionada ECOMMERCE NEW WE SAN SEBASTIAN (28/12/25, TIN 0%): cuota 9 de 10, 4,68€, pendiente 4,75€. Importe total del recibo: 104,68€ (100,00 revolving + 4,68 fraccionado), cargo 05/10/2026. Discrepancia en el extracto: el bloque de cancelación total indica 877,40€ de crédito dispuesto (+8,50€ intereses = 885,90€), mientras el detalle revolving muestra 977,40€ antes del recibo y 894,40€ tras el pago; se usan las cifras del detalle."
     },
     {
+      "nombre": "IKEA - Octubre 2026",
+      "tarjeta": "IKEA",
+      "contrato": "WY 7230097",
+      "periodo_inicio": "2026-09-21",
+      "periodo_fin": "2026-10-20",
+      "fecha_cargo": "2026-11-05",
+      "cuota_mensual_elegida": 100,
+      "aplazado_anterior": 894.4,
+      "operaciones_periodo": 0,
+      "amortizacion": 83.92,
+      "intereses_periodo": 16.08,
+      "aplazado_proximo": 810.48,
+      "cer": null,
+      "tin_mensual": 1.74,
+      "tin_anual": 20.88,
+      "tae": 23,
+      "limite_inicial": 1200,
+      "limite_disponible": 284.77,
+      "fecha_proyectada_cierre": "2027-08-05",
+      "fraccionado_pendiente": 0,
+      "notas": "Columnas reflejan solo el componente revolving. Fraccionada ECOMMERCE NEW WE SAN SEBASTIAN (28/12/25, TIN 0%): cuota 10 de 10, 4,75€, pendiente 0,00€ (saldada). Importe total del recibo: 104,75€ (100,00 revolving + 4,75 fraccionado), cargo 05/11/2026. Discrepancia en el extracto: el bloque de cancelación total indica 802,18€ (794,40 de crédito dispuesto + 7,78€ intereses) frente a 810,48€ de capital pendiente en el detalle; se usan las cifras del detalle. El extracto no informa CER."
+    },
+    {
       "nombre": "Visa Classic - Enero 2026",
       "tarjeta": "Visa Classic",
       "contrato": "9613.18.0486311-07",
@@ -22532,6 +22555,29 @@
       "fecha_proyectada_cierre": "2029-08-01",
       "fraccionado_pendiente": null,
       "notas": "Sin operaciones nuevas este periodo (0€). Cuota mensual elegida baja a 100€ (periodo anterior 150€). Deuda total pendiente si se cancelase todo a 27.09.2026: 2.842,59€ (2.809,34 principal + 33,25 interés). Límite compartido entre todas las tarjetas del contrato."
+    },
+    {
+      "nombre": "Visa Classic - Octubre 2026",
+      "tarjeta": "Visa Classic",
+      "contrato": "9613.18.0486311-07",
+      "periodo_inicio": "2026-09-28",
+      "periodo_fin": "2026-10-27",
+      "fecha_cargo": "2026-11-01",
+      "cuota_mensual_elegida": 100,
+      "aplazado_anterior": 2742.59,
+      "operaciones_periodo": -200,
+      "amortizacion": 67.25,
+      "intereses_periodo": 32.75,
+      "aplazado_proximo": 2475.34,
+      "cer": 15.38,
+      "tin_mensual": 1.2,
+      "tin_anual": 14.4,
+      "tae": 15.39,
+      "limite_inicial": 3000,
+      "limite_disponible": 524.66,
+      "fecha_proyectada_cierre": "2029-05-01",
+      "fraccionado_pendiente": null,
+      "notas": "Único movimiento: pago a cuenta sobre aplazado de 200€ el 22/10/2026 (sin compras). Deuda total pendiente si se cancelase todo a 27.10.2026: 2.575,34€ (2.542,59 principal + 32,75 interés). Límite compartido entre todas las tarjetas del contrato."
     }
   ],
   "tarjetas_credito_operaciones": [
@@ -22568,8 +22614,8 @@
       "fecha_operacion": "2025-12-28",
       "importe": 46.87,
       "tipo": "Fraccionada 0%",
-      "cuotas": "9/10 (en curso)",
-      "notas": "Compra fraccionada a 10 cuotas 0% TIN. En curso a septiembre 2026, pendiente 4,75€."
+      "cuotas": "10/10 (saldada)",
+      "notas": "Compra fraccionada a 10 cuotas 0% TIN. Saldada en el periodo IKEA - Octubre 2026 (cuota 10 de 10, pendiente 0,00€)."
     },
     {
       "concepto": "CAIXABANKPC BARCELONA",
@@ -22615,6 +22661,15 @@
       "tipo": "Compra normal",
       "cuotas": "",
       "notas": "Cubierta en Harley Davidson Toulouse"
+    },
+    {
+      "concepto": "PAGO A CUENTA SOBRE APLAZADO (Jaén)",
+      "tarjeta": "Visa Classic",
+      "fecha_operacion": "2026-10-22",
+      "importe": -200,
+      "tipo": "Otro",
+      "cuotas": "",
+      "notas": "Pago a cuenta sobre el aplazado, no es una compra."
     }
   ],
   "deuda_forecast": {
@@ -22750,13 +22805,13 @@
       },
       {
         "mes": "2027-08",
-        "cuotas": 1092.01,
+        "cuotas": 1092.61,
         "nomina": 2648.99,
-        "ratio": 41.22,
+        "ratio": 41.25,
         "detalle": {
           "CaixaBank - Moto de Guille": 252.82,
           "CaixaBank - Talho Argentino": 193.49,
-          "IKEA": 80.75,
+          "IKEA": 81.35,
           "MicroBank - SEAT Ibiza": 246.83,
           "Sabadell Consumer Finance - VW Golf": 218.12,
           "Visa Classic": 100.0
