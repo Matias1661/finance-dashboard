@@ -1,3 +1,35 @@
+## [2026-11-02] Pronóstico del saldo aplazado de las tarjetas (solapa Deuda)
+
+**Contexto:** Matías pidió reemplazar el gráfico "Evolución del saldo aplazado" por uno similar al
+de la curva del ratio de endeudamiento: de enero 2026 a diciembre 2028, con un pronóstico a futuro
+de cómo baja el saldo aplazado según los últimos extractos. Propuesta revisada en el chat antes
+de implementar. Matías pidió que la cuota se tome del extracto y no se fije en 100 €, para que el
+pronóstico cambie si cambia la cuota.
+
+**Decisión (confirmada por Matías):**
+- `renderTarjetasChart()` (`js/charts.js`): eje X mensual de `INICIO_CURVA_RATIO_DEUDA` a
+  `FIN_CURVA_RATIO_DEUDA` (mes de cierre del periodo). Por tarjeta, línea sólida con el saldo
+  aplazado real (se mantiene el último saldo conocido si falta un mes) y línea punteada con el
+  pronóstico desde el último extracto.
+- Pronóstico calculado en el cliente con el mismo modelo que `_proyeccion_tarjetas()` del sync
+  (saldo + intereses - pago, pago = min(cuota, saldo + intereses)). Saldo = `aplazado_proximo`,
+  TIN mensual = `tin_mensual` y cuota = `cuota_mensual_elegida`, los tres leídos del último
+  extracto de cada tarjeta. Sin compras nuevas ni pagos extraordinarios, sin la venta del Golf.
+- Si cambia la cuota elegida, el pronóstico se ajusta con el primer extracto que la refleje
+  (el campo cambia en Notion al cargarlo); no antes.
+- Se elimina la serie "fraccionado 0%" de IKEA (saldo 0 desde octubre 2026, última cuota 10/10).
+- Tooltip del pronóstico: saldo, cuota e intereses del mes, y "último pago" en el mes de cierre.
+- Sin cambios en `sync_finance_data.py` ni en `finance_data.json`.
+
+**Valores al 02/11/2026 (cuota 100 € en ambas):** Visa Classic 2.475,34 € en octubre 2026,
+1.410,62 € en diciembre 2027 y 345,26 € en diciembre 2028 (cierre abril 2029, último cargo
+01/05/2029, coincide con el extracto). IKEA 810,48 € en octubre 2026, saldo 0 en julio 2027
+(último cargo 05/08/2027, coincide con el extracto; los intereses totales salen algo más altos
+que los del extracto porque este calcula sobre 794,40 € de crédito dispuesto en lugar de los
+810,48 € del detalle, discrepancia previa).
+
+---
+
 ## [2026-10-30] Corte de cargos recurrentes sin cobro bajado de 180 a 120 días
 
 **Contexto:** Matías preguntó cuándo desaparecen los cargos inactivos de la lista de
