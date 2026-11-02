@@ -29,5 +29,38 @@
         }
       }
     }
+  },
+  {
+    "fecha": "2026-11-02",
+    "llegada": "2034-09",
+    "llegada_anterior": "2027-12",
+    "ratio_mes": 887.94,
+    "cambios": [
+      "Nómina: 2.648,99 € → 125,15 €"
+    ],
+    "insumos": {
+      "nomina": 125.15,
+      "anticipadas": [
+        "CaixaBank - Moto de Guille|2026-10-21|300.00"
+      ],
+      "cuotas_prestamos": {
+        "CaixaBank - Moto de Guille": 277.95,
+        "Sabadell Consumer Finance - VW Golf": 218.12,
+        "MicroBank - SEAT Ibiza": 246.83,
+        "CaixaBank - Talho Argentino": 193.49
+      },
+      "tarjetas": {
+        "IKEA": {
+          "fecha_cargo": "2026-10-05",
+          "cuota": 100.0,
+          "saldo": 894.4
+        },
+        "Visa Classic": {
+          "fecha_cargo": "2026-10-01",
+          "cuota": 100.0,
+          "saldo": 2742.59
+        }
+      }
+    }
   }
 ]
