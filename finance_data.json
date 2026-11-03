@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-03 13:52",
+  "generated_at": "2026-11-03 13:56",
   "movimientos": [
     {
       "fecha": "2026-11-01",
@@ -22589,7 +22589,7 @@
       "limite_disponible": 524.66,
       "fecha_proyectada_cierre": "2029-05-01",
       "fraccionado_pendiente": null,
-      "notas": "Periodo 28/09 a 27/10/2026, sin compras. Pago a cuenta de 200€ el 22/10. Cuota de 100€ cargada el 01/11 (67,25€ capital + 32,75€ intereses). Saldo aplazado tras la cuota: 2.475,34€. Cancelar todo al 27/10 costaba 2.575,34€ porque incluía esa cuota aún no cobrada. Límite de 3.000€ compartido con las demás tarjetas del contrato."
+      "notas": "Periodo 28/09 a 27/10/2026, sin compras. Pago a cuenta de 200€ el 22/10. Cuota de 100€ cargada el 01/11 (67,25€ capital + 32,75€ intereses). Saldo aplazado tras la cuota: 2.475,34€."
     }
   ],
   "tarjetas_credito_operaciones": [
