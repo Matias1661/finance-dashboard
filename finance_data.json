@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-02 17:55",
+  "generated_at": "2026-11-03 13:52",
   "movimientos": [
     {
       "fecha": "2026-11-01",
@@ -21110,7 +21110,7 @@
       {
         "mes": "2026-10",
         "peerberry": 8473.19,
-        "myinvestor": 0
+        "myinvestor": 2769
       },
       {
         "mes": "2026-11",
@@ -21227,7 +21227,7 @@
       {
         "mes": "2026-10",
         "peerberry": 0.42,
-        "myinvestor": 0
+        "myinvestor": 0.52
       },
       {
         "mes": "2026-11",
@@ -21437,11 +21437,11 @@
       {
         "mes": "2026-10",
         "peerberry": 35.19,
-        "myinvestor": 0.0,
+        "myinvestor": 13.0,
         "peerberry_aportes": null,
-        "myinvestor_aportes": null,
+        "myinvestor_aportes": 548.0,
         "peerberry_capital": 8473.19,
-        "myinvestor_capital": null
+        "myinvestor_capital": 2769
       },
       {
         "mes": "2026-11",
@@ -21454,25 +21454,25 @@
       }
     ],
     "kpi": {
-      "pct_ultimo_mes": 0.42,
-      "pct_12m": 17.53,
-      "ganancia_12m": 2597.4,
-      "capital_actual": 10663.119999999999,
-      "periodo_ultimo_mes": "2026-09",
+      "pct_ultimo_mes": 0.44,
+      "pct_12m": 14.35,
+      "ganancia_12m": 1982.73,
+      "capital_actual": 11242.19,
+      "periodo_ultimo_mes": "2026-10",
       "por_plataforma": {
         "peerberry": {
-          "pct_ultimo_mes": 0.5,
-          "pct_12m": 8.11,
-          "ganancia_12m": 521.4,
-          "capital_actual": 8438,
-          "periodo_ultimo_mes": "2026-09"
+          "pct_ultimo_mes": 0.42,
+          "pct_12m": 7.72,
+          "ganancia_12m": 513.73,
+          "capital_actual": 8473.19,
+          "periodo_ultimo_mes": "2026-10"
         },
         "myinvestor": {
-          "pct_ultimo_mes": 0.05,
-          "pct_12m": 24.09,
-          "ganancia_12m": 2076.0,
-          "capital_actual": 2225.12,
-          "periodo_ultimo_mes": "2026-09"
+          "pct_ultimo_mes": 0.52,
+          "pct_12m": 19.78,
+          "ganancia_12m": 1469.0,
+          "capital_actual": 2769,
+          "periodo_ultimo_mes": "2026-10"
         }
       }
     },
@@ -21738,6 +21738,18 @@
         "acumulado_anio": 13.07,
         "benchmark": 0.43,
         "benchmark_acumulado": 19.89,
+        "sin_aportes_pb": false,
+        "sin_aportes_mi": false
+      },
+      {
+        "mes": "2026-10",
+        "peerberry": 0.42,
+        "myinvestor": 0.52,
+        "total": 0.44,
+        "acumulado": 22.91,
+        "acumulado_anio": 13.57,
+        "benchmark": null,
+        "benchmark_acumulado": null,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
@@ -22577,7 +22589,7 @@
       "limite_disponible": 524.66,
       "fecha_proyectada_cierre": "2029-05-01",
       "fraccionado_pendiente": null,
-      "notas": "Único movimiento: pago a cuenta sobre aplazado de 200€ el 22/10/2026 (sin compras). Deuda total pendiente si se cancelase todo a 27.10.2026: 2.575,34€ (2.542,59 principal + 32,75 interés). Límite compartido entre todas las tarjetas del contrato."
+      "notas": "Periodo 28/09 a 27/10/2026, sin compras. Pago a cuenta de 200€ el 22/10. Cuota de 100€ cargada el 01/11 (67,25€ capital + 32,75€ intereses). Saldo aplazado tras la cuota: 2.475,34€. Cancelar todo al 27/10 costaba 2.575,34€ porque incluía esa cuota aún no cobrada. Límite de 3.000€ compartido con las demás tarjetas del contrato."
     }
   ],
   "tarjetas_credito_operaciones": [
@@ -22673,7 +22685,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-11-02",
+    "generado": "2026-11-03",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
