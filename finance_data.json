@@ -1,6 +1,244 @@
 {
-  "generated_at": "2026-11-15 15:37",
+  "generated_at": "2026-11-16 17:53",
   "movimientos": [
+    {
+      "fecha": "2026-11-15",
+      "concepto": "IKEA SSDLR HFB",
+      "monto": -10,
+      "categoria": "Departamento",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-15",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-14",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 26,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-13",
+      "concepto": "Kindle Svcs",
+      "monto": -5.5,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-12",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-11",
+      "concepto": "APPLE.COM/BILL",
+      "monto": -2.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-11",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 80,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-10",
+      "concepto": "PAYPAL *PAGO 3 PL",
+      "monto": -17.31,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-10",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-09",
+      "concepto": "YOIGO XFERA MOVIL",
+      "monto": -50.75,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-09",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 45,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-09",
+      "concepto": "Gastos club",
+      "monto": -150,
+      "categoria": "Club",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-07",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-07",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-06",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-06",
+      "concepto": "Klarna*Klarna Sho",
+      "monto": -142.9,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-06",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-05",
+      "concepto": "CAIXABANK PAYMENT",
+      "monto": -104.75,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-05",
+      "concepto": "Amazon Prime",
+      "monto": -4.99,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-05",
+      "concepto": "Gastos conjuntos",
+      "monto": -150,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-04",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-04",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-04",
+      "concepto": "VIVAGYM",
+      "monto": -19.9,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-04",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-04",
+      "concepto": "TRASPASO",
+      "monto": 40,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-03",
+      "concepto": "TRANSF. A SU FAVOR",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-03",
+      "concepto": "SANITAS S A SEG.",
+      "monto": -10,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-03",
+      "concepto": "SANITAS S A SEG.",
+      "monto": -78.56,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-03",
+      "concepto": "TRANSFER. EN DIV.",
+      "monto": 500,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-03",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-02",
+      "concepto": "SABADELL CONSUMER",
+      "monto": -218.12,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-02",
+      "concepto": "TALHO ARGENTINO",
+      "monto": -22.29,
+      "categoria": "Talho Argentino",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-02",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 100,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-02",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
     {
       "fecha": "2026-11-01",
       "concepto": "T. VISA CLASSIC",
@@ -21114,7 +21352,7 @@
       },
       {
         "mes": "2026-11",
-        "peerberry": 8007.83,
+        "peerberry": 8030.27,
         "myinvestor": 0
       }
     ],
@@ -21231,7 +21469,7 @@
       },
       {
         "mes": "2026-11",
-        "peerberry": 0.41,
+        "peerberry": 0.7,
         "myinvestor": 0
       }
     ],
@@ -21445,11 +21683,11 @@
       },
       {
         "mes": "2026-11",
-        "peerberry": 34.64,
+        "peerberry": 57.08,
         "myinvestor": 0.0,
         "peerberry_aportes": null,
         "myinvestor_aportes": null,
-        "peerberry_capital": 8007.83,
+        "peerberry_capital": 8030.27,
         "myinvestor_capital": null
       }
     ],
@@ -22685,7 +22923,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-11-15",
+    "generado": "2026-11-16",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
