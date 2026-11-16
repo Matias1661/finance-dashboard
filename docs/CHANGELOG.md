@@ -1,3 +1,8 @@
+## 2026-11-16 — Categoría de la tarjeta IKEA revolving
+
+- Dato corregido en Notion: CAIXABANK PAYMENT -104,75 € (05/11) pasa de Gastos coche a Tarjeta, nota
+  "Tarjeta IKEA". Sin cambios de código. Ver `DECISIONS.md` 2026-11-16.
+
 ## 2026-11-02 — Pronóstico del saldo aplazado (solapa Deuda)
 
 - `js/charts.js` (`renderTarjetasChart()`): el gráfico pasa a ene 2026 - dic 2028, con saldo

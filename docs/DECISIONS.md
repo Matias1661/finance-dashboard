@@ -1,3 +1,19 @@
+## [2026-11-16] Cargo de la tarjeta IKEA revolving: categoría Tarjeta
+
+**Contexto:** en la revisión de movimientos del 16/11/2026, el cargo CAIXABANK PAYMENT -104,75 € del
+05/11 (parte revolving de la tarjeta IKEA, cargo entre el día 5 y el 9) estaba como "Gastos coche" por
+error. La regla del 05/08/2026 manda estos cargos a Departamento, pero los de septiembre (-44,68 €) y
+octubre (-104,68 €) ya estaban como Tarjeta con nota "Tarjeta IKEA".
+
+**Decisión (confirmada por Matías):** por ser la parte revolving de la tarjeta, los cargos de la
+tarjeta IKEA (CAIXABANK PAYMENT, días 5-9) se categorizan como Tarjeta, con nota "Tarjeta IKEA". El
+cargo del 05/11 se corrigió. La financiación fija de 12,90 € (día 30) no cambia: sigue en
+Departamento con nota "Compra IKEA".
+
+**Pendiente:** la regla dura del prompt de categorización en la DB Notion Prompts sigue indicando
+Departamento para la revolving; ajustarla con autorización de Matías. Los cargos revolving anteriores
+a septiembre 2026 siguen como Departamento (no se tocaron).
+
 ## [2026-11-02] Pronóstico del saldo aplazado de las tarjetas (solapa Deuda)
 
 **Contexto:** Matías pidió reemplazar el gráfico "Evolución del saldo aplazado" por uno similar al
