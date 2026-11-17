@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16 19:53",
+  "generated_at": "2026-11-17 17:47",
   "movimientos": [
     {
       "fecha": "2026-11-15",
@@ -20,14 +20,14 @@
       "concepto": "BIZUM RECIBIDO",
       "monto": 26,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Reintegro de Johana por ratón TECKNET (compra en Amazon)"
     },
     {
       "fecha": "2026-11-13",
       "concepto": "Kindle Svcs",
       "monto": -5.5,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Libro Kindle 'Never Split the Difference'"
     },
     {
       "fecha": "2026-11-12",
@@ -55,7 +55,7 @@
       "concepto": "PAYPAL *PAGO 3 PL",
       "monto": -17.31,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Cuota 3/3 Paga en 3 plazos - Motocard (visera Scorpion KDS-F-03)"
     },
     {
       "fecha": "2026-11-10",
@@ -111,7 +111,7 @@
       "concepto": "Klarna*Klarna Sho",
       "monto": -142.9,
       "categoria": "Departamento",
-      "nota": null
+      "nota": "Fianza BeCasa (plan de pago Klarna)"
     },
     {
       "fecha": "2026-11-06",
@@ -124,8 +124,8 @@
       "fecha": "2026-11-05",
       "concepto": "CAIXABANK PAYMENT",
       "monto": -104.75,
-      "categoria": "Gastos coche",
-      "nota": null
+      "categoria": "Tarjeta",
+      "nota": "Tarjeta IKEA"
     },
     {
       "fecha": "2026-11-05",
@@ -160,7 +160,7 @@
       "concepto": "VIVAGYM",
       "monto": -19.9,
       "categoria": "Salud y Belleza",
-      "nota": null
+      "nota": "Cuota mensual gimnasio con descuento"
     },
     {
       "fecha": "2026-11-04",
@@ -223,7 +223,7 @@
       "concepto": "TALHO ARGENTINO",
       "monto": -22.29,
       "categoria": "Gastos en conjunto",
-      "nota": null
+      "nota": "Comida para casa"
     },
     {
       "fecha": "2026-11-02",
@@ -22923,7 +22923,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-11-16",
+    "generado": "2026-11-17",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
