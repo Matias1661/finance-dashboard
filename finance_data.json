@@ -1,6 +1,27 @@
 {
-  "generated_at": "2026-11-17 17:47",
+  "generated_at": "2026-11-18 17:18",
   "movimientos": [
+    {
+      "fecha": "2026-11-16",
+      "concepto": "WWW.AMAZON",
+      "monto": -25.99,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-16",
+      "concepto": "TALHO ARGENTINO",
+      "monto": -39.6,
+      "categoria": "Talho Argentino",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-16",
+      "concepto": "Gastos conjuntos",
+      "monto": -50,
+      "categoria": "Gastos en conjunto",
+      "nota": null
+    },
     {
       "fecha": "2026-11-15",
       "concepto": "IKEA SSDLR HFB",
@@ -21986,8 +22007,8 @@
         "total": 0.44,
         "acumulado": 22.91,
         "acumulado_anio": 13.57,
-        "benchmark": 0.61,
-        "benchmark_acumulado": 20.62,
+        "benchmark": 0.22,
+        "benchmark_acumulado": 20.16,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
@@ -22923,7 +22944,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-11-17",
+    "generado": "2026-11-18",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
