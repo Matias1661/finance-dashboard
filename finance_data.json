@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18 17:18",
+  "generated_at": "2026-11-19 17:27",
   "movimientos": [
     {
       "fecha": "2026-11-16",
@@ -22007,8 +22007,8 @@
         "total": 0.44,
         "acumulado": 22.91,
         "acumulado_anio": 13.57,
-        "benchmark": 0.22,
-        "benchmark_acumulado": 20.16,
+        "benchmark": -2.0,
+        "benchmark_acumulado": 17.49,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
@@ -22944,7 +22944,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-11-18",
+    "generado": "2026-11-19",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
