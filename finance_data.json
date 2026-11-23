@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22 16:09",
+  "generated_at": "2026-11-23 20:06",
   "movimientos": [
     {
       "fecha": "2026-11-16",
@@ -21373,7 +21373,7 @@
       },
       {
         "mes": "2026-11",
-        "peerberry": 8030.27,
+        "peerberry": 8042.8,
         "myinvestor": 0
       }
     ],
@@ -21490,7 +21490,7 @@
       },
       {
         "mes": "2026-11",
-        "peerberry": 0.7,
+        "peerberry": 0.85,
         "myinvestor": 0
       }
     ],
@@ -21704,11 +21704,11 @@
       },
       {
         "mes": "2026-11",
-        "peerberry": 57.08,
+        "peerberry": 69.61,
         "myinvestor": 0.0,
         "peerberry_aportes": null,
         "myinvestor_aportes": null,
-        "peerberry_capital": 8030.27,
+        "peerberry_capital": 8042.8,
         "myinvestor_capital": null
       }
     ],
@@ -22944,7 +22944,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-11-22",
+    "generado": "2026-11-23",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
