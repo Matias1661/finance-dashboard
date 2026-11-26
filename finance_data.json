@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26 13:28",
+  "generated_at": "2026-11-26 18:37",
   "movimientos": [
     {
       "fecha": "2026-11-25",
@@ -12,14 +12,14 @@
       "fecha": "2026-11-24",
       "concepto": "GRUPO V ROD 2",
       "monto": -81.15,
-      "categoria": "A revisar",
+      "categoria": "Salidas",
       "nota": null
     },
     {
       "fecha": "2026-11-24",
       "concepto": "BIZUM ENVIADO",
       "monto": -100,
-      "categoria": "A revisar",
+      "categoria": "Gastos en conjunto",
       "nota": null
     },
     {
@@ -82,7 +82,7 @@
       "fecha": "2026-11-20",
       "concepto": "LA CANADA",
       "monto": -24.6,
-      "categoria": "A revisar",
+      "categoria": "Comer afuera",
       "nota": null
     },
     {
@@ -96,7 +96,7 @@
       "fecha": "2026-11-20",
       "concepto": "BIZUM ENVIADO",
       "monto": -50,
-      "categoria": "A revisar",
+      "categoria": "Gastos en conjunto",
       "nota": null
     },
     {
@@ -104,14 +104,14 @@
       "concepto": "WWW.AMAZON",
       "monto": -5.99,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Guantes de compresión ACWOO, devueltos. Reembolso de 5,99€ a saldo Amazon el 23/11"
     },
     {
       "fecha": "2026-11-18",
       "concepto": "WWW.AMAZON",
       "monto": -8.98,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Férula de pulgar AYBUY (6,99€ más 2,00€ de envío)"
     },
     {
       "fecha": "2026-11-18",
@@ -181,7 +181,7 @@
       "concepto": "WWW.AMAZON",
       "monto": -25.99,
       "categoria": "Compras",
-      "nota": null
+      "nota": "Ratón ergonómico inalámbrico TECKNET"
     },
     {
       "fecha": "2026-11-16",
@@ -22182,8 +22182,8 @@
         "total": 0.44,
         "acumulado": 22.91,
         "acumulado_anio": 13.57,
-        "benchmark": -3.95,
-        "benchmark_acumulado": 15.16,
+        "benchmark": -5.67,
+        "benchmark_acumulado": 13.09,
         "sin_aportes_pb": false,
         "sin_aportes_mi": false
       }
