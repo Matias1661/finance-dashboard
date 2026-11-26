@@ -1,6 +1,181 @@
 {
-  "generated_at": "2026-11-25 18:53",
+  "generated_at": "2026-11-26 13:21",
   "movimientos": [
+    {
+      "fecha": "2026-11-25",
+      "concepto": "PARKING SAN FCO A",
+      "monto": -2.55,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-24",
+      "concepto": "GRUPO V ROD 2",
+      "monto": -81.15,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-24",
+      "concepto": "BIZUM ENVIADO",
+      "monto": -100,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-24",
+      "concepto": "TRANSFER INMEDIATA",
+      "monto": 50,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-23",
+      "concepto": "RESTAURANTE PICHE",
+      "monto": -8.8,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-22",
+      "concepto": "CAFETERIA ARCO IR",
+      "monto": -3.4,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-22",
+      "concepto": "SANSE I",
+      "monto": -22.72,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-22",
+      "concepto": "KRUSS STUDIO",
+      "monto": -42,
+      "categoria": "Salud y Belleza",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-21",
+      "concepto": "Telpark",
+      "monto": 0.01,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-20",
+      "concepto": "Klarna*Motocard",
+      "monto": -10.9,
+      "categoria": "Gastos moto",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-20",
+      "concepto": "Telpark",
+      "monto": -1.76,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-20",
+      "concepto": "LA CANADA",
+      "monto": -24.6,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-20",
+      "concepto": "BIZUM RECIBIDO",
+      "monto": 40,
+      "categoria": "Guille",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-20",
+      "concepto": "BIZUM ENVIADO",
+      "monto": -50,
+      "categoria": "A revisar",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-19",
+      "concepto": "WWW.AMAZON",
+      "monto": -5.99,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-18",
+      "concepto": "WWW.AMAZON",
+      "monto": -8.98,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-18",
+      "concepto": "ANTHROPIC* CLAUDE",
+      "monto": -21.78,
+      "categoria": "Suscripciones",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-18",
+      "concepto": "Telpark",
+      "monto": -0.01,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-18",
+      "concepto": "Telpark",
+      "monto": -0.35,
+      "categoria": "Gastos coche",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-18",
+      "concepto": "NYX*AIRservSpain",
+      "monto": -1.5,
+      "categoria": "Club",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-18",
+      "concepto": "GRANIER",
+      "monto": -4.2,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-18",
+      "concepto": "SQ *GASTON MADRID",
+      "monto": -31,
+      "categoria": "Comer afuera",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-18",
+      "concepto": "BALLENOIL SANSE I",
+      "monto": -60.99,
+      "categoria": "Combustible",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-18",
+      "concepto": "CONTACT ORDENADOR",
+      "monto": -131.89,
+      "categoria": "Compras",
+      "nota": null
+    },
+    {
+      "fecha": "2026-11-18",
+      "concepto": "IMPUESTOS",
+      "monto": -110,
+      "categoria": "Otros",
+      "nota": null
+    },
     {
       "fecha": "2026-11-16",
       "concepto": "WWW.AMAZON",
@@ -22944,7 +23119,7 @@
     }
   ],
   "deuda_forecast": {
-    "generado": "2026-11-25",
+    "generado": "2026-11-26",
     "objetivo": 30,
     "llegada": "2027-12",
     "meses": [
